@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blockchain Framework — XRPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --rule: #0e1116;
+    --user: #c8553d;       /* terracotta */
+    --app: #2e5d4f;        /* deep green */
+    --wallet: #d4a017;     /* mustard */
+    --chain: #1e3a5f;      /* prussian blue */
+    --custody: #6b4226;    /* coffee */
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--chain);
+  }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-align: right;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .strap {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0;
+    margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- LEGEND ---------- */
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 1.5px solid var(--ink);
+    margin-bottom: 32px;
+    background: var(--paper-2);
+  }
+  .legend-item {
+    padding: 12px 16px;
+    border-right: 1px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .legend-item:last-child { border-right: none; }
+  .swatch {
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--ink);
+    flex-shrink: 0;
+  }
+
+  /* ---------- DIAGRAM ---------- */
+  .diagram-wrap {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .diagram-wrap::before {
+    content: "FIG. 01 — XRPL ARCHITECTURE OVERVIEW";
+    position: absolute;
+    top: 12px; left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    z-index: 5;
+  }
+  .diagram-wrap::after {
+    content: "↓ READ / WRITE ↓";
+    position: absolute;
+    top: 12px; right: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  svg.diagram {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ---------- ANNOTATIONS BELOW ---------- */
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 32px;
+    border: 1.5px solid var(--ink);
+  }
+  .layer {
+    padding: 20px 22px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper-2);
+  }
+  .layer:last-child { border-right: none; }
+  .layer .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .layer h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    line-height: 1.15;
+  }
+  .layer h3 .accent {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 1.5px solid var(--ink);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .layer p {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+    color: #2a2a2a;
+  }
+  .layer code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+
+  /* ---------- FLOWS BLOCK ---------- */
+  .flows {
+    margin-top: 32px;
+    border: 2px solid var(--ink);
+    padding: 24px 28px;
+    background: var(--paper-2);
+  }
+  .flows h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 24px;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+  .flows h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .flows .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .flow {
+    border-left: 3px solid var(--ink);
+    padding-left: 16px;
+  }
+  .flow .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--muted);
+  }
+  .flow .label.read { color: var(--app); }
+  .flow .label.write { color: var(--user); }
+  .flow ol {
+    margin: 0;
+    padding-left: 18px;
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .flow ol li { margin-bottom: 4px; }
+  .flow code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--paper);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+
+  /* ---------- CUSTODY MATRIX ---------- */
+  .custody {
+    margin-top: 32px;
+  }
+  .custody h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 28px;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+  .custody .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid var(--ink);
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.45;
+    vertical-align: top;
+  }
+  table.matrix th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  table.matrix td.tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--paper-2);
+    width: 18%;
+  }
+  table.matrix td.keys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    width: 14%;
+  }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1.5px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .pill.self { background: var(--user); color: var(--paper); }
+  .pill.cust { background: var(--custody); color: var(--paper); }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .legend { grid-template-columns: repeat(2, 1fr); }
+    .legend-item:nth-child(2) { border-right: none; }
+    .legend-item { border-bottom: 1px solid var(--ink); }
+    .layers { grid-template-columns: 1fr 1fr; }
+    .layer:nth-child(2) { border-right: none; }
+    .layer { border-bottom: 1px solid var(--ink); }
+    .flow-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Framework · Architecture overview · v1.0</div>
+      <h1>Anatomie d'une<br/><em>blockchain</em> moderne<br/>— le cas XRPL</h1>
+    </div>
+    <div class="meta">
+      Réseau : XRP Ledger<br/>
+      Consensus : RPCA / UNL<br/>
+      Finalité : ~3–5 sec<br/>
+      Comptes : <code>r…</code>
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>USER</span>
+    <span>CLIENT</span>
+    <span>WALLET</span>
+    <span>NODES</span>
+    <span>LEDGER</span>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><span class="swatch" style="background:var(--user)"></span>Utilisateur</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--app)"></span>App / dApp</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--wallet)"></span>Wallet / Assets</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--custody)"></span>Custody</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--chain)"></span>Réseau / Ledger</div>
+  </div>
+
+  <!-- DIAGRAM -->
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1200 760" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Arrow markers -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+        </marker>
+        <marker id="arrow-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e5d4f"/>
+        </marker>
+        <marker id="arrow-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8553d"/>
+        </marker>
+
+        <!-- Subtle paper texture -->
+        <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.6" fill="#0e1116" opacity="0.08"/>
+        </pattern>
+
+        <!-- Hatching pattern for the ledger -->
+        <pattern id="hatch" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#1e3a5f" stroke-width="1" opacity="0.18"/>
+        </pattern>
+      </defs>
+
+      <!-- ============ COLUMN GUIDES ============ -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">
+        <text x="100" y="50" text-anchor="middle">USER</text>
+        <text x="340" y="50" text-anchor="middle">CLIENT LAYER</text>
+        <text x="600" y="50" text-anchor="middle">KEY / CUSTODY</text>
+        <text x="870" y="50" text-anchor="middle">NETWORK</text>
+        <text x="1100" y="50" text-anchor="middle">LEDGER STATE</text>
+      </g>
+      <g stroke="#0e1116" stroke-dasharray="2 4" opacity="0.25">
+        <line x1="200" y1="60" x2="200" y2="720"/>
+        <line x1="480" y1="60" x2="480" y2="720"/>
+        <line x1="720" y1="60" x2="720" y2="720"/>
+        <line x1="1000" y1="60" x2="1000" y2="720"/>
+      </g>
+
+      <!-- ============ USER ============ -->
+      <g transform="translate(60,180)">
+        <!-- Card -->
+        <rect x="0" y="0" width="120" height="160" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="120" height="160" fill="url(#dots)"/>
+        <!-- Person glyph -->
+        <circle cx="60" cy="55" r="18" fill="none" stroke="#f4efe6" stroke-width="2.5"/>
+        <path d="M 30 110 Q 60 78 90 110 L 90 130 L 30 130 Z" fill="none" stroke="#f4efe6" stroke-width="2.5"/>
+        <text x="60" y="152" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#f4efe6" letter-spacing="2">USER</text>
+      </g>
+      <text x="120" y="360" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#0e1116">l'humain.</text>
+      <text x="120" y="378" text-anchor="middle" font-family="Fraunces, serif" font-size="11" fill="#6b6358">détient (ou pas) ses clés</text>
+
+      <!-- ============ APP / DAPP ============ -->
+      <g transform="translate(250,140)">
+        <!-- Stacked cards: web2 app + dApp -->
+        <rect x="8" y="8" width="180" height="100" fill="#ebe4d6" stroke="#0e1116" stroke-width="1.5"/>
+        <rect x="0" y="0" width="180" height="100" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+        <text x="90" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4efe6" letter-spacing="2">APPLICATION</text>
+        <text x="90" y="55" text-anchor="middle" font-family="Fraunces, serif" font-size="15" font-weight="600" fill="#f4efe6">Web App / dApp</text>
+        <text x="90" y="75" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">UI · UX · business logic</text>
+        <text x="90" y="90" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">backend (off-chain)</text>
+      </g>
+
+      <!-- App → indexer arrow (read path) -->
+      <g transform="translate(250,260)">
+        <rect x="0" y="0" width="180" height="60" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="90" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">INDEXER · API</text>
+        <text x="90" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#0e1116">XRPL Data API, Bithomp…</text>
+      </g>
+
+      <!-- Examples / Use cases -->
+      <g transform="translate(250,360)">
+        <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">EXEMPLES</text>
+        <text x="0" y="20" font-family="Fraunces, serif" font-size="12" fill="#0e1116">— DEX (Sologenic, XPMarket)</text>
+        <text x="0" y="38" font-family="Fraunces, serif" font-size="12" fill="#0e1116">— Marketplace NFT</text>
+        <text x="0" y="56" font-family="Fraunces, serif" font-size="12" fill="#0e1116">— Paiement / on-ramp</text>
+        <text x="0" y="74" font-family="Fraunces, serif" font-size="12" fill="#0e1116">— RWA / tokenisation</text>
+      </g>
+
+      <!-- ============ WALLET / CUSTODY ============ -->
+      <g transform="translate(520,100)">
+        <!-- Self-custody wallet -->
+        <rect x="0" y="0" width="200" height="110" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="200" height="110" fill="url(#dots)"/>
+        <text x="100" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#0e1116" letter-spacing="2">SELF-CUSTODY</text>
+        <text x="100" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="15" font-weight="600" fill="#0e1116">Wallet personnel</text>
+        <text x="100" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116">Xaman · Crossmark · Ledger</text>
+        <!-- Key icon -->
+        <g transform="translate(80, 80)">
+          <circle cx="8" cy="8" r="6" fill="none" stroke="#0e1116" stroke-width="1.8"/>
+          <line x1="14" y1="8" x2="32" y2="8" stroke="#0e1116" stroke-width="1.8"/>
+          <line x1="26" y1="8" x2="26" y2="13" stroke="#0e1116" stroke-width="1.8"/>
+          <line x1="30" y1="8" x2="30" y2="13" stroke="#0e1116" stroke-width="1.8"/>
+        </g>
+      </g>
+      <text x="620" y="225" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="11" fill="#6b6358">"not your keys, not your coins"</text>
+
+      <!-- Custodial wallet -->
+      <g transform="translate(520,260)">
+        <rect x="0" y="0" width="200" height="110" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="200" height="110" fill="url(#dots)"/>
+        <text x="100" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4efe6" letter-spacing="2">CUSTODIAL</text>
+        <text x="100" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="15" font-weight="600" fill="#f4efe6">CEX / Plateforme</text>
+        <text x="100" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">Binance · Bitstamp · Kraken</text>
+        <text x="100" y="88" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#f4efe6" opacity="0.85">la plateforme détient les clés</text>
+      </g>
+
+      <!-- Assets summary card -->
+      <g transform="translate(520,400)">
+        <rect x="0" y="0" width="200" height="160" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="12" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">DIGITAL ASSETS</text>
+        <line x1="12" y1="28" x2="188" y2="28" stroke="#0e1116" stroke-width="0.5"/>
+
+        <text x="12" y="48" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#0e1116">— XRP</text>
+        <text x="12" y="64" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">native token</text>
+
+        <text x="12" y="84" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#0e1116">— IOU / Trustlines</text>
+        <text x="12" y="100" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">USD, EUR, RLUSD…</text>
+
+        <text x="12" y="120" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#0e1116">— NFTs (XLS-20)</text>
+        <text x="12" y="136" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">NFTokenID</text>
+
+        <text x="12" y="152" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#0e1116">+ MPT, AMM-LP…</text>
+      </g>
+
+      <!-- ============ NETWORK / NODES ============ -->
+      <g transform="translate(800,100)">
+        <rect x="0" y="0" width="180" height="270" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="180" height="270" fill="url(#hatch)"/>
+        <text x="90" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4efe6" letter-spacing="2">P2P NETWORK</text>
+
+        <!-- Node circles -->
+        <g fill="#f4efe6" stroke="#0e1116" stroke-width="1.5">
+          <circle cx="50" cy="80" r="14"/>
+          <circle cx="130" cy="80" r="14"/>
+          <circle cx="90" cy="125" r="14"/>
+          <circle cx="50" cy="170" r="14"/>
+          <circle cx="130" cy="170" r="14"/>
+        </g>
+        <g stroke="#f4efe6" stroke-width="1" opacity="0.7">
+          <line x1="50" y1="80" x2="130" y2="80"/>
+          <line x1="50" y1="80" x2="90" y2="125"/>
+          <line x1="130" y1="80" x2="90" y2="125"/>
+          <line x1="90" y1="125" x2="50" y2="170"/>
+          <line x1="90" y1="125" x2="130" y2="170"/>
+          <line x1="50" y1="170" x2="130" y2="170"/>
+          <line x1="50" y1="80" x2="50" y2="170"/>
+          <line x1="130" y1="80" x2="130" y2="170"/>
+        </g>
+        <g font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116" text-anchor="middle">
+          <text x="50" y="83">val</text>
+          <text x="130" y="83">val</text>
+          <text x="90" y="128">val</text>
+          <text x="50" y="173">node</text>
+          <text x="130" y="173">node</text>
+        </g>
+
+        <text x="90" y="220" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#f4efe6">Validators + UNL</text>
+        <text x="90" y="240" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">consensus RPCA</text>
+        <text x="90" y="255" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">~3–5 sec / ledger</text>
+      </g>
+
+      <!-- rippled / RPC node -->
+      <g transform="translate(800,400)">
+        <rect x="0" y="0" width="180" height="80" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="90" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">ENTRY POINT</text>
+        <text x="90" y="44" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="600" fill="#0e1116">rippled / WebSocket</text>
+        <text x="90" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116">JSON-RPC · submit · subscribe</text>
+      </g>
+
+      <!-- ============ LEDGER STATE ============ -->
+      <g transform="translate(1020,100)">
+        <!-- Ledger blocks -->
+        <g>
+          <rect x="0" y="0" width="160" height="60" fill="#f4efe6" stroke="#0e1116" stroke-width="2"/>
+          <rect x="0" y="0" width="160" height="60" fill="url(#hatch)"/>
+          <text x="10" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#1e3a5f" letter-spacing="1">LEDGER #92,481,001</text>
+          <text x="10" y="38" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#0e1116">parent_hash: A4F9…</text>
+          <text x="10" y="52" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#0e1116">close: 14:02:13</text>
+        </g>
+        <g transform="translate(0,75)">
+          <rect x="0" y="0" width="160" height="60" fill="#f4efe6" stroke="#0e1116" stroke-width="2"/>
+          <rect x="0" y="0" width="160" height="60" fill="url(#hatch)"/>
+          <text x="10" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#1e3a5f" letter-spacing="1">LEDGER #92,481,002</text>
+          <text x="10" y="38" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#0e1116">parent_hash: B7E1…</text>
+          <text x="10" y="52" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#0e1116">close: 14:02:17</text>
+        </g>
+        <g transform="translate(0,150)">
+          <rect x="0" y="0" width="160" height="60" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+          <text x="10" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">LEDGER #92,481,003</text>
+          <text x="10" y="38" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#f4efe6">— validated —</text>
+          <text x="10" y="52" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">close: 14:02:21</text>
+        </g>
+        <!-- Chain link -->
+        <line x1="80" y1="60" x2="80" y2="75" stroke="#0e1116" stroke-width="1.5"/>
+        <line x1="80" y1="135" x2="80" y2="150" stroke="#0e1116" stroke-width="1.5"/>
+      </g>
+
+      <!-- Ledger objects -->
+      <g transform="translate(1020,340)">
+        <rect x="0" y="0" width="160" height="220" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="80" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">LEDGER OBJECTS</text>
+        <line x1="12" y1="32" x2="148" y2="32" stroke="#0e1116" stroke-width="0.5"/>
+
+        <text x="12" y="52" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#0e1116">AccountRoot</text>
+        <text x="12" y="68" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">solde, séquence</text>
+
+        <text x="12" y="88" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#0e1116">RippleState</text>
+        <text x="12" y="104" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">trustlines / IOU</text>
+
+        <text x="12" y="124" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#0e1116">Offer / AMM</text>
+        <text x="12" y="140" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">DEX, pools</text>
+
+        <text x="12" y="160" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#0e1116">NFTokenPage</text>
+        <text x="12" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">NFTs détenus</text>
+
+        <text x="12" y="196" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#0e1116">Escrow / Check</text>
+        <text x="12" y="212" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">conditional pay</text>
+      </g>
+
+      <!-- ============ ARROWS / FLOWS ============ -->
+
+      <!-- USER → APP (interact) -->
+      <g stroke="#0e1116" stroke-width="2" fill="none">
+        <path d="M 180 245 L 250 190" marker-end="url(#arrow)"/>
+      </g>
+      <text x="200" y="200" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" font-style="italic">interact</text>
+
+      <!-- USER → WALLET (own keys) -->
+      <g stroke="#0e1116" stroke-width="2" fill="none" stroke-dasharray="4 3">
+        <path d="M 180 270 Q 350 130 520 145" marker-end="url(#arrow)"/>
+      </g>
+      <text x="340" y="155" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" font-style="italic">owns keys</text>
+
+      <!-- APP → WALLET (sign request) -->
+      <g stroke="#c8553d" stroke-width="2" fill="none">
+        <path d="M 430 175 L 520 155" marker-end="url(#arrow-write)"/>
+      </g>
+      <text x="445" y="150" font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d">sign req.</text>
+
+      <!-- USER → CUSTODIAL (delegated) -->
+      <g stroke="#0e1116" stroke-width="2" fill="none" stroke-dasharray="4 3">
+        <path d="M 180 320 Q 350 380 520 315" marker-end="url(#arrow)"/>
+      </g>
+      <text x="340" y="385" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" font-style="italic">delegates custody</text>
+
+      <!-- WALLET → ASSETS (holds) -->
+      <g stroke="#0e1116" stroke-width="1.5" fill="none">
+        <path d="M 620 210 L 620 400" marker-end="url(#arrow)"/>
+        <path d="M 620 370 L 620 400"/>
+      </g>
+      <text x="630" y="305" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" font-style="italic">holds</text>
+
+      <!-- WALLET → NETWORK (signed tx — WRITE) -->
+      <g stroke="#c8553d" stroke-width="2.5" fill="none">
+        <path d="M 720 155 L 800 145" marker-end="url(#arrow-write)"/>
+      </g>
+      <text x="730" y="135" font-family="JetBrains Mono, monospace" font-size="10" fill="#c8553d" font-weight="700">signed tx →</text>
+      <text x="730" y="120" font-family="JetBrains Mono, monospace" font-size="8" fill="#c8553d">WRITE</text>
+
+      <!-- APP → INDEXER → NETWORK (READ) -->
+      <g stroke="#2e5d4f" stroke-width="2.5" fill="none">
+        <path d="M 430 290 L 800 430" marker-end="url(#arrow-read)"/>
+      </g>
+      <text x="600" y="345" font-family="JetBrains Mono, monospace" font-size="10" fill="#2e5d4f" font-weight="700">query · subscribe ←</text>
+      <text x="600" y="360" font-family="JetBrains Mono, monospace" font-size="8" fill="#2e5d4f">READ</text>
+
+      <!-- NETWORK → LEDGER -->
+      <g stroke="#0e1116" stroke-width="2" fill="none">
+        <path d="M 980 200 L 1020 180" marker-end="url(#arrow)"/>
+      </g>
+      <text x="985" y="175" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116">commit</text>
+
+      <!-- LEDGER → NETWORK (state) -->
+      <g stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3">
+        <path d="M 1020 430 L 980 440" marker-end="url(#arrow)"/>
+      </g>
+      <text x="985" y="460" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116">state</text>
+
+      <!-- ============ BOTTOM BAND: TX ANATOMY ============ -->
+      <g transform="translate(60,610)">
+        <rect x="0" y="0" width="1080" height="120" fill="#ebe4d6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="20" y="22" font-family="JetBrains Mono, monospace" font-size="10" fill="#6b6358" letter-spacing="2">ANATOMIE D'UNE TRANSACTION XRPL</text>
+        <line x1="20" y1="30" x2="1060" y2="30" stroke="#0e1116" stroke-width="0.5"/>
+
+        <!-- Steps -->
+        <g font-family="Fraunces, serif" font-size="12" fill="#0e1116">
+          <g transform="translate(20,50)">
+            <text font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">01 · BUILD</text>
+            <text y="22">Account, Sequence, Fee,</text>
+            <text y="38" font-style="italic">TransactionType, Amount</text>
+          </g>
+          <g transform="translate(220,50)">
+            <text font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">02 · SIGN</text>
+            <text y="22">signature avec clé privée</text>
+            <text y="38" font-style="italic">(wallet, jamais l'app)</text>
+          </g>
+          <g transform="translate(420,50)">
+            <text font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">03 · SUBMIT</text>
+            <text y="22">envoi vers un node rippled</text>
+            <text y="38" font-style="italic">submit / WebSocket</text>
+          </g>
+          <g transform="translate(620,50)">
+            <text font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">04 · CONSENSUS</text>
+            <text y="22">validators (UNL) → accord</text>
+            <text y="38" font-style="italic">~3–5 sec</text>
+          </g>
+          <g transform="translate(820,50)">
+            <text font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">05 · VALIDATED</text>
+            <text y="22">inclusion dans un ledger</text>
+            <text y="38" font-style="italic">tesSUCCESS / final</text>
+          </g>
+        </g>
+
+        <!-- Arrows between steps -->
+        <g stroke="#0e1116" stroke-width="1" fill="none">
+          <path d="M 195 75 L 215 75" marker-end="url(#arrow)"/>
+          <path d="M 395 75 L 415 75" marker-end="url(#arrow)"/>
+          <path d="M 595 75 L 615 75" marker-end="url(#arrow)"/>
+          <path d="M 795 75 L 815 75" marker-end="url(#arrow)"/>
+        </g>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- LAYER ANNOTATIONS -->
+  <div class="layers">
+    <div class="layer">
+      <div class="num">01</div>
+      <h3><span class="accent" style="background:var(--user)"></span>L'utilisateur</h3>
+      <p>Le point de départ. Sa souveraineté dépend d'un seul facteur : <em>qui détient la clé privée</em>. C'est la frontière entre self-custody et custody déléguée.</p>
+    </div>
+    <div class="layer">
+      <div class="num">02</div>
+      <h3><span class="accent" style="background:var(--app)"></span>L'application</h3>
+      <p>Web app classique ou dApp. Elle orchestre l'UX, lit la chaîne via un <code>indexer</code> ou un node, et propose des actions à signer — mais ne signe jamais.</p>
+    </div>
+    <div class="layer">
+      <div class="num">03</div>
+      <h3><span class="accent" style="background:var(--wallet)"></span>Le wallet</h3>
+      <p>Conteneur de clés et d'assets : <code>XRP</code>, IOUs (trustlines), NFTs (XLS-20), MPT, parts d'AMM. Self-custody (Xaman, Ledger) ou custodial (CEX).</p>
+    </div>
+    <div class="layer">
+      <div class="num">04</div>
+      <h3><span class="accent" style="background:var(--chain)"></span>Le ledger</h3>
+      <p>Le réseau XRPL : un graphe de validateurs (UNL) qui ferme un nouveau ledger toutes les 3–5 secondes. État final, pas de mempool prolongé.</p>
+    </div>
+  </div>
+
+  <!-- READ / WRITE FLOWS -->
+  <div class="flows">
+    <h2>Lectures &amp; <em>écritures</em> sur la chaîne</h2>
+    <div class="sub">Deux chemins, deux exigences de confiance</div>
+    <div class="flow-grid">
+      <div class="flow">
+        <div class="label read">→ READ · gratuit, sans signature</div>
+        <ol>
+          <li>L'app interroge un node <code>rippled</code> via JSON-RPC ou WebSocket</li>
+          <li>Méthodes : <code>account_info</code>, <code>account_lines</code>, <code>account_nfts</code>, <code>book_offers</code>…</li>
+          <li>Indexers (XRPL Data API, Bithomp) pour requêtes historiques / agrégées</li>
+          <li>Subscriptions temps réel : flux des nouveaux ledgers, transactions d'un compte</li>
+          <li>Aucun coût, aucun risque — mais dépend de la confiance dans le node</li>
+        </ol>
+      </div>
+      <div class="flow">
+        <div class="label write">→ WRITE · signée, payante, finale</div>
+        <ol>
+          <li>L'app construit la transaction (<code>Payment</code>, <code>OfferCreate</code>, <code>NFTokenMint</code>…)</li>
+          <li>Le wallet la signe localement avec la clé privée</li>
+          <li>Soumission au réseau via <code>submit</code> sur un node</li>
+          <li>Consensus RPCA : ~80% des validateurs UNL doivent s'accorder</li>
+          <li>Inclusion dans un ledger validé → état modifié, frais brûlés (drops de XRP)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTODY MATRIX -->
+  <div class="custody">
+    <h2>La question du <em>custody</em></h2>
+    <div class="sub">Qui détient quoi · matrice de responsabilité</div>
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th style="width:18%">Modèle</th>
+          <th style="width:14%">Clés privées</th>
+          <th>Implications</th>
+          <th style="width:22%">Exemples sur XRPL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tag"><span class="pill self">Self-custody</span></td>
+          <td class="keys">utilisateur</td>
+          <td>Souveraineté totale. L'utilisateur signe lui-même chaque transaction. Risque : perte de seed = perte d'accès. Pas de tiers à faire défaut.</td>
+          <td>Xaman, Crossmark, Ledger, GemWallet</td>
+        </tr>
+        <tr>
+          <td class="tag"><span class="pill cust">Custodial</span></td>
+          <td class="keys">plateforme</td>
+          <td>L'utilisateur a un <em>solde inscrit dans une base de données</em>, pas un compte XRPL à lui. La plateforme signe en son nom. Risque de contrepartie (faillite, gel, hack).</td>
+          <td>Binance, Bitstamp, Kraken, Bitvavo</td>
+        </tr>
+        <tr>
+          <td class="tag"><span class="pill cust" style="background:#8a6d3b">Hybride / MPC</span></td>
+          <td class="keys">partagées</td>
+          <td>La clé est fragmentée (multi-party computation, multisig XRPL natif). Aucun acteur seul ne peut signer. Compromis souveraineté ↔ sécurité opérationnelle.</td>
+          <td>Fireblocks, multisig <code>SignerList</code> XRPL</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>BLOCKCHAIN FRAMEWORK · XRPL EDITION</span>
+    <span>FIG. 01 / 01</span>
+  </footer>
+
+</div>
+</body>
+</html>

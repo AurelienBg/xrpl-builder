@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>XRPL Framework — Launcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 56px 32px 80px; }
+
+  /* MASTHEAD */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-align: right;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 40px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro p { margin: 0 0 8px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); }
+
+  /* SECTION HEADS */
+  .section-head {
+    margin-bottom: 14px;
+    margin-top: 8px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .section-head h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .section-head h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-right: 8px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .section-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .section-summary {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 18px;
+    padding-left: 14px;
+    border-left: 2px solid var(--ink);
+  }
+  .section-summary strong { color: var(--ink); font-weight: 600; font-style: normal; }
+  .section-summary em { color: var(--chain); }
+
+  /* CARD GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 48px;
+    background: var(--paper);
+  }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-1 { grid-template-columns: 1fr; }
+
+  .card {
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 22px 24px 18px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--paper);
+    transition: background 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .grid.cols-3 .card:nth-child(3n) { border-right: none; }
+  .grid.cols-3 .card:nth-last-child(-n+3) { border-bottom: none; }
+  .grid.cols-1 .card { border-right: none; border-bottom: none; }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+  .card[data-type="static"]::before { background: var(--app); }
+  .card[data-type="animated"]::before { background: var(--user); }
+  .card[data-type="extended"]::before { background: var(--chain); }
+  .card[data-type="pdf"]::before { background: var(--custody); }
+  .card[data-type="atlas"]::before { background: var(--wallet); }
+  .card[data-type="simulator"]::before { background: var(--amm); }
+  .card[data-type="business"]::before { background: var(--rwa); }
+  .card[data-type="decision"]::before { background: var(--sidechain); }
+  .card[data-type="ecosystem"]::before { background: var(--chain); }
+
+  .card:hover {
+    background: var(--paper-2);
+  }
+  .card:hover .card-arrow { transform: translateX(4px); }
+  .card:hover h3 { color: var(--chain); }
+
+  .card-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .card-eyebrow .badge {
+    padding: 2px 7px;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    font-size: 9px;
+    color: var(--ink);
+  }
+  .card-eyebrow .badge.static { background: var(--app); color: var(--paper); }
+  .card-eyebrow .badge.animated { background: var(--user); color: var(--paper); }
+  .card-eyebrow .badge.extended { background: var(--chain); color: var(--paper); }
+  .card-eyebrow .badge.atlas { background: var(--wallet); color: var(--ink); }
+  .card-eyebrow .badge.simulator { background: var(--amm); color: var(--paper); }
+  .card-eyebrow .badge.business { background: var(--rwa); color: var(--paper); }
+  .card-eyebrow .badge.decision { background: var(--sidechain); color: var(--paper); }
+  .card-eyebrow .badge.ecosystem { background: var(--chain); color: var(--paper); }
+  .card-eyebrow .badge.pdf { background: var(--custody); color: var(--paper); }
+
+  .card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.1;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+    transition: color 0.15s ease;
+  }
+  .card h3 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .card p {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin: 0 0 14px 0;
+    color: #2a2a2a;
+    flex: 1;
+  }
+  .card p strong { font-weight: 600; }
+  .card p em { color: var(--chain); }
+
+  .card-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed var(--ink);
+    padding-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-foot .filename {
+    color: var(--ink);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 8px;
+  }
+  .card-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--ink);
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .grid, .grid.cols-3 { grid-template-columns: 1fr 1fr; }
+    .grid.cols-3 .card:nth-child(3n) { border-right: 1px solid var(--ink); }
+    .grid.cols-3 .card:nth-child(2n) { border-right: none; }
+  }
+  @media (max-width: 600px) {
+    .grid, .grid.cols-3 { grid-template-columns: 1fr; }
+    .card { border-right: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">XRPL Framework · Launcher · v2.0</div>
+      <h1>XRPL <em>Framework</em><br/>— builder suite</h1>
+    </div>
+    <div class="meta">
+      Réseau : XRP Ledger<br/>
+      Documents : 9<br/>
+      Version : 2.0<br/>
+      Date : mai 2026
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>PÉDAGOGIE</span>
+    <span>IDÉES</span>
+    <span>OUTILS</span>
+    <span>PAYSAGE</span>
+    <span>PRINT</span>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>Suite complète d'outils pour <strong>comprendre, idéer, valider et lancer</strong> un projet sur XRPL. Du schéma fondateur à la spec technique précise, en passant par l'idéation business et la validation économique.</p>
+    <p>Parcours suggéré pour un nouveau builder : <em>Pédagogie</em> (1-2-3) → <em>Idées</em> (4) → <em>Outils</em> (5-6-7) → <em>Paysage</em> (8) → puis lancement.</p>
+  </div>
+
+  <!-- ============ 01 · PÉDAGOGIE ============ -->
+  <div class="section-head">
+    <h2><span class="num">01</span>Pédagogie · <em>comprendre XRPL</em></h2>
+    <span class="count">3 fichiers · HTML</span>
+  </div>
+  <div class="section-summary">Le schéma fondateur, les extensions du protocole, et l'animation du flow de transaction. <strong>Point de départ obligatoire</strong> avant d'explorer le reste.</div>
+
+  <div class="grid cols-3">
+
+    <a class="card" href="blockchain-framework-xrpl" data-type="static">
+      <div class="card-eyebrow">
+        <span>FIG · 01</span>
+        <span class="badge static">Statique</span>
+      </div>
+      <h3>Anatomie de <em>base</em></h3>
+      <p>Le schéma fondateur : USER → CLIENT → CUSTODY → NETWORK → LEDGER. Lecture/écriture, modèle custody, anatomie d'une transaction.</p>
+      <div class="card-foot">
+        <span class="filename">blockchain-framework-xrpl.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="blockchain-xrpl-extended" data-type="extended">
+      <div class="card-eyebrow">
+        <span>FIG · 02 · v1.2</span>
+        <span class="badge extended">Tour guidé</span>
+      </div>
+      <h3>Anatomie <em>complète</em></h3>
+      <p>Version étendue avec AMM, RWA, Sidechain. Mapping des 5 use cases. <strong>Tour guidé</strong> en 9 étapes + bouton <strong>Play les 5 cas</strong>.</p>
+      <div class="card-foot">
+        <span class="filename">blockchain-xrpl-extended.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="blockchain-xrpl-animated" data-type="animated">
+      <div class="card-eyebrow">
+        <span>FIG · 03</span>
+        <span class="badge animated">Animé</span>
+      </div>
+      <h3>Voyage d'une <em>transaction</em></h3>
+      <p>Animation du flow de bout en bout. 3 scénarios : Payment, AMM Swap, Read query. Particules, log réseau, état du compte qui évolue.</p>
+      <div class="card-foot">
+        <span class="filename">blockchain-xrpl-animated.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ============ 02 · IDÉES ============ -->
+  <div class="section-head">
+    <h2><span class="num">02</span>Idées · <em>builder atlas</em></h2>
+    <span class="count">1 fichier · HTML</span>
+  </div>
+  <div class="section-summary">Six startup blueprints détaillés exploitant les primitives XRPL. <strong>Architecture, économie, MVP, GTM</strong> par card. Le point de départ pour toute idéation.</div>
+
+  <div class="grid cols-1">
+
+    <a class="card" href="builder-atlas" data-type="atlas">
+      <div class="card-eyebrow">
+        <span>FIG · 04</span>
+        <span class="badge atlas">6 blueprints</span>
+        <span>Payments · DeFi · RWA · Commerce · Real estate · Payroll</span>
+      </div>
+      <h3>Builder <em>Atlas</em> · 6 startup blueprints</h3>
+      <p>Six fiches startup approfondies : <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (épargne USD LATAM), <strong>BondBloc</strong> (RWA Europe), <strong>MerchantPay</strong> (POS Afrique), <strong>PropTok</strong> (immo MENA/SEA), <strong>PayrollXRP</strong> (streaming global). Chaque blueprint détaille problème/marché, architecture XRPL exacte, stack technique + MVP, économie + GTM. Matrice de décision finale par profil de builder.</p>
+      <div class="card-foot">
+        <span class="filename">builder-atlas.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ============ 03 · OUTILS ============ -->
+  <div class="section-head">
+    <h2><span class="num">03</span>Outils · <em>valider & décider</em></h2>
+    <span class="count">3 fichiers · HTML interactifs</span>
+  </div>
+  <div class="section-summary">Trois outils interactifs pour transformer une idée en go/no-go : comparaison de coûts cross-chain, modélisation financière 24 mois, et arbre de décision technique. <strong>Tu peux jouer avec les paramètres en temps réel.</strong></div>
+
+  <div class="grid cols-3">
+
+    <a class="card" href="cost-simulator" data-type="simulator">
+      <div class="card-eyebrow">
+        <span>FIG · 05</span>
+        <span class="badge simulator">Comparateur</span>
+      </div>
+      <h3>Cost <em>Simulator</em></h3>
+      <p>Comparateur live <strong>XRPL vs Stellar / Solana / Ethereum</strong> sur 4 use cases (Payment, AMM, NFT, Payroll). Sliders volume/users/montant. Verdict dynamique sur la viabilité économique par chaîne.</p>
+      <div class="card-foot">
+        <span class="filename">cost-simulator.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="business-case-builder" data-type="business">
+      <div class="card-eyebrow">
+        <span>FIG · 06</span>
+        <span class="badge business">Modèle 24 mois</span>
+      </div>
+      <h3>Business Case <em>Builder</em></h3>
+      <p>Modélisation financière sur 24 mois. <strong>Capex + opex + revenue</strong> par sliders (12 paramètres). 6 presets calibrés sur le Builder Atlas. Outputs : runway, break-even, capital needed, LTV/CAC. Verdict adapté.</p>
+      <div class="card-foot">
+        <span class="filename">business-case-builder.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="decision-tree" data-type="decision">
+      <div class="card-eyebrow">
+        <span>FIG · 07</span>
+        <span class="badge decision">4–6 questions</span>
+      </div>
+      <h3>Decision <em>Tree</em></h3>
+      <p>Arbre de décision technique en <strong>4 à 6 questions</strong> (binaires puis multi-choix). Sortie : stack XRPL recommandée + boilerplate code TypeScript + lien blueprint Atlas + ressources doc. ~2 minutes. <em>Vue macro</em> de l'arbre complet accessible en un clic.</p>
+      <div class="card-foot">
+        <span class="filename">decision-tree.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ============ 04 · PAYSAGE ============ -->
+  <div class="section-head">
+    <h2><span class="num">04</span>Paysage · <em>écosystème</em></h2>
+    <span class="count">1 fichier · HTML</span>
+  </div>
+  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026, classés par catégorie fonctionnelle. <strong>Identifie les espaces saturés à éviter et les opportunity gaps</strong> où personne ne joue encore.</div>
+
+  <div class="grid cols-1">
+
+    <a class="card" href="ecosystem-map" data-type="ecosystem">
+      <div class="card-eyebrow">
+        <span>FIG · 08</span>
+        <span class="badge ecosystem">Snapshot mai 2026</span>
+        <span>50+ projets · 8 catégories</span>
+      </div>
+      <h3>Ecosystem <em>Map</em></h3>
+      <p>Carte structurée de l'écosystème XRPL : <strong>DeFi, Stablecoins, RWA, Payments, Wallets, Infrastructure, NFT, Bridges</strong>. Chaque projet étiqueté par état (Live/Beta/Upcoming/Partner). Section <strong>Opportunity Gaps</strong> en fin de page : 6 espaces inoccupés où lancer une startup. Page éditable manuellement pour maintenance.</p>
+      <div class="card-foot">
+        <span class="filename">ecosystem-map.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ============ 05 · IMPRIMABLES ============ -->
+  <div class="section-head">
+    <h2><span class="num">05</span>Versions <em>imprimables</em></h2>
+    <span class="count">1 fichier · PDF</span>
+  </div>
+  <div class="section-summary">Pour les présentations physiques en réunion, ou pour afficher le schéma au mur. Format A3 paysage, mise en page optimisée pour l'impression.</div>
+
+  <div class="grid cols-1">
+
+    <a class="card" href="blockchain-xrpl-extended.pdf" data-type="pdf">
+      <div class="card-eyebrow">
+        <span>PDF · 01</span>
+        <span class="badge pdf">A3 paysage · 2 pages</span>
+      </div>
+      <h3>Anatomie complète · <em>print edition</em></h3>
+      <p>Version PDF de l'anatomie complète, optimisée pour impression A3 paysage. 2 pages : diagramme principal + extensions et matrice de décision. Fonts Fraunces / JetBrains Mono préservées.</p>
+      <div class="card-foot">
+        <span class="filename">blockchain-xrpl-extended.pdf</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <span>XRPL FRAMEWORK · LAUNCHER PAGE · v2.0</span>
+    <span>METTRE EN FAVORI · ⌘D · CTRL+D</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

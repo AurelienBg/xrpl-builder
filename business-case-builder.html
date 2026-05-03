@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Business Case Builder — XRPL Startup Unit Economics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --good: #2e5d4f;
+    --bad: #c8553d;
+    --warn: #d4a017;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro p { margin: 0 0 8px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); }
+
+  /* MAIN GRID */
+  .case-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+  }
+
+  /* CONTROL PANEL (LEFT) */
+  .controls {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    align-self: start;
+    position: sticky;
+    top: 16px;
+    overflow: hidden;
+  }
+  .controls-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .control-section {
+    padding: 16px 20px 18px;
+    border-bottom: 1px solid var(--ink);
+    max-height: none;
+  }
+  .control-section:last-child { border-bottom: none; }
+  .control-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid rgba(14,17,22,0.15);
+    padding-bottom: 4px;
+  }
+  .control-section h3 .badge {
+    display: inline-block;
+    padding: 1px 5px;
+    background: var(--ink);
+    color: var(--paper);
+    margin-left: 6px;
+    font-size: 8px;
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+  }
+  .preset-btn {
+    font-family: 'Fraunces', serif;
+    font-size: 11px;
+    padding: 7px 8px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    line-height: 1.15;
+  }
+  .preset-btn:hover { background: var(--paper-2); }
+  .preset-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .preset-btn .preset-name {
+    font-weight: 700;
+    font-size: 12px;
+    display: block;
+  }
+  .preset-btn .preset-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .preset-btn.active .preset-sub { color: var(--paper); opacity: 0.7; }
+
+  .input-block {
+    margin-bottom: 10px;
+  }
+  .input-block:last-child { margin-bottom: 0; }
+  .input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+  }
+  .input-label .label-name {
+    color: var(--ink);
+  }
+  .input-label .label-name .hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .input-label .label-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper-2);
+    padding: 1px 6px;
+    border: 1px solid var(--ink);
+  }
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--ink);
+    outline: none;
+    margin: 4px 0 0;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px; height: 14px;
+    background: var(--wallet);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    border-radius: 0;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px;
+    background: var(--wallet);
+    border: 2px solid var(--ink);
+    cursor: pointer; border-radius: 0;
+  }
+
+  /* RESULTS PANEL (RIGHT) */
+  .results {
+    display: grid;
+    gap: 24px;
+  }
+
+  /* HEADLINE TILE */
+  .summary {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    overflow: hidden;
+  }
+  .summary-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .summary-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .summary-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .summary-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .summary-cell {
+    padding: 18px 22px 16px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+  }
+  .summary-cell:last-child { border-right: none; }
+  .summary-cell::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--chain);
+  }
+  .summary-cell.warn::before { background: var(--warn); }
+  .summary-cell.bad::before { background: var(--bad); }
+  .summary-cell.good::before { background: var(--good); }
+  .summary-cell .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .summary-cell .value {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .summary-cell .value em { font-style: italic; font-weight: 400; }
+  .summary-cell .sub {
+    font-family: 'Fraunces', serif;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* CHART */
+  .chart-section {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 22px 26px 20px;
+  }
+  .chart-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 4px 0;
+  }
+  .chart-section h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .chart-section h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+
+  .chart-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .chart-legend .swatch {
+    display: inline-block;
+    width: 14px; height: 10px;
+    margin-right: 6px;
+    border: 1px solid var(--ink);
+    vertical-align: middle;
+  }
+  .chart-legend strong {
+    color: var(--ink);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  /* BREAKDOWN TABLE */
+  .breakdown {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .breakdown-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .breakdown-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .breakdown-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .breakdown-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  table.bd-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.bd-table th, table.bd-table td {
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(14,17,22,0.12);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  table.bd-table th {
+    background: var(--paper-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  table.bd-table tr:last-child td { border-bottom: none; }
+  table.bd-table td.right { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  table.bd-table td.cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    width: 14%;
+  }
+  table.bd-table tr.subtotal td {
+    background: var(--paper-2);
+    font-weight: 700;
+    border-top: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  table.bd-table tr.subtotal td.right {
+    font-size: 14px;
+  }
+  table.bd-table tr.total td {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+  }
+  table.bd-table tr.total td.right { font-size: 15px; }
+
+  .verdict-row {
+    padding: 16px 22px;
+    background: var(--paper-2);
+    border-top: 1.5px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.55;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .verdict-row .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding-top: 2px;
+  }
+  .verdict-row .label.good { color: var(--good); }
+  .verdict-row .label.warn { color: var(--warn); }
+  .verdict-row .label.bad { color: var(--bad); }
+  .verdict-row strong { font-weight: 600; }
+
+  /* NOTES */
+  .notes {
+    margin-top: 36px;
+    padding: 18px 22px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .notes h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 8px 0;
+  }
+  .notes p { margin: 0 0 6px 0; }
+  .notes ul { margin: 4px 0 6px 18px; padding: 0; }
+  .notes ul li { margin-bottom: 3px; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 4px;
+    border: 1px solid var(--ink);
+  }
+
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 1100px) {
+    .case-grid { grid-template-columns: 1fr; }
+    .controls { position: relative; top: auto; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .summary-cell:nth-child(2n) { border-right: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Business Case Builder · Unit economics · v1.0</div>
+      <h1>Construis ton<br/><em>business case</em><br/>en 24 mois</h1>
+    </div>
+    <div class="meta">
+      Horizon : 24 mois<br/>
+      Granularité : mensuelle<br/>
+      Modèle : SaaS + tx<br/>
+      Output : runway, breakeven
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>CAPEX</span>
+    <span>OPEX</span>
+    <span>REVENUE</span>
+    <span>UNIT ECONOMICS</span>
+    <span>CASH</span>
+    <span>VERDICT</span>
+  </div>
+
+  <div class="intro">
+    <p>Outil de modélisation financière pour valider la viabilité d'une startup XRPL : <strong>capex initial, opex mensuel, revenu unitaire, projection 24 mois</strong>. Choisis un preset ou ajuste manuellement chaque paramètre.</p>
+    <p>Le but : déterminer ton <em>cash runway</em>, ton <em>break-even point</em>, ton <em>capital needed</em>, et ta <em>marge nette à l'échelle</em>. Un go/no-go en 30 secondes — ou un point de départ pour pitcher des investisseurs.</p>
+  </div>
+
+  <div class="case-grid">
+
+    <!-- CONTROLS LEFT -->
+    <div class="controls">
+      <div class="controls-header">Modèle financier</div>
+
+      <div class="control-section">
+        <h3>Preset blueprint</h3>
+        <div class="preset-grid">
+          <button class="preset-btn active" data-preset="remitflow">
+            <span class="preset-name">RemitFlow</span>
+            <span class="preset-sub">Remittances</span>
+          </button>
+          <button class="preset-btn" data-preset="vaultdao">
+            <span class="preset-name">VaultDAO</span>
+            <span class="preset-sub">Épargne</span>
+          </button>
+          <button class="preset-btn" data-preset="bondbloc">
+            <span class="preset-name">BondBloc</span>
+            <span class="preset-sub">RWA</span>
+          </button>
+          <button class="preset-btn" data-preset="merchantpay">
+            <span class="preset-name">MerchantPay</span>
+            <span class="preset-sub">POS</span>
+          </button>
+          <button class="preset-btn" data-preset="proptok">
+            <span class="preset-name">PropTok</span>
+            <span class="preset-sub">Real estate</span>
+          </button>
+          <button class="preset-btn" data-preset="payrollxrp">
+            <span class="preset-name">PayrollXRP</span>
+            <span class="preset-sub">Streaming</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <h3>Capex initial <span class="badge">one-shot</span></h3>
+
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Équipe (sal. + cofounder)</span><span class="label-value" id="lbl-team-cost">120 k€</span></div>
+          <input type="range" id="i-team" min="0" max="100" value="40" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Légal · réglementaire</span><span class="label-value" id="lbl-legal">30 k€</span></div>
+          <input type="range" id="i-legal" min="0" max="100" value="30" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Tech setup · audit</span><span class="label-value" id="lbl-tech">15 k€</span></div>
+          <input type="range" id="i-tech" min="0" max="100" value="20" />
+        </div>
+      </div>
+
+      <div class="control-section">
+        <h3>Opex mensuel <span class="badge">récurrent</span></h3>
+
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Salaires équipe</span><span class="label-value" id="lbl-salaries">25 k€</span></div>
+          <input type="range" id="i-salaries" min="0" max="100" value="25" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Infra · cloud · APIs</span><span class="label-value" id="lbl-infra">2 k€</span></div>
+          <input type="range" id="i-infra" min="0" max="100" value="20" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Marketing · acquisition</span><span class="label-value" id="lbl-marketing">5 k€</span></div>
+          <input type="range" id="i-marketing" min="0" max="100" value="22" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Compliance · KYC tools</span><span class="label-value" id="lbl-compliance">1,5 k€</span></div>
+          <input type="range" id="i-compliance" min="0" max="100" value="18" />
+        </div>
+      </div>
+
+      <div class="control-section">
+        <h3>Revenue model <span class="badge">growth</span></h3>
+
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">ARPU (€/user/mois)</span><span class="label-value" id="lbl-arpu">8 €</span></div>
+          <input type="range" id="i-arpu" min="0" max="100" value="35" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">CAC (€/user)</span><span class="label-value" id="lbl-cac">15 €</span></div>
+          <input type="range" id="i-cac" min="0" max="100" value="30" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Croissance mensuelle</span><span class="label-value" id="lbl-growth">15 %</span></div>
+          <input type="range" id="i-growth" min="0" max="100" value="35" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Users mois 1</span><span class="label-value" id="lbl-users0">100</span></div>
+          <input type="range" id="i-users0" min="0" max="100" value="40" />
+        </div>
+        <div class="input-block">
+          <div class="input-label"><span class="label-name">Churn mensuel</span><span class="label-value" id="lbl-churn">3 %</span></div>
+          <input type="range" id="i-churn" min="0" max="100" value="20" />
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS RIGHT -->
+    <div class="results">
+
+      <!-- SUMMARY 4-CELL -->
+      <div class="summary">
+        <div class="summary-header">
+          <h2>Résumé <em>24 mois</em></h2>
+          <span class="label">Indicateurs clés</span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-cell" id="cell-runway">
+            <div class="label">Runway</div>
+            <div class="value" id="val-runway">14 <em>mois</em></div>
+            <div class="sub" id="sub-runway">avant cash-out · capex inclus</div>
+          </div>
+          <div class="summary-cell" id="cell-breakeven">
+            <div class="label">Break-even</div>
+            <div class="value" id="val-breakeven">Mois 11</div>
+            <div class="sub" id="sub-breakeven">premier mois rentable</div>
+          </div>
+          <div class="summary-cell" id="cell-capital">
+            <div class="label">Capital needed</div>
+            <div class="value" id="val-capital">320 k€</div>
+            <div class="sub" id="sub-capital">capex + max cash burn</div>
+          </div>
+          <div class="summary-cell" id="cell-ltv">
+            <div class="label">LTV / CAC</div>
+            <div class="value" id="val-ltv">12,4 ×</div>
+            <div class="sub" id="sub-ltv">unit economics · &gt;3× = sain</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-section">
+        <h3>Projection mensuelle</h3>
+        <h2>Cash, revenue, <em>users</em> sur 24 mois</h2>
+        <svg id="chart" class="chart-svg" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="chart-legend">
+          <span><span class="swatch" style="background:var(--chain)"></span><strong>Cash position</strong></span>
+          <span><span class="swatch" style="background:var(--good)"></span><strong>Revenue mensuel</strong></span>
+          <span><span class="swatch" style="background:var(--bad)"></span><strong>Opex mensuel</strong></span>
+          <span><span class="swatch" style="background:var(--wallet)"></span><strong>Users (axe droit)</strong></span>
+        </div>
+      </div>
+
+      <!-- BREAKDOWN TABLE -->
+      <div class="breakdown">
+        <div class="breakdown-header">
+          <h2>Décomposition <em>économique</em></h2>
+          <span class="label">Mois 12 vs mois 24</span>
+        </div>
+        <table class="bd-table">
+          <thead>
+            <tr>
+              <th style="width:14%">Catégorie</th>
+              <th>Ligne</th>
+              <th class="right" style="width:18%">Mois 12</th>
+              <th class="right" style="width:18%">Mois 24</th>
+            </tr>
+          </thead>
+          <tbody id="bd-body">
+            <!-- filled by JS -->
+          </tbody>
+        </table>
+
+        <div class="verdict-row" id="verdict">
+          <span class="label good">⚡ Verdict</span>
+          <div id="verdict-text">À calculer…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="notes">
+    <h3>Hypothèses · méthodologie</h3>
+    <p><strong>Modèle :</strong> projection mensuelle sur 24 mois. Cash = capex initial − cumul opex + cumul revenue. Croissance composée mensuelle sur les users actifs, atténuée par le churn. Revenue = ARPU × users actifs. Opex inclut salaires (qui peuvent grandir avec scale) + infra + marketing + compliance + frais XRPL marginaux (négligeables).</p>
+    <p><strong>Limites du modèle :</strong></p>
+    <ul>
+      <li>Pas de saisonnalité ni de paliers de croissance non-linéaires (PR launches, viral loops…)</li>
+      <li>CAC et ARPU supposés constants sur 24 mois — en réalité CAC monte et ARPU monte aussi</li>
+      <li>Pas de prise en compte de levée de fonds intermédiaire — le capital affiché est la somme nécessaire en self-funded ou pre-seed unique</li>
+      <li>LTV calculée comme <code>ARPU / churn</code> · approximation classique mais conservative</li>
+    </ul>
+    <p>Modifie les hypothèses dans le panneau de gauche pour tester différents scénarios. Les presets démarrent avec les données issues du Builder Atlas — ils sont calibrés mais à challenger.</p>
+  </div>
+
+  <footer>
+    <span>BUSINESS CASE BUILDER · v1.0</span>
+    <span>FIG. 05 · UNIT ECONOMICS</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  // ============ PRESETS ============
+  // Each value is the slider position (0–100), converted via logScale or linear
+  const PRESETS = {
+    remitflow: {
+      team: 40, legal: 30, tech: 20,
+      salaries: 25, infra: 20, marketing: 28, compliance: 22,
+      arpu: 28, cac: 28, growth: 38, users0: 50, churn: 18,
+    },
+    vaultdao: {
+      team: 55, legal: 35, tech: 22,
+      salaries: 38, infra: 22, marketing: 35, compliance: 25,
+      arpu: 18, cac: 22, growth: 42, users0: 45, churn: 15,
+    },
+    bondbloc: {
+      team: 70, legal: 65, tech: 30,
+      salaries: 48, infra: 18, marketing: 18, compliance: 35,
+      arpu: 75, cac: 50, growth: 28, users0: 25, churn: 8,
+    },
+    merchantpay: {
+      team: 38, legal: 25, tech: 18,
+      salaries: 28, infra: 18, marketing: 32, compliance: 18,
+      arpu: 32, cac: 22, growth: 32, users0: 50, churn: 14,
+    },
+    proptok: {
+      team: 65, legal: 60, tech: 28,
+      salaries: 42, infra: 20, marketing: 25, compliance: 30,
+      arpu: 65, cac: 45, growth: 22, users0: 30, churn: 6,
+    },
+    payrollxrp: {
+      team: 28, legal: 12, tech: 18,
+      salaries: 22, infra: 22, marketing: 20, compliance: 12,
+      arpu: 35, cac: 18, growth: 50, users0: 40, churn: 12,
+    },
+  };
+
+  // ============ SCALES ============
+  // Each input maps slider 0-100 to a real value via this config
+  const SCALES = {
+    team:       { type: 'log', min: 30000, max: 800000, fmt: 'k€' },        // capex équipe
+    legal:      { type: 'log', min: 5000, max: 200000, fmt: 'k€' },         // capex legal
+    tech:       { type: 'log', min: 3000, max: 100000, fmt: 'k€' },         // capex tech
+    salaries:   { type: 'log', min: 5000, max: 150000, fmt: 'k€/mo' },      // opex salaires
+    infra:      { type: 'log', min: 200, max: 30000, fmt: 'k€/mo' },        // opex infra
+    marketing:  { type: 'log', min: 500, max: 80000, fmt: 'k€/mo' },        // opex marketing
+    compliance: { type: 'log', min: 200, max: 25000, fmt: 'k€/mo' },        // opex compliance
+    arpu:       { type: 'log', min: 1, max: 1000, fmt: '€' },               // ARPU monthly
+    cac:        { type: 'log', min: 1, max: 500, fmt: '€' },                // CAC
+    growth:     { type: 'lin', min: 0, max: 50, fmt: '%' },                 // monthly growth %
+    users0:     { type: 'log', min: 10, max: 5000, fmt: 'unit' },           // initial users
+    churn:      { type: 'lin', min: 0, max: 20, fmt: '%' },                 // monthly churn %
+  };
+
+  function scaleValue(name, sliderVal) {
+    const s = SCALES[name];
+    if (s.type === 'log') {
+      const minLog = Math.log10(s.min);
+      const maxLog = Math.log10(s.max);
+      const v = minLog + (sliderVal / 100) * (maxLog - minLog);
+      return Math.pow(10, v);
+    }
+    return s.min + (sliderVal / 100) * (s.max - s.min);
+  }
+
+  function fmtMoney(n) {
+    if (Math.abs(n) >= 1e6) return ((n < 0 ? '−' : '') + (Math.abs(n) / 1e6).toFixed(2).replace(/\.00$/, '') + ' M€').replace('-','−');
+    if (Math.abs(n) >= 1e3) return ((n < 0 ? '−' : '') + Math.round(Math.abs(n) / 1000) + ' k€');
+    if (Math.abs(n) >= 100) return ((n < 0 ? '−' : '') + Math.round(Math.abs(n)).toLocaleString('fr-FR') + ' €');
+    return ((n < 0 ? '−' : '') + Math.abs(n).toFixed(1).replace(/\.0$/, '') + ' €');
+  }
+
+  function fmtUnit(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + ' M';
+    if (n >= 1e3) return Math.round(n / 1000) + ' k';
+    return Math.round(n).toString();
+  }
+
+  function fmtPct(n) {
+    return n.toFixed(1).replace(/\.0$/, '') + ' %';
+  }
+
+  // ============ STATE & RENDER ============
+  const params = {};
+
+  function updateLabels() {
+    document.getElementById('lbl-team-cost').textContent = fmtMoney(params.team);
+    document.getElementById('lbl-legal').textContent = fmtMoney(params.legal);
+    document.getElementById('lbl-tech').textContent = fmtMoney(params.tech);
+    document.getElementById('lbl-salaries').textContent = fmtMoney(params.salaries);
+    document.getElementById('lbl-infra').textContent = fmtMoney(params.infra);
+    document.getElementById('lbl-marketing').textContent = fmtMoney(params.marketing);
+    document.getElementById('lbl-compliance').textContent = fmtMoney(params.compliance);
+    document.getElementById('lbl-arpu').textContent = fmtMoney(params.arpu);
+    document.getElementById('lbl-cac').textContent = fmtMoney(params.cac);
+    document.getElementById('lbl-growth').textContent = fmtPct(params.growth);
+    document.getElementById('lbl-users0').textContent = fmtUnit(params.users0);
+    document.getElementById('lbl-churn').textContent = fmtPct(params.churn);
+  }
+
+  function readSliders() {
+    Object.keys(SCALES).forEach(name => {
+      const slider = document.getElementById('i-' + name);
+      params[name] = scaleValue(name, parseFloat(slider.value));
+    });
+  }
+
+  function project() {
+    // 24-month projection
+    const months = 24;
+    const capex = params.team + params.legal + params.tech;
+    const opexBase = params.salaries + params.infra + params.marketing + params.compliance;
+    const growthRate = params.growth / 100;
+    const churnRate = params.churn / 100;
+
+    const series = [];
+    let users = params.users0;
+    let cash = -capex; // start negative (capex spent at month 0)
+    let cumRevenue = 0;
+    let cumOpex = capex;
+
+    for (let m = 1; m <= months; m++) {
+      // User dynamics: gross adds = growth × current users, then churn
+      const newUsers = users * growthRate;
+      const churned = users * churnRate;
+      users = users + newUsers - churned;
+
+      // Revenue this month
+      const revenue = users * params.arpu;
+      // Acquisition cost this month
+      const acquisitionCost = newUsers * params.cac;
+      // Opex this month: base + acquisition cost + marginal growth in salaries
+      // Simple model: salaries grow 1.5% per month after month 6
+      const salariesScaled = m > 6 ? params.salaries * Math.pow(1.015, m - 6) : params.salaries;
+      const opexThis = salariesScaled + params.infra + params.marketing + params.compliance + acquisitionCost;
+
+      cash += revenue - opexThis;
+      cumRevenue += revenue;
+      cumOpex += opexThis;
+
+      series.push({
+        month: m,
+        users: users,
+        revenue: revenue,
+        opex: opexThis,
+        cash: cash,
+        net: revenue - opexThis,
+      });
+    }
+
+    // Compute key metrics
+    let runwayMonths = 24; // default if never runs out
+    let breakEvenMonth = null;
+    let minCash = Math.min(...series.map(s => s.cash), -capex);
+
+    for (let i = 0; i < series.length; i++) {
+      if (series[i].cash <= 0 && breakEvenMonth === null) {
+        // still in deficit
+      }
+      if (series[i].net > 0 && breakEvenMonth === null) {
+        breakEvenMonth = series[i].month;
+      }
+    }
+
+    // LTV calculation: ARPU × (1 / churn)
+    const ltv = churnRate > 0 ? params.arpu / churnRate : params.arpu * 36;
+    const ltvCac = params.cac > 0 ? ltv / params.cac : 0;
+
+    const capitalNeeded = -minCash; // max negative cash position is the funding need
+
+    return {
+      capex,
+      opexBase,
+      series,
+      breakEvenMonth,
+      capitalNeeded,
+      ltv,
+      ltvCac,
+      finalCash: series[months - 1].cash,
+      finalRevenue: series[months - 1].revenue,
+      finalUsers: series[months - 1].users,
+      month12: series[11],
+      month24: series[23],
+    };
+  }
+
+  function renderSummary(r) {
+    // Runway logic:
+    // - "∞" if final cash is positive (we never run out)
+    // - "X mois" if cash goes negative AND never recovers
+    // - "24+ mois" if cash stays positive throughout
+    const runwayCell = document.getElementById('cell-runway');
+    const runwayVal = document.getElementById('val-runway');
+    const runwaySub = document.getElementById('sub-runway');
+
+    // Determine if cash eventually recovers (last 3 months trending positive)
+    const lastFew = r.series.slice(-3);
+    const trendingUp = lastFew.every((s, i) => i === 0 || s.cash >= lastFew[i-1].cash);
+    const finalPositive = r.finalCash > 0;
+
+    if (finalPositive && r.breakEvenMonth !== null) {
+      runwayVal.innerHTML = '∞';
+      runwaySub.textContent = 'profitable · cash positif fin période';
+      runwayCell.classList.remove('warn', 'bad'); runwayCell.classList.add('good');
+    } else if (finalPositive) {
+      runwayVal.innerHTML = '24+ <em>mois</em>';
+      runwaySub.textContent = 'cash positif à mois 24';
+      runwayCell.classList.remove('warn', 'bad'); runwayCell.classList.add('good');
+    } else if (trendingUp && r.breakEvenMonth !== null) {
+      // Negative final but trending up — extrapolate
+      runwayVal.innerHTML = '~ 30 <em>mois</em>+';
+      runwaySub.textContent = 'cash remonte · besoin pont court';
+      runwayCell.classList.remove('good', 'bad'); runwayCell.classList.add('warn');
+    } else {
+      // Find the month cash truly runs out (no recovery after)
+      let runoutMonth = 24;
+      for (let i = r.series.length - 1; i >= 0; i--) {
+        if (r.series[i].cash >= 0) {
+          runoutMonth = i + 1;
+          break;
+        }
+        if (i === 0 && r.series[0].cash < 0) {
+          runoutMonth = 1;
+        }
+      }
+      // Actually want: first month cash < 0 AND stays < 0
+      // simpler: if we never had positive cash at all, runway = 0/very low
+      runwayVal.innerHTML = runoutMonth + ' <em>mois</em>';
+      runwaySub.textContent = 'avant cash-out · capex inclus';
+      runwayCell.classList.remove('good');
+      if (runoutMonth < 12) { runwayCell.classList.add('bad'); runwayCell.classList.remove('warn'); }
+      else { runwayCell.classList.add('warn'); runwayCell.classList.remove('bad'); }
+    }
+
+    // Break-even
+    const bvCell = document.getElementById('cell-breakeven');
+    const bvVal = document.getElementById('val-breakeven');
+    const bvSub = document.getElementById('sub-breakeven');
+    if (r.breakEvenMonth !== null) {
+      bvVal.textContent = 'Mois ' + r.breakEvenMonth;
+      bvSub.textContent = r.breakEvenMonth <= 12 ? 'rapide · profil sain' : 'lent · capital élevé';
+      bvCell.classList.remove('warn', 'bad');
+      if (r.breakEvenMonth <= 12) bvCell.classList.add('good');
+      else if (r.breakEvenMonth <= 18) bvCell.classList.add('warn');
+      else bvCell.classList.add('bad');
+    } else {
+      bvVal.textContent = '> 24 mois';
+      bvSub.textContent = 'pas atteint sur 24 mois';
+      bvCell.classList.remove('good', 'warn'); bvCell.classList.add('bad');
+    }
+
+    // Capital
+    const capCell = document.getElementById('cell-capital');
+    const capVal = document.getElementById('val-capital');
+    const capSub = document.getElementById('sub-capital');
+    capVal.textContent = fmtMoney(r.capitalNeeded);
+    capSub.textContent = 'capex + max cash burn';
+    capCell.classList.remove('good', 'warn', 'bad');
+    if (r.capitalNeeded < 200000) capCell.classList.add('good');
+    else if (r.capitalNeeded < 700000) capCell.classList.add('warn');
+    else capCell.classList.add('bad');
+
+    // LTV / CAC
+    const ltvCell = document.getElementById('cell-ltv');
+    const ltvVal = document.getElementById('val-ltv');
+    const ltvSub = document.getElementById('sub-ltv');
+    ltvVal.innerHTML = r.ltvCac.toFixed(1).replace(/\.0$/, '') + ' <em>×</em>';
+    ltvSub.textContent = r.ltvCac >= 3 ? 'sain · > 3× standard' : 'fragile · revoyez ARPU/CAC';
+    ltvCell.classList.remove('good', 'warn', 'bad');
+    if (r.ltvCac >= 5) ltvCell.classList.add('good');
+    else if (r.ltvCac >= 3) ltvCell.classList.add('warn');
+    else ltvCell.classList.add('bad');
+  }
+
+  function renderChart(r) {
+    const svg = document.getElementById('chart');
+    const W = 800, H = 320;
+    const pad = { top: 20, right: 60, bottom: 40, left: 70 };
+    const innerW = W - pad.left - pad.right;
+    const innerH = H - pad.top - pad.bottom;
+
+    const months = r.series.map(s => s.month);
+    const cashVals = r.series.map(s => s.cash);
+    const cashMin = Math.min(...cashVals, -r.capex);
+    const cashMax = Math.max(...cashVals);
+    const yRange = cashMax - cashMin;
+    const cashMaxAbs = Math.max(Math.abs(cashMin), Math.abs(cashMax));
+
+    const xScale = (m) => pad.left + ((m - 1) / 23) * innerW;
+    const yScale = (v) => pad.top + innerH - ((v - cashMin) / yRange) * innerH;
+
+    const usersMax = Math.max(...r.series.map(s => s.users));
+    const yScaleUsers = (v) => pad.top + innerH - (v / usersMax) * innerH;
+
+    let svgHTML = '';
+
+    // Grid lines (4 horizontal)
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.top + (i / 4) * innerH;
+      const val = cashMax - (i / 4) * yRange;
+      svgHTML += `<line x1="${pad.left}" y1="${y}" x2="${pad.left + innerW}" y2="${y}" stroke="#0e1116" stroke-opacity="0.1" stroke-dasharray="2 3"/>`;
+      svgHTML += `<text x="${pad.left - 8}" y="${y + 3}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">${fmtMoney(val)}</text>`;
+    }
+
+    // X axis labels (every 3 months)
+    for (let m = 1; m <= 24; m += 3) {
+      const x = xScale(m);
+      svgHTML += `<line x1="${x}" y1="${pad.top + innerH}" x2="${x}" y2="${pad.top + innerH + 4}" stroke="#0e1116"/>`;
+      svgHTML += `<text x="${x}" y="${pad.top + innerH + 16}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">M${m}</text>`;
+    }
+
+    // Zero line if applicable
+    if (cashMin < 0 && cashMax > 0) {
+      const y0 = yScale(0);
+      svgHTML += `<line x1="${pad.left}" y1="${y0}" x2="${pad.left + innerW}" y2="${y0}" stroke="#0e1116" stroke-width="1"/>`;
+    }
+
+    // Cash curve
+    const cashPath = r.series.map((s, i) => {
+      const x = xScale(s.month);
+      const y = yScale(s.cash);
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }).join(' ');
+
+    // Cash area (under curve)
+    const lastX = xScale(24);
+    const zeroY = cashMin < 0 ? yScale(0) : yScale(cashMin);
+    svgHTML += `<path d="${cashPath} L ${lastX} ${zeroY} L ${pad.left} ${zeroY} Z" fill="#1e3a5f" fill-opacity="0.12"/>`;
+    svgHTML += `<path d="${cashPath}" stroke="#1e3a5f" stroke-width="2.5" fill="none"/>`;
+
+    // Revenue curve
+    const revPath = r.series.map((s, i) => {
+      const x = xScale(s.month);
+      const y = yScale(s.revenue);
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }).join(' ');
+    svgHTML += `<path d="${revPath}" stroke="#2e5d4f" stroke-width="2" fill="none" stroke-dasharray="0"/>`;
+
+    // Opex curve
+    const opexPath = r.series.map((s, i) => {
+      const x = xScale(s.month);
+      const y = yScale(s.opex);
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }).join(' ');
+    svgHTML += `<path d="${opexPath}" stroke="#c8553d" stroke-width="2" fill="none" stroke-dasharray="4 3"/>`;
+
+    // Users curve (right axis)
+    const usersPath = r.series.map((s, i) => {
+      const x = xScale(s.month);
+      const y = yScaleUsers(s.users);
+      return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }).join(' ');
+    svgHTML += `<path d="${usersPath}" stroke="#d4a017" stroke-width="2" fill="none" stroke-dasharray="2 2"/>`;
+
+    // Right axis (users)
+    for (let i = 0; i <= 2; i++) {
+      const y = pad.top + (i / 2) * innerH;
+      const val = usersMax - (i / 2) * usersMax;
+      svgHTML += `<text x="${pad.left + innerW + 8}" y="${y + 3}" text-anchor="start" font-family="JetBrains Mono, monospace" font-size="9" fill="#d4a017">${fmtUnit(val)}</text>`;
+    }
+
+    // Break-even marker
+    if (r.breakEvenMonth) {
+      const x = xScale(r.breakEvenMonth);
+      svgHTML += `<line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top + innerH}" stroke="#d4a017" stroke-width="1.5" stroke-dasharray="3 2"/>`;
+      svgHTML += `<rect x="${x - 30}" y="${pad.top - 4}" width="60" height="14" fill="#0e1116"/>`;
+      svgHTML += `<text x="${x}" y="${pad.top + 6}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#d4a017" font-weight="700">BREAK-EVEN</text>`;
+    }
+
+    svg.innerHTML = svgHTML;
+  }
+
+  function renderBreakdown(r) {
+    const m12 = r.month12;
+    const m24 = r.month24;
+
+    const rows = [
+      ['CAPEX', 'Équipe + cofounder', -params.team, '—'],
+      ['CAPEX', 'Légal · réglementaire', -params.legal, '—'],
+      ['CAPEX', 'Tech setup · audit', -params.tech, '—'],
+      ['__sub', 'Capex total', -(params.team + params.legal + params.tech), '—'],
+
+      ['OPEX', 'Salaires équipe', -params.salaries, -params.salaries * Math.pow(1.015, 18)],
+      ['OPEX', 'Infra · cloud · APIs', -params.infra, -params.infra],
+      ['OPEX', 'Marketing · acquisition', -params.marketing, -params.marketing],
+      ['OPEX', 'Compliance · KYC', -params.compliance, -params.compliance],
+      ['OPEX', 'CAC nouvelles acquisitions', -(m12.users * (params.growth/100) * params.cac), -(m24.users * (params.growth/100) * params.cac)],
+      ['__sub', 'Opex mensuel total', -m12.opex, -m24.opex],
+
+      ['REVENUE', 'Users actifs', null, null],
+      ['REVENUE', 'ARPU mensuel', params.arpu, params.arpu],
+      ['REVENUE', 'Revenue mensuel', m12.revenue, m24.revenue],
+
+      ['__total', 'Net mensuel', m12.net, m24.net],
+    ];
+
+    let html = '';
+    rows.forEach(([cat, label, m12v, m24v]) => {
+      if (cat === '__sub') {
+        html += `<tr class="subtotal"><td class="cat">⌃</td><td>${label}</td><td class="right">${fmtMoney(m12v)}</td><td class="right">${typeof m24v === 'number' ? fmtMoney(m24v) : m24v}</td></tr>`;
+      } else if (cat === '__total') {
+        html += `<tr class="total"><td class="cat">∑</td><td>${label}</td><td class="right">${fmtMoney(m12v)}</td><td class="right">${fmtMoney(m24v)}</td></tr>`;
+      } else if (label === 'Users actifs') {
+        html += `<tr><td class="cat">${cat}</td><td>${label}</td><td class="right">${fmtUnit(m12.users)}</td><td class="right">${fmtUnit(m24.users)}</td></tr>`;
+      } else {
+        html += `<tr><td class="cat">${cat}</td><td>${label}</td><td class="right">${typeof m12v === 'number' ? fmtMoney(m12v) : m12v}</td><td class="right">${typeof m24v === 'number' ? fmtMoney(m24v) : m24v}</td></tr>`;
+      }
+    });
+
+    document.getElementById('bd-body').innerHTML = html;
+
+    // Verdict
+    const verdict = document.getElementById('verdict-text');
+    const verdictLabel = document.querySelector('#verdict .label');
+    let verdictHtml = '';
+    let verdictClass = '';
+
+    if (r.breakEvenMonth !== null && r.breakEvenMonth <= 12 && r.ltvCac >= 3) {
+      verdictClass = 'good';
+      verdictHtml = `<strong>Business case solide.</strong> Break-even atteint au mois ${r.breakEvenMonth}, LTV/CAC de ${r.ltvCac.toFixed(1)}× indique unit economics saine. Capital nécessaire : <strong>${fmtMoney(r.capitalNeeded)}</strong> — finançable en pre-seed ou bootstrapping. Tu peux pitcher des investisseurs avec confiance.`;
+    } else if (r.breakEvenMonth !== null && r.breakEvenMonth <= 18) {
+      verdictClass = 'warn';
+      verdictHtml = `<strong>Business case viable mais tendu.</strong> Break-even mois ${r.breakEvenMonth} demande <strong>${fmtMoney(r.capitalNeeded)}</strong> de capital. LTV/CAC de ${r.ltvCac.toFixed(1)}× ${r.ltvCac >= 3 ? 'OK' : 'fragile, revoyez ARPU ou CAC'}. Optimisations possibles : réduire opex marketing en early stage, augmenter ARPU via tier premium, viser une seed plus large.`;
+    } else if (r.breakEvenMonth !== null) {
+      verdictClass = 'bad';
+      verdictHtml = `<strong>Business case fragile.</strong> Break-even tardif (mois ${r.breakEvenMonth}) demande <strong>${fmtMoney(r.capitalNeeded)}</strong>. Trois leviers à actionner : <em>(1)</em> augmenter le taux de croissance (acquisition virale, partenariats), <em>(2)</em> élargir l'ARPU (tier premium, services additionnels), <em>(3)</em> réduire le CAC (referral, content marketing).`;
+    } else {
+      verdictClass = 'bad';
+      verdictHtml = `<strong>Business case non viable au paramétrage actuel.</strong> Break-even non atteint sur 24 mois. Ce setup brûlera <strong>${fmtMoney(r.capitalNeeded)}</strong> sans rentabilité. Repenser fondamentalement le modèle : ARPU, croissance, ou structure de coûts.`;
+    }
+    verdict.innerHTML = verdictHtml;
+    verdictLabel.className = 'label ' + verdictClass;
+    if (verdictClass === 'good') verdictLabel.textContent = '✓ Verdict';
+    else if (verdictClass === 'warn') verdictLabel.textContent = '⚠ Verdict';
+    else verdictLabel.textContent = '✗ Verdict';
+  }
+
+  function recompute() {
+    readSliders();
+    updateLabels();
+    const r = project();
+    renderSummary(r);
+    renderChart(r);
+    renderBreakdown(r);
+  }
+
+  // ============ WIRE UP ============
+  Object.keys(SCALES).forEach(name => {
+    const slider = document.getElementById('i-' + name);
+    slider.addEventListener('input', recompute);
+  });
+
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const preset = PRESETS[btn.dataset.preset];
+      Object.keys(preset).forEach(key => {
+        const slider = document.getElementById('i-' + key);
+        if (slider) slider.value = preset[key];
+      });
+      recompute();
+    });
+  });
+
+  // Init: apply default preset (remitflow)
+  const defaultPreset = PRESETS.remitflow;
+  Object.keys(defaultPreset).forEach(key => {
+    const slider = document.getElementById('i-' + key);
+    if (slider) slider.value = defaultPreset[key];
+  });
+  recompute();
+})();
+</script>
+
+</body>
+</html>

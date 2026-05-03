@@ -1,0 +1,21 @@
+{
+  "name": "xrpl-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "XRPL Framework — Builder Suite. Suite of tools to understand, ideate, validate and launch projects on the XRP Ledger.",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static HTML — no build step needed'",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "xrpl",
+    "blockchain",
+    "framework",
+    "builder",
+    "ripple",
+    "decision-tree",
+    "ecosystem-map"
+  ],
+  "license": "MIT"
+}

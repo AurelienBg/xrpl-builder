@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decision Tree — Quelle stack XRPL pour ton use case ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 32px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro p { margin: 0 0 8px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); }
+
+  /* PROGRESS BAR */
+  .progress {
+    margin-bottom: 24px;
+  }
+  .progress-bar {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .progress-step {
+    height: 6px;
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+    transition: background 0.3s ease;
+  }
+  .progress-step.done { background: var(--good, #2e5d4f); }
+  .progress-step.current { background: var(--wallet); }
+  .progress-step.skipped { background: var(--paper-3); }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    border: 2.5px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .question-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+  .question-header {
+    padding: 22px 30px 6px;
+    background: var(--paper);
+  }
+  .question-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .question-num .badge {
+    padding: 2px 8px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+  }
+  .question-num .badge.binary { background: var(--chain); }
+  .question-num .badge.multi { background: var(--amm); }
+
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.15;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+  }
+  .question-text em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .question-hint {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .answers {
+    padding: 22px 30px;
+  }
+  .answers.binary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .answers.multi {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .answers.multi.full {
+    grid-template-columns: 1fr;
+  }
+
+  .answer-btn {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 18px 22px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    color: var(--ink);
+    position: relative;
+  }
+  .answer-btn:hover {
+    background: var(--paper-2);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+  .answer-btn:active { transform: translateY(0); box-shadow: none; }
+
+  .answer-btn .ans-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .answer-btn .ans-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    display: block;
+    letter-spacing: -0.01em;
+  }
+  .answer-btn .ans-sub {
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.4;
+    display: block;
+  }
+
+  /* Special styling for binary YES/NO */
+  .answer-btn.yes::before, .answer-btn.no::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+  }
+  .answer-btn.yes::before { background: var(--good, #2e5d4f); }
+  .answer-btn.no::before { background: var(--user); }
+
+  /* History trail */
+  .history {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+    border-radius: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    align-items: center;
+  }
+  .history-item {
+    padding: 3px 8px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .history-item:hover { background: var(--ink); color: var(--paper); }
+  .history-arrow {
+    color: var(--muted);
+    font-size: 10px;
+  }
+  .history-empty {
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  /* Action bar */
+  .action-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .action-btn:hover { background: var(--ink); color: var(--paper); }
+
+  /* RESULT CARD */
+  .result {
+    border: 2.5px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .result-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 22px 30px;
+  }
+  .result-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wallet);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .result-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .result-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .result-header .summary {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--paper);
+    opacity: 0.85;
+    margin: 8px 0 0 0;
+    line-height: 1.5;
+  }
+
+  .result-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .result-section {
+    padding: 22px 28px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .result-section:nth-child(2n) { border-right: none; }
+  .result-section:nth-last-child(-n+2) { border-bottom: none; }
+  .result-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 5px;
+  }
+  .result-section h3 .num {
+    color: var(--ink);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  /* Stack tags */
+  .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .stack-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+  }
+  .stack-tag.opt { background: var(--paper); color: var(--ink); }
+
+  .result-section p {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 8px 0;
+  }
+  .result-section p:last-child { margin-bottom: 0; }
+  .result-section strong { font-weight: 600; }
+  .result-section em { color: var(--chain); }
+  .result-section code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+
+  /* Code boilerplate */
+  pre.boilerplate {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 16px;
+    margin: 8px 0 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-x: auto;
+    border: 1.5px solid var(--ink);
+  }
+  pre.boilerplate .keyword { color: #d4a017; }
+  pre.boilerplate .string { color: #c8553d; }
+  pre.boilerplate .comment { color: #8a8275; font-style: italic; }
+  pre.boilerplate .fn { color: #b3d4c7; }
+
+  /* Links */
+  .resources {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .resource-link {
+    padding: 8px 12px;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s ease;
+  }
+  .resource-link:hover { background: var(--ink); color: var(--paper); }
+  .resource-link .res-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 8px;
+  }
+  .resource-link:hover .res-tag { color: var(--paper); opacity: 0.8; }
+  .resource-link .res-name {
+    font-weight: 600;
+    flex: 1;
+  }
+  .resource-link .res-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  /* Blueprint link */
+  .blueprint-link {
+    margin-top: 10px;
+    padding: 14px 18px;
+    background: var(--wallet);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+    display: block;
+    font-family: 'Fraunces', serif;
+  }
+  .blueprint-link:hover { background: var(--ink); color: var(--wallet); }
+  .blueprint-link .bp-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: block;
+    opacity: 0.7;
+  }
+  .blueprint-link .bp-name {
+    font-weight: 700;
+    font-size: 17px;
+    display: block;
+    letter-spacing: -0.01em;
+  }
+  .blueprint-link .bp-sub {
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 3px;
+    display: block;
+  }
+
+  /* No-fit warning */
+  .nofit-warn {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--paper-2);
+    border-left: 3px solid var(--user);
+    border-top: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .nofit-warn strong {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--user);
+    margin-right: 8px;
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 800px) {
+    .answers.binary, .answers.multi { grid-template-columns: 1fr; }
+    .result-body { grid-template-columns: 1fr; }
+    .result-section:nth-child(odd) { border-right: none; }
+    .result-section { border-bottom: 1px solid var(--ink); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Decision Tree · Builder lens · v1.0</div>
+      <h1>Quelle <em>stack XRPL</em><br/>pour ton use case ?</h1>
+    </div>
+    <div class="meta">
+      Format : guidé<br/>
+      Étapes : 4–6<br/>
+      Output : stack + boilerplate<br/>
+      Durée : ~2 min
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>VALUE</span>
+    <span>USERS</span>
+    <span>LOGIC</span>
+    <span>COMPLIANCE</span>
+    <span>STACK</span>
+    <span>BOILERPLATE</span>
+  </div>
+
+  <div class="intro">
+    <p>Réponds à <strong>4 à 6 questions</strong> sur ton use case et obtiens : la stack XRPL recommandée (L1, AMM, MPT, sidechain…), le blueprint Builder Atlas le plus proche, les liens documentation pertinents, et un <em>boilerplate code</em> TypeScript prêt à copier.</p>
+    <p>Les premières questions sont <strong>oui/non</strong> pour cadrer rapidement la nature du use case. Les dernières sont multi-choix pour préciser l'architecture.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress" id="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="progress-label">
+      <span>Étape <span id="step-current">1</span> / <span id="step-total">5</span></span>
+      <span id="progress-status">En cours</span>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history" id="history">
+    <span class="history-empty">Tes choix s'afficheront ici…</span>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="action-btn" id="back-btn" disabled>← Précédent</button>
+    <a class="action-btn" href="decision-tree-map" style="text-decoration: none; display: inline-block;">▤ Vue macro · 19 chemins</a>
+    <button class="action-btn" id="reset-btn">↻ Recommencer</button>
+  </div>
+
+  <!-- DYNAMIC CONTENT -->
+  <div id="content"></div>
+
+  <footer>
+    <span>DECISION TREE · v1.0</span>
+    <span>FIG. 06 · GUIDED ROUTING</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  // ============================================================
+  // DECISION TREE LOGIC
+  // ============================================================
+  // The tree is hybrid: binary for first 3 questions, multi for refinement.
+  // Each node has: id, type, label badge, question, hint, answers
+  // Each answer has: text, sub, next (node id) or result (final node id)
+  // ============================================================
+
+  const TREE = {
+    // ===== START — BINARY GATE =====
+    'start': {
+      type: 'binary', stepCat: 'VALUE',
+      tag: 'Étape 01',
+      question: "Ton produit transfère-t-il de la <em>valeur</em> entre utilisateurs ?",
+      hint: "Paiement, swap, distribution de yield, achat… Toute interaction où de l'argent ou un actif change de propriétaire.",
+      answers: [
+        { text: "Oui, c'est central", sub: "L'objectif principal est le transfert de valeur", style: 'yes', next: 'q-asset-type' },
+        { text: "Non, accessoire", sub: "Mon produit est plutôt informationnel ou social", style: 'no', next: 'q-non-financial' },
+      ],
+    },
+
+    // ===== Q2 BIS (off-financial branch) =====
+    'q-non-financial': {
+      type: 'binary', stepCat: 'USERS',
+      tag: 'Étape 02',
+      question: "Veux-tu donner une <em>preuve unique</em> à tes utilisateurs (badge, certificat, NFT) ?",
+      hint: "Identité on-chain, certification, ticket d'événement, badge de contribution.",
+      answers: [
+        { text: "Oui, preuves uniques", sub: "Un objet par user, non échangeable ou semi-échangeable", style: 'yes', next: 'q-nft-type' },
+        { text: "Non, juste de la donnée", sub: "Données off-chain suffisent — XRPL n'est probablement pas le bon outil", style: 'no', result: 'r-not-fit' },
+      ],
+    },
+
+    // ===== Q-ASSET-TYPE (financial branch) =====
+    'q-asset-type': {
+      type: 'binary', stepCat: 'USERS',
+      tag: 'Étape 02',
+      question: "L'actif transféré est-il un <em>token natif</em> ou un actif <em>réel/régulé</em> ?",
+      hint: "Token natif = XRP ou stablecoin standard (RLUSD, USDC). Réel/régulé = action, obligation, immo, fonds, crédit carbone…",
+      answers: [
+        { text: "Token natif / stablecoin", sub: "Crypto, stablecoins, simple devise digitale", style: 'yes', next: 'q-frequency' },
+        { text: "Actif réel / régulé", sub: "Securities, RWA, KYC obligatoire", style: 'no', next: 'q-rwa-type' },
+      ],
+    },
+
+    // ===== Q-FREQUENCY (native token branch) =====
+    'q-frequency': {
+      type: 'binary', stepCat: 'LOGIC',
+      tag: 'Étape 03',
+      question: "Le besoin est-il un <em>échange ponctuel</em> ou un <em>flux récurrent</em> ?",
+      hint: "Ponctuel = achat one-shot, swap unique, mint NFT. Récurrent = paie streaming, abonnement, distribution périodique automatique.",
+      answers: [
+        { text: "Échange ponctuel", sub: "Une transaction par interaction utilisateur", style: 'yes', next: 'q-cross-currency' },
+        { text: "Flux récurrent", sub: "Paiements répétés sur le temps (heure, jour, mois)", style: 'no', next: 'q-streaming-type' },
+      ],
+    },
+
+    // ===== Q-CROSS-CURRENCY =====
+    'q-cross-currency': {
+      type: 'multi', stepCat: 'LOGIC',
+      tag: 'Étape 04',
+      question: "Le transfert traverse-t-il <em>plusieurs devises</em> ou <em>plusieurs chaînes</em> ?",
+      hint: "Single-currency = USD → USD. Cross-currency = USD → EUR via swap. Cross-chain = XRPL → Ethereum.",
+      answers: [
+        { text: "Single-currency", sub: "Même token de bout en bout · max simplicité", next: 'q-volume-payment' },
+        { text: "Cross-currency", sub: "Swap automatique via AMM XLS-30", next: 'q-amm-or-orderbook' },
+        { text: "Cross-chain", sub: "Bridge XRPL ↔ Ethereum / autres L1", result: 'r-bridge-evm' },
+      ],
+    },
+
+    // ===== Q-VOLUME-PAYMENT (payment simple) =====
+    'q-volume-payment': {
+      type: 'multi', stepCat: 'COMPLIANCE',
+      tag: 'Étape 05',
+      question: "Quel est le <em>volume cible</em> et le <em>profil utilisateur</em> ?",
+      hint: "Détermine le besoin de KYC, custody, et infrastructure compliance.",
+      answers: [
+        { text: "Retail · faibles montants", sub: "Petits paiements grand public · KYC light", result: 'r-payment-retail' },
+        { text: "B2B · gros montants", sub: "Paiements pro · compliance complète AML/KYC", result: 'r-payment-b2b' },
+        { text: "Mixte · marketplace / POS", sub: "Multi-merchants · onboarding scalable", result: 'r-payment-marketplace' },
+      ],
+    },
+
+    // ===== Q-AMM-OR-ORDERBOOK =====
+    'q-amm-or-orderbook': {
+      type: 'multi', stepCat: 'LOGIC',
+      tag: 'Étape 05',
+      question: "Quel <em>modèle de liquidité</em> pour le swap ?",
+      hint: "AMM = pool de liquidité passif (style Uniswap). Order book = carnet d'ordres natif XRPL. Path-finding = automatique entre les deux.",
+      answers: [
+        { text: "AMM uniquement", sub: "Liquidité passive · LP tokens · constant product", result: 'r-amm-swap' },
+        { text: "Path-finding auto", sub: "XRPL choisit la meilleure route AMM + order book", result: 'r-pathfinding' },
+        { text: "Order book pur", sub: "DEX natif XRPL · trading actif · spreads tighter", result: 'r-orderbook' },
+      ],
+    },
+
+    // ===== Q-STREAMING-TYPE (recurring) =====
+    'q-streaming-type': {
+      type: 'multi', stepCat: 'LOGIC',
+      tag: 'Étape 04',
+      question: "Quel est le <em>déclencheur</em> du paiement récurrent ?",
+      hint: "Time-based = horloge (toutes les X heures). Milestone = événement (PR mergé, livrable validé). Subscription = abonnement classique.",
+      answers: [
+        { text: "Time-based (streaming)", sub: "Salaire qui s'incrémente seconde par seconde", result: 'r-payroll-streaming' },
+        { text: "Milestone (escrow)", sub: "Release conditionnel sur événement vérifié", result: 'r-milestone-escrow' },
+        { text: "Subscription mensuelle", sub: "Charge automatique récurrente classique", result: 'r-subscription' },
+      ],
+    },
+
+    // ===== Q-RWA-TYPE (real assets) =====
+    'q-rwa-type': {
+      type: 'multi', stepCat: 'COMPLIANCE',
+      tag: 'Étape 03',
+      question: "Quel <em>type d'actif</em> souhaites-tu tokeniser ?",
+      hint: "Détermine la réglementation applicable et les primitives nécessaires.",
+      answers: [
+        { text: "Securities (bonds, equity)", sub: "Obligations, actions, fonds · MiCA / SEC strictes", result: 'r-rwa-securities' },
+        { text: "Real estate", sub: "Immobilier · SPV juridique nécessaire", result: 'r-rwa-realestate' },
+        { text: "Commodities / carbon", sub: "Or, crédits carbone, certificats matières", result: 'r-rwa-commodities' },
+        { text: "Stablecoin / cash equiv.", sub: "Money market funds, T-bills, dépôts tokenisés", result: 'r-rwa-stablecoin' },
+      ],
+    },
+
+    // ===== Q-NFT-TYPE (non-financial proof) =====
+    'q-nft-type': {
+      type: 'multi', stepCat: 'LOGIC',
+      tag: 'Étape 03',
+      question: "Quel est l'<em>usage</em> de la preuve unique ?",
+      hint: "Détermine si transférable ou soulbound, métadonnées, royalties.",
+      answers: [
+        { text: "Collection / art", sub: "NFT échangeables · marketplace · royalties", result: 'r-nft-collection' },
+        { text: "Identity / credential", sub: "Soulbound (non-transférable) · DID + Credentials XLS-70", result: 'r-did-credential' },
+        { text: "Ticket / accès", sub: "NFT-billet · usage limité · burn-on-use", result: 'r-nft-ticket' },
+        { text: "Loyalty / rewards", sub: "Cashback, badges, programmes fidélité", result: 'r-loyalty' },
+      ],
+    },
+  };
+
+  // ============================================================
+  // RESULTS DEFINITIONS
+  // ============================================================
+  const RESULTS = {
+    'r-not-fit': {
+      label: 'Pas le bon outil',
+      title: "XRPL n'est probablement <em>pas adapté</em>",
+      summary: "Si ton produit ne transfère pas de valeur et n'émet pas d'objets uniques vérifiables, une blockchain n'apporte rien — tu paies de la complexité sans bénéfice.",
+      stack: [],
+      stackOpt: [],
+      architecture: "Pour de la donnée pure ou du social, des solutions Web2 classiques (Postgres, Auth0, Stripe pour le paiement) seront plus simples et performantes. Une blockchain n'est utile que si tu as <em>besoin</em> de décentralisation, transferts de valeur, ou preuves vérifiables sans tiers de confiance.",
+      blueprint: null,
+      resources: [
+        { tag: 'Read', name: 'Avoiding the pointless blockchain project (MultiChain)', url: 'https://www.multichain.com/blog/2015/11/avoiding-pointless-blockchain-project/' },
+        { tag: 'Paper', name: 'Do you need a Blockchain? · Wüst & Gervais (ETH Zurich)', url: 'https://eprint.iacr.org/2017/375.pdf' },
+      ],
+      boilerplate: null,
+      warn: "Si tu pensais à un cas particulier que cette logique n'a pas capturé, recommence en répondant différemment à la première question.",
+    },
+
+    'r-payment-retail': {
+      label: 'Payment retail',
+      title: "Payment <em>natif L1</em> — retail",
+      summary: "Use case classique pour XRPL. Transfer XRP ou stablecoin direct, finalité 3–5s, frais en drops.",
+      stack: ['Payment', 'RLUSD ou stablecoin', 'xrpl.js'],
+      stackOpt: ['Trustline', 'Magic.link onboarding'],
+      architecture: "Une seule transaction <code>Payment</code> sur le ledger. Le user crée un wallet via une UX simplifiée (Magic.link, Web3Auth) qui cache la complexité crypto. Pour l'envoi : <code>xrpl.js</code> côté client ou backend. Le destinataire reçoit instantanément.",
+      blueprint: { id: 'remitflow', name: 'RemitFlow', sub: 'Le blueprint Atlas pour les paiements transfrontaliers' },
+      resources: [
+        { tag: 'Doc', name: 'XRPL Payment transaction', url: 'https://xrpl.org/payment.html' },
+        { tag: 'SDK', name: 'xrpl.js — Get started', url: 'https://js.xrpl.org' },
+        { tag: 'Tool', name: 'Magic.link wallet abstraction', url: 'https://magic.link' },
+      ],
+      boilerplate: `<span class="comment">// Send 100 XRP from sender to recipient</span>
+<span class="keyword">import</span> { Client, Wallet } <span class="keyword">from</span> <span class="string">"xrpl"</span>;
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> Client(<span class="string">"wss://xrplcluster.com"</span>);
+<span class="keyword">await</span> client.<span class="fn">connect</span>();
+
+<span class="keyword">const</span> wallet = Wallet.<span class="fn">fromSeed</span>(<span class="string">"sEd..."</span>);
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"Payment"</span>,
+  Account: wallet.address,
+  Destination: <span class="string">"rDESTINATION..."</span>,
+  Amount: <span class="fn">xrpToDrops</span>(<span class="string">"100"</span>),
+};
+
+<span class="keyword">const</span> prepared = <span class="keyword">await</span> client.<span class="fn">autofill</span>(tx);
+<span class="keyword">const</span> signed = wallet.<span class="fn">sign</span>(prepared);
+<span class="keyword">const</span> result = <span class="keyword">await</span> client.<span class="fn">submitAndWait</span>(signed.tx_blob);
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="string">"Hash:"</span>, result.result.hash);`,
+    },
+
+    'r-payment-b2b': {
+      label: 'Payment B2B',
+      title: "Payment <em>L1 + custody</em> — B2B",
+      summary: "Paiements gros montants entre entreprises. Compliance et custody institutionnelle critiques.",
+      stack: ['Payment', 'Multisig (SignerListSet)', 'KYC/AML stack', 'Fireblocks ou Taurus'],
+      stackOpt: ['Memo (référence facture)', 'Escrow conditionnel'],
+      architecture: "Wallets multisig (2-of-3 ou 4-of-7) pour la trésorerie d'entreprise. Custody via solution institutionnelle (Fireblocks, Taurus, BitGo). Chaque paiement passe par un workflow d'approbation off-chain qui produit ensuite une tx <code>Payment</code>. Memo field pour référence facture/PO.",
+      blueprint: { id: 'remitflow', name: 'RemitFlow', sub: 'Le blueprint Atlas couvre aussi les corridors B2B' },
+      resources: [
+        { tag: 'Doc', name: 'XRPL Multi-signing', url: 'https://xrpl.org/multi-signing.html' },
+        { tag: 'Vendor', name: 'Fireblocks XRPL custody', url: 'https://fireblocks.com' },
+        { tag: 'Doc', name: 'Memo field reference', url: 'https://xrpl.org/transaction-common-fields.html#memos-field' },
+      ],
+      boilerplate: `<span class="comment">// Create a multisig setup for B2B treasury</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"SignerListSet"</span>,
+  Account: treasury.address,
+  SignerQuorum: <span class="string">2</span>,
+  SignerEntries: [
+    { SignerEntry: { Account: <span class="string">"rCFO..."</span>, SignerWeight: <span class="string">1</span> } },
+    { SignerEntry: { Account: <span class="string">"rCEO..."</span>, SignerWeight: <span class="string">1</span> } },
+    { SignerEntry: { Account: <span class="string">"rCOO..."</span>, SignerWeight: <span class="string">1</span> } },
+  ],
+};
+<span class="comment">// Now any 2-of-3 must sign each Payment tx</span>`,
+    },
+
+    'r-payment-marketplace': {
+      label: 'Marketplace / POS',
+      title: "Payment <em>multi-merchant</em> — marketplace",
+      summary: "Système de paiement pour multiples vendeurs avec onboarding fluide et settlement rapide.",
+      stack: ['Payment', 'Trustline auto', 'RLUSD ou USDC', 'Subscribe websocket'],
+      stackOpt: ['NFT loyalty (XLS-20)', 'Off-ramp partner'],
+      architecture: "Chaque merchant a son adresse XRPL générée à l'onboarding. Le client paie en stablecoin (RLUSD), le merchant voit la confirmation en temps réel via WebSocket subscribe. Off-ramp optionnel vers fiat local via partenaire (Yellow Card, Wise). Loyalty NFT XLS-20 émis automatiquement à chaque achat.",
+      blueprint: { id: 'merchantpay', name: 'MerchantPay', sub: 'Le blueprint Atlas pour POS Africa' },
+      resources: [
+        { tag: 'Doc', name: 'Trustline (TrustSet)', url: 'https://xrpl.org/trustset.html' },
+        { tag: 'Doc', name: 'WebSocket subscribe', url: 'https://xrpl.org/subscribe.html' },
+        { tag: 'Stablecoin', name: 'RLUSD on XRPL', url: 'https://ripple.com/rlusd' },
+      ],
+      boilerplate: `<span class="comment">// Subscribe to incoming payments for a merchant</span>
+<span class="keyword">await</span> client.<span class="fn">request</span>({
+  command: <span class="string">"subscribe"</span>,
+  accounts: [merchant.address],
+});
+
+client.<span class="fn">on</span>(<span class="string">"transaction"</span>, (event) => {
+  <span class="keyword">if</span> (event.transaction.TransactionType === <span class="string">"Payment"</span> &&
+      event.transaction.Destination === merchant.address) {
+    <span class="comment">// Notify merchant in real-time + mint loyalty NFT</span>
+    <span class="fn">notifyMerchant</span>(event.transaction);
+  }
+});`,
+    },
+
+    'r-amm-swap': {
+      label: 'AMM swap',
+      title: "Swap <em>via AMM XLS-30</em>",
+      summary: "Pool de liquidité natif au protocole. Pas de smart contract à auditer — la primitive est dans le ledger.",
+      stack: ['AMM XLS-30', 'AMMDeposit / AMMWithdraw', 'Payment cross-currency'],
+      stackOpt: ['LP tokens', 'Trustline'],
+      architecture: "Le pool est une primitive native. Tu fournis la liquidité avec <code>AMMDeposit</code> (récupère LP tokens), retires avec <code>AMMWithdraw</code>. Pour un swap utilisateur, c'est une simple <code>Payment</code> cross-currency : XRPL trouve automatiquement le pool et exécute. Slippage control via <code>SendMax</code>/<code>DeliverMin</code>.",
+      blueprint: { id: 'remitflow', name: 'RemitFlow', sub: 'Use case majeur du blueprint avec corridor PHP' },
+      resources: [
+        { tag: 'Doc', name: 'AMM XLS-30 spec', url: 'https://xrpl.org/automated-market-maker.html' },
+        { tag: 'Doc', name: 'AMMDeposit transaction', url: 'https://xrpl.org/ammdeposit.html' },
+        { tag: 'Tool', name: 'Sologenic DEX', url: 'https://sologenic.com' },
+      ],
+      boilerplate: `<span class="comment">// Cross-currency Payment via AMM</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"Payment"</span>,
+  Account: sender.address,
+  Destination: receiver.address,
+  Amount: { <span class="comment">// what receiver gets</span>
+    currency: <span class="string">"USD"</span>,
+    issuer: <span class="string">"rUSDISSUER..."</span>,
+    value: <span class="string">"50"</span>,
+  },
+  SendMax: <span class="fn">xrpToDrops</span>(<span class="string">"100"</span>), <span class="comment">// max XRP willing to spend</span>
+  DeliverMin: { <span class="comment">// minimum acceptable (slippage protection)</span>
+    currency: <span class="string">"USD"</span>,
+    issuer: <span class="string">"rUSDISSUER..."</span>,
+    value: <span class="string">"49.5"</span>,
+  },
+};`,
+    },
+
+    'r-pathfinding': {
+      label: 'Path-finding',
+      title: "Path-finding <em>auto</em> — best route",
+      summary: "Le ledger calcule la meilleure route entre AMM et order book. Tu n'as rien à orchestrer.",
+      stack: ['Payment cross-currency', 'ripple_path_find', 'AMM + Order book'],
+      stackOpt: ['SendMax', 'DeliverMin'],
+      architecture: "Avant la transaction, appelle <code>ripple_path_find</code> pour obtenir les chemins disponibles (combinaisons AMM + order book + multiple hops). Le user voit le taux estimé et la profondeur du chemin. Soumets ensuite la <code>Payment</code> avec le path choisi (ou laisse le ledger le sélectionner automatiquement).",
+      blueprint: { id: 'remitflow', name: 'RemitFlow', sub: 'Le path-finding alimente les corridors de remittance' },
+      resources: [
+        { tag: 'Doc', name: 'ripple_path_find method', url: 'https://xrpl.org/ripple_path_find.html' },
+        { tag: 'Doc', name: 'Paths concept', url: 'https://xrpl.org/paths.html' },
+      ],
+      boilerplate: `<span class="comment">// Find best path before submitting</span>
+<span class="keyword">const</span> paths = <span class="keyword">await</span> client.<span class="fn">request</span>({
+  command: <span class="string">"ripple_path_find"</span>,
+  source_account: sender.address,
+  destination_account: receiver.address,
+  destination_amount: { currency: <span class="string">"USD"</span>, issuer: <span class="string">"r..."</span>, value: <span class="string">"50"</span> },
+  source_currencies: [{ currency: <span class="string">"XRP"</span> }],
+});
+
+<span class="keyword">const</span> bestPath = paths.result.alternatives[<span class="string">0</span>];
+<span class="comment">// Use bestPath.paths_computed in your Payment tx</span>`,
+    },
+
+    'r-orderbook': {
+      label: 'Order book',
+      title: "DEX <em>order book natif</em>",
+      summary: "Carnet d'ordres natif XRPL. Idéal pour trading actif, market making professionnel, spreads serrés.",
+      stack: ['OfferCreate', 'OfferCancel', 'book_offers query'],
+      stackOpt: ['AMM en parallèle (path-finding hybride)'],
+      architecture: "Tu places des ordres avec <code>OfferCreate</code> (TakerGets / TakerPays), tu les annules avec <code>OfferCancel</code>. Pour afficher le carnet : <code>book_offers</code>. Les offres sont matched automatiquement par le moteur de consensus à chaque ledger.",
+      blueprint: null,
+      resources: [
+        { tag: 'Doc', name: 'OfferCreate transaction', url: 'https://xrpl.org/offercreate.html' },
+        { tag: 'Doc', name: 'book_offers query', url: 'https://xrpl.org/book_offers.html' },
+        { tag: 'Tool', name: 'XPMarket DEX UI', url: 'https://xpmarket.com' },
+      ],
+      boilerplate: `<span class="comment">// Place a limit order: sell 100 XRP for 50 USD</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"OfferCreate"</span>,
+  Account: trader.address,
+  TakerGets: <span class="fn">xrpToDrops</span>(<span class="string">"100"</span>),  <span class="comment">// what you give</span>
+  TakerPays: {                       <span class="comment">// what you want</span>
+    currency: <span class="string">"USD"</span>,
+    issuer: <span class="string">"rUSDISSUER..."</span>,
+    value: <span class="string">"50"</span>,
+  },
+};`,
+    },
+
+    'r-bridge-evm': {
+      label: 'Cross-chain',
+      title: "Bridge <em>XRPL ↔ EVM</em>",
+      summary: "Tu as besoin de smart contracts complexes ou d'interopérer avec l'écosystème Ethereum. La sidechain EVM est la solution.",
+      stack: ['XRPL EVM Sidechain', 'wXRP (wrapped)', 'Axelar bridge', 'Solidity'],
+      stackOpt: ['Squid Router', 'Web3.js / ethers.js'],
+      architecture: "Bridge XRP en wXRP via Axelar GMP (General Message Passing). Côté sidechain, tu déploies du Solidity standard (lending, perps, gaming, contrats complexes). Le retour XRPL passe par le même bridge. Frais payés en XRP. Compatibilité MetaMask, Hardhat, Foundry.",
+      blueprint: null,
+      resources: [
+        { tag: 'Doc', name: 'XRPL EVM Sidechain docs', url: 'https://docs.xrplevm.org' },
+        { tag: 'Bridge', name: 'Axelar Network', url: 'https://axelar.network' },
+        { tag: 'Tool', name: 'Squid Router (UX)', url: 'https://squidrouter.com' },
+      ],
+      boilerplate: `<span class="comment">// Solidity contract deployed on XRPL EVM Sidechain</span>
+<span class="keyword">pragma</span> solidity ^<span class="string">0.8.20</span>;
+
+<span class="keyword">contract</span> Lending {
+    <span class="keyword">mapping</span>(<span class="keyword">address</span> => <span class="keyword">uint256</span>) <span class="keyword">public</span> deposits;
+
+    <span class="keyword">function</span> <span class="fn">deposit</span>() <span class="keyword">external payable</span> {
+        deposits[<span class="fn">msg</span>.sender] += <span class="fn">msg</span>.value;
+    }
+    <span class="comment">// ... rest of your DeFi logic</span>
+}`,
+    },
+
+    'r-payroll-streaming': {
+      label: 'Payroll streaming',
+      title: "Streaming <em>payroll natif</em>",
+      summary: "Salaire qui s'incrémente seconde par seconde via micro-payments programmés. Possible uniquement parce que XRPL = ~zéro frais.",
+      stack: ['Payment récurrent', 'Cron orchestrator', 'RLUSD', 'Multisig DAO treasury'],
+      stackOpt: ['Escrow milestone', 'NFT reputation soulbound'],
+      architecture: "Backend orchestrateur exécute des <code>Payment</code> RLUSD à fréquence configurée (heure, jour, semaine). Trésorerie en multisig <code>SignerListSet</code> avec quorum DAO. Optionnellement, escrow conditionnel pour les jalons (release sur PR mergé via oracle GitHub). NFT soulbound XLS-20 = CV on-chain portable.",
+      blueprint: { id: 'payrollxrp', name: 'PayrollXRP', sub: 'Le blueprint Atlas exact pour ce use case' },
+      resources: [
+        { tag: 'Doc', name: 'XRPL Payment recurring patterns', url: 'https://xrpl.org/payment.html' },
+        { tag: 'Doc', name: 'EscrowCreate (milestones)', url: 'https://xrpl.org/escrowcreate.html' },
+        { tag: 'Spec', name: 'XLS-20 NFTs (soulbound flag)', url: 'https://xrpl.org/non-fungible-tokens.html' },
+      ],
+      boilerplate: `<span class="comment">// Stream 1000 USD/month as hourly micro-payments</span>
+<span class="keyword">const</span> hourlyAmount = <span class="string">1000</span> / (<span class="string">30</span> * <span class="string">24</span>); <span class="comment">// ≈ $1.39/hour</span>
+
+<span class="keyword">setInterval</span>(<span class="keyword">async</span> () => {
+  <span class="keyword">const</span> tx = {
+    TransactionType: <span class="string">"Payment"</span>,
+    Account: dao.address,
+    Destination: contributor.address,
+    Amount: {
+      currency: <span class="string">"USD"</span>,
+      issuer: RLUSD_ISSUER,
+      value: hourlyAmount.<span class="fn">toFixed</span>(<span class="string">6</span>),
+    },
+  };
+  <span class="keyword">await</span> client.<span class="fn">submitAndWait</span>(<span class="keyword">await</span> wallet.<span class="fn">sign</span>(tx));
+}, <span class="string">3600 * 1000</span>); <span class="comment">// every hour</span>`,
+    },
+
+    'r-milestone-escrow': {
+      label: 'Milestone escrow',
+      title: "Escrow <em>conditionnel</em>",
+      summary: "Fonds bloqués jusqu'à validation d'un jalon (vérifié par oracle ou time-lock).",
+      stack: ['EscrowCreate', 'EscrowFinish', 'Crypto-condition'],
+      stackOpt: ['Oracle GitHub / time-lock'],
+      architecture: "Le payeur crée un escrow <code>EscrowCreate</code> avec une condition (cryptographic preimage) ou un time-lock. Une fois le jalon validé off-chain, l'oracle libère la condition et n'importe qui peut soumettre <code>EscrowFinish</code> pour débloquer les fonds vers le destinataire. Si le jalon n'est pas atteint avant la deadline, le payeur récupère via <code>EscrowCancel</code>.",
+      blueprint: { id: 'payrollxrp', name: 'PayrollXRP', sub: 'Variante milestone du blueprint payroll' },
+      resources: [
+        { tag: 'Doc', name: 'EscrowCreate', url: 'https://xrpl.org/escrowcreate.html' },
+        { tag: 'Doc', name: 'EscrowFinish', url: 'https://xrpl.org/escrowfinish.html' },
+        { tag: 'Doc', name: 'Crypto-conditions', url: 'https://xrpl.org/escrow.html' },
+      ],
+      boilerplate: `<span class="comment">// Lock 1000 XRP, releasable on condition</span>
+<span class="keyword">const</span> escrow = {
+  TransactionType: <span class="string">"EscrowCreate"</span>,
+  Account: payer.address,
+  Destination: payee.address,
+  Amount: <span class="fn">xrpToDrops</span>(<span class="string">"1000"</span>),
+  CancelAfter: deadlineUnix,
+  Condition: <span class="string">"A0258020..."</span>, <span class="comment">// crypto-condition hash</span>
+};
+
+<span class="comment">// Later: anyone can finish if they have the fulfillment</span>
+<span class="keyword">const</span> finish = {
+  TransactionType: <span class="string">"EscrowFinish"</span>,
+  Owner: payer.address,
+  OfferSequence: escrowSequence,
+  Condition: <span class="string">"A0258020..."</span>,
+  Fulfillment: <span class="string">"A02280..."</span>, <span class="comment">// proof from oracle</span>
+};`,
+    },
+
+    'r-subscription': {
+      label: 'Subscription',
+      title: "Subscription <em>récurrente</em>",
+      summary: "Charge automatique mensuelle. À implémenter côté backend (XRPL n'a pas de primitive subscription native).",
+      stack: ['Payment programmé', 'PreauthorizedAccount (DepositAuth)', 'Backend cron'],
+      stackOpt: ['Webhook user pour notif', 'Mode unsubscribe one-click'],
+      architecture: "L'utilisateur signe un <code>SetRegularKey</code> ou autorise ton service comme RegularKey co-signataire. Ton backend exécute la <code>Payment</code> mensuelle. Pour révocation : le user retire le RegularKey. Alternative simple : custodial wallet (le user dépose, tu charges depuis ta caisse).",
+      blueprint: null,
+      resources: [
+        { tag: 'Doc', name: 'SetRegularKey', url: 'https://xrpl.org/setregularkey.html' },
+        { tag: 'Doc', name: 'DepositAuth', url: 'https://xrpl.org/depositauth.html' },
+      ],
+      boilerplate: `<span class="comment">// User authorizes service as co-signer for subscriptions</span>
+<span class="keyword">const</span> setRegularKey = {
+  TransactionType: <span class="string">"SetRegularKey"</span>,
+  Account: subscriber.address,
+  RegularKey: subscriptionService.address,
+};
+<span class="comment">// Now subscriptionService can sign Payments on subscriber's behalf</span>`,
+    },
+
+    'r-rwa-securities': {
+      label: 'RWA · Securities',
+      title: "RWA — <em>securities tokenisées</em>",
+      summary: "Obligations, actions, fonds. Compliance MiCA/SEC critique. Émetteur licencié obligatoire.",
+      stack: ['MPT (Multi-Purpose Token)', 'Permissioned token', 'DID + Credentials XLS-70', 'Issuer authorization'],
+      stackOpt: ['AMM secondary (permissioned LP)', 'Coupon engine off-chain'],
+      architecture: "Émetteur licencié (PSAN ou équivalent) crée un MPT avec restrictions natives : whitelist via Credentials XLS-70 (KYC investor accrédité), transfert restreint. Coupons distribués via batch <code>Payment</code>. Marché secondaire optionnel via AMM permissioned. Audit trail off-chain double-entry pour reporting réglementaire.",
+      blueprint: { id: 'bondbloc', name: 'BondBloc', sub: 'Le blueprint Atlas pour obligations corporate' },
+      resources: [
+        { tag: 'Spec', name: 'MPT XLS-33d (Multi-Purpose Tokens)', url: 'https://xrpl.org/mpt.html' },
+        { tag: 'Spec', name: 'XLS-70 DID + Credentials', url: 'https://xrpl.org/decentralized-identifiers.html' },
+        { tag: 'Doc', name: 'Issuer authorization (RequireAuth)', url: 'https://xrpl.org/authorized-trust-lines.html' },
+      ],
+      boilerplate: `<span class="comment">// Issue a permissioned bond MPT</span>
+<span class="keyword">const</span> issuance = {
+  TransactionType: <span class="string">"MPTokenIssuanceCreate"</span>,
+  Account: issuer.address,
+  AssetScale: <span class="string">2</span>, <span class="comment">// 2 decimal places</span>
+  MaximumAmount: <span class="string">"5000000"</span>, <span class="comment">// 5M EUR worth</span>
+  TransferFee: <span class="string">0</span>,
+  Flags: <span class="fn">flagsToInt</span>([
+    <span class="string">"tfMPTRequireAuth"</span>,    <span class="comment">// only authorized investors</span>
+    <span class="string">"tfMPTCanLock"</span>,
+    <span class="string">"tfMPTCanEscrow"</span>,
+  ]),
+  MPTokenMetadata: <span class="fn">stringToHex</span>(<span class="fn">JSON</span>.<span class="fn">stringify</span>({
+    isin: <span class="string">"FR0014001234"</span>,
+    issuer_name: <span class="string">"Acme Corp SAS"</span>,
+    coupon_rate: <span class="string">6</span>,
+    maturity: <span class="string">"2030-12-31"</span>,
+  })),
+};`,
+    },
+
+    'r-rwa-realestate': {
+      label: 'RWA · Real estate',
+      title: "RWA — <em>real estate fractionné</em>",
+      summary: "Immobilier tokenisé. SPV juridique nécessaire pour porter l'actif réel.",
+      stack: ['MPT', 'SPV legal wrapper', 'Permissioned + DID', 'Escrow conditional (souscription)'],
+      stackOpt: ['NFT title deed', 'AMM secondary', 'Rent distribution batch'],
+      architecture: "Chaque actif est wrappé dans une SPV (Free Zone Company à Dubai par exemple). Le SPV émet un MPT XRPL où chaque token = 1/N de la propriété économique. Les loyers nets sont convertis en RLUSD et distribués mensuellement aux holders via batch <code>Payment</code>. Marché secondaire via AMM permissioned MPT/RLUSD.",
+      blueprint: { id: 'proptok', name: 'PropTok', sub: 'Le blueprint Atlas pour fractionalisation immobilière' },
+      resources: [
+        { tag: 'Spec', name: 'MPT issuance details', url: 'https://xrpl.org/mpt.html' },
+        { tag: 'Legal', name: 'DIFC FZ-LLC structure', url: 'https://difc.ae' },
+        { tag: 'Spec', name: 'XLS-20 NFT (for title deed)', url: 'https://xrpl.org/non-fungible-tokens.html' },
+      ],
+      boilerplate: `<span class="comment">// Distribute rents to all MPT holders pro-rata</span>
+<span class="keyword">const</span> holders = <span class="keyword">await</span> <span class="fn">getMPTHolders</span>(propertyMPT);
+<span class="keyword">const</span> totalSupply = holders.<span class="fn">reduce</span>((s, h) => s + h.balance, <span class="string">0</span>);
+<span class="keyword">const</span> rentInRLUSD = <span class="string">5000</span>; <span class="comment">// monthly net</span>
+
+<span class="keyword">for</span> (<span class="keyword">const</span> holder <span class="keyword">of</span> holders) {
+  <span class="keyword">const</span> share = (holder.balance / totalSupply) * rentInRLUSD;
+  <span class="keyword">await</span> <span class="fn">sendRLUSD</span>(spv, holder.address, share);
+}`,
+    },
+
+    'r-rwa-commodities': {
+      label: 'RWA · Commodities',
+      title: "RWA — <em>commodities & carbon</em>",
+      summary: "Or, crédits carbone, certificats matières premières. Provenance et vérification critiques.",
+      stack: ['MPT ou NFT XLS-20', 'Oracle data feeds', 'DID issuer'],
+      stackOpt: ['Burn-on-redemption', 'Multi-issuer registry'],
+      architecture: "Pour un actif fongible (carbon, or fractionné) : MPT avec issuer permissions. Pour un actif unique (lingot d'or numéroté, certificat carbone vintage) : NFT XLS-20 avec metadata détaillée. Oracle vérifié pour la provenance. Burn-on-redemption pour matérialiser la consommation (carbon offset).",
+      blueprint: null,
+      resources: [
+        { tag: 'Spec', name: 'XLS-20 NFTokenMint', url: 'https://xrpl.org/nftokenmint.html' },
+        { tag: 'Standard', name: 'Verra carbon credits', url: 'https://verra.org' },
+        { tag: 'Tool', name: 'IPFS metadata storage', url: 'https://ipfs.io' },
+      ],
+      boilerplate: `<span class="comment">// Mint a carbon credit NFT (Verra-verified)</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"NFTokenMint"</span>,
+  Account: issuer.address,
+  NFTokenTaxon: <span class="string">1</span>,
+  TransferFee: <span class="string">0</span>,
+  URI: <span class="fn">stringToHex</span>(<span class="string">"ipfs://QmXxx.../carbon-credit-2026.json"</span>),
+  Flags: <span class="string">8</span>, <span class="comment">// tfTransferable</span>
+};
+<span class="comment">// Holder later burns it to retire the credit</span>`,
+    },
+
+    'r-rwa-stablecoin': {
+      label: 'RWA · Stablecoin',
+      title: "RWA — <em>cash equivalents</em>",
+      summary: "Money market funds tokenisés, T-bills, dépôts générant du yield. Stablecoin yield-bearing.",
+      stack: ['MPT', 'DID + Credentials', 'Yield engine off-chain', 'Daily rebase'],
+      stackOpt: ['AMM RLUSD/yMPT pool', 'KYC tier différencié'],
+      architecture: "Émetteur réglementé (broker-dealer, asset manager) crée un MPT yield-bearing. Le yield s'accumule off-chain (sur les T-bills sous-jacents) et la valeur du token rebase quotidiennement. Distribution pro-rata aux holders. Compliance via DID + Credentials. Modèle Ondo, OpenEden, Spiko.",
+      blueprint: { id: 'vaultdao', name: 'VaultDAO', sub: 'Variante yield du blueprint épargne' },
+      resources: [
+        { tag: 'Spec', name: 'MPT yield mechanics', url: 'https://xrpl.org/mpt.html' },
+        { tag: 'Player', name: 'Ondo Finance (model)', url: 'https://ondo.finance' },
+        { tag: 'Player', name: 'OpenEden T-bills', url: 'https://openeden.com' },
+      ],
+      boilerplate: `<span class="comment">// Daily rebase: distribute yield to holders</span>
+<span class="keyword">const</span> dailyYieldBps = <span class="string">14</span>; <span class="comment">// 5.1% APY ≈ 14 bps/day</span>
+<span class="keyword">const</span> holders = <span class="keyword">await</span> <span class="fn">getMPTHolders</span>(yieldToken);
+
+<span class="keyword">for</span> (<span class="keyword">const</span> h <span class="keyword">of</span> holders) {
+  <span class="keyword">const</span> yieldAmount = h.balance * dailyYieldBps / <span class="string">10000</span>;
+  <span class="keyword">await</span> <span class="fn">mintMPT</span>(yieldToken, h.address, yieldAmount);
+}`,
+    },
+
+    'r-nft-collection': {
+      label: 'NFT collection',
+      title: "NFT — <em>art & collectibles</em>",
+      summary: "Collection NFT classique avec marketplace, royalties on-chain, transferts.",
+      stack: ['XLS-20 NFTokenMint', 'NFTokenCreateOffer', 'NFTokenAcceptOffer', 'TransferFee royalties'],
+      stackOpt: ['IPFS metadata', 'AMM batch operations'],
+      architecture: "Mint via <code>NFTokenMint</code>. Le créateur définit <code>TransferFee</code> (0–50%) qui sera prélevé automatiquement à chaque revente. Sell offers via <code>NFTokenCreateOffer</code>, accept via <code>NFTokenAcceptOffer</code>. Métadonnées hostées sur IPFS, hash référencé dans <code>URI</code>.",
+      blueprint: null,
+      resources: [
+        { tag: 'Spec', name: 'XLS-20 specification', url: 'https://xrpl.org/non-fungible-tokens.html' },
+        { tag: 'Doc', name: 'NFTokenMint', url: 'https://xrpl.org/nftokenmint.html' },
+        { tag: 'Tool', name: 'XPMarket NFT', url: 'https://xpmarket.com' },
+      ],
+      boilerplate: `<span class="comment">// Mint NFT with 5% royalties on resale</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"NFTokenMint"</span>,
+  Account: artist.address,
+  NFTokenTaxon: <span class="string">42</span>,
+  TransferFee: <span class="string">5000</span>, <span class="comment">// 5% (in 1/100,000 units)</span>
+  URI: <span class="fn">stringToHex</span>(<span class="string">"ipfs://QmYyy.../nft-meta.json"</span>),
+  Flags: <span class="string">8</span>, <span class="comment">// tfTransferable</span>
+};`,
+    },
+
+    'r-did-credential': {
+      label: 'DID · Identity',
+      title: "Identity — <em>DID + Credentials</em>",
+      summary: "Credentials soulbound (non-transférables) pour KYC réutilisable, badges vérifiés, accréditations.",
+      stack: ['XLS-70 DID', 'Credentials', 'CredentialAccept', 'Subject (holder)'],
+      stackOpt: ['Issuer registry', 'Permissioned tokens dépendants'],
+      architecture: "L'issuer (KYC provider, university, employer) crée un Credential pointant vers un Subject (le holder). Le holder accepte via <code>CredentialAccept</code>. La credential est désormais référencable on-chain : d'autres protocoles (MPT permissioned, marketplaces régulés) peuvent vérifier sa présence avant d'autoriser une opération.",
+      blueprint: { id: 'bondbloc', name: 'BondBloc', sub: 'Use credentials pour KYC investor' },
+      resources: [
+        { tag: 'Spec', name: 'XLS-70 DID + Credentials', url: 'https://xrpl.org/decentralized-identifiers.html' },
+        { tag: 'Vendor', name: 'Sumsub KYC integration', url: 'https://sumsub.com' },
+        { tag: 'Standard', name: 'W3C DID Core', url: 'https://www.w3.org/TR/did-core' },
+      ],
+      boilerplate: `<span class="comment">// Issuer creates a KYC credential for a user</span>
+<span class="keyword">const</span> credCreate = {
+  TransactionType: <span class="string">"CredentialCreate"</span>,
+  Account: kycProvider.address,
+  Subject: user.address,
+  CredentialType: <span class="fn">stringToHex</span>(<span class="string">"KYC_TIER_2"</span>),
+  Expiration: <span class="fn">unixToRipple</span>(oneYearFromNow),
+};
+
+<span class="comment">// User accepts the credential</span>
+<span class="keyword">const</span> credAccept = {
+  TransactionType: <span class="string">"CredentialAccept"</span>,
+  Account: user.address,
+  Issuer: kycProvider.address,
+  CredentialType: <span class="fn">stringToHex</span>(<span class="string">"KYC_TIER_2"</span>),
+};`,
+    },
+
+    'r-nft-ticket': {
+      label: 'NFT ticket',
+      title: "Ticket — <em>NFT one-shot</em>",
+      summary: "Billet d'événement, accès limité, badge consommable.",
+      stack: ['XLS-20 NFTokenMint (taxon ticket)', 'NFTokenBurn (on-use)'],
+      stackOpt: ['NFTokenCreateOffer (revente)', 'Time-bounded validity'],
+      architecture: "Émetteur mint des NFT avec un taxon spécifique (= type de ticket). Métadonnées contiennent l'événement, la place, la date. À l'entrée : scan QR du NFT, validation, puis <code>NFTokenBurn</code> pour le consommer (impossible de réutiliser). Revente possible si tu autorises <code>tfTransferable</code> ; sinon soulbound.",
+      blueprint: null,
+      resources: [
+        { tag: 'Doc', name: 'NFTokenMint flags', url: 'https://xrpl.org/nftokenmint.html' },
+        { tag: 'Doc', name: 'NFTokenBurn', url: 'https://xrpl.org/nftokenburn.html' },
+      ],
+      boilerplate: `<span class="comment">// Burn ticket on entry to prevent reuse</span>
+<span class="keyword">const</span> tx = {
+  TransactionType: <span class="string">"NFTokenBurn"</span>,
+  Account: ticketHolder.address,
+  NFTokenID: <span class="string">"00080000ABCD..."</span>,
+};
+<span class="keyword">await</span> client.<span class="fn">submitAndWait</span>(<span class="keyword">await</span> wallet.<span class="fn">sign</span>(tx));`,
+    },
+
+    'r-loyalty': {
+      label: 'Loyalty program',
+      title: "Loyalty — <em>fidélité on-chain</em>",
+      summary: "Programme de fidélité tokenisé : cashback, badges, niveaux, récompenses.",
+      stack: ['Sidechain EVM (cost-effective)', 'NFT XLS-20 (badges)', 'MPT (points fongibles)'],
+      stackOpt: ['XRPL L1 (low frequency)', 'Burn-on-redeem'],
+      architecture: "Pour un programme à <em>haute fréquence</em> (achat → cashback → réduction), utilise la sidechain EVM (gas-free pour user) avec un contrat ERC-20 pour les points. Pour des badges visuels rares (statut Gold/Platinum), mint des NFT XLS-20 sur le L1. La consommation de points = burn ou transfer back.",
+      blueprint: { id: 'merchantpay', name: 'MerchantPay', sub: 'Vague 2 du blueprint POS Africa' },
+      resources: [
+        { tag: 'Doc', name: 'XRPL EVM Sidechain', url: 'https://docs.xrplevm.org' },
+        { tag: 'Spec', name: 'XLS-20 for badges', url: 'https://xrpl.org/non-fungible-tokens.html' },
+      ],
+      boilerplate: `<span class="comment">// On EVM Sidechain: cashback ERC-20 contract</span>
+<span class="keyword">contract</span> LoyaltyPoints <span class="keyword">is</span> ERC20 {
+    <span class="keyword">function</span> <span class="fn">awardOnPurchase</span>(<span class="keyword">address</span> user, <span class="keyword">uint256</span> spentUSD) <span class="keyword">external</span> {
+        <span class="keyword">uint256</span> points = spentUSD / <span class="string">100</span>; <span class="comment">// 1 pt per $1</span>
+        <span class="fn">_mint</span>(user, points);
+    }
+
+    <span class="keyword">function</span> <span class="fn">redeem</span>(<span class="keyword">uint256</span> points) <span class="keyword">external</span> {
+        <span class="fn">_burn</span>(<span class="fn">msg</span>.sender, points);
+        <span class="comment">// emit voucher / discount</span>
+    }
+}`,
+    },
+  };
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  let history = []; // [{ nodeId, answerIdx }]
+  let currentNodeId = 'start';
+
+  // ============================================================
+  // RENDER
+  // ============================================================
+  function renderProgress() {
+    const steps = 5; // visible steps before result
+    const bar = document.getElementById('progress-bar');
+    const stepCurrent = document.getElementById('step-current');
+    const stepTotal = document.getElementById('step-total');
+    const status = document.getElementById('progress-status');
+
+    let html = '';
+    for (let i = 0; i < steps; i++) {
+      let cls = '';
+      if (i < history.length) cls = 'done';
+      else if (i === history.length && currentNodeId !== null && !RESULTS[currentNodeId]) cls = 'current';
+      html += `<div class="progress-step ${cls}"></div>`;
+    }
+    // Result step
+    let resultCls = '';
+    if (RESULTS[currentNodeId]) resultCls = 'done';
+    html += `<div class="progress-step ${resultCls}" style="background: ${RESULTS[currentNodeId] ? 'var(--wallet)' : 'var(--paper-2)'}"></div>`;
+    bar.innerHTML = html;
+
+    if (RESULTS[currentNodeId]) {
+      stepCurrent.textContent = '✓';
+      status.textContent = 'Résultat';
+    } else {
+      stepCurrent.textContent = (history.length + 1).toString();
+      status.textContent = 'En cours';
+    }
+    stepTotal.textContent = '6';
+  }
+
+  function renderHistory() {
+    const container = document.getElementById('history');
+    if (history.length === 0) {
+      container.innerHTML = '<span class="history-empty">Tes choix s\'afficheront ici…</span>';
+      return;
+    }
+    let html = '';
+    history.forEach((h, i) => {
+      const node = TREE[h.nodeId];
+      const ans = node.answers[h.answerIdx];
+      // Strip HTML from answer text for history display
+      const cleanText = ans.text.replace(/<[^>]+>/g, '');
+      html += `<span class="history-item" data-step="${i}">${cleanText}</span>`;
+      if (i < history.length - 1) html += '<span class="history-arrow">→</span>';
+    });
+    container.innerHTML = html;
+
+    // Click to rewind
+    container.querySelectorAll('.history-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const step = parseInt(el.dataset.step);
+        history = history.slice(0, step);
+        currentNodeId = step === 0 ? 'start' : (() => {
+          const prev = history[step - 1];
+          const prevNode = TREE[prev.nodeId];
+          return prevNode.answers[prev.answerIdx].next;
+        })();
+        renderAll();
+      });
+    });
+  }
+
+  function renderQuestion(node) {
+    const isBinary = node.type === 'binary';
+    const stepIdx = history.length + 1;
+    const stepNum = String(stepIdx).padStart(2, '0');
+    const answersHtml = node.answers.map((ans, i) => `
+      <button class="answer-btn ${ans.style || ''}" data-idx="${i}">
+        <span class="ans-tag">${isBinary ? (ans.style === 'yes' ? 'Oui' : ans.style === 'no' ? 'Non' : 'Choix ' + (i+1)) : 'Choix ' + String.fromCharCode(65 + i)}</span>
+        <span class="ans-text">${ans.text}</span>
+        <span class="ans-sub">${ans.sub}</span>
+      </button>
+    `).join('');
+
+    const answersClass = isBinary ? 'binary' : (node.answers.length > 2 ? 'multi' : 'multi');
+
+    return `
+      <div class="question-card">
+        <div class="question-header">
+          <div class="question-num">
+            <span class="badge ${node.type}">${node.tag.toUpperCase()}</span>
+            <span>${node.stepCat}</span>
+            <span style="margin-left:auto;">${isBinary ? 'Question binaire' : 'Question à choix multiples'}</span>
+          </div>
+          <h2 class="question-text">${node.question}</h2>
+          <p class="question-hint">${node.hint}</p>
+        </div>
+        <div class="answers ${answersClass}">
+          ${answersHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderResult(result) {
+    const stackTags = result.stack.map(s => `<span class="stack-tag">${s}</span>`).join('');
+    const stackOptTags = result.stackOpt.map(s => `<span class="stack-tag opt">${s}</span>`).join('');
+
+    const blueprintHtml = result.blueprint ? `
+      <a class="blueprint-link" href="builder-atlas#${result.blueprint.id}">
+        <span class="bp-tag">↗ Blueprint Builder Atlas</span>
+        <span class="bp-name">${result.blueprint.name}</span>
+        <span class="bp-sub">${result.blueprint.sub}</span>
+      </a>
+    ` : '';
+
+    const resourcesHtml = result.resources.map(r => `
+      <a class="resource-link" href="${r.url}" target="_blank" rel="noopener">
+        <span class="res-tag">${r.tag}</span>
+        <span class="res-name">${r.name}</span>
+        <span class="res-arrow">↗</span>
+      </a>
+    `).join('');
+
+    const boilerplateHtml = result.boilerplate ? `<pre class="boilerplate">${result.boilerplate}</pre>` : '<p style="font-style:italic; color:var(--muted);">Pas de boilerplate spécifique pour ce cas.</p>';
+    const warnHtml = result.warn ? `<div class="nofit-warn"><strong>À noter</strong>${result.warn}</div>` : '';
+    const blueprintSection = result.blueprint ? `
+      <div class="result-section">
+        <h3><span class="num">04</span>Blueprint connexe</h3>
+        ${blueprintHtml}
+        <p style="margin-top:12px; font-size:12px; color:var(--muted);"><em>Le Builder Atlas détaille capex, économie, MVP, GTM pour ce cas.</em></p>
+      </div>
+    ` : `
+      <div class="result-section">
+        <h3><span class="num">04</span>Pas de blueprint dédié</h3>
+        <p>Aucune des 6 fiches du Builder Atlas ne couvre exactement ce use case. Tu pars en exploration — c'est une opportunité d'être premier sur ce segment.</p>
+      </div>
+    `;
+
+    return `
+      <div class="result">
+        <div class="result-header">
+          <div class="label">Stack recommandée</div>
+          <h2>${result.title}</h2>
+          <p class="summary">${result.summary}</p>
+        </div>
+        <div class="result-body">
+          <div class="result-section">
+            <h3><span class="num">01</span>Primitives XRPL</h3>
+            <div class="stack-tags">${stackTags}</div>
+            ${stackOptTags ? `<p style="margin-top:8px; font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace; letter-spacing:0.1em; text-transform:uppercase;">Optionnelles</p><div class="stack-tags">${stackOptTags}</div>` : ''}
+          </div>
+          <div class="result-section">
+            <h3><span class="num">02</span>Architecture</h3>
+            <p>${result.architecture}</p>
+            ${warnHtml}
+          </div>
+          <div class="result-section">
+            <h3><span class="num">03</span>Boilerplate code</h3>
+            ${boilerplateHtml}
+          </div>
+          ${blueprintSection}
+          <div class="result-section" style="grid-column: 1 / -1; border-right: none;">
+            <h3><span class="num">05</span>Ressources clés</h3>
+            <div class="resources">${resourcesHtml}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAll() {
+    const content = document.getElementById('content');
+    if (RESULTS[currentNodeId]) {
+      content.innerHTML = renderResult(RESULTS[currentNodeId]);
+    } else {
+      const node = TREE[currentNodeId];
+      content.innerHTML = renderQuestion(node);
+      // Wire answer buttons
+      content.querySelectorAll('.answer-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.idx);
+          const ans = node.answers[idx];
+          history.push({ nodeId: currentNodeId, answerIdx: idx });
+          if (ans.next) {
+            currentNodeId = ans.next;
+          } else if (ans.result) {
+            currentNodeId = ans.result;
+          }
+          renderAll();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    }
+    renderProgress();
+    renderHistory();
+
+    // Update back button
+    const backBtn = document.getElementById('back-btn');
+    backBtn.disabled = history.length === 0;
+  }
+
+  // ============================================================
+  // WIRE UP
+  // ============================================================
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    history = [];
+    currentNodeId = 'start';
+    renderAll();
+  });
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    if (history.length === 0) return;
+    history.pop();
+    currentNodeId = history.length === 0 ? 'start' : (() => {
+      const prev = history[history.length - 1];
+      const prevNode = TREE[prev.nodeId];
+      return prevNode.answers[prev.answerIdx].next;
+    })();
+    renderAll();
+  });
+
+  // INIT
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vimrc
+
+# Vercel
+.vercel
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependencies (just in case)
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/

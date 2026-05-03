@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ecosystem Map — XRPL en mai 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro-text p { margin: 0 0 8px 0; }
+  .intro-text p:last-child { margin-bottom: 0; }
+  .intro-text strong { font-weight: 600; }
+  .intro-text em { color: var(--chain); }
+
+  .intro-stats {
+    border-left: 2px solid var(--ink);
+    padding-left: 22px;
+  }
+  .intro-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(14,17,22,0.15);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .intro-stats .stat-row:last-child { border-bottom: none; }
+  .intro-stats .stat-row .label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .intro-stats .stat-row .val {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* CATEGORY TOC */
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 48px;
+    background: var(--paper);
+  }
+  .toc a {
+    padding: 14px 12px;
+    border-right: 1px solid var(--ink);
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--paper);
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .toc a:last-child { border-right: none; }
+  .toc a:hover { background: var(--paper-2); }
+  .toc a::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .toc a[data-color="defi"]::before { background: var(--amm); }
+  .toc a[data-color="payments"]::before { background: var(--user); }
+  .toc a[data-color="rwa"]::before { background: var(--rwa); }
+  .toc a[data-color="wallets"]::before { background: var(--wallet); }
+  .toc a[data-color="infra"]::before { background: var(--chain); }
+  .toc a[data-color="nft"]::before { background: var(--sidechain); }
+  .toc a[data-color="bridge"]::before { background: var(--custody); }
+  .toc a[data-color="identity"]::before { background: var(--app); }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .toc-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .toc-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* CATEGORY SECTION */
+  .category {
+    margin-bottom: 48px;
+    scroll-margin-top: 20px;
+  }
+  .cat-header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .cat-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 32px;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .cat-header h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .cat-header .cat-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cat-summary {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 18px;
+    padding-left: 14px;
+    border-left: 2px solid var(--ink);
+  }
+  .cat-summary strong { color: var(--ink); font-weight: 600; font-style: normal; }
+
+  /* PROJECT CARD */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .project {
+    padding: 18px 20px 16px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .project:nth-child(3n) { border-right: none; }
+  /* Remove bottom border for last row of cards in each category */
+  .projects.row1 .project:nth-last-child(-n+1),
+  .projects.row1 .project:nth-last-child(-n+2),
+  .projects.row1 .project:nth-last-child(-n+3) {
+    /* keep simple — bottom border ok since wrapper has it */
+  }
+
+  .project::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3px;
+  }
+  .category[data-color="defi"] .project::before { background: var(--amm); }
+  .category[data-color="payments"] .project::before { background: var(--user); }
+  .category[data-color="rwa"] .project::before { background: var(--rwa); }
+  .category[data-color="wallets"] .project::before { background: var(--wallet); }
+  .category[data-color="infra"] .project::before { background: var(--chain); }
+  .category[data-color="nft"] .project::before { background: var(--sidechain); }
+  .category[data-color="bridge"] .project::before { background: var(--custody); }
+  .category[data-color="identity"] .project::before { background: var(--app); }
+  .category[data-color="stablecoins"] .project::before { background: var(--chain); }
+
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+    gap: 8px;
+  }
+  .project-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+  .project-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid var(--ink);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .project-status.live { background: var(--app); color: var(--paper); border-color: var(--app); }
+  .project-status.beta { background: var(--wallet); color: var(--ink); border-color: var(--ink); }
+  .project-status.upcoming { background: var(--paper-2); color: var(--muted); }
+  .project-status.legacy { background: var(--paper); color: var(--muted); border: 1px dashed var(--muted); }
+  .project-status.partner { background: var(--chain); color: var(--paper); border-color: var(--chain); }
+
+  .project-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .project-desc {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 10px 0;
+    flex: 1;
+  }
+  .project-desc em { color: var(--chain); }
+  .project-desc strong { font-weight: 600; }
+
+  .project-metric {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    padding-top: 8px;
+    border-top: 1px dashed rgba(14,17,22,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .project-metric .metric-val {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* OPPORTUNITY GAPS */
+  .gaps {
+    margin-top: 56px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .gaps-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 16px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .gaps-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .gaps-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .gaps-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wallet);
+    font-weight: 700;
+  }
+
+  .gaps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gap {
+    padding: 20px 26px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .gap:nth-child(2n) { border-right: none; }
+  .gap:nth-last-child(-n+2) { border-bottom: none; }
+  .gap h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--user);
+    margin: 0 0 6px 0;
+    font-weight: 700;
+  }
+  .gap h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+  }
+  .gap p {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .gap p strong { font-weight: 600; }
+  .gap p em { color: var(--chain); }
+
+  /* NOTES */
+  .notes {
+    margin-top: 48px;
+    padding: 18px 22px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .notes h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 8px 0;
+  }
+  .notes p { margin: 0 0 6px 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 4px;
+    border: 1px solid var(--ink);
+  }
+
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 1000px) {
+    .toc { grid-template-columns: repeat(2, 1fr); }
+    .toc a { border-bottom: 1px solid var(--ink); }
+    .projects { grid-template-columns: 1fr 1fr; }
+    .project:nth-child(3n) { border-right: 1px solid var(--ink); }
+    .project:nth-child(2n) { border-right: none; }
+    .gaps-grid { grid-template-columns: 1fr; }
+    .gap:nth-child(2n) { border-right: none; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-stats { border-left: none; border-top: 2px solid var(--ink); padding-left: 0; padding-top: 16px; }
+  }
+  @media (max-width: 700px) {
+    .projects { grid-template-columns: 1fr; }
+    .project { border-right: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Ecosystem Map · Snapshot · v1.0</div>
+      <h1>L'écosystème<br/><em>XRPL</em> en mai 2026</h1>
+    </div>
+    <div class="meta">
+      Snapshot : mai 2026<br/>
+      Catégories : 8<br/>
+      Projets : 50+<br/>
+      Données : public + grants
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>DEFI</span>
+    <span>PAYMENTS</span>
+    <span>RWA</span>
+    <span>WALLETS</span>
+    <span>INFRA</span>
+    <span>NFT</span>
+    <span>BRIDGE</span>
+    <span>IDENTITY</span>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-text">
+      <p>Carte de l'écosystème XRPL au début mai 2026, organisée par <strong>catégorie fonctionnelle</strong>. Chaque projet est étiqueté par état (<em>Live</em>, <em>Beta</em>, <em>Upcoming</em>, <em>Legacy</em>, <em>Partner</em>) et par sous-catégorie technique.</p>
+      <p>Le but : permettre à un builder d'identifier <strong>les espaces saturés à éviter</strong> et <strong>les zones blanches encore disponibles</strong>. Les "Opportunity Gaps" en fin de page synthétisent les vides observables que personne n'occupe encore — autant de pistes pour de nouvelles startups.</p>
+      <p style="font-style: italic; color: var(--muted);">Ce document est un snapshot statique. Les projets évoluent vite — édite manuellement la liste pour la maintenir à jour.</p>
+    </div>
+    <div class="intro-stats">
+      <div class="stat-row"><span class="label">Catégories</span><span class="val">8</span></div>
+      <div class="stat-row"><span class="label">Projets listés</span><span class="val">50+</span></div>
+      <div class="stat-row"><span class="label">RWA on XRPL</span><span class="val">~ 474 M$</span></div>
+      <div class="stat-row"><span class="label">TVL Flare bridge</span><span class="val">~ 210 M$</span></div>
+      <div class="stat-row"><span class="label">XRP locked (FXRP)</span><span class="val">134,8 M XRP</span></div>
+      <div class="stat-row"><span class="label">AMM live since</span><span class="val">mars 2024</span></div>
+    </div>
+  </div>
+
+  <!-- CATEGORY TOC -->
+  <nav class="toc">
+    <a href="#defi" data-color="defi">
+      <div class="toc-num">01</div>
+      <div class="toc-name">DeFi · DEX</div>
+      <div class="toc-cat">AMM · Aggregators</div>
+    </a>
+    <a href="#stablecoins" data-color="stablecoins">
+      <div class="toc-num">02</div>
+      <div class="toc-name">Stablecoins</div>
+      <div class="toc-cat">RLUSD · USDC</div>
+    </a>
+    <a href="#rwa" data-color="rwa">
+      <div class="toc-num">03</div>
+      <div class="toc-name">RWA</div>
+      <div class="toc-cat">Bonds · Real estate</div>
+    </a>
+    <a href="#payments" data-color="payments">
+      <div class="toc-num">04</div>
+      <div class="toc-name">Payments</div>
+      <div class="toc-cat">B2B · Remittances</div>
+    </a>
+    <a href="#wallets" data-color="wallets">
+      <div class="toc-num">05</div>
+      <div class="toc-name">Wallets</div>
+      <div class="toc-cat">Self-custody · MPC</div>
+    </a>
+    <a href="#infra" data-color="infra">
+      <div class="toc-num">06</div>
+      <div class="toc-name">Infrastructure</div>
+      <div class="toc-cat">Nodes · Oracles · Tools</div>
+    </a>
+    <a href="#nft" data-color="nft">
+      <div class="toc-num">07</div>
+      <div class="toc-name">NFT</div>
+      <div class="toc-cat">Marketplaces</div>
+    </a>
+    <a href="#bridge" data-color="bridge">
+      <div class="toc-num">08</div>
+      <div class="toc-name">Bridges</div>
+      <div class="toc-cat">EVM · Cross-chain</div>
+    </a>
+  </nav>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 01 · DEFI / DEX -->
+  <!-- =================================================== -->
+  <section class="category" data-color="defi" id="defi">
+    <div class="cat-header">
+      <h2>01 · DeFi & <em>DEX</em></h2>
+      <span class="cat-meta">7 projets · catégorie active</span>
+    </div>
+    <div class="cat-summary">L'AMM XLS-30 est natif depuis mars 2024. <strong>L'écosystème DEX est mature</strong> mais reste dominé par 2-3 acteurs principaux. Liquidité concentrée sur paires XRP/RLUSD et XRP/USDC. La sidechain EVM ouvre des opportunités côté DeFi avancée (perps, lending) qui restent largement inoccupées sur le L1.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XPMarket</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">DEX · Analytics · Trading</div>
+        <p class="project-desc">Le plus grand <em>tracker</em> de l'écosystème XRPL. Combine DEX, analytics tokens, NFT marketplace, ecosystem directory. Référence pour découvrir les nouveaux projets.</p>
+        <div class="project-metric"><span>10k+ users/jour</span><span class="metric-val">xpmarket.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">xrpl.to</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Token screener · DEX · NFT</div>
+        <p class="project-desc">Token screener temps réel + interface swap intégrée. Données via WebSocket, REST API gratuite pour devs. Concurrent direct de XPMarket.</p>
+        <div class="project-metric"><span>10k+ traders quotidiens</span><span class="metric-val">xrpl.to</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Sologenic / TX Network</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">DEX · RWA · Pivot 2025</div>
+        <p class="project-desc">Pionnier XRPL DeFi. <em>Migration majeure en 2025</em> : renommé TX Network, repositionné sur RWA et bridge cross-chain. Garde son DEX et marketplace NFT historique.</p>
+        <div class="project-metric"><span>6+ années d'historique</span><span class="metric-val">tx.network</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Moai Finance</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">Multi-chain DEX · Aggregator</div>
+        <p class="project-desc">DEX aggregator multi-chain en construction. Vise XRPL Mainnet + EVM Sidechain pour unifier la liquidité entre les deux. Lauréat Tenity Accelerator 2024.</p>
+        <div class="project-metric"><span>Accelerator cohort</span><span class="metric-val">moai.finance</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL Native AMM</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Protocol-level · XLS-30</div>
+        <p class="project-desc">L'AMM <em>natif au protocole</em>, pas une dApp. Utilisable via toute interface compatible. Pas de smart contract à auditer — primitive du ledger.</p>
+        <div class="project-metric"><span>Live depuis mars 2024</span><span class="metric-val">xrpl.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Lending native (XLS-66)</h3>
+          <span class="project-status upcoming">Upcoming</span>
+        </div>
+        <div class="project-tag">Protocol amendment · Ripple proposal</div>
+        <p class="project-desc">Proposition de Ripple pour un cadre <em>natif de lending institutionnel</em>. En cours d'amendment. Devrait débloquer toute une vague de produits DeFi compliant.</p>
+        <div class="project-metric"><span>En review</span><span class="metric-val">xrpl.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Permissioned DEX</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Compliance · KYC-gated</div>
+        <p class="project-desc">DEX avec accès gated par Credentials XLS-70. Permet aux institutions régulées de trader on-chain en gardant les contraintes KYC/AML. Foundation pour la finance institutionnelle.</p>
+        <div class="project-metric"><span>2026 launch</span><span class="metric-val">xrpl.org</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 02 · STABLECOINS -->
+  <!-- =================================================== -->
+  <section class="category" data-color="stablecoins" id="stablecoins">
+    <div class="cat-header">
+      <h2>02 · <em>Stablecoins</em></h2>
+      <span class="cat-meta">4 projets · catégorie en croissance</span>
+    </div>
+    <div class="cat-summary">Le launch de <strong>RLUSD</strong> en décembre 2024 par Ripple (sous trust charter NY DFS) a transformé l'écosystème. Beaucoup d'use cases qui étaient théoriques sur XRPL deviennent maintenant réalisables car ils ont un <em>rail dollar régulé natif</em>. USDC arrive aussi.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">RLUSD</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Ripple · USD · NY DFS regulated</div>
+        <p class="project-desc">Stablecoin Ripple, lancé dec. 2024 sous <em>NY DFS Trust Charter</em>. Émis nativement sur XRPL et Ethereum. Réserves cash + équivalents auditées mensuellement. <strong>Pivot du nouveau modèle économique XRPL.</strong></p>
+        <div class="project-metric"><span>Cross-chain XRPL + ETH</span><span class="metric-val">rlusd.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">USDC (via partenaires)</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Circle · USD · Available via bridges</div>
+        <p class="project-desc">USDC accessible via bridges (notamment Axelar). Pas natif sur XRPL mais flux significatifs en cours. Coexistence stratégique avec RLUSD selon les corridors.</p>
+        <div class="project-metric"><span>Via bridge Axelar</span><span class="metric-val">circle.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">EURS · EUR-CV</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">EUR · MiCA-compliant</div>
+        <p class="project-desc">Stablecoin euros présents via plusieurs émetteurs (STASIS, SG-FORGE EURCV). Utilisation grandissante dans les corridors EU et pour les RWA européens (BondBloc, Spiko).</p>
+        <div class="project-metric"><span>Adoption EU active</span><span class="metric-val">eurs.stasis.net</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Stablecoins fiat custom</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Issued tokens · Trust lines</div>
+        <p class="project-desc">Tout émetteur peut créer un stablecoin fiat-backed via le mécanisme <em>Issued Currencies</em> + Trust lines. Utilisé par Bitstamp (USD-IOU), GateHub, Sologenic pour rails locaux.</p>
+        <div class="project-metric"><span>Pattern open</span><span class="metric-val">xrpl.org/stablecoin</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 03 · RWA -->
+  <!-- =================================================== -->
+  <section class="category" data-color="rwa" id="rwa">
+    <div class="cat-header">
+      <h2>03 · <em>Real-World Assets</em></h2>
+      <span class="cat-meta">8 projets · catégorie chaude</span>
+    </div>
+    <div class="cat-summary">RWA est <strong>la catégorie la plus active</strong> de l'écosystème en 2026. Le total tokenisé sur XRPL a dépassé <em>474 M$</em>. Multi-Purpose Tokens (MPT) + DID/Credentials XLS-70 fournissent l'infrastructure compliance native dont les institutions ont besoin. Plus de holders (+49% MoM) malgré une volatilité de volume.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Aviva Investors</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Asset manager · Pilot</div>
+        <p class="project-desc">Gestionnaire d'actifs UK majeur. Partenariat avec XRPL pour <em>tokenisation de fonds traditionnels</em>. Signal fort pour l'adoption institutionnelle européenne.</p>
+        <div class="project-metric"><span>Pilot 2025–26</span><span class="metric-val">avivainvestors.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Zoth</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Fixed income · Institutional</div>
+        <p class="project-desc">Marketplace fixed income institutionnel : trade finance receivables, sovereign bonds, corporate credit. Compliance multi-juridictions. Lauréat XRPL Accelerator.</p>
+        <div class="project-metric"><span>Institutional access</span><span class="metric-val">zoth.io</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">ALT.SQFT</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">Real estate · Square footage</div>
+        <p class="project-desc">Tokenise <em>la square footage</em> immobilière comme actif négociable. Property Tokens représentent un % de la surface. Lauréat XRPL Accelerator.</p>
+        <div class="project-metric"><span>Innovation legal</span><span class="metric-val">altsqft.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Kodelab HELOC</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">Real estate · Lending</div>
+        <p class="project-desc">HELOC (home equity line of credit) tokenisé. Crédit on-chain garanti par actifs immobiliers via NFT. Setup légal world-first avec DLA Piper.</p>
+        <div class="project-metric"><span>Legal innovation</span><span class="metric-val">kodelab.io</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Ondo Finance</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Tokenized treasuries · OUSG</div>
+        <p class="project-desc">Leader RWA multi-chain. T-bills tokenisés. <em>Présent sur XRPL</em> via partenariat. Référence pour comprendre les patterns yield-bearing.</p>
+        <div class="project-metric"><span>$500M+ AUM total</span><span class="metric-val">ondo.finance</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">OpenEden</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">T-bills · Yield stablecoin</div>
+        <p class="project-desc">T-bill tokenisés via TBILL token. Compliance Singapour MAS. <em>Présent sur XRPL</em> en complément Ethereum. Modèle yield-bearing stablecoin.</p>
+        <div class="project-metric"><span>MAS-licensed</span><span class="metric-val">openeden.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Spiko</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">European money markets · UCITS</div>
+        <p class="project-desc">Money market funds tokenisés européens. Structure UCITS, compliance MiCA. <em>~200M$ AUM en 6 mois</em>. Modèle pour BondBloc-style products.</p>
+        <div class="project-metric"><span>~ 200M€ AUM</span><span class="metric-val">spiko.io</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Centrifuge · Tokeny</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Tokenization infra · White-label</div>
+        <p class="project-desc">Centrifuge ($400M+ AUM cross-chain) et Tokeny (infra white-label) sont les rails sur lesquels d'autres lancent leurs produits RWA. Disponibles sur XRPL.</p>
+        <div class="project-metric"><span>Infra layer</span><span class="metric-val">centrifuge · tokeny</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 04 · PAYMENTS -->
+  <!-- =================================================== -->
+  <section class="category" data-color="payments" id="payments">
+    <div class="cat-header">
+      <h2>04 · <em>Payments</em></h2>
+      <span class="cat-meta">7 projets · catégorie historique</span>
+    </div>
+    <div class="cat-summary">Les paiements restent <strong>l'ADN de XRPL</strong>. SBI (Japan), Ripple ODL et Tranglo dominent les corridors institutionnels asiatiques. Mastercard arrive en 2026 via le pilote RLUSD. Côté SME et retail, le marché reste très ouvert — <em>peu d'acteurs grand public</em>, beaucoup d'opportunités locales.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Ripple ODL</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">On-Demand Liquidity · B2B</div>
+        <p class="project-desc">Service flagship Ripple pour banques et payment providers. Utilise XRP comme bridge currency pour cross-border instantané. <em>Backbone du business Ripple.</em></p>
+        <div class="project-metric"><span>Banks & PSPs</span><span class="metric-val">ripple.com/odl</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">SBI Holdings</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Japan · Remittances</div>
+        <p class="project-desc">Géant financier japonais. SBI Remit utilise XRP pour les transferts Japan ↔ Philippines / Vietnam / Thailand. <em>Volume institutionnel significatif</em>.</p>
+        <div class="project-metric"><span>Active corridors APAC</span><span class="metric-val">sbiremit.co.jp</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Mastercard pilot</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">Card settlement · RLUSD</div>
+        <p class="project-desc">Pilot novembre 2025 avec WebBank + Gemini. Card settlement via RLUSD sur XRPL. <em>Premier cas de bank régulée US utilisant un stablecoin sur public ledger</em> pour cards traditionnelles.</p>
+        <div class="project-metric"><span>Live since Nov 2025</span><span class="metric-val">mastercard.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Tranglo</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">SE Asia · Cross-border</div>
+        <p class="project-desc">PSP regional Asie du Sud-Est. Utilise Ripple ODL pour corridors Malaysia, Thailand, Philippines, Indonesia. <em>Leader régional</em>.</p>
+        <div class="project-metric"><span>SEA dominant</span><span class="metric-val">tranglo.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">meCash</h3>
+          <span class="project-status beta">Beta</span>
+        </div>
+        <div class="project-tag">SME · Multi-currency wallet</div>
+        <p class="project-desc">Cross-border pour SMEs via XRPL. Multi-currency wallet, FX hedging. Lauréat XRPL Accelerator. <em>Cible le mid-market mal servi par les banques</em>.</p>
+        <div class="project-metric"><span>SME focus</span><span class="metric-val">mecash.io</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Bitstamp</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">On/Off-ramp · Custody</div>
+        <p class="project-desc">Exchange historique XRPL. Émetteur d'IOUs USD/EUR/GBP. <em>Gateway majeur</em> entre fiat et XRPL pour les apps de paiement. Custody-grade.</p>
+        <div class="project-metric"><span>Issued IOUs major</span><span class="metric-val">bitstamp.net</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">GateHub</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Wallet + on/off-ramp</div>
+        <p class="project-desc">Plateforme web XRPL multi-services : wallet, exchange, fiat ramps, IOU issuer. Acteur historique fiable. <em>UX simplifiée</em> pour utilisateurs non-crypto.</p>
+        <div class="project-metric"><span>Long-running</span><span class="metric-val">gatehub.net</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 05 · WALLETS -->
+  <!-- =================================================== -->
+  <section class="category" data-color="wallets" id="wallets">
+    <div class="cat-header">
+      <h2>05 · <em>Wallets</em></h2>
+      <span class="cat-meta">5 projets · catégorie consolidée</span>
+    </div>
+    <div class="cat-summary">Catégorie <strong>plutôt mature, dominée par Xaman</strong> (ex-XUMM). Quelques alternatives spécialisées émergent (Gem Wallet pour la privacy). Les hardware wallets (Ledger, Tangem) supportent XRPL. <em>Espace pour wallets sectoriels</em> (RWA-focused, payment-focused, B2B treasury).</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Xaman (ex-XUMM)</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Self-custody · Mobile · xApps</div>
+        <p class="project-desc">Wallet le plus utilisé sur XRPL. Renommé Xaman en 2024. Sécurité biométrique, intégration <em>Tangem hardware</em>, écosystème xApps tiers. <strong>Référence par défaut.</strong></p>
+        <div class="project-metric"><span>Industry standard</span><span class="metric-val">xaman.app</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Gem Wallet</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Decentralized · Privacy-first</div>
+        <p class="project-desc">Multi-chain wallet 100% décentralisé, sans backend. <em>Privacy-first</em>, code open-source. Alternative à Xaman pour les users qui refusent un wallet à backend centralisé.</p>
+        <div class="project-metric"><span>No backend</span><span class="metric-val">gemwallet.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Crossmark</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Browser extension</div>
+        <p class="project-desc">Extension Chrome/Brave pour XRPL, équivalent MetaMask. Pratique pour les dApps web. <em>Niche mais utile</em> pour les builders qui font des apps desktop-first.</p>
+        <div class="project-metric"><span>Browser-first</span><span class="metric-val">crossmark.io</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Ledger</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Hardware · Multi-asset</div>
+        <p class="project-desc">Hardware wallet leader. Support XRPL natif depuis longtemps. Référence pour cold storage XRP et tokens XRPL. <em>Partenaire pour custody institutionnelle</em>.</p>
+        <div class="project-metric"><span>Hardware standard</span><span class="metric-val">ledger.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Tangem</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">NFC card hardware</div>
+        <p class="project-desc">Carte NFC qui sert de hardware wallet. Intégration directe Xaman. <em>UX la plus simple</em> du marché — touche la carte avec le téléphone, signature.</p>
+        <div class="project-metric"><span>UX hardware best</span><span class="metric-val">tangem.com</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 06 · INFRASTRUCTURE -->
+  <!-- =================================================== -->
+  <section class="category" data-color="infra" id="infra">
+    <div class="cat-header">
+      <h2>06 · <em>Infrastructure</em> · Tools</h2>
+      <span class="cat-meta">8 projets · catégorie diverse</span>
+    </div>
+    <div class="cat-summary">Tooling dev très mature côté <strong>SDKs</strong> (xrpl.js, xrpl-py, xrpl4j). <em>Ecosystème oracles encore peu développé</em> (Band Protocol partner mais pas dominant). Indexers et explorers solides. Beaucoup d'espace pour outils de monitoring/alerting B2B et frameworks RWA-spécifiques.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL Native SDKs</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">xrpl.js · xrpl-py · xrpl4j</div>
+        <p class="project-desc">SDKs officiels Ripple en JS/TS, Python, Java. <em>xrpl.js est le standard de fait</em>. Bien documentés, maintenus, couverture transactions complète y compris MPT/AMM/escrow.</p>
+        <div class="project-metric"><span>Production-ready</span><span class="metric-val">js.xrpl.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Band Protocol</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">Oracles · Price feeds</div>
+        <p class="project-desc">Solution oracle pour data feeds on-chain (prix, FX, etc.). <em>Intégration native annoncée 2025</em>. Critique pour les use cases RWA et lending.</p>
+        <div class="project-metric"><span>Oracle layer</span><span class="metric-val">bandprotocol.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPLMeta</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Token metadata · Indexer</div>
+        <p class="project-desc">Indexer & API pour la metadata des tokens issued. <em>Référence pour les apps qui affichent des listings tokens</em>. Open-source.</p>
+        <div class="project-metric"><span>Open-source</span><span class="metric-val">xrplmeta.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL Pulse</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Curated directory</div>
+        <p class="project-desc">Annuaire curaté de l'écosystème XRPL : DeFi, payments, RWA, tools. <em>Ressource utile pour scout les nouveaux projets</em>.</p>
+        <div class="project-metric"><span>Community-run</span><span class="metric-val">xrplpulse.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Evernode (sur Xahau)</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Decentralized hosting</div>
+        <p class="project-desc">"Internet of dApps" : hosting décentralisé où chaque dApp tourne comme une mini-blockchain. Token EVS. <em>Live sur Xahau Mainnet</em> (sister chain de XRPL).</p>
+        <div class="project-metric"><span>Xahau-based</span><span class="metric-val">evernode.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL Explorer (Bithomp · etc.)</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Block explorers</div>
+        <p class="project-desc">Plusieurs explorers : Bithomp (référence community), XRPSCAN, Sologenic Explorer. <em>Bithomp est le plus complet</em> pour analytics on-chain.</p>
+        <div class="project-metric"><span>Multiple options</span><span class="metric-val">bithomp.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Public Nodes</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">RPC endpoints</div>
+        <p class="project-desc">XRPL Cluster (xrplcluster.com) + plusieurs nœuds publics gratuits. Pour scale, OpenNode et solutions privées (ChainStack, GetBlock) disponibles.</p>
+        <div class="project-metric"><span>Free + paid options</span><span class="metric-val">xrplcluster.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL Grants Program</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Funding · Accelerator</div>
+        <p class="project-desc">Programme de grants Ripple/XRPL Foundation. <em>Focus DeFi, RWA, payments</em>. XRPL Accelerator avec Tenity ajoute mentorship + 18 startups par cohort.</p>
+        <div class="project-metric"><span>Active program</span><span class="metric-val">xrplgrants.org</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 07 · NFT -->
+  <!-- =================================================== -->
+  <section class="category" data-color="nft" id="nft">
+    <div class="cat-header">
+      <h2>07 · <em>NFT</em> · Marketplaces</h2>
+      <span class="cat-meta">5 projets · catégorie post-pic</span>
+    </div>
+    <div class="cat-summary">Catégorie qui a connu son pic en 2022-2023, <strong>maintenant en plateau</strong>. XLS-20 reste solide techniquement (royalties natives, taxons collections). Marketplaces consolidés. <em>Innovation possible côté NFT-utility</em> (gaming, identity, ticketing) — pas dans l'art pur.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XPMarket NFT</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">NFT marketplace</div>
+        <p class="project-desc">Section NFT du tracker XPMarket. Trading + analytics + rarity. <em>Marketplace #1 par volume</em> sur XRPL en 2026.</p>
+        <div class="project-metric"><span>Volume leader</span><span class="metric-val">xpmarket.com/nft</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Sologenic NFT</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Marketplace · DEX-integrated</div>
+        <p class="project-desc">Pionnier marketplace XRPL. Maintenant intégré au TX Network unifié. <em>Liquidité profonde, royalties natives</em>.</p>
+        <div class="project-metric"><span>Historic player</span><span class="metric-val">sologenic.com/nft</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Mintable</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Multi-chain · Gas-free mint</div>
+        <p class="project-desc">Marketplace multi-chain incluant XRPL. <em>Mint sans frais</em> upfront — différenciateur pour artistes débutants. Cross-chain trading.</p>
+        <div class="project-metric"><span>Multi-chain</span><span class="metric-val">mintable.app</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Bidds.com</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Auctions · Real-time</div>
+        <p class="project-desc">Marketplace focalisé <em>auctions</em> en temps réel. Niche mais active dans la communauté XRP. Transparency et sécurité réputées.</p>
+        <div class="project-metric"><span>Auction-focused</span><span class="metric-val">bidds.com</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL NFT (XLS-20)</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Protocol primitive</div>
+        <p class="project-desc">Standard NFT natif depuis 2022. <em>Royalties on-chain, taxons collections, transferable flag, burn</em>. Tout marketplace s'appuie dessus. Pas de smart contract requis.</p>
+        <div class="project-metric"><span>Protocol-level</span><span class="metric-val">xrpl.org/nft</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- CATEGORY 08 · BRIDGES -->
+  <!-- =================================================== -->
+  <section class="category" data-color="bridge" id="bridge">
+    <div class="cat-header">
+      <h2>08 · <em>Bridges</em> · Cross-chain</h2>
+      <span class="cat-meta">4 projets · catégorie technique</span>
+    </div>
+    <div class="cat-summary">Catégorie <strong>petite mais critique</strong>. Flare Network domine avec FAssets / FXRP (134.8M XRP locked). Axelar est le bridge généraliste. <em>XRPL EVM Sidechain</em> permet enfin l'interop EVM native. La sidechain ouvre la porte à toute la DeFi avancée (perps, lending, gaming) qui était inaccessible sur le L1 pur.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Flare Network</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">FAssets · FTSO oracles</div>
+        <p class="project-desc">Bridge majeur XRP ↔ EVM via <em>FXRP</em>. <strong>134,8 M XRP locked</strong> (~ 196M$). FTSO oracles décentralisés (100 providers). Full Solidity support. <em>TVL 210M$</em>.</p>
+        <div class="project-metric"><span>~ 210 M$ TVL</span><span class="metric-val">flare.network</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">XRPL EVM Sidechain</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">Native EVM · Solidity</div>
+        <p class="project-desc">Sidechain officielle XRPL avec full EVM. Smart contracts Solidity, MetaMask compatible, Hardhat / Foundry. <em>wXRP comme gas token</em>. Bridge via Axelar.</p>
+        <div class="project-metric"><span>Solidity native</span><span class="metric-val">docs.xrplevm.org</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Axelar Network</h3>
+          <span class="project-status partner">Partner</span>
+        </div>
+        <div class="project-tag">General Message Passing</div>
+        <p class="project-desc">Bridge généraliste cross-chain. <em>Backbone du bridge XRPL ↔ EVM Sidechain</em>. Compatible 60+ chaînes. Standard de fait pour interop.</p>
+        <div class="project-metric"><span>60+ chains</span><span class="metric-val">axelar.network</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Squid Router</h3>
+          <span class="project-status live">Live</span>
+        </div>
+        <div class="project-tag">UX layer · Swaps</div>
+        <p class="project-desc">Layer UX par-dessus Axelar. Permet swaps cross-chain en 1-clic. <em>Réduit la friction</em> pour les end-users qui veulent passer XRPL ↔ EVM sans connaître les détails.</p>
+        <div class="project-metric"><span>UX abstraction</span><span class="metric-val">squidrouter.com</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- OPPORTUNITY GAPS -->
+  <!-- =================================================== -->
+  <section class="gaps">
+    <div class="gaps-header">
+      <h2>Opportunity <em>Gaps</em></h2>
+      <span class="label">Espaces inoccupés · pour builders</span>
+    </div>
+    <div class="gaps-grid">
+
+      <div class="gap">
+        <h3>Gap 01 · Wallets</h3>
+        <h4>Treasury wallet B2B XRPL-native</h4>
+        <p>Aucun wallet d'entreprise type <em>Coinshift</em> ou <em>Utopia Labs</em> dédié XRPL. Multisig + approvals workflows + audit trail compliance + intégration accounting. <strong>Marché : DAOs et entreprises crypto qui paient des contributeurs ou achètent en stablecoin.</strong></p>
+      </div>
+
+      <div class="gap">
+        <h3>Gap 02 · Infra</h3>
+        <h4>Monitoring & alerting B2B</h4>
+        <p>Pas d'équivalent <em>Tenderly</em> ou <em>Forta</em> pour XRPL. Monitoring transactions, alertes anomalies, simulation pre-execution, dashboards business. <strong>Marché : toutes les startups en production qui ont besoin de visibilité sans builder leur stack.</strong></p>
+      </div>
+
+      <div class="gap">
+        <h3>Gap 03 · DeFi</h3>
+        <h4>Yield aggregator natif</h4>
+        <p>Sologenic et XPMarket ne couvrent pas l'agrégation cross-protocole de yield (AMM LP + lending + staking sidechain). <em>Yearn-XRPL</em> n'existe pas. <strong>Marché : detail crypto qui veut maximiser le yield sans gérer manuellement.</strong></p>
+      </div>
+
+      <div class="gap">
+        <h3>Gap 04 · Identity</h3>
+        <h4>KYC reusable cross-app</h4>
+        <p>XLS-70 DID + Credentials sont disponibles, mais <em>aucun service "KYC-as-a-Service"</em> ne capitalise dessus pour offrir un KYC réutilisable d'une app à l'autre. <strong>Marché : énorme, transverse à toutes les apps RWA et compliance.</strong></p>
+      </div>
+
+      <div class="gap">
+        <h3>Gap 05 · Payments</h3>
+        <h4>POS / Merchant tooling régional</h4>
+        <p>M-Pesa challenger en Afrique (cf. blueprint MerchantPay), POS LATAM, terminal européen MiCA-compliant... <em>Aucun acteur régional dédié aux merchants</em>. <strong>Marché : énorme, avec barrière d'entrée locale (terrain).</strong></p>
+      </div>
+
+      <div class="gap">
+        <h3>Gap 06 · RWA</h3>
+        <h4>Mid-market corporate bonds</h4>
+        <p>Spiko vise les MMF, OpenEden les T-bills. <em>Personne ne couvre le mid-market corporate bond 5-50M€</em> qui est mal servi par les banques. C'est exactement le pitch BondBloc du Builder Atlas. <strong>Marché EU : 80 G€ de stock potentiel.</strong></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <h3>À propos · maintenance manuelle</h3>
+    <p>Ce document est un <strong>snapshot statique daté de mai 2026</strong>. La structure est conçue pour être éditée manuellement : chaque projet est un bloc <code>&lt;div class="project"&gt;</code> indépendant que tu peux dupliquer, modifier ou supprimer sans impacter le reste. Les couleurs des blocs et catégories sont définies via les attributs <code>data-color</code>.</p>
+    <p>Pour ajouter un projet : copie un <code>&lt;div class="project"&gt;</code> existant dans la catégorie cible, change le nom, statut, tag et description. Pour ajouter une catégorie : copie une <code>&lt;section class="category"&gt;</code>, ajoute aussi son entrée dans le <code>&lt;nav class="toc"&gt;</code>.</p>
+    <p>Sources principales mai 2026 : <em>XRPL Foundation, XPMarket, Bitrue Research, XRPL Pulse, XRPL Grants, Tenity Accelerator, Ripple Insights</em>.</p>
+  </div>
+
+  <footer>
+    <span>ECOSYSTEM MAP · v1.0</span>
+    <span>FIG. 07 · SNAPSHOT MAI 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
