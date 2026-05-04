@@ -13,12 +13,13 @@ Suite complète d'outils pour **comprendre, idéer, valider et lancer** un proje
 | 01 | `blockchain-framework-xrpl.html` | Statique | Anatomie de base : USER → CLIENT → CUSTODY → NETWORK → LEDGER |
 | 02 | `blockchain-xrpl-extended.html` | Tour guidé | Anatomie complète + AMM/RWA/Sidechain · 9 étapes + play 5 cas |
 | 03 | `blockchain-xrpl-animated.html` | Animé | Voyage d'une transaction · 3 scénarios |
-| 04 | `builder-atlas.html` | Blueprints | 6 startup blueprints détaillés (RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP) |
+| 04 | `builder-atlas.html` | Blueprints | 7 startup blueprints détaillés (RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP, AgentPay) |
 | 05 | `cost-simulator.html` | Interactif | Comparateur live XRPL vs Stellar/Solana/Ethereum |
 | 06 | `business-case-builder.html` | Interactif | Modélisation financière 24 mois (capex, opex, runway, breakeven) |
 | 07 | `decision-tree.html` | Interactif | Arbre de décision technique guidé (4-6 questions → stack + boilerplate) |
 | 08 | `decision-tree-map.html` | Statique | Vue macro complète de l'arbre · 19 chemins |
 | 09 | `ecosystem-map.html` | Statique | Carte de l'écosystème XRPL mai 2026 · 50+ projets · opportunity gaps |
+| 10 | `gaps.html` | Statique | Vue globale des 12 opportunity gaps · matrice catégorie×maturité · scores taille/ticket |
 | -- | `blockchain-xrpl-extended.pdf` | PDF | Version imprimable A3 paysage de l'anatomie complète |
 
 ---
@@ -73,6 +74,7 @@ Une fois déployé, les URLs ressemblent à :
 - `/decision-tree` → decision-tree.html
 - `/decision-tree-map` → decision-tree-map.html
 - `/ecosystem-map` → ecosystem-map.html
+- `/gaps` → gaps.html (vue globale des 12 opportunity gaps)
 - `/blockchain-framework-xrpl` → blockchain-framework-xrpl.html
 - `/blockchain-xrpl-extended` → blockchain-xrpl-extended.html
 - `/blockchain-xrpl-animated` → blockchain-xrpl-animated.html

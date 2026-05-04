@@ -189,6 +189,7 @@
   .card[data-type="business"]::before { background: var(--rwa); }
   .card[data-type="decision"]::before { background: var(--sidechain); }
   .card[data-type="ecosystem"]::before { background: var(--chain); }
+  .card[data-type="gaps"]::before { background: var(--wallet); }
 
   .card:hover {
     background: var(--paper-2);
@@ -223,6 +224,7 @@
   .card-eyebrow .badge.business { background: var(--rwa); color: var(--paper); }
   .card-eyebrow .badge.decision { background: var(--sidechain); color: var(--paper); }
   .card-eyebrow .badge.ecosystem { background: var(--chain); color: var(--paper); }
+  .card-eyebrow .badge.gaps { background: var(--wallet); color: var(--ink); }
   .card-eyebrow .badge.pdf { background: var(--custody); color: var(--paper); }
 
   .card h3 {
@@ -380,18 +382,18 @@
     <h2><span class="num">02</span>Idées · <em>builder atlas</em></h2>
     <span class="count">1 fichier · HTML</span>
   </div>
-  <div class="section-summary">Six startup blueprints détaillés exploitant les primitives XRPL. <strong>Architecture, économie, MVP, GTM</strong> par card. Le point de départ pour toute idéation.</div>
+  <div class="section-summary">Sept startup blueprints détaillés exploitant les primitives XRPL. <strong>Architecture, économie, MVP, GTM</strong> par card. Le point de départ pour toute idéation.</div>
 
   <div class="grid cols-1">
 
     <a class="card" href="builder-atlas" data-type="atlas">
       <div class="card-eyebrow">
         <span>FIG · 04</span>
-        <span class="badge atlas">6 blueprints</span>
-        <span>Payments · DeFi · RWA · Commerce · Real estate · Payroll</span>
+        <span class="badge atlas">7 blueprints</span>
+        <span>Payments · DeFi · RWA · Commerce · Real estate · Payroll · Agentic</span>
       </div>
-      <h3>Builder <em>Atlas</em> · 6 startup blueprints</h3>
-      <p>Six fiches startup approfondies : <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (épargne USD LATAM), <strong>BondBloc</strong> (RWA Europe), <strong>MerchantPay</strong> (POS Afrique), <strong>PropTok</strong> (immo MENA/SEA), <strong>PayrollXRP</strong> (streaming global). Chaque blueprint détaille problème/marché, architecture XRPL exacte, stack technique + MVP, économie + GTM. Matrice de décision finale par profil de builder.</p>
+      <h3>Builder <em>Atlas</em> · 7 startup blueprints</h3>
+      <p>Sept fiches startup approfondies : <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (épargne USD LATAM), <strong>BondBloc</strong> (RWA Europe), <strong>MerchantPay</strong> (POS Afrique), <strong>PropTok</strong> (immo MENA/SEA), <strong>PayrollXRP</strong> (streaming global), <strong>AgentPay</strong> (x402 facilitator pour agents IA). Chaque blueprint détaille problème/marché, architecture XRPL exacte, stack technique + MVP, économie + GTM. Matrice de décision finale par profil de builder.</p>
       <div class="card-foot">
         <span class="filename">builder-atlas.html</span>
         <span class="card-arrow">→</span>
@@ -452,12 +454,12 @@
 
   <!-- ============ 04 · PAYSAGE ============ -->
   <div class="section-head">
-    <h2><span class="num">04</span>Paysage · <em>écosystème</em></h2>
-    <span class="count">1 fichier · HTML</span>
+    <h2><span class="num">04</span>Paysage · <em>écosystème & gaps</em></h2>
+    <span class="count">2 fichiers · HTML</span>
   </div>
-  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026, classés par catégorie fonctionnelle. <strong>Identifie les espaces saturés à éviter et les opportunity gaps</strong> où personne ne joue encore.</div>
+  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026 + vue consolidée des <strong>12 opportunity gaps</strong>. <strong>Identifie les espaces saturés à éviter et les zones blanches</strong> où personne ne joue encore — scoré par maturité, taille de marché et ticket d'entrée technique.</div>
 
-  <div class="grid cols-1">
+  <div class="grid">
 
     <a class="card" href="ecosystem-map" data-type="ecosystem">
       <div class="card-eyebrow">
@@ -469,6 +471,20 @@
       <p>Carte structurée de l'écosystème XRPL : <strong>DeFi, Stablecoins, RWA, Payments, Wallets, Infrastructure, NFT, Bridges</strong>. Chaque projet étiqueté par état (Live/Beta/Upcoming/Partner). Section <strong>Opportunity Gaps</strong> en fin de page : 6 espaces inoccupés où lancer une startup. Page éditable manuellement pour maintenance.</p>
       <div class="card-foot">
         <span class="filename">ecosystem-map.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="gaps" data-type="gaps">
+      <div class="card-eyebrow">
+        <span>FIG · 10</span>
+        <span class="badge gaps">Vue globale gaps</span>
+        <span>12 gaps · 8 catégories · matrice</span>
+      </div>
+      <h3>Opportunity <em>Gaps</em> · vue globale</h3>
+      <p>Page consolidée des <strong>12 espaces inoccupés</strong> identifiés sur XRPL : <em>Treasury B2B, Monitoring, Yield aggregator, KYC reusable, POS régional, Mid-market bonds, x402 facilitator, Lending senior, Agent treasury, On-chain accounting, Gaming utility, Data marketplace</em>. Matrice catégorie × maturité, scores taille / ticket technique, liens vers le decision-tree et les blueprints Atlas.</p>
+      <div class="card-foot">
+        <span class="filename">gaps.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>

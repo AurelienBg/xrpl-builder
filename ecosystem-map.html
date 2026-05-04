@@ -157,6 +157,7 @@
   .toc a[data-color="nft"]::before { background: var(--sidechain); }
   .toc a[data-color="bridge"]::before { background: var(--custody); }
   .toc a[data-color="identity"]::before { background: var(--app); }
+  .toc a[data-color="ai"]::before { background: #2c6680; }
   .toc-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
@@ -261,6 +262,7 @@
   .category[data-color="bridge"] .project::before { background: var(--custody); }
   .category[data-color="identity"] .project::before { background: var(--app); }
   .category[data-color="stablecoins"] .project::before { background: var(--chain); }
+  .category[data-color="ai"] .project::before { background: #2c6680; }
 
   .project-head {
     display: flex;
@@ -486,7 +488,7 @@
       <p style="font-style: italic; color: var(--muted);">Ce document est un snapshot statique. Les projets évoluent vite — édite manuellement la liste pour la maintenir à jour.</p>
     </div>
     <div class="intro-stats">
-      <div class="stat-row"><span class="label">Catégories</span><span class="val">8</span></div>
+      <div class="stat-row"><span class="label">Catégories</span><span class="val">9</span></div>
       <div class="stat-row"><span class="label">Projets listés</span><span class="val">50+</span></div>
       <div class="stat-row"><span class="label">RWA on XRPL</span><span class="val">~ 474 M$</span></div>
       <div class="stat-row"><span class="label">TVL Flare bridge</span><span class="val">~ 210 M$</span></div>
@@ -536,6 +538,11 @@
       <div class="toc-num">08</div>
       <div class="toc-name">Bridges</div>
       <div class="toc-cat">EVM · Cross-chain</div>
+    </a>
+    <a href="#ai" data-color="ai">
+      <div class="toc-num">09</div>
+      <div class="toc-name">AI × Payments</div>
+      <div class="toc-cat">x402 · Agentic</div>
     </a>
   </nav>
 
@@ -1124,12 +1131,45 @@
   </section>
 
   <!-- =================================================== -->
+  <!-- CATEGORY 09 · AI × PAYMENTS (emerging) -->
+  <!-- =================================================== -->
+  <section class="category" data-color="ai" id="ai">
+    <div class="cat-header">
+      <h2>09 · <em>AI × Payments</em> · agentic</h2>
+      <span class="cat-meta">2 entrées · catégorie émergente</span>
+    </div>
+    <div class="cat-summary">Catégorie <strong>structurellement nouvelle</strong> apparue avec les agents IA (OpenAI Operator, Claude Computer Use, Vercel AI agents). Le standard <em>x402 (HTTP 402 "Payment Required")</em> relancé par Coinbase permet aux agents de payer des APIs en crypto sans login. Implémenté sur Base/USDC. <strong>XRPL est techniquement idéal</strong> pour ce use case (~0.00001 XRP/tx, finalité 3–5s, native payments) mais <em>aucun facilitator n'existe encore</em> — gap explicite.</div>
+
+    <div class="projects">
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">x402 standard (Coinbase)</h3>
+          <span class="project-status partner">External</span>
+        </div>
+        <div class="project-tag">HTTP 402 · Open standard</div>
+        <p class="project-desc">Spec ouverte (Coinbase, 2024) qui réutilise le code HTTP <em>402 Payment Required</em> pour permettre à un client (souvent agent IA) de payer une requête API en crypto. Implé live sur <strong>Base avec USDC</strong>. Spec chain-agnostic dans le design — adoptable sur XRPL nativement.</p>
+        <div class="project-metric"><span>Spec Coinbase</span><span class="metric-val">github.com/coinbase/x402</span></div>
+      </div>
+
+      <div class="project">
+        <div class="project-head">
+          <h3 class="project-name">Facilitator XRPL</h3>
+          <span class="project-status upcoming">Vacant</span>
+        </div>
+        <div class="project-tag">Opportunity gap · à builder</div>
+        <p class="project-desc"><strong>Aucun acteur n'a encore implémenté un facilitator x402 sur XRPL</strong>. Stack minimale : middleware HTTP + verify <code>Payment</code> on-chain via xrpl.js + memo nonce. Pour multi-step / quotas : <code>SetRegularKey</code> + escrow conditionnel. <em>Voir le path <strong>r-x402-agent</strong> dans le decision-tree</em> et le gap dédié dans la <a href="gaps">vue globale gaps</a>.</p>
+        <div class="project-metric"><span>Gap explicite</span><span class="metric-val"><a href="gaps#gap-07" style="color:inherit;text-decoration:underline;">→ gaps.html#gap-07</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
   <!-- OPPORTUNITY GAPS -->
   <!-- =================================================== -->
   <section class="gaps">
     <div class="gaps-header">
-      <h2>Opportunity <em>Gaps</em></h2>
-      <span class="label">Espaces inoccupés · pour builders</span>
+      <h2>Opportunity <em>Gaps</em> · aperçu</h2>
+      <span class="label"><a href="gaps" style="color: var(--wallet); text-decoration: underline;">→ Voir la vue globale (12 gaps)</a></span>
     </div>
     <div class="gaps-grid">
 

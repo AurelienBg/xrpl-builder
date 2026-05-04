@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Builder Atlas — 6 startup blueprints sur XRPL</title>
+<title>Builder Atlas — 7 startup blueprints sur XRPL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -127,7 +127,7 @@
   /* ============ NAVIGATION (anchor links) ============ */
   .toc {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 0;
     border: 2px solid var(--ink);
     margin-bottom: 48px;
@@ -157,6 +157,7 @@
   .toc a[data-color="commerce"]::before { background: var(--wallet); }
   .toc a[data-color="realestate"]::before { background: var(--custody); }
   .toc a[data-color="payroll"]::before { background: var(--app); }
+  .toc a[data-color="agentic"]::before { background: #2c6680; }
   .toc-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
@@ -202,6 +203,7 @@
   .startup[data-color="commerce"]::before { background: var(--wallet); }
   .startup[data-color="realestate"]::before { background: var(--custody); }
   .startup[data-color="payroll"]::before { background: var(--app); }
+  .startup[data-color="agentic"]::before { background: #2c6680; }
 
   /* HEADER of each startup */
   .startup-head {
@@ -237,6 +239,7 @@
   .startup[data-color="commerce"] .startup-cat-pill { background: var(--wallet); color: var(--ink); }
   .startup[data-color="realestate"] .startup-cat-pill { background: var(--custody); }
   .startup[data-color="payroll"] .startup-cat-pill { background: var(--app); }
+  .startup[data-color="agentic"] .startup-cat-pill { background: #2c6680; }
 
   .startup-name {
     font-family: 'Fraunces', serif;
@@ -487,7 +490,7 @@
   <!-- ============ MASTHEAD ============ -->
   <header class="masthead">
     <div>
-      <div class="eyebrow">Builder Atlas · 6 startup blueprints · v1.0</div>
+      <div class="eyebrow">Builder Atlas · 7 startup blueprints · v1.1</div>
       <h1>Que peut-on<br/><em>vraiment</em> bâtir<br/>sur le XRPL ?</h1>
     </div>
     <div class="meta">
@@ -505,17 +508,18 @@
     <span>COMMERCE</span>
     <span>REAL ESTATE</span>
     <span>PAYROLL</span>
+    <span>AGENTIC</span>
   </div>
 
   <!-- ============ INTRO ============ -->
   <div class="intro">
     <div class="intro-text">
       <p>L'écosystème XRPL est souvent pitché en termes d'<em>architecture</em> — UNL, RPCA, AMM, MPT. Mais quand on est builder, la vraie question est différente : <strong>quelle startup je peux lancer dans les 6 prochains mois, en exploitant ce que XRPL fait mieux qu'ailleurs ?</strong></p>
-      <p>Ce document propose 6 blueprints précis. Chacun part d'un problème de marché concret, identifie pourquoi XRPL est <em>structurellement</em> avantagé pour le résoudre, détaille l'architecture technique exacte, le stack à utiliser, l'économie unitaire, et un plan MVP en 3-4 semaines.</p>
+      <p>Ce document propose 7 blueprints précis. Chacun part d'un problème de marché concret, identifie pourquoi XRPL est <em>structurellement</em> avantagé pour le résoudre, détaille l'architecture technique exacte, le stack à utiliser, l'économie unitaire, et un plan MVP en 3-4 semaines.</p>
       <p>Le but n'est pas de vendre XRPL — c'est de séparer les use cases où <strong>le ledger fait gagner</strong> de ceux où on ferait mieux d'utiliser autre chose. La matrice de décision en fin de document classe chaque blueprint par couple <em>opportunité × complexité</em>.</p>
     </div>
     <div class="intro-stats">
-      <div class="stat-row"><span class="label">Blueprints</span><span class="val">6</span></div>
+      <div class="stat-row"><span class="label">Blueprints</span><span class="val">7</span></div>
       <div class="stat-row"><span class="label">Marché total visé</span><span class="val">~ 1,2 T$</span></div>
       <div class="stat-row"><span class="label">Couches XRPL</span><span class="val">L1 + AMM + MPT</span></div>
       <div class="stat-row"><span class="label">Régions couvertes</span><span class="val">5</span></div>
@@ -556,6 +560,11 @@
       <div class="toc-name">PayrollXRP</div>
       <div class="toc-cat">Paie streaming · Global</div>
     </a>
+    <a href="#agentpay" data-color="agentic">
+      <div class="toc-num">07</div>
+      <div class="toc-name">AgentPay</div>
+      <div class="toc-cat">x402 facilitator · Agentic</div>
+    </a>
   </nav>
 
   <!-- =================================================================== -->
@@ -564,7 +573,7 @@
   <section class="startup" data-color="payments" id="remitflow">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 01 / 06</span>
+        <span class="startup-num">BLUEPRINT 01 / 07</span>
         <span class="startup-cat-pill">Payments · Remittances</span>
       </div>
       <h2 class="startup-name">RemitFlow<em> — </em>passerelle Philippines ↔ US</h2>
@@ -763,7 +772,7 @@
   <section class="startup" data-color="defi" id="vaultdao">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 02 / 06</span>
+        <span class="startup-num">BLUEPRINT 02 / 07</span>
         <span class="startup-cat-pill">DeFi · Inflation hedge</span>
       </div>
       <h2 class="startup-name">VaultDAO<em> — </em>épargne USD pour la classe moyenne LATAM</h2>
@@ -964,7 +973,7 @@
   <section class="startup" data-color="rwa" id="bondbloc">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 03 / 06</span>
+        <span class="startup-num">BLUEPRINT 03 / 07</span>
         <span class="startup-cat-pill">RWA · Corporate bonds</span>
       </div>
       <h2 class="startup-name">BondBloc<em> — </em>obligations corporate mid-market on-chain</h2>
@@ -1175,7 +1184,7 @@
   <section class="startup" data-color="commerce" id="merchantpay">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 04 / 06</span>
+        <span class="startup-num">BLUEPRINT 04 / 07</span>
         <span class="startup-cat-pill">Commerce · POS</span>
       </div>
       <h2 class="startup-name">MerchantPay<em> — </em>terminal de paiement mobile-first pour l'Afrique</h2>
@@ -1387,7 +1396,7 @@
   <section class="startup" data-color="realestate" id="proptok">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 05 / 06</span>
+        <span class="startup-num">BLUEPRINT 05 / 07</span>
         <span class="startup-cat-pill">Real Estate · Fractional</span>
       </div>
       <h2 class="startup-name">PropTok<em> — </em>fractionalisation immobilière premium</h2>
@@ -1597,7 +1606,7 @@
   <section class="startup" data-color="payroll" id="payrollxrp">
     <div class="startup-head">
       <div class="startup-meta">
-        <span class="startup-num">BLUEPRINT 06 / 06</span>
+        <span class="startup-num">BLUEPRINT 06 / 07</span>
         <span class="startup-cat-pill">Payroll · Streaming</span>
       </div>
       <h2 class="startup-name">PayrollXRP<em> — </em>paie en streaming pour DAOs et freelancers globaux</h2>
@@ -1800,7 +1809,211 @@
     </div>
   </section>
 
-  <!-- ============ DECISION MATRIX ============ -->
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 07 — AGENTPAY ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="agentic" id="agentpay">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 07 / 07</span>
+        <span class="startup-cat-pill">Agentic · x402 facilitator</span>
+      </div>
+      <h2 class="startup-name">AgentPay<em> — </em>x402 facilitator sur XRPL</h2>
+      <p class="startup-tagline">Permettre aux agents IA de payer une API en crypto sans login · standard HTTP 402 · zéro implé XRPL aujourd'hui</p>
+      <span class="startup-region">Global · API economy</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problème · Marché</h3>
+        <p>Un agent IA autonome (Claude Computer Use, OpenAI Operator, agent Vercel AI SDK, LangChain agent) a besoin de payer un service API tiers — météo, recherche web, génération d'image, scraping légal — <strong>sans intervention humaine et sans avoir un compte chez ce fournisseur</strong>.</p>
+        <p>Les solutions actuelles font toutes mal le job : <em>API keys + carte de crédit</em> (impossible de scaler à 1000 services différents, friction onboarding), <em>credit pools centralisés</em> (single point of failure, KYC entreprise lourd), ou <em>x402 sur Base/USDC</em> (Coinbase, 2024 — le seul acteur, mais limité à un seul rail crypto).</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Coût tx XRPL</div>
+            <div class="stat-value">~ 5×10⁻⁷ $</div>
+            <div class="stat-sub">10 drops &lt; $0.000001</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Coût tx Base / EVM</div>
+            <div class="stat-value">~ 0,001–0,01 $</div>
+            <div class="stat-sub">100–10 000× plus cher</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Finalité XRPL</div>
+            <div class="stat-value">3–5 sec</div>
+            <div class="stat-sub">déterministe · pas de probabiliste</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Volume agent-API</div>
+            <div class="stat-value">croissance &gt; 10×/an</div>
+            <div class="stat-sub">depuis Operator/Computer Use 2024</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL plutôt qu'autre chose :</strong> les frais sont <em>3–4 ordres de grandeur</em> plus bas que les EVMs — critique quand le coût du paiement DOIT être inférieur au coût de l'API appelée (typiquement $0.001–0.10 par appel). XRPL a aussi des primitives natives qui matchent parfaitement les besoins agents : <code>SetRegularKey</code> pour des sub-accounts scopés, <code>SignerListSet</code> pour des caps quotidiens, <code>EscrowCreate</code> pour les workflows multi-step. Pas de smart contract à auditer. Et la finalité déterministe (pas de réorg) simplifie la logique de vérification.</p>
+
+        <div class="risk-callout">
+          <strong>Risque clé</strong> Adoption du standard x402 dépend de l'écosystème AI agents (encore jeune). Coinbase pousse fort sur Base/USDC — risque qu'ils étendent à d'autres chains avant qu'AgentPay n'atteigne le PMF. <em>Stratégie défensive : devenir le facilitator XRPL <strong>de référence</strong> — open-source, intégrations natives Vercel AI SDK / LangChain / LlamaIndex avant les concurrents.</em>
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">Payment</span>
+          <span class="arch-tag used">Memo (nonce)</span>
+          <span class="arch-tag used">RLUSD</span>
+          <span class="arch-tag used">SetRegularKey</span>
+          <span class="arch-tag used">SignerListSet</span>
+          <span class="arch-tag">EscrowCreate</span>
+          <span class="arch-tag">MPT (quota tokens)</span>
+        </div>
+
+        <p>Le serveur API renvoie <code>HTTP 402</code> avec headers x402 (currency, amount, recipient, nonce). L'agent client construit une <code>Payment</code> XRPL (XRP ou RLUSD), la soumet, attend la finalité (~3–5s), puis retry la requête API avec le tx hash dans header <code>X-Payment</code>. Le serveur vérifie on-chain (montant, destinataire, nonce dans memo) et débloque la réponse.</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+            <!-- Agent -->
+            <rect x="10" y="20" width="100" height="50" fill="#2c6680" stroke="#0e1116" stroke-width="2"/>
+            <text x="60" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">AI AGENT</text>
+            <text x="60" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">Claude / GPT</text>
+
+            <!-- API server (returns 402) -->
+            <rect x="135" y="20" width="100" height="50" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="185" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">API · 402</text>
+            <text x="185" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">x402 challenge</text>
+            <text x="185" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">amount · nonce</text>
+
+            <!-- XRPL Payment -->
+            <rect x="260" y="20" width="120" height="50" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="320" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">XRPL Payment</text>
+            <text x="320" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">Memo: nonce</text>
+            <text x="320" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">~3–5 sec finalité</text>
+
+            <!-- Verifier -->
+            <rect x="405" y="20" width="100" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="455" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">VERIFIER</text>
+            <text x="455" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">tx hash check</text>
+            <text x="455" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">X-Payment</text>
+
+            <!-- API 200 -->
+            <rect x="525" y="20" width="65" height="50" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="557" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">200 OK</text>
+            <text x="557" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">response</text>
+
+            <!-- Arrows -->
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 110 45 L 135 45" marker-end="url(#a-ap)"/>
+              <path d="M 235 45 L 260 45" marker-end="url(#a-ap)"/>
+              <path d="M 380 45 L 405 45" marker-end="url(#a-ap)"/>
+              <path d="M 505 45 L 525 45" marker-end="url(#a-ap)"/>
+            </g>
+            <defs>
+              <marker id="a-ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Note -->
+            <text x="300" y="105" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="11" fill="#0e1116">Round-trip total : ~4 secondes · zéro KYC · zéro signup côté API</text>
+            <text x="300" y="122" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">Le serveur gagne · l'agent paie sans humain · le coût XRPL est négligeable face au prix API</text>
+            <text x="300" y="140" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6b6358">stack open-source · facilitator hosted optionnel pour quota / dashboard</text>
+          </svg>
+        </div>
+
+        <p><strong>Variantes :</strong></p>
+        <p>— <strong>v1 (per-call XRP) :</strong> chaque requête API = 1 <code>Payment</code> XRP avec memo nonce. Verifier valide hash + montant + destinataire on-chain. Le plus simple, idéal pour MVP. Latence ~4s par appel acceptable pour la majorité des use cases agents.</p>
+        <p>— <strong>v2 (sub-account quota) :</strong> l'agent reçoit un <em>sub-account</em> via <code>SetRegularKey</code>, avec un cap quotidien via <code>SignerListSet</code> (l'humain peut révoquer instantanément). Verifier accepte des paiements signés par le sub-account jusqu'au quota. Latence quasi-nulle (validation off-chain par signature) mais sécurité moindre — utile pour micropaiements ultra-frequents.</p>
+        <p>— <strong>v3 (escrow workflow) :</strong> pour les workflows multi-step (agent qui appelle 5 APIs en cascade), un <code>EscrowCreate</code> bloque le total. Chaque sub-step déclenche un <code>EscrowFinish</code> partiel via crypto-condition. Avantage : pre-commit à un budget total, le user humain peut <code>EscrowCancel</code> avant la deadline.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Coinbase x402 (Base/USDC, 2024) · Lightning Address pour AI agents (concept Bitcoin) · Privy / Crossmint pour wallets agents · pas d'implé XRPL aujourd'hui
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">SDK serveur</span><span>Express/Hono middleware en TypeScript · publié npm <code>@agentpay/server</code> · MIT</span></li>
+          <li><span class="layer">SDK client</span><span>Lib pour agents IA · <code>@agentpay/client</code> · adapters Vercel AI SDK, LangChain, LlamaIndex</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl.js</code> v3+ · WebSocket subscribe pour verify rapide · multi-issuer pour XRP/RLUSD/USDC</span></li>
+          <li><span class="layer">Verifier hosted</span><span>Optionnel · API REST <code>/verify</code> avec cache Redis · idempotence par nonce</span></li>
+          <li><span class="layer">Dashboard</span><span>Next.js · monitoring tx volume, error rate, top APIs · pour customers enterprise</span></li>
+          <li><span class="layer">Wallet flow</span><span>Agent custody options : self-managed (clé en env), Magic.link, Crossmint smart wallet</span></li>
+          <li><span class="layer">Observabilité</span><span>OpenTelemetry · Sentry · Datadog · alertes sur tx failed et reverify mismatch</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP en 3 sprints (6 semaines) :</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> SDK serveur Express middleware fonctionnel · vérifie <code>Payment</code> XRP testnet · démo CLI (curl avec X-Payment)</li>
+          <li><strong>S3–S4 :</strong> SDK client TypeScript · adapters Vercel AI SDK + LangChain · 1 démo end-to-end (agent qui paie une API testnet)</li>
+          <li><strong>S5 :</strong> Support RLUSD + sub-account v2 · doc complète · launch GitHub open-source + post Hacker News</li>
+          <li><strong>S6 :</strong> Verifier hosted (Vercel) · 5 design partners agents recrutés · iterations basées feedback</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> 50–80k € (1 dev senior 4 mois + 1 devrel mi-temps + hosting)</p>
+
+        <div class="refs">
+          <strong>Stack ref</strong> Coinbase x402 GitHub · xrpl.js docs · Vercel AI SDK adapters guide · LangChain custom tools doc
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS & GO-TO-MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Modèle de revenus à 3 étages :</strong></p>
+        <p>— <strong>Free / open-source :</strong> SDK serveur + client en MIT. Acquisition produit, base communautaire, pas de revenu direct.</p>
+        <p>— <strong>Hosted facilitator (paid) :</strong> $0.0001 par paiement vérifié via le verifier hosted (cache Redis, dashboard, idempotence garantie). Pour les API providers qui ne veulent pas builder leur infra de verification.</p>
+        <p>— <strong>Enterprise tier :</strong> $500–2 000/mois pour dashboards avancés (top APIs, fraud detection, monitoring SLA), priority support, custom integrations.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Marge brute SaaS</div>
+            <div class="stat-value">&gt; 90 %</div>
+            <div class="stat-sub">infra ultra-light</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Coût XRPL / verify</div>
+            <div class="stat-value">~ 0,001 ¢</div>
+            <div class="stat-sub">read-only WebSocket</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Break-even</div>
+            <div class="stat-value">~ 50 design partners</div>
+            <div class="stat-sub">tier enterprise</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Run rate an 2</div>
+            <div class="stat-value">~ 800 k$</div>
+            <div class="stat-sub">enterprise + hosted</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market dev-first :</strong> open-source SDK sur GitHub (MIT), package npm publié dès le J0. Acquisition via Twitter dev IA (Latent Space, AI Engineer), Hacker News, Substack. Devrel intensif sur 3 plateformes : <em>Vercel AI SDK examples</em>, <em>LangChain integrations</em>, <em>LlamaIndex pack registry</em>. Sponsor de hackathons IA agents (AI Engineer Summit, Anthropic hackathons, ETHGlobal AI tracks).</p>
+
+        <p><strong>Avantage XRPL exclusif :</strong> seule chain où le coût du paiement reste bien inférieur au coût d'une API même très bon marché ($0.001). Sur Base, payer une API à $0.001 = 100% de fees ; sur XRPL = &lt; 0.05% de fees. Argument économique imparable côté API providers — c'est <em>la seule</em> chain où x402 fonctionne pour des micropaiements vraiment micro.</p>
+
+        <p><strong>Timeline réaliste vers Series A :</strong> 18–24 mois. Métriques cibles Series A : <strong>5+ design partners enterprise actifs</strong>, <strong>volumes &gt; 10M paiements vérifiés/mois</strong>, intégrations natives dans 2 des 3 frameworks IA principaux.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Coinbase x402 (gratuit, Base/USDC) · Privy ($18M raised, wallets agent) · Crossmint ($23M, smart wallets agents) · Magic Link ($80M, embedded wallets)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ DECISION MATRIX -->
   <section style="margin-top: 64px;">
     <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: baseline;">
       <h2 style="font-family: 'Fraunces', serif; font-weight: 800; font-size: 32px; margin: 0; letter-spacing: -0.02em;">Matrice <em style="font-style: italic; font-weight: 400; color: var(--chain);">opportunité × complexité</em></h2>
@@ -1874,17 +2087,26 @@
           <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Élevée (Sablier, Request)</td>
           <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Solo dev senior</td>
         </tr>
+        <tr>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">AgentPay</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ &gt; 10×/an growth</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">6 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 60 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Faible</strong> (pure tech, no compliance)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Coinbase x402 (Base only)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Solo dev IA-native</td>
+        </tr>
       </tbody>
     </table>
 
     <div style="margin-top: 24px; padding: 18px 24px; background: var(--paper-2); border: 1.5px solid var(--ink); display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center;">
       <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Recommandation</span>
-      <span style="font-family:'Fraunces',serif;font-size:14px;line-height:1.55;font-style:italic;">Si tu démarres seul avec un budget limité : <strong style="font-style:normal;">PayrollXRP</strong> (pure tech, PLG, marché chaud). Si tu veux un impact massif et un edge inéquitable XRPL : <strong style="font-style:normal;">VaultDAO</strong> (les concurrents sont bloqués sur Ethereum gas). Si tu as l'expertise finance : <strong style="font-style:normal;">BondBloc</strong> (high margin, marché peu adressé).</span>
+      <span style="font-family:'Fraunces',serif;font-size:14px;line-height:1.55;font-style:italic;">Si tu démarres seul avec un budget limité : <strong style="font-style:normal;">PayrollXRP</strong> (pure tech, PLG, marché chaud) ou <strong style="font-style:normal;">AgentPay</strong> (greenfield, dev-first, edge XRPL imparable sur les fees). Si tu veux un impact massif et un edge inéquitable XRPL : <strong style="font-style:normal;">VaultDAO</strong> (les concurrents sont bloqués sur Ethereum gas). Si tu as l'expertise finance : <strong style="font-style:normal;">BondBloc</strong> (high margin, marché peu adressé).</span>
     </div>
   </section>
 
   <footer>
-    <span>BUILDER ATLAS · 6 BLUEPRINTS · v1.0</span>
+    <span>BUILDER ATLAS · 7 BLUEPRINTS · v1.1</span>
     <span>FIG. 03 · STARTUP IDEAS</span>
   </footer>
 

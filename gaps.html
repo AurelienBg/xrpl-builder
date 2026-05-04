@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Opportunity Gaps — Vue globale · 12 espaces inoccupés sur XRPL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --defi: #3a7b8e;
+    --identity: #5d4a78;
+    --ai: #2c6680;
+    --treasury: #6b4226;
+    --good: #2e5d4f;
+    --bad: #c8553d;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* BACK LINK */
+  .back-link {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    transition: all 0.15s ease;
+  }
+  .back-link:hover { background: var(--ink); color: var(--paper); }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro-text p { margin: 0 0 8px 0; }
+  .intro-text p:last-child { margin-bottom: 0; }
+  .intro-text strong { font-weight: 600; }
+  .intro-text em { color: var(--chain); }
+
+  .intro-stats {
+    border-left: 2px solid var(--ink);
+    padding-left: 22px;
+  }
+  .intro-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(14,17,22,0.15);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .intro-stats .stat-row:last-child { border-bottom: none; }
+  .intro-stats .stat-row .label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .intro-stats .stat-row .val {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* MATRIX OVERVIEW */
+  .matrix-wrap {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 36px;
+    overflow: hidden;
+  }
+  .matrix-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .matrix-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .matrix-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .matrix-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wallet);
+  }
+
+  .matrix-body {
+    display: grid;
+    grid-template-columns: 220px 1fr 1fr 1fr;
+    border-collapse: collapse;
+  }
+  .matrix-body .matrix-th {
+    padding: 14px 18px;
+    background: var(--paper-2);
+    border-bottom: 1.5px solid var(--ink);
+    border-right: 1px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .matrix-body .matrix-th:last-child { border-right: none; }
+  .matrix-body .matrix-cat {
+    padding: 14px 18px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .matrix-body .matrix-cat::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+  }
+  .matrix-body .matrix-cat[data-color="treasury"]::before { background: var(--custody); }
+  .matrix-body .matrix-cat[data-color="infra"]::before { background: var(--chain); }
+  .matrix-body .matrix-cat[data-color="defi"]::before { background: var(--defi); }
+  .matrix-body .matrix-cat[data-color="identity"]::before { background: var(--identity); }
+  .matrix-body .matrix-cat[data-color="payments"]::before { background: var(--user); }
+  .matrix-body .matrix-cat[data-color="rwa"]::before { background: var(--rwa); }
+  .matrix-body .matrix-cat[data-color="ai"]::before { background: var(--ai); }
+  .matrix-body .matrix-cat[data-color="nft"]::before { background: var(--sidechain); }
+
+  .matrix-body .matrix-cell {
+    padding: 12px 16px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .matrix-body .matrix-cell:last-child { border-right: none; }
+  .matrix-body .matrix-row:last-child .matrix-cat,
+  .matrix-body .matrix-row:last-child .matrix-cell { border-bottom: none; }
+
+  .matrix-body .matrix-cell.empty {
+    background: var(--paper-3);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-align: center;
+    font-style: italic;
+  }
+  .matrix-body .matrix-cell .gap-link {
+    display: block;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.3;
+    transition: all 0.1s ease;
+  }
+  .matrix-body .matrix-cell .gap-link:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .matrix-body .matrix-cell .gap-link:last-child { margin-bottom: 0; }
+  .matrix-body .matrix-cell .gap-link .gap-id {
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  /* Use display: contents pattern */
+  .matrix-row { display: contents; }
+
+  /* LEGEND */
+  .legend-bar {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 14px 22px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .legend-bar .legend-block h4 {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px 0;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 4px;
+  }
+  .legend-bar .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+  }
+  .legend-bar .legend-row .icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper-2);
+    padding: 1px 6px;
+    border: 1px solid var(--ink);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  .legend-bar .legend-row .icon.greenfield { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .legend-bar .legend-row .icon.fragmented { background: var(--wallet); color: var(--ink); border-color: var(--ink); }
+  .legend-bar .legend-row .icon.saturated { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .legend-bar .legend-row .icon.low { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .legend-bar .legend-row .icon.mid { background: var(--wallet); color: var(--ink); border-color: var(--ink); }
+  .legend-bar .legend-row .icon.high { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .legend-bar .legend-row .star { color: var(--wallet); font-size: 14px; line-height: 1; }
+  .legend-bar .legend-row em { color: var(--muted); font-style: italic; }
+
+  /* GAPS GRID */
+  .gaps-section {
+    margin-bottom: 32px;
+  }
+  .gaps-section .section-head {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .gaps-section .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 28px;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .gaps-section .section-head h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .gaps-section .section-head .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .gaps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+  }
+
+  .gap-card {
+    padding: 22px 26px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .gap-card:nth-child(2n) { border-right: none; }
+  .gap-card:nth-last-child(-n+2) { border-bottom: none; }
+  .gap-card:nth-last-child(1):nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  .gap-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 5px;
+  }
+  .gap-card[data-cat="treasury"]::before { background: var(--custody); }
+  .gap-card[data-cat="infra"]::before { background: var(--chain); }
+  .gap-card[data-cat="defi"]::before { background: var(--defi); }
+  .gap-card[data-cat="identity"]::before { background: var(--identity); }
+  .gap-card[data-cat="payments"]::before { background: var(--user); }
+  .gap-card[data-cat="rwa"]::before { background: var(--rwa); }
+  .gap-card[data-cat="ai"]::before { background: var(--ai); }
+  .gap-card[data-cat="nft"]::before { background: var(--sidechain); }
+
+  .gap-card .gap-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+    gap: 12px;
+  }
+  .gap-card .cat-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    color: var(--paper);
+    font-weight: 700;
+    border: 1px solid var(--ink);
+  }
+  .gap-card[data-cat="treasury"] .cat-pill { background: var(--custody); }
+  .gap-card[data-cat="infra"] .cat-pill { background: var(--chain); }
+  .gap-card[data-cat="defi"] .cat-pill { background: var(--defi); }
+  .gap-card[data-cat="identity"] .cat-pill { background: var(--identity); }
+  .gap-card[data-cat="payments"] .cat-pill { background: var(--user); }
+  .gap-card[data-cat="rwa"] .cat-pill { background: var(--rwa); }
+  .gap-card[data-cat="ai"] .cat-pill { background: var(--ai); }
+  .gap-card[data-cat="nft"] .cat-pill { background: var(--sidechain); }
+
+  .gap-card .gap-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .gap-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.15;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+  .gap-card h3 em { font-style: italic; font-weight: 400; color: var(--chain); }
+
+  .gap-card .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 14px 0;
+    line-height: 1.4;
+  }
+
+  .gap-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .gap-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    font-weight: 700;
+  }
+  .gap-card .tag.greenfield { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .gap-card .tag.fragmented { background: var(--wallet); color: var(--ink); }
+  .gap-card .tag.saturated { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .gap-card .tag.ticket-low { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .gap-card .tag.ticket-mid { background: var(--wallet); color: var(--ink); }
+  .gap-card .tag.ticket-high { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .gap-card .tag.size {
+    background: var(--paper-2);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    letter-spacing: 0;
+    padding: 1px 8px;
+  }
+  .gap-card .tag.size .star { color: var(--wallet); }
+  .gap-card .tag.size .star.empty { color: var(--paper-3); }
+
+  .gap-card p.desc {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 12px 0;
+    color: var(--ink);
+  }
+  .gap-card p.desc strong { font-weight: 600; }
+  .gap-card p.desc em { color: var(--chain); }
+
+  .gap-card .gap-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px dashed rgba(14,17,22,0.25);
+    border-bottom: 1px dashed rgba(14,17,22,0.25);
+    margin-bottom: 12px;
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .gap-card .gap-meta .meta-block {
+    display: flex;
+    flex-direction: column;
+  }
+  .gap-card .gap-meta .meta-block .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .gap-card .gap-meta .meta-block .meta-val {
+    color: var(--ink);
+  }
+
+  .gap-card .gap-links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: auto;
+  }
+  .gap-card .gap-link {
+    padding: 7px 11px;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.15s ease;
+  }
+  .gap-card .gap-link:hover { background: var(--ink); color: var(--paper); }
+  .gap-card .gap-link .link-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 8px;
+    font-weight: 700;
+  }
+  .gap-card .gap-link:hover .link-tag { color: var(--paper); opacity: 0.85; }
+  .gap-card .gap-link .link-name { flex: 1; font-weight: 600; }
+  .gap-card .gap-link .link-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    margin-left: 8px;
+  }
+  .gap-card .gap-link.disabled {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+    background: var(--paper);
+    font-style: italic;
+  }
+
+  /* NOTES */
+  .notes {
+    margin-top: 56px;
+    padding: 20px 26px;
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .notes h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px 0;
+    font-weight: 700;
+  }
+  .notes p { margin: 0 0 8px 0; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes em { color: var(--chain); }
+  .notes strong { font-weight: 600; }
+
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 920px) {
+    .intro { grid-template-columns: 1fr; }
+    .matrix-body { grid-template-columns: 1fr; }
+    .matrix-body .matrix-th, .matrix-body .matrix-cat { border-right: none; }
+    .gaps-grid { grid-template-columns: 1fr; }
+    .gap-card { border-right: none; }
+    .legend-bar { grid-template-columns: 1fr; }
+    .gap-card .gap-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Opportunity Gaps · Vue globale · v1.0 · Mai 2026</div>
+      <h1>Les <em>vides</em> de l'écosystème<br/>· 12 espaces inoccupés</h1>
+    </div>
+    <div class="meta">
+      Format : matrice + cards<br/>
+      Snapshot : mai 2026<br/>
+      Catégories : 8<br/>
+      Source : ecosystem-map + audit
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>VIDE</span>
+    <span>FRAGMENTÉ</span>
+    <span>SATURÉ</span>
+    <span>TAILLE</span>
+    <span>TICKET</span>
+    <span>PATH</span>
+    <span>BLUEPRINT</span>
+  </div>
+
+  <a class="back-link" href="ecosystem-map">← Retour à la carte écosystème</a>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-text">
+      <p>Cette page consolide <strong>12 espaces inoccupés</strong> de l'écosystème XRPL où un builder peut lancer une startup avec peu ou pas de concurrence directe. Chaque gap est scoré sur 3 axes : <em>maturité du marché</em> (greenfield / fragmenté / saturé), <em>taille</em> du marché adressable, et <em>ticket d'entrée technique</em> (low / mid / high).</p>
+      <p>La <strong>matrice</strong> ci-dessous donne une vue macro pour repérer rapidement où il y a le plus d'espace. Les <strong>cards détaillées</strong> dessous expliquent chaque gap, son origine, et pointent vers le path du <em>decision-tree</em> et le <em>blueprint</em> Builder Atlas associés (quand ils existent).</p>
+      <p style="font-style: italic; color: var(--muted);">Les "saturé" sont absents du tableau pour l'instant — l'écosystème reste encore largement greenfield en mai 2026.</p>
+    </div>
+    <div class="intro-stats">
+      <div class="stat-row"><span class="label">Gaps totaux</span><span class="val">12</span></div>
+      <div class="stat-row"><span class="label">Catégories</span><span class="val">8</span></div>
+      <div class="stat-row"><span class="label">Greenfield</span><span class="val">9</span></div>
+      <div class="stat-row"><span class="label">Fragmenté</span><span class="val">3</span></div>
+      <div class="stat-row"><span class="label">Tickets HIGH</span><span class="val">5</span></div>
+      <div class="stat-row"><span class="label">Tickets MID</span><span class="val">7</span></div>
+    </div>
+  </div>
+
+  <!-- MATRIX OVERVIEW -->
+  <div class="matrix-wrap">
+    <div class="matrix-header">
+      <h2>Matrice <em>catégorie × maturité</em></h2>
+      <span class="label">Vue macro · cliquable</span>
+    </div>
+    <div class="matrix-body">
+      <!-- Header row -->
+      <div class="matrix-row">
+        <div class="matrix-th">Catégorie</div>
+        <div class="matrix-th">Greenfield</div>
+        <div class="matrix-th">Fragmenté</div>
+        <div class="matrix-th">Saturé</div>
+      </div>
+      <!-- B2B Treasury -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="treasury">B2B Treasury</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-01"><span class="gap-id">01</span>Treasury wallet B2B</a>
+          <a class="gap-link" href="#gap-10"><span class="gap-id">10</span>On-chain accounting</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- Infrastructure -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="infra">Infrastructure</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-02"><span class="gap-id">02</span>Monitoring & alerting</a>
+        </div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-12"><span class="gap-id">12</span>Data marketplace · oracles</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- DeFi -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="defi">DeFi</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-03"><span class="gap-id">03</span>Yield aggregator natif</a>
+          <a class="gap-link" href="#gap-08"><span class="gap-id">08</span>Lending senior tranches</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- Identity -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="identity">Identity</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-04"><span class="gap-id">04</span>KYC reusable cross-app</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- Payments -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="payments">Payments</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-05"><span class="gap-id">05</span>POS / Merchant régional</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- RWA -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="rwa">RWA</div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-06"><span class="gap-id">06</span>Mid-market corp bonds</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- AI × Crypto -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="ai">AI × Crypto</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-07"><span class="gap-id">07</span>x402 facilitator XRPL</a>
+          <a class="gap-link" href="#gap-09"><span class="gap-id">09</span>Agent treasury wallet</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+      <!-- NFT-utility -->
+      <div class="matrix-row">
+        <div class="matrix-cat" data-color="nft">NFT-utility</div>
+        <div class="matrix-cell empty">—</div>
+        <div class="matrix-cell">
+          <a class="gap-link" href="#gap-11"><span class="gap-id">11</span>Gaming utility-NFT</a>
+        </div>
+        <div class="matrix-cell empty">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend-bar">
+    <div class="legend-block">
+      <h4>Maturité</h4>
+      <div class="legend-row"><span class="icon greenfield">GREENFIELD</span><span><strong>Vide</strong> · aucun acteur dédié</span></div>
+      <div class="legend-row"><span class="icon fragmented">FRAGMENTÉ</span><span>Quelques tentatives, <strong>pas de leader</strong></span></div>
+      <div class="legend-row"><span class="icon saturated">SATURÉ</span><span>Marché <strong>verrouillé</strong> par 2-3 acteurs</span></div>
+    </div>
+    <div class="legend-block">
+      <h4>Taille marché</h4>
+      <div class="legend-row"><span class="star">★</span><span><em>Niche</em> · &lt; 1 G$ TAM</span></div>
+      <div class="legend-row"><span class="star">★★</span><span><em>Mid-market</em> · 1–10 G$</span></div>
+      <div class="legend-row"><span class="star">★★★</span><span><em>Large</em> · 10–100 G$</span></div>
+      <div class="legend-row"><span class="star">★★★★</span><span><em>Massive</em> · &gt; 100 G$ ou transverse</span></div>
+    </div>
+    <div class="legend-block">
+      <h4>Ticket technique</h4>
+      <div class="legend-row"><span class="icon low">LOW</span><span>UX/wrapper · <em>quelques semaines</em></span></div>
+      <div class="legend-row"><span class="icon mid">MID</span><span>Intégration multi-primitives · <em>1–3 mois</em></span></div>
+      <div class="legend-row"><span class="icon high">HIGH</span><span>Infra nouvelle ou bloquée par amendment · <em>3+ mois</em></span></div>
+    </div>
+  </div>
+
+  <!-- GAP CARDS -->
+  <section class="gaps-section">
+    <div class="section-head">
+      <h2>Les <em>12 gaps</em> · cards détaillées</h2>
+      <span class="meta">trié par #</span>
+    </div>
+    <div class="gaps-grid">
+
+      <!-- GAP 01 -->
+      <article class="gap-card" data-cat="treasury" id="gap-01">
+        <div class="gap-head">
+          <span class="cat-pill">B2B Treasury</span>
+          <span class="gap-num">Gap 01</span>
+        </div>
+        <h3>Treasury wallet <em>B2B XRPL-native</em></h3>
+        <p class="tagline">Le Coinshift / Utopia Labs de XRPL n'existe pas encore.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">Aucun wallet d'entreprise dédié XRPL avec <strong>multisig + workflows d'approbation + audit trail compliance + intégrations comptables</strong>. Toutes les DAOs et entreprises crypto qui paient des contributeurs ou fournisseurs en stablecoin doivent bricoler avec des outils EVM peu adaptés. XRPL a tout ce qu'il faut nativement (<em>SignerListSet</em>, <em>RegularKey</em>, multisig 2-of-N) — il manque juste l'app.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">DAOs + entreprises crypto qui paient en stablecoin · ~10–50k entités EU/US</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">RLUSD livré dec. 2024 · le rail dollar régulé débloque l'usage B2B</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-payment-b2b · B2B payment stack</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas"><span class="link-tag">Atlas</span><span class="link-name">PayrollXRP (treasury angle)</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 02 -->
+      <article class="gap-card" data-cat="infra" id="gap-02">
+        <div class="gap-head">
+          <span class="cat-pill">Infrastructure</span>
+          <span class="gap-num">Gap 02</span>
+        </div>
+        <h3>Monitoring & <em>alerting B2B</em></h3>
+        <p class="tagline">Le Tenderly / Forta de XRPL est manquant.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag ticket-high">TICKET HIGH</span>
+        </div>
+        <p class="desc">Pas d'équivalent Tenderly ni Forta pour XRPL : <strong>monitoring transactions, alertes anomalies, simulation pre-execution, dashboards business</strong>. Toute startup en production a besoin de visibilité sur ses flux on-chain, et chacune doit aujourd'hui builder son stack. <em>Monitoring-as-a-service</em> avec hooks Slack/PagerDuty serait utile à tout l'écosystème.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Toutes startups XRPL en prod · ~200–500 entités · transverse aux catégories</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">RWA + paiements institutionnels exigent SLA, observability, audit logs réglementaires</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Transverse · pas de path direct</span><span class="link-arrow">·</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · à créer</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 03 -->
+      <article class="gap-card" data-cat="defi" id="gap-03">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi</span>
+          <span class="gap-num">Gap 03</span>
+        </div>
+        <h3>Yield aggregator <em>natif</em></h3>
+        <p class="tagline">Yearn-XRPL n'existe pas — le yield est éparpillé entre 5 sources.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag ticket-high">TICKET HIGH</span>
+        </div>
+        <p class="desc">Sologenic et XPMarket ne couvrent pas l'<strong>agrégation cross-protocole de yield</strong> : AMM XLS-30 (LP), lending sidechain EVM, RWA stablecoins yield-bearing (Spiko, Ondo), staking RLUSD. Un retail crypto qui veut maximiser son yield sans rebalancer manuellement n'a aucun outil. Vault on-chain qui rebalance auto entre les sources serait le killer-feature.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Detail crypto XRPL hodlers · 200k–1M wallets actifs estimés</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">5+ sources de yield émergentes · besoin d'un aggregator avant que la fragmentation tue l'UX</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-pathfinding · path-finding cross-AMM</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat &laquo; YieldHub &raquo;</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 04 -->
+      <article class="gap-card" data-cat="identity" id="gap-04">
+        <div class="gap-head">
+          <span class="cat-pill">Identity</span>
+          <span class="gap-num">Gap 04</span>
+        </div>
+        <h3>KYC <em>reusable cross-app</em></h3>
+        <p class="tagline">XLS-70 est dispo, mais aucun service ne capitalise dessus.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★★</span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">XLS-70 (DID + Credentials) est <strong>live techniquement</strong>, mais aucun service "<em>KYC-as-a-Service</em>" ne propose un KYC réutilisable d'une app à l'autre. Chaque app RWA refait son KYC dans son coin. Un acteur qui devient le <em>Sumsub on-chain</em> de XRPL capture un marché transverse à toutes les apps régulées : RWA issuers, permissioned DEX, marketplaces, staking compliance.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Toutes apps RWA + compliance · transverse · TAM &gt; 1 G$/an en KYC SaaS global</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Permissioned DEX live · Aviva/Spiko/Zoth montent en charge · besoin urgent</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-did-credential · DID + Credentials</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas"><span class="link-tag">Atlas</span><span class="link-name">BondBloc (consommateur)</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 05 -->
+      <article class="gap-card" data-cat="payments" id="gap-05">
+        <div class="gap-head">
+          <span class="cat-pill">Payments</span>
+          <span class="gap-num">Gap 05</span>
+        </div>
+        <h3>POS / Merchant <em>tooling régional</em></h3>
+        <p class="tagline">M-Pesa challenger, POS LATAM, terminal européen MiCA — aucun acteur dédié.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★★</span>
+          <span class="tag ticket-mid">TICKET MID + LOCAL</span>
+        </div>
+        <p class="desc">Les corridors institutionnels asiatiques sont verrouillés (SBI, Tranglo). Mais le marché <strong>merchant grand public</strong> (POS, mobile money, bouée stablecoin pour SMEs) reste largement ouvert dans tous les marchés émergents et même en EU avec MiCA. Barrière d'entrée locale (terrain) = défense naturelle. Un acteur par région peut prospérer sans concurrence frontale.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">SMEs + merchants Afrique/LATAM/EU · TAM remittance + POS &gt; 200 G$/an</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">RLUSD + USDC dispos · Mastercard pilot RLUSD live · les rails sont prêts</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-payment-marketplace · Marketplace / POS</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas"><span class="link-tag">Atlas</span><span class="link-name">MerchantPay (Africa)</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 06 -->
+      <article class="gap-card" data-cat="rwa" id="gap-06">
+        <div class="gap-head">
+          <span class="cat-pill">RWA</span>
+          <span class="gap-num">Gap 06</span>
+        </div>
+        <h3>Mid-market <em>corporate bonds</em></h3>
+        <p class="tagline">Spiko vise les MMF, OpenEden les T-bills. Le mid-market 5–50M€ reste vide.</p>
+        <div class="tags">
+          <span class="tag fragmented">FRAGMENTÉ</span>
+          <span class="tag size">★★★★</span>
+          <span class="tag ticket-high">TICKET HIGH</span>
+        </div>
+        <p class="desc">Le segment <strong>corporate bond mid-market 5–50M€</strong> est mal servi par les banques traditionnelles (trop petit pour book runner, trop gros pour crowdfunding). C'est exactement le pitch <em>BondBloc</em> du Builder Atlas : MPT permissioned + DID issuer + coupon engine + AMM secondary KYC-gated. <strong>EU stock potentiel ~80 G€</strong>. Compliance MiCA + besoin de licence PSAN ou équivalent.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">PME EU 5–50M€ d'émission · ~80 G€ de stock potentiel · adressable à 10 ans</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">MPT XLS-33d + XLS-70 dispos · MiCA cadre clair · taux haut maintient l'appétit fixed-income</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-rwa-securities · MPT permissioned</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas"><span class="link-tag">Atlas</span><span class="link-name">BondBloc</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 07 -->
+      <article class="gap-card" data-cat="ai" id="gap-07">
+        <div class="gap-head">
+          <span class="cat-pill">AI × Crypto</span>
+          <span class="gap-num">Gap 07 ★</span>
+        </div>
+        <h3>x402 facilitator <em>XRPL</em></h3>
+        <p class="tagline">Coinbase l'a fait sur Base avec USDC. Sur XRPL : zéro implé.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">x402 est le standard <strong>HTTP 402 "Payment Required"</strong> relancé par Coinbase pour permettre aux <em>agents IA de payer des APIs/services en crypto</em> sans login ni CB. Implé live sur Base/USDC. <strong>XRPL n'a aucun facilitator</strong>, alors que ses caractéristiques sont idéales pour ce use case : ~0.00001 XRP par tx, finalité 3–5s, native payments. Le facilitator XRPL serait un middleware HTTP qui valide la <em>Payment</em> on-chain et débloque l'API. Marché qui explose avec OpenAI Operator, Claude Computer Use, Vercel AI agents.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">APIs payantes + agents IA · TAM agent-to-API en croissance exponentielle</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Standard x402 publié · première vague d'agents en prod · XRPL absent du paysage</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-x402-agent · agent IA paie API</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas#agentpay"><span class="link-tag">Atlas</span><span class="link-name">AgentPay (Blueprint 07)</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 08 -->
+      <article class="gap-card" data-cat="defi" id="gap-08">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi</span>
+          <span class="gap-num">Gap 08</span>
+        </div>
+        <h3>Lending <em>senior tranches</em> (XLS-66)</h3>
+        <p class="tagline">Cadre de lending institutionnel arrive — il manque les builders.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag ticket-high">TICKET HIGH</span>
+        </div>
+        <p class="desc"><strong>XLS-66</strong> est l'amendment proposé par Ripple pour un <em>cadre natif de lending institutionnel</em> sur XRPL. Une fois activé (en review), il débloquera tout un segment : <strong>senior tranches sécurisées par RWA</strong>, marketplace de credit risk, vaults d'underwriters DAO. Aujourd'hui personne ne se positionne en amont — opportunité de prendre la place avant le mainstream.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Institutional + DAO underwriters · marché lending crypto en consolidation post-2022</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">XLS-66 en review · post-Maple/Goldfinch leçons apprises · timing optimal pour design v2</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">À ajouter (XLS-66 pas encore dans tree)</span><span class="link-arrow">·</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 09 -->
+      <article class="gap-card" data-cat="ai" id="gap-09">
+        <div class="gap-head">
+          <span class="cat-pill">AI × Crypto</span>
+          <span class="gap-num">Gap 09 ★</span>
+        </div>
+        <h3>Agent treasury <em>+ wallet pour IA</em></h3>
+        <p class="tagline">Wallets autonomes pour agents IA · spending caps, rate limits, kill switch.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">Connexe à x402 : un <strong>agent IA autonome</strong> qui paie des APIs / orchestrate des paiements a besoin d'un wallet avec garde-fous spécifiques : <em>spending cap par jour</em>, <em>whitelist de destinations</em>, <em>kill switch côté humain</em>, <em>logs auditables</em>. XRPL <code>SignerListSet</code> + <code>SetRegularKey</code> + <code>DepositAuth</code> permettent de tout construire nativement. Personne n'a packagé ça en SDK pour devs IA.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Devs d'agents IA · early stage mais croissance &gt; 100% MoM</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Agents en prod chez OpenAI, Anthropic, Vercel · besoin de payment infra émerge</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-x402-agent · même infrastructure</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas#agentpay"><span class="link-tag">Atlas</span><span class="link-name">AgentPay (Blueprint 07) · sub-account</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 10 -->
+      <article class="gap-card" data-cat="treasury" id="gap-10">
+        <div class="gap-head">
+          <span class="cat-pill">B2B Treasury</span>
+          <span class="gap-num">Gap 10</span>
+        </div>
+        <h3>On-chain <em>accounting + reporting</em></h3>
+        <p class="tagline">Mapping double-entry, GAAP/IFRS, exports comptables.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">DAOs, RWA issuers et entreprises tokenisées doivent <strong>réconcilier leurs flux on-chain avec leurs livres comptables</strong> (GAAP/IFRS). Aujourd'hui : Excel + bricolage. Personne n'a fait l'équivalent de <em>Cryptio</em> ou <em>SoftLedger</em> dédié XRPL. Mapping automatique tx → écritures comptables, exports CSV/Sage/QuickBooks, suivi PnL multi-devises. Marché aligné avec MiCA (reporting trimestriel obligatoire pour CASP).</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">DAOs + RWA issuers + entreprises tokenisées · ~5–20k entités EU/US</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">MiCA reporting Q4 2024+ · obligation comptable accrue pour tokenized assets</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Transverse · pas de path direct</span><span class="link-arrow">·</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · à créer</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 11 -->
+      <article class="gap-card" data-cat="nft" id="gap-11">
+        <div class="gap-head">
+          <span class="cat-pill">NFT-utility</span>
+          <span class="gap-num">Gap 11</span>
+        </div>
+        <h3>Gaming <em>utility-NFT framework</em></h3>
+        <p class="tagline">XLS-20 utilisé pour de l'art statique — les use cases gaming dorment.</p>
+        <div class="tags">
+          <span class="tag fragmented">FRAGMENTÉ</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag ticket-mid">TICKET MID</span>
+        </div>
+        <p class="desc">XLS-20 NFTs sont solides techniquement (royalties natives, taxons collections, mint cheap) mais l'écosystème gaming sur XRPL est <strong>fragmenté avec quelques tentatives</strong> et zéro framework dominant. Opportunité : <em>SDK pour devs Unity/Godot</em> qui exposent NFT items, équipement, achievements, marketplace in-game. Combiner avec sidechain EVM pour la logique gameplay complexe et XRPL L1 pour la finalité de propriété.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Indie game devs + Web3 gaming studios · niche mais actif</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">EVM sidechain mature · NFT-art en plateau · pivot vers utility nécessaire</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-loyalty · Loyalty / rewards (proche)</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+      <!-- GAP 12 -->
+      <article class="gap-card" data-cat="infra" id="gap-12">
+        <div class="gap-head">
+          <span class="cat-pill">Infrastructure</span>
+          <span class="gap-num">Gap 12</span>
+        </div>
+        <h3>Data marketplace · <em>oracle aggregator</em></h3>
+        <p class="tagline">Band Protocol existe, mais pas de marketplace de data feeds.</p>
+        <div class="tags">
+          <span class="tag fragmented">FRAGMENTÉ</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag ticket-high">TICKET HIGH</span>
+        </div>
+        <p class="desc">Band Protocol fournit prix et FX, mais l'écosystème <strong>data feeds spécialisés</strong> (carbone, real-estate, sports, météo, signals proprio) est inexistant sur XRPL. Marketplace où devs publient leurs feeds verifiables (avec staking/slashing) et où apps RWA / lending consomment <em>oracle redundancy</em>. Pré-requis pour beaucoup de use cases tokenisés (commodities, weather derivatives, prediction markets).</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Devs + RWA issuers spécialisés · niche mais critique pour ouvrir nouveaux verticals</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">RWA monte en charge · besoin oracles pour commodities, carbon, real-estate</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Path</span><span class="link-name">r-rwa-commodities · provenance + oracle</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint</span><span class="link-arrow">·</span></a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <h3>À propos · méthodologie</h3>
+    <p>Les 12 gaps sont issus du <strong>croisement de la carte écosystème mai 2026</strong> et d'un audit fonctionnel : pour chaque catégorie de l'écosystème-map, on liste les acteurs présents et on identifie les "<em>missing layers</em>" — services/features que personne n'occupe et qui débloquent des use cases existants ou émergents (x402, lending senior, AI agents, etc.).</p>
+    <p>Les <strong>scores de taille</strong> sont des estimations qualitatives (grandeur d'ordre) basées sur le TAM observable du segment équivalent dans l'écosystème EVM ou TradFi. À <em>relativiser</em> selon ton contexte (B2B vs B2C, géographie, timing de marché).</p>
+    <p>Les <strong>tickets techniques</strong> dépendent fortement de tes compétences existantes : un dev backend Senior n'a pas le même ticket d'entrée qu'un product manager. Considère ces scores comme des indicateurs <em>relatifs</em> entre les gaps, pas absolus.</p>
+    <p>Cette page est un <strong>snapshot édité manuellement</strong>. Pour ajouter un gap : copie une <code>&lt;article class="gap-card"&gt;</code> existante, change le <code>data-cat</code>, le contenu, ajoute une entrée dans la matrice. Pour ajouter une catégorie : ajoute une nouvelle ligne dans la matrice + un nouveau <code>data-cat</code> avec sa couleur dans le CSS.</p>
+  </div>
+
+  <footer>
+    <span>OPPORTUNITY GAPS · v1.0</span>
+    <span>FIG. 10 · SNAPSHOT MAI 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>

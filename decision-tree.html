@@ -681,16 +681,28 @@
       question: "Le transfert traverse-t-il <em>plusieurs devises</em> ou <em>plusieurs chaînes</em> ?",
       hint: "Single-currency = USD → USD. Cross-currency = USD → EUR via swap. Cross-chain = XRPL → Ethereum.",
       answers: [
-        { text: "Single-currency", sub: "Même token de bout en bout · max simplicité", next: 'q-volume-payment' },
+        { text: "Single-currency", sub: "Même token de bout en bout · max simplicité", next: 'q-payer-type' },
         { text: "Cross-currency", sub: "Swap automatique via AMM XLS-30", next: 'q-amm-or-orderbook' },
         { text: "Cross-chain", sub: "Bridge XRPL ↔ Ethereum / autres L1", result: 'r-bridge-evm' },
+      ],
+    },
+
+    // ===== Q-PAYER-TYPE (human or agent) =====
+    'q-payer-type': {
+      type: 'binary', stepCat: 'LOGIC',
+      tag: 'Étape 05',
+      question: "Le payeur est-il un <em>user humain</em> ou un <em>agent autonome</em> (IA, script) ?",
+      hint: "User humain = onboarding wallet + UX classique. Agent autonome = bot IA, script, service automatisé qui paie programmatiquement par appel API (standard x402).",
+      answers: [
+        { text: "User humain", sub: "Wallet self-custody ou managed · UX classique", style: 'yes', next: 'q-volume-payment' },
+        { text: "Agent autonome (IA / script)", sub: "Per-API-call · standard x402 (HTTP 402)", style: 'no', result: 'r-x402-agent' },
       ],
     },
 
     // ===== Q-VOLUME-PAYMENT (payment simple) =====
     'q-volume-payment': {
       type: 'multi', stepCat: 'COMPLIANCE',
-      tag: 'Étape 05',
+      tag: 'Étape 06',
       question: "Quel est le <em>volume cible</em> et le <em>profil utilisateur</em> ?",
       hint: "Détermine le besoin de KYC, custody, et infrastructure compliance.",
       answers: [
@@ -861,6 +873,53 @@ client.<span class="fn">on</span>(<span class="string">"transaction"</span>, (ev
     <span class="comment">// Notify merchant in real-time + mint loyalty NFT</span>
     <span class="fn">notifyMerchant</span>(event.transaction);
   }
+});`,
+    },
+
+    'r-x402-agent': {
+      label: 'x402 · Agent payments',
+      title: "x402 — <em>agent autonome</em> paie une API",
+      summary: "Standard HTTP 402 « Payment Required » relancé par Coinbase. Permet à un agent IA / script de payer un service API en crypto sans login utilisateur. XRPL = idéal (frais ~0.00001 XRP, finalité 3–5s, native payments).",
+      stack: ['HTTP middleware x402', 'Payment XRP/RLUSD', 'Memo (request-id / nonce)', 'Verifier endpoint on-chain'],
+      stackOpt: ['EscrowCreate (paiement conditionnel multi-step)', 'SetRegularKey (sub-account agent)', 'SignerListSet (cap quotidien sur agent)'],
+      architecture: "Le serveur API renvoie HTTP 402 avec headers x402 (currency, amount, recipient, nonce). L'agent client construit une <code>Payment</code> XRPL (XRP ou RLUSD), submit, attend la finalité (~3-5s), puis retry la requête API avec le tx hash en header <code>X-Payment</code>. Le serveur vérifie on-chain (montant, destinataire, nonce dans memo) puis débloque la réponse. Pour les agents avec quota : sub-account via <code>SetRegularKey</code> + cap quotidien via signer list. Pour paiement multi-step (workflow agent qui appelle plusieurs APIs en cascade) : escrow conditionnel.",
+      blueprint: { id: 'agentpay', name: 'AgentPay', sub: 'Le blueprint Atlas pour facilitator x402 sur XRPL' },
+      resources: [
+        { tag: 'Spec', name: 'x402 standard (Coinbase GitHub)', url: 'https://github.com/coinbase/x402' },
+        { tag: 'Doc', name: 'XRPL Payment transaction', url: 'https://xrpl.org/payment.html' },
+        { tag: 'Doc', name: 'XRPL SetRegularKey (sub-accounts)', url: 'https://xrpl.org/setregularkey.html' },
+        { tag: 'Doc', name: 'Memos field (nonce in tx)', url: 'https://xrpl.org/transaction-common-fields.html#memos-field' },
+      ],
+      boilerplate: `<span class="comment">// HTTP 402 server-side handler (Express + xrpl.js)</span>
+<span class="keyword">import</span> { Client } <span class="keyword">from</span> <span class="string">"xrpl"</span>;
+<span class="keyword">import</span> crypto <span class="keyword">from</span> <span class="string">"crypto"</span>;
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> Client(<span class="string">"wss://xrplcluster.com"</span>);
+<span class="keyword">const</span> PAYMENT_AMOUNT = <span class="string">"100"</span>; <span class="comment">// 0.0001 XRP per call (in drops)</span>
+
+app.<span class="fn">use</span>(<span class="keyword">async</span> (req, res, next) => {
+  <span class="keyword">const</span> txHash = req.headers[<span class="string">"x-payment"</span>];
+  <span class="keyword">if</span> (!txHash) {
+    <span class="keyword">return</span> res.<span class="fn">status</span>(<span class="string">402</span>).<span class="fn">json</span>({
+      x402: {
+        currency: <span class="string">"XRP"</span>,
+        amount: PAYMENT_AMOUNT,
+        recipient: <span class="fn">process</span>.env.WALLET_ADDR,
+        nonce: crypto.<span class="fn">randomUUID</span>(),
+      },
+    });
+  }
+  <span class="comment">// verify on-chain</span>
+  <span class="keyword">const</span> tx = <span class="keyword">await</span> client.<span class="fn">request</span>({
+    command: <span class="string">"tx"</span>,
+    transaction: txHash,
+  });
+  <span class="keyword">if</span> (tx.result.Destination === <span class="fn">process</span>.env.WALLET_ADDR &&
+      tx.result.Amount === PAYMENT_AMOUNT &&
+      tx.result.validated) {
+    <span class="keyword">return</span> <span class="fn">next</span>();
+  }
+  <span class="keyword">return</span> res.<span class="fn">status</span>(<span class="string">402</span>).<span class="fn">json</span>({ error: <span class="string">"invalid payment"</span> });
 });`,
     },
 
