@@ -274,8 +274,8 @@
     padding: 14px 22px;
     margin-bottom: 40px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
   }
@@ -312,6 +312,9 @@
   .legend-bar .legend-row .icon.low { background: var(--good); color: var(--paper); border-color: var(--good); }
   .legend-bar .legend-row .icon.mid { background: var(--wallet); color: var(--ink); border-color: var(--ink); }
   .legend-bar .legend-row .icon.high { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .legend-bar .legend-row .icon.ready-now { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .legend-bar .legend-row .icon.amendment-pending { background: var(--wallet); color: var(--ink); border-color: var(--ink); }
+  .legend-bar .legend-row .icon.transverse { background: var(--ai); color: var(--paper); border-color: var(--ai); }
   .legend-bar .legend-row .star { color: var(--wallet); font-size: 14px; line-height: 1; }
   .legend-bar .legend-row em { color: var(--muted); font-style: italic; }
 
@@ -466,6 +469,32 @@
   }
   .gap-card .tag.size .star { color: var(--wallet); }
   .gap-card .tag.size .star.empty { color: var(--paper-3); }
+  .gap-card .tag.ready-now { background: var(--good); color: var(--paper); border-color: var(--good); }
+  .gap-card .tag.amendment-pending { background: var(--wallet); color: var(--ink); }
+  .gap-card .tag.transverse { background: var(--ai); color: var(--paper); border-color: var(--ai); }
+
+  /* État technique callout */
+  .gap-card .tech-state {
+    margin: 4px 0 12px 0;
+    padding: 9px 12px;
+    background: var(--paper-2);
+    border-left: 3px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .gap-card .tech-state strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-right: 6px;
+    color: var(--muted);
+  }
+  .gap-card[data-build="ready-now"] .tech-state { border-left-color: var(--good); }
+  .gap-card[data-build="amendment-pending"] .tech-state { border-left-color: var(--wallet); }
+  .gap-card[data-build="transverse"] .tech-state { border-left-color: var(--ai); }
 
   .gap-card p.desc {
     font-family: 'Fraunces', serif;
@@ -585,6 +614,9 @@
     text-transform: uppercase; color: var(--muted);
   }
 
+  @media (max-width: 1100px) {
+    .legend-bar { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 920px) {
     .intro { grid-template-columns: 1fr; }
     .matrix-body { grid-template-columns: 1fr; }
@@ -627,17 +659,18 @@
   <!-- INTRO -->
   <div class="intro">
     <div class="intro-text">
-      <p>Cette page consolide <strong>12 espaces inoccupés</strong> de l'écosystème XRPL où un builder peut lancer une startup avec peu ou pas de concurrence directe. Chaque gap est scoré sur 3 axes : <em>maturité du marché</em> (greenfield / fragmenté / saturé), <em>taille</em> du marché adressable, et <em>ticket d'entrée technique</em> (low / mid / high).</p>
+      <p>Cette page consolide <strong>12 espaces inoccupés</strong> de l'écosystème XRPL où un builder peut lancer une startup avec peu ou pas de concurrence directe. Chaque gap est scoré sur 4 axes : <em>maturité du marché</em> (greenfield / fragmenté / saturé), <em>taille</em> du marché adressable, <em>ticket d'entrée technique</em> (low / mid / high), et <em>état technique XRPL</em> (ready now / amendment-pending / transverse).</p>
       <p>La <strong>matrice</strong> ci-dessous donne une vue macro pour repérer rapidement où il y a le plus d'espace. Les <strong>cards détaillées</strong> dessous expliquent chaque gap, son origine, et pointent vers le path du <em>decision-tree</em> et le <em>blueprint</em> Builder Atlas associés (quand ils existent).</p>
-      <p style="font-style: italic; color: var(--muted);">Les "saturé" sont absents du tableau pour l'instant — l'écosystème reste encore largement greenfield en mai 2026.</p>
+      <p style="font-style: italic; color: var(--muted);"><strong>Important :</strong> "pas de path direct" dans une card ne veut PAS dire "pas faisable". Soit l'outil est <em>transverse</em> (utilitaire infra qui sert toutes les apps), soit il dépend d'un <em>amendment</em> en review (workaround sidechain possible). 11 des 12 gaps sont attaquables dès aujourd'hui.</p>
     </div>
     <div class="intro-stats">
       <div class="stat-row"><span class="label">Gaps totaux</span><span class="val">12</span></div>
       <div class="stat-row"><span class="label">Catégories</span><span class="val">8</span></div>
       <div class="stat-row"><span class="label">Greenfield</span><span class="val">9</span></div>
       <div class="stat-row"><span class="label">Fragmenté</span><span class="val">3</span></div>
-      <div class="stat-row"><span class="label">Tickets HIGH</span><span class="val">5</span></div>
-      <div class="stat-row"><span class="label">Tickets MID</span><span class="val">7</span></div>
+      <div class="stat-row"><span class="label">Ready now</span><span class="val">9</span></div>
+      <div class="stat-row"><span class="label">Pending amendment</span><span class="val">1</span></div>
+      <div class="stat-row"><span class="label">Transverse</span><span class="val">2</span></div>
     </div>
   </div>
 
@@ -756,6 +789,12 @@
       <div class="legend-row"><span class="icon mid">MID</span><span>Intégration multi-primitives · <em>1–3 mois</em></span></div>
       <div class="legend-row"><span class="icon high">HIGH</span><span>Infra nouvelle ou bloquée par amendment · <em>3+ mois</em></span></div>
     </div>
+    <div class="legend-block">
+      <h4>État technique XRPL</h4>
+      <div class="legend-row"><span class="icon ready-now">READY NOW</span><span>Toutes les primitives <em>live</em> · attaquable demain</span></div>
+      <div class="legend-row"><span class="icon amendment-pending">PENDING</span><span>Amendment en review · <em>workaround sidechain</em> possible</span></div>
+      <div class="legend-row"><span class="icon transverse">TRANSVERSE</span><span>Pas dans le tree · <em>infra horizontale</em>, buildable</span></div>
+    </div>
   </div>
 
   <!-- GAP CARDS -->
@@ -767,7 +806,7 @@
     <div class="gaps-grid">
 
       <!-- GAP 01 -->
-      <article class="gap-card" data-cat="treasury" id="gap-01">
+      <article class="gap-card" data-cat="treasury" data-build="ready-now" id="gap-01">
         <div class="gap-head">
           <span class="cat-pill">B2B Treasury</span>
           <span class="gap-num">Gap 01</span>
@@ -778,6 +817,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★<span class="star empty">★</span></span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Aucun wallet d'entreprise dédié XRPL avec <strong>multisig + workflows d'approbation + audit trail compliance + intégrations comptables</strong>. Toutes les DAOs et entreprises crypto qui paient des contributeurs ou fournisseurs en stablecoin doivent bricoler avec des outils EVM peu adaptés. XRPL a tout ce qu'il faut nativement (<em>SignerListSet</em>, <em>RegularKey</em>, multisig 2-of-N) — il manque juste l'app.</p>
         <div class="gap-meta">
@@ -797,7 +837,7 @@
       </article>
 
       <!-- GAP 02 -->
-      <article class="gap-card" data-cat="infra" id="gap-02">
+      <article class="gap-card" data-cat="infra" data-build="transverse" id="gap-02">
         <div class="gap-head">
           <span class="cat-pill">Infrastructure</span>
           <span class="gap-num">Gap 02</span>
@@ -808,7 +848,9 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★<span class="star empty">★</span></span>
           <span class="tag ticket-high">TICKET HIGH</span>
+          <span class="tag transverse">TRANSVERSE</span>
         </div>
+        <div class="tech-state"><strong>État technique</strong> Buildable dès aujourd'hui · toutes les primitives sont déjà live (WebSocket <code>subscribe</code>, <code>tx_history</code>, ledger close events, account_objects). Le gap est un <em>produit packagé</em> à construire — pas un blocker technique. Pas de path direct dans le decision-tree car l'outil est <em>horizontal</em> (sert toutes les apps).</div>
         <p class="desc">Pas d'équivalent Tenderly ni Forta pour XRPL : <strong>monitoring transactions, alertes anomalies, simulation pre-execution, dashboards business</strong>. Toute startup en production a besoin de visibilité sur ses flux on-chain, et chacune doit aujourd'hui builder son stack. <em>Monitoring-as-a-service</em> avec hooks Slack/PagerDuty serait utile à tout l'écosystème.</p>
         <div class="gap-meta">
           <div class="meta-block">
@@ -827,7 +869,7 @@
       </article>
 
       <!-- GAP 03 -->
-      <article class="gap-card" data-cat="defi" id="gap-03">
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-03">
         <div class="gap-head">
           <span class="cat-pill">DeFi</span>
           <span class="gap-num">Gap 03</span>
@@ -838,6 +880,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
           <span class="tag ticket-high">TICKET HIGH</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Sologenic et XPMarket ne couvrent pas l'<strong>agrégation cross-protocole de yield</strong> : AMM XLS-30 (LP), lending sidechain EVM, RWA stablecoins yield-bearing (Spiko, Ondo), staking RLUSD. Un retail crypto qui veut maximiser son yield sans rebalancer manuellement n'a aucun outil. Vault on-chain qui rebalance auto entre les sources serait le killer-feature.</p>
         <div class="gap-meta">
@@ -857,7 +900,7 @@
       </article>
 
       <!-- GAP 04 -->
-      <article class="gap-card" data-cat="identity" id="gap-04">
+      <article class="gap-card" data-cat="identity" data-build="ready-now" id="gap-04">
         <div class="gap-head">
           <span class="cat-pill">Identity</span>
           <span class="gap-num">Gap 04</span>
@@ -868,6 +911,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★★</span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">XLS-70 (DID + Credentials) est <strong>live techniquement</strong>, mais aucun service "<em>KYC-as-a-Service</em>" ne propose un KYC réutilisable d'une app à l'autre. Chaque app RWA refait son KYC dans son coin. Un acteur qui devient le <em>Sumsub on-chain</em> de XRPL capture un marché transverse à toutes les apps régulées : RWA issuers, permissioned DEX, marketplaces, staking compliance.</p>
         <div class="gap-meta">
@@ -887,7 +931,7 @@
       </article>
 
       <!-- GAP 05 -->
-      <article class="gap-card" data-cat="payments" id="gap-05">
+      <article class="gap-card" data-cat="payments" data-build="ready-now" id="gap-05">
         <div class="gap-head">
           <span class="cat-pill">Payments</span>
           <span class="gap-num">Gap 05</span>
@@ -898,6 +942,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★★</span>
           <span class="tag ticket-mid">TICKET MID + LOCAL</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Les corridors institutionnels asiatiques sont verrouillés (SBI, Tranglo). Mais le marché <strong>merchant grand public</strong> (POS, mobile money, bouée stablecoin pour SMEs) reste largement ouvert dans tous les marchés émergents et même en EU avec MiCA. Barrière d'entrée locale (terrain) = défense naturelle. Un acteur par région peut prospérer sans concurrence frontale.</p>
         <div class="gap-meta">
@@ -917,7 +962,7 @@
       </article>
 
       <!-- GAP 06 -->
-      <article class="gap-card" data-cat="rwa" id="gap-06">
+      <article class="gap-card" data-cat="rwa" data-build="ready-now" id="gap-06">
         <div class="gap-head">
           <span class="cat-pill">RWA</span>
           <span class="gap-num">Gap 06</span>
@@ -928,6 +973,7 @@
           <span class="tag fragmented">FRAGMENTÉ</span>
           <span class="tag size">★★★★</span>
           <span class="tag ticket-high">TICKET HIGH</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Le segment <strong>corporate bond mid-market 5–50M€</strong> est mal servi par les banques traditionnelles (trop petit pour book runner, trop gros pour crowdfunding). C'est exactement le pitch <em>BondBloc</em> du Builder Atlas : MPT permissioned + DID issuer + coupon engine + AMM secondary KYC-gated. <strong>EU stock potentiel ~80 G€</strong>. Compliance MiCA + besoin de licence PSAN ou équivalent.</p>
         <div class="gap-meta">
@@ -947,7 +993,7 @@
       </article>
 
       <!-- GAP 07 -->
-      <article class="gap-card" data-cat="ai" id="gap-07">
+      <article class="gap-card" data-cat="ai" data-build="ready-now" id="gap-07">
         <div class="gap-head">
           <span class="cat-pill">AI × Crypto</span>
           <span class="gap-num">Gap 07 ★</span>
@@ -958,6 +1004,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★<span class="star empty">★</span></span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">x402 est le standard <strong>HTTP 402 "Payment Required"</strong> relancé par Coinbase pour permettre aux <em>agents IA de payer des APIs/services en crypto</em> sans login ni CB. Implé live sur Base/USDC. <strong>XRPL n'a aucun facilitator</strong>, alors que ses caractéristiques sont idéales pour ce use case : ~0.00001 XRP par tx, finalité 3–5s, native payments. Le facilitator XRPL serait un middleware HTTP qui valide la <em>Payment</em> on-chain et débloque l'API. Marché qui explose avec OpenAI Operator, Claude Computer Use, Vercel AI agents.</p>
         <div class="gap-meta">
@@ -977,7 +1024,7 @@
       </article>
 
       <!-- GAP 08 -->
-      <article class="gap-card" data-cat="defi" id="gap-08">
+      <article class="gap-card" data-cat="defi" data-build="amendment-pending" id="gap-08">
         <div class="gap-head">
           <span class="cat-pill">DeFi</span>
           <span class="gap-num">Gap 08</span>
@@ -988,7 +1035,9 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★<span class="star empty">★</span></span>
           <span class="tag ticket-high">TICKET HIGH</span>
+          <span class="tag amendment-pending">PENDING</span>
         </div>
+        <div class="tech-state"><strong>État technique</strong> XLS-66 amendment <em>en review</em> sur le L1 (activation incertaine, 2026-2027). <strong>Mais lending est déjà possible aujourd'hui sur la sidechain EVM</strong> via fork Aave/Compound (Solidity, live). Stratégie : v1 sur EVM Sidechain → migration L1 native quand XLS-66 active. Position de marché à prendre dès maintenant.</div>
         <p class="desc"><strong>XLS-66</strong> est l'amendment proposé par Ripple pour un <em>cadre natif de lending institutionnel</em> sur XRPL. Une fois activé (en review), il débloquera tout un segment : <strong>senior tranches sécurisées par RWA</strong>, marketplace de credit risk, vaults d'underwriters DAO. Aujourd'hui personne ne se positionne en amont — opportunité de prendre la place avant le mainstream.</p>
         <div class="gap-meta">
           <div class="meta-block">
@@ -1007,7 +1056,7 @@
       </article>
 
       <!-- GAP 09 -->
-      <article class="gap-card" data-cat="ai" id="gap-09">
+      <article class="gap-card" data-cat="ai" data-build="ready-now" id="gap-09">
         <div class="gap-head">
           <span class="cat-pill">AI × Crypto</span>
           <span class="gap-num">Gap 09 ★</span>
@@ -1018,6 +1067,7 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Connexe à x402 : un <strong>agent IA autonome</strong> qui paie des APIs / orchestrate des paiements a besoin d'un wallet avec garde-fous spécifiques : <em>spending cap par jour</em>, <em>whitelist de destinations</em>, <em>kill switch côté humain</em>, <em>logs auditables</em>. XRPL <code>SignerListSet</code> + <code>SetRegularKey</code> + <code>DepositAuth</code> permettent de tout construire nativement. Personne n'a packagé ça en SDK pour devs IA.</p>
         <div class="gap-meta">
@@ -1037,7 +1087,7 @@
       </article>
 
       <!-- GAP 10 -->
-      <article class="gap-card" data-cat="treasury" id="gap-10">
+      <article class="gap-card" data-cat="treasury" data-build="transverse" id="gap-10">
         <div class="gap-head">
           <span class="cat-pill">B2B Treasury</span>
           <span class="gap-num">Gap 10</span>
@@ -1048,7 +1098,9 @@
           <span class="tag greenfield">GREENFIELD</span>
           <span class="tag size">★★★<span class="star empty">★</span></span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag transverse">TRANSVERSE</span>
         </div>
+        <div class="tech-state"><strong>État technique</strong> Buildable dès aujourd'hui · toutes les données sont query-able via <code>xrpl.js</code> + indexers existants (Bithomp, XPMarket, XRPLMeta). Le gap est sur le <em>mapping double-entry</em> + connecteurs comptables (Sage, QuickBooks, Xero) — pas de blocker XRPL. Pas de path direct dans le decision-tree car l'outil est <em>horizontal</em> (sert toutes les apps).</div>
         <p class="desc">DAOs, RWA issuers et entreprises tokenisées doivent <strong>réconcilier leurs flux on-chain avec leurs livres comptables</strong> (GAAP/IFRS). Aujourd'hui : Excel + bricolage. Personne n'a fait l'équivalent de <em>Cryptio</em> ou <em>SoftLedger</em> dédié XRPL. Mapping automatique tx → écritures comptables, exports CSV/Sage/QuickBooks, suivi PnL multi-devises. Marché aligné avec MiCA (reporting trimestriel obligatoire pour CASP).</p>
         <div class="gap-meta">
           <div class="meta-block">
@@ -1067,7 +1119,7 @@
       </article>
 
       <!-- GAP 11 -->
-      <article class="gap-card" data-cat="nft" id="gap-11">
+      <article class="gap-card" data-cat="nft" data-build="ready-now" id="gap-11">
         <div class="gap-head">
           <span class="cat-pill">NFT-utility</span>
           <span class="gap-num">Gap 11</span>
@@ -1078,6 +1130,7 @@
           <span class="tag fragmented">FRAGMENTÉ</span>
           <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
           <span class="tag ticket-mid">TICKET MID</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">XLS-20 NFTs sont solides techniquement (royalties natives, taxons collections, mint cheap) mais l'écosystème gaming sur XRPL est <strong>fragmenté avec quelques tentatives</strong> et zéro framework dominant. Opportunité : <em>SDK pour devs Unity/Godot</em> qui exposent NFT items, équipement, achievements, marketplace in-game. Combiner avec sidechain EVM pour la logique gameplay complexe et XRPL L1 pour la finalité de propriété.</p>
         <div class="gap-meta">
@@ -1097,7 +1150,7 @@
       </article>
 
       <!-- GAP 12 -->
-      <article class="gap-card" data-cat="infra" id="gap-12">
+      <article class="gap-card" data-cat="infra" data-build="ready-now" id="gap-12">
         <div class="gap-head">
           <span class="cat-pill">Infrastructure</span>
           <span class="gap-num">Gap 12</span>
@@ -1108,6 +1161,7 @@
           <span class="tag fragmented">FRAGMENTÉ</span>
           <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
           <span class="tag ticket-high">TICKET HIGH</span>
+          <span class="tag ready-now">READY NOW</span>
         </div>
         <p class="desc">Band Protocol fournit prix et FX, mais l'écosystème <strong>data feeds spécialisés</strong> (carbone, real-estate, sports, météo, signals proprio) est inexistant sur XRPL. Marketplace où devs publient leurs feeds verifiables (avec staking/slashing) et où apps RWA / lending consomment <em>oracle redundancy</em>. Pré-requis pour beaucoup de use cases tokenisés (commodities, weather derivatives, prediction markets).</p>
         <div class="gap-meta">
