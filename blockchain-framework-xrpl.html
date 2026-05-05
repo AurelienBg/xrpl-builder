@@ -355,9 +355,54 @@
     .layer { border-bottom: 1px solid var(--ink); }
     .flow-grid { grid-template-columns: 1fr; }
   }
+
+  /* ============ Site-wide nav (sticky top) ============ */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper);
+    font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
 </style>
 </head>
 <body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/">XRPL <em>Builder</em></a>
+  <div class="nav-links">
+    <a href="/blockchain-framework-xrpl" class="current">Anatomy</a>
+    <a href="/builder-atlas">Atlas</a>
+    <a href="/decision-tree">Tree</a>
+    <a href="/decision-tree-map">Macro</a>
+    <a href="/ecosystem-map">Ecosystem</a>
+    <a href="/gaps">Gaps</a>
+    <a href="/cost-simulator">Sim</a>
+    <a href="/business-case-builder">Case</a>
+  </div>
+</nav>
+
 <div class="page">
 
   <!-- MASTHEAD -->
