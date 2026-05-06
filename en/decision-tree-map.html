@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decision Tree (macro view) — XRPL Builder (EN translation in progress)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
+    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
+    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
+    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Site-wide nav (sticky top) */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper);
+    font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    padding: 5px 12px; margin-left: 16px;
+    border: 1.5px solid var(--paper);
+    color: var(--paper); background: transparent;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    font-weight: 700; text-transform: uppercase;
+    transition: all 0.15s ease; white-space: nowrap;
+  }
+  .site-nav .lang-toggle:hover { background: var(--paper); color: var(--ink); }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* Placeholder content */
+  .placeholder {
+    max-width: 760px;
+    margin: 80px auto;
+    padding: 0 32px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .placeholder h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.0;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.02em;
+  }
+  .placeholder h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .placeholder p {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 14px 0;
+  }
+  .placeholder p strong { font-weight: 600; }
+  .placeholder p em { color: var(--chain); }
+  .placeholder .cta-block {
+    margin-top: 32px;
+    padding: 22px 26px;
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+  }
+  .placeholder .cta-block h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px 0;
+    font-weight: 700;
+  }
+  .placeholder a.cta {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 11px 22px;
+    border: 2px solid var(--ink);
+    background: var(--wallet);
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ink);
+    transform: translate(-1px, -1px);
+    transition: all 0.15s ease;
+  }
+  .placeholder a.cta:hover {
+    background: var(--ink);
+    color: var(--wallet);
+    transform: translate(0, 0);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .placeholder a.cta-secondary {
+    display: inline-block;
+    margin-top: 12px;
+    margin-left: 10px;
+    padding: 11px 22px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+  }
+  .placeholder a.cta-secondary:hover { background: var(--ink); color: var(--paper); }
+
+  footer {
+    max-width: 760px;
+    margin: 56px auto 24px;
+    padding: 16px 32px 0;
+    border-top: 1px solid var(--ink);
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/en/">XRPL <em>Builder</em></a>
+  <div class="nav-links">
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+  </div>
+  <a class="lang-toggle" href="/decision-tree-map">FR ↗</a>
+</nav>
+
+<div class="placeholder">
+  <div class="eyebrow">EN translation in progress</div>
+  <h1>Decision Tree (macro view)<br/>· <em>coming soon</em></h1>
+  <p>This page is <strong>not yet translated to English</strong>. The full EN version will ship in an upcoming sprint (the structure stays identical — only the text changes).</p>
+  <p>In the meantime, you have two options:</p>
+
+  <div class="cta-block">
+    <h3>While you wait</h3>
+    <p>Read the French version (same content, same layout, same data). You can also use the navbar above to jump to other pages — some are already translated to English.</p>
+    <a class="cta" href="/decision-tree-map">→ Read in French</a>
+    <a class="cta-secondary" href="/en/">Back to EN home</a>
+  </div>
+</div>
+
+<footer>
+  <span>XRPL BUILDER · EN PLACEHOLDER · v1.6</span>
+  <span>FR VERSION READY · EN COMING</span>
+</footer>
+
+</body>
+</html>

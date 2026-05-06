@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>XRPL Framework — Launcher</title>
+<title>XRPL Builder — Launcher</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -320,7 +320,6 @@
   }
   .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
   .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
-  /* Section color indicator (4px top bar per nav link) */
   .site-nav .nav-links a { position: relative; }
   .site-nav .nav-links a::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0;
@@ -331,7 +330,6 @@
   .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
   .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
   .site-nav .nav-links a.section-start { margin-left: 12px; }
-  /* Language toggle (right side of nav) */
   .site-nav .lang-toggle {
     padding: 5px 12px; margin-left: 16px;
     border: 1.5px solid var(--paper);
@@ -353,91 +351,91 @@
 <body>
 
 <nav class="site-nav">
-  <a class="nav-home" href="/">XRPL <em>Builder</em></a>
+  <a class="nav-home" href="/en/">XRPL <em>Builder</em></a>
   <div class="nav-links">
-    <a href="/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
-    <a href="/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
-    <a href="/gaps" data-section="paysage">Gaps</a>
-    <a href="/decision-tree" data-section="outil" class="section-start">Tree</a>
-    <a href="/decision-tree-map" data-section="outil">Macro</a>
-    <a href="/cost-simulator" data-section="outil">Sim</a>
-    <a href="/business-case-builder" data-section="outil">Case</a>
-    <a href="/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
   </div>
-  <a class="lang-toggle" href="/en/">EN ↗</a>
+  <a class="lang-toggle" href="/">FR ↗</a>
 </nav>
 
 <div class="page">
 
   <header class="masthead">
     <div>
-      <div class="eyebrow">XRPL Framework · Launcher · v2.0</div>
-      <h1>XRPL <em>Framework</em><br/>— builder suite</h1>
+      <div class="eyebrow">XRPL Builder · Launcher · v2.0</div>
+      <h1>XRPL <em>Builder</em><br/>— suite for founders</h1>
     </div>
     <div class="meta">
-      Réseau : XRP Ledger<br/>
-      Documents : 9<br/>
-      Version : 2.0<br/>
-      Date : mai 2026
+      Network: XRP Ledger<br/>
+      Documents: 9<br/>
+      Version: 2.0<br/>
+      Date: May 2026
     </div>
   </header>
 
   <div class="strap">
-    <span>PÉDAGOGIE</span>
-    <span>IDÉES</span>
-    <span>OUTILS</span>
-    <span>PAYSAGE</span>
+    <span>PEDAGOGY</span>
+    <span>IDEAS</span>
+    <span>TOOLS</span>
+    <span>LANDSCAPE</span>
     <span>PRINT</span>
   </div>
 
   <!-- INTRO -->
   <div class="intro">
-    <p>Suite complète d'outils pour <strong>comprendre, idéer, valider et lancer</strong> un projet sur XRPL. Du schéma fondateur à la spec technique précise, en passant par l'idéation business et la validation économique.</p>
-    <p>Parcours suggéré pour un nouveau builder : <em>Pédagogie</em> (1-2-3) → <em>Idées</em> (4) → <em>Outils</em> (5-6-7) → <em>Paysage</em> (8) → puis lancement.</p>
+    <p>A complete toolkit to <strong>understand, ideate, validate and ship</strong> a project on XRPL. From the foundational schema to precise technical specs, through business ideation and economic validation.</p>
+    <p>Suggested path for a new builder: <em>Pedagogy</em> (1-2-3) → <em>Ideas</em> (4) → <em>Tools</em> (5-6-7) → <em>Landscape</em> (8) → then ship.</p>
   </div>
 
-  <!-- ============ 01 · PÉDAGOGIE ============ -->
+  <!-- ============ 01 · PEDAGOGY ============ -->
   <div class="section-head">
-    <h2><span class="num">01</span>Pédagogie · <em>comprendre XRPL</em></h2>
-    <span class="count">3 fichiers · HTML</span>
+    <h2><span class="num">01</span>Pedagogy · <em>understand XRPL</em></h2>
+    <span class="count">3 files · HTML</span>
   </div>
-  <div class="section-summary">Le schéma fondateur, les extensions du protocole, et l'animation du flow de transaction. <strong>Point de départ obligatoire</strong> avant d'explorer le reste.</div>
+  <div class="section-summary">The foundational schema, protocol extensions, and animated transaction flow. <strong>Required starting point</strong> before exploring the rest.</div>
 
   <div class="grid cols-3">
 
-    <a class="card" href="blockchain-framework-xrpl" data-type="static">
+    <a class="card" href="/en/blockchain-framework-xrpl" data-type="static">
       <div class="card-eyebrow">
         <span>FIG · 01</span>
-        <span class="badge static">Statique</span>
+        <span class="badge static">Static</span>
       </div>
-      <h3>Anatomie de <em>base</em></h3>
-      <p>Le schéma fondateur : USER → CLIENT → CUSTODY → NETWORK → LEDGER. Lecture/écriture, modèle custody, anatomie d'une transaction.</p>
+      <h3>Foundational <em>anatomy</em></h3>
+      <p>The base schema: USER → CLIENT → CUSTODY → NETWORK → LEDGER. Read/write, custody model, anatomy of a transaction.</p>
       <div class="card-foot">
         <span class="filename">blockchain-framework-xrpl.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <a class="card" href="blockchain-xrpl-extended" data-type="extended">
+    <a class="card" href="/en/blockchain-xrpl-extended" data-type="extended">
       <div class="card-eyebrow">
         <span>FIG · 02 · v1.2</span>
-        <span class="badge extended">Tour guidé</span>
+        <span class="badge extended">Guided tour</span>
       </div>
-      <h3>Anatomie <em>complète</em></h3>
-      <p>Version étendue avec AMM, RWA, Sidechain. Mapping des 5 use cases. <strong>Tour guidé</strong> en 9 étapes + bouton <strong>Play les 5 cas</strong>.</p>
+      <h3>Complete <em>anatomy</em></h3>
+      <p>Extended version with AMM, RWA, Sidechain. Mapping of 5 use cases. <strong>Guided tour</strong> in 9 steps + <strong>Play 5 cases</strong> button.</p>
       <div class="card-foot">
         <span class="filename">blockchain-xrpl-extended.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <a class="card" href="blockchain-xrpl-animated" data-type="animated">
+    <a class="card" href="/en/blockchain-xrpl-animated" data-type="animated">
       <div class="card-eyebrow">
         <span>FIG · 03</span>
-        <span class="badge animated">Animé</span>
+        <span class="badge animated">Animated</span>
       </div>
-      <h3>Voyage d'une <em>transaction</em></h3>
-      <p>Animation du flow de bout en bout. 3 scénarios : Payment, AMM Swap, Read query. Particules, log réseau, état du compte qui évolue.</p>
+      <h3>Journey of a <em>transaction</em></h3>
+      <p>End-to-end flow animation. 3 scenarios: Payment, AMM Swap, Read query. Particles, network log, evolving account state.</p>
       <div class="card-foot">
         <span class="filename">blockchain-xrpl-animated.html</span>
         <span class="card-arrow">→</span>
@@ -446,23 +444,23 @@
 
   </div>
 
-  <!-- ============ 02 · IDÉES ============ -->
+  <!-- ============ 02 · IDEAS ============ -->
   <div class="section-head">
-    <h2><span class="num">02</span>Idées · <em>builder atlas</em></h2>
-    <span class="count">1 fichier · HTML</span>
+    <h2><span class="num">02</span>Ideas · <em>builder atlas</em></h2>
+    <span class="count">1 file · HTML</span>
   </div>
-  <div class="section-summary">Sept startup blueprints détaillés exploitant les primitives XRPL. <strong>Architecture, économie, MVP, GTM</strong> par card. Le point de départ pour toute idéation.</div>
+  <div class="section-summary">Seven detailed startup blueprints leveraging XRPL primitives. <strong>Architecture, economics, MVP, GTM</strong> per card. The starting point for any ideation.</div>
 
   <div class="grid cols-1">
 
-    <a class="card" href="builder-atlas" data-type="atlas">
+    <a class="card" href="/en/builder-atlas" data-type="atlas">
       <div class="card-eyebrow">
         <span>FIG · 04</span>
         <span class="badge atlas">7 blueprints</span>
         <span>Payments · DeFi · RWA · Commerce · Real estate · Payroll · Agentic</span>
       </div>
       <h3>Builder <em>Atlas</em> · 7 startup blueprints</h3>
-      <p>Sept fiches startup approfondies : <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (épargne USD LATAM), <strong>BondBloc</strong> (RWA Europe), <strong>MerchantPay</strong> (POS Afrique), <strong>PropTok</strong> (immo MENA/SEA), <strong>PayrollXRP</strong> (streaming global), <strong>AgentPay</strong> (x402 facilitator pour agents IA). Chaque blueprint détaille problème/marché, architecture XRPL exacte, stack technique + MVP, économie + GTM. Matrice de décision finale par profil de builder.</p>
+      <p>Seven in-depth startup briefs: <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (USD savings, LATAM), <strong>BondBloc</strong> (RWA, Europe), <strong>MerchantPay</strong> (POS, Africa), <strong>PropTok</strong> (real estate, MENA/SEA), <strong>PayrollXRP</strong> (global streaming payroll), <strong>AgentPay</strong> (x402 facilitator for AI agents). Each blueprint covers problem/market, exact XRPL architecture, technical stack + MVP, economics + GTM. Final decision matrix by builder profile.</p>
       <div class="card-foot">
         <span class="filename">builder-atlas.html</span>
         <span class="card-arrow">→</span>
@@ -471,48 +469,48 @@
 
   </div>
 
-  <!-- ============ 03 · OUTILS ============ -->
+  <!-- ============ 03 · TOOLS ============ -->
   <div class="section-head">
-    <h2><span class="num">03</span>Outils · <em>valider & décider</em></h2>
-    <span class="count">3 fichiers · HTML interactifs</span>
+    <h2><span class="num">03</span>Tools · <em>validate &amp; decide</em></h2>
+    <span class="count">3 files · interactive HTML</span>
   </div>
-  <div class="section-summary">Trois outils interactifs pour transformer une idée en go/no-go : comparaison de coûts cross-chain, modélisation financière 24 mois, et arbre de décision technique. <strong>Tu peux jouer avec les paramètres en temps réel.</strong></div>
+  <div class="section-summary">Three interactive tools to turn an idea into a go/no-go: cross-chain cost comparison, 24-month financial model, and technical decision tree. <strong>Tweak parameters in real time.</strong></div>
 
   <div class="grid cols-3">
 
-    <a class="card" href="cost-simulator" data-type="simulator">
+    <a class="card" href="/en/cost-simulator" data-type="simulator">
       <div class="card-eyebrow">
         <span>FIG · 05</span>
-        <span class="badge simulator">Comparateur</span>
+        <span class="badge simulator">Comparator</span>
       </div>
       <h3>Cost <em>Simulator</em></h3>
-      <p>Comparateur live <strong>XRPL vs Stellar / Solana / Ethereum</strong> sur 4 use cases (Payment, AMM, NFT, Payroll). Sliders volume/users/montant. Verdict dynamique sur la viabilité économique par chaîne.</p>
+      <p>Live <strong>XRPL vs Stellar / Solana / Ethereum</strong> comparator across 4 use cases (Payment, AMM, NFT, Payroll). Volume/users/amount sliders. Dynamic verdict on per-chain economic viability.</p>
       <div class="card-foot">
         <span class="filename">cost-simulator.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <a class="card" href="business-case-builder" data-type="business">
+    <a class="card" href="/en/business-case-builder" data-type="business">
       <div class="card-eyebrow">
         <span>FIG · 06</span>
-        <span class="badge business">Modèle 24 mois</span>
+        <span class="badge business">24-month model</span>
       </div>
       <h3>Business Case <em>Builder</em></h3>
-      <p>Modélisation financière sur 24 mois. <strong>Capex + opex + revenue</strong> par sliders (12 paramètres). 6 presets calibrés sur le Builder Atlas. Outputs : runway, break-even, capital needed, LTV/CAC. Verdict adapté.</p>
+      <p>24-month financial model. <strong>Capex + opex + revenue</strong> via sliders (12 parameters). 6 presets calibrated on the Builder Atlas. Outputs: runway, break-even, capital needed, LTV/CAC. Adapted verdict.</p>
       <div class="card-foot">
         <span class="filename">business-case-builder.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <a class="card" href="decision-tree" data-type="decision">
+    <a class="card" href="/en/decision-tree" data-type="decision">
       <div class="card-eyebrow">
         <span>FIG · 07</span>
         <span class="badge decision">4–6 questions</span>
       </div>
       <h3>Decision <em>Tree</em></h3>
-      <p>Arbre de décision technique en <strong>4 à 6 questions</strong> (binaires puis multi-choix). Sortie : stack XRPL recommandée + boilerplate code TypeScript + lien blueprint Atlas + ressources doc. ~2 minutes. <em>Vue macro</em> de l'arbre complet accessible en un clic.</p>
+      <p>Technical decision tree in <strong>4 to 6 questions</strong> (binary then multi-choice). Output: recommended XRPL stack + TypeScript boilerplate code + Atlas blueprint link + doc resources. ~2 minutes. <em>Macro view</em> of the full tree one click away.</p>
       <div class="card-foot">
         <span class="filename">decision-tree.html</span>
         <span class="card-arrow">→</span>
@@ -521,37 +519,37 @@
 
   </div>
 
-  <!-- ============ 04 · PAYSAGE ============ -->
+  <!-- ============ 04 · LANDSCAPE ============ -->
   <div class="section-head">
-    <h2><span class="num">04</span>Paysage · <em>écosystème & gaps</em></h2>
-    <span class="count">2 fichiers · HTML</span>
+    <h2><span class="num">04</span>Landscape · <em>ecosystem &amp; gaps</em></h2>
+    <span class="count">2 files · HTML</span>
   </div>
-  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026 + vue consolidée des <strong>12 opportunity gaps</strong>. <strong>Identifie les espaces saturés à éviter et les zones blanches</strong> où personne ne joue encore — scoré par maturité, taille de marché et ticket d'entrée technique.</div>
+  <div class="section-summary">Map of 50+ active XRPL projects as of May 2026 + consolidated view of <strong>12 opportunity gaps</strong>. <strong>Spot saturated zones to avoid and white spaces</strong> nobody plays in yet — scored by maturity, market size and technical entry ticket.</div>
 
   <div class="grid">
 
-    <a class="card" href="ecosystem-map" data-type="ecosystem">
+    <a class="card" href="/en/ecosystem-map" data-type="ecosystem">
       <div class="card-eyebrow">
         <span>FIG · 08</span>
-        <span class="badge ecosystem">Snapshot mai 2026</span>
-        <span>50+ projets · 8 catégories</span>
+        <span class="badge ecosystem">May 2026 snapshot</span>
+        <span>50+ projects · 9 categories</span>
       </div>
       <h3>Ecosystem <em>Map</em></h3>
-      <p>Carte structurée de l'écosystème XRPL : <strong>DeFi, Stablecoins, RWA, Payments, Wallets, Infrastructure, NFT, Bridges</strong>. Chaque projet étiqueté par état (Live/Beta/Upcoming/Partner). Section <strong>Opportunity Gaps</strong> en fin de page : 6 espaces inoccupés où lancer une startup. Page éditable manuellement pour maintenance.</p>
+      <p>Structured map of the XRPL ecosystem: <strong>DeFi, Stablecoins, RWA, Payments, Wallets, Infrastructure, NFT, Bridges, AI × Payments</strong>. Each project tagged by status (Live/Beta/Upcoming/Partner). <strong>Opportunity Gaps</strong> section at the bottom: 6 unoccupied spaces to launch a startup. Manually editable for maintenance.</p>
       <div class="card-foot">
         <span class="filename">ecosystem-map.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
-    <a class="card" href="gaps" data-type="gaps">
+    <a class="card" href="/en/gaps" data-type="gaps">
       <div class="card-eyebrow">
         <span>FIG · 10</span>
-        <span class="badge gaps">2 lentilles · 20 idées</span>
-        <span>12 tooling + 8 services AI-native</span>
+        <span class="badge gaps">2 lenses · 20 ideas</span>
+        <span>12 tooling + 8 AI-native services</span>
       </div>
       <h3>Opportunity <em>Gaps</em> · tooling + services</h3>
-      <p>Page consolidée des opportunités XRPL sous <strong>2 lentilles complémentaires</strong>. <strong>Lentille 1 — Tooling gaps (12)</strong> : produits/SaaS/libs à construire (Treasury B2B, Monitoring, KYC, POS régional, x402 facilitator, Lending senior, etc.). <strong>Lentille 2 — AI-native services (8) · YC RFS lens</strong> : devenir le service avec un agent IA (Compliance, AI CFO, Market-making, RWA legal, Community-ops, Audit, Dispute, Insurance) — marges 60–90 %, ARPU $5–30k/mois. Scoring multi-axes, matrice catégorie × maturité, liens vers le decision-tree et les blueprints Atlas.</p>
+      <p>Consolidated view of XRPL opportunities through <strong>2 complementary lenses</strong>. <strong>Lens 1 — Tooling gaps (12)</strong>: products/SaaS/libs to build (B2B Treasury, Monitoring, KYC, regional POS, x402 facilitator, senior Lending, etc.). <strong>Lens 2 — AI-native services (8) · YC RFS lens</strong>: become the service with an AI agent (Compliance, AI CFO, Market-making, RWA legal, Community-ops, Audit, Dispute, Insurance) — 60–90% margins, $5–30k/month ARPU. Multi-axis scoring, category × maturity matrix, links to the decision-tree and Atlas blueprints.</p>
       <div class="card-foot">
         <span class="filename">gaps.html</span>
         <span class="card-arrow">→</span>
@@ -560,22 +558,22 @@
 
   </div>
 
-  <!-- ============ 05 · IMPRIMABLES ============ -->
+  <!-- ============ 05 · PRINT ============ -->
   <div class="section-head">
-    <h2><span class="num">05</span>Versions <em>imprimables</em></h2>
-    <span class="count">1 fichier · PDF</span>
+    <h2><span class="num">05</span><em>Print</em> editions</h2>
+    <span class="count">1 file · PDF</span>
   </div>
-  <div class="section-summary">Pour les présentations physiques en réunion, ou pour afficher le schéma au mur. Format A3 paysage, mise en page optimisée pour l'impression.</div>
+  <div class="section-summary">For physical presentations in meetings, or to display the schema on a wall. A3 landscape format, layout optimized for print.</div>
 
   <div class="grid cols-1">
 
-    <a class="card" href="blockchain-xrpl-extended.pdf" data-type="pdf">
+    <a class="card" href="/blockchain-xrpl-extended.pdf" data-type="pdf">
       <div class="card-eyebrow">
         <span>PDF · 01</span>
-        <span class="badge pdf">A3 paysage · 2 pages</span>
+        <span class="badge pdf">A3 landscape · 2 pages</span>
       </div>
-      <h3>Anatomie complète · <em>print edition</em></h3>
-      <p>Version PDF de l'anatomie complète, optimisée pour impression A3 paysage. 2 pages : diagramme principal + extensions et matrice de décision. Fonts Fraunces / JetBrains Mono préservées.</p>
+      <h3>Complete anatomy · <em>print edition</em></h3>
+      <p>PDF version of the complete anatomy, optimized for A3 landscape print. 2 pages: main diagram + extensions and decision matrix. Fraunces / JetBrains Mono fonts preserved.</p>
       <div class="card-foot">
         <span class="filename">blockchain-xrpl-extended.pdf</span>
         <span class="card-arrow">→</span>
@@ -585,8 +583,8 @@
   </div>
 
   <footer>
-    <span>XRPL FRAMEWORK · LAUNCHER PAGE · v2.0</span>
-    <span>METTRE EN FAVORI · ⌘D · CTRL+D</span>
+    <span>XRPL BUILDER · LAUNCHER PAGE · v2.0</span>
+    <span>BOOKMARK · ⌘D · CTRL+D</span>
   </footer>
 
 </div>
