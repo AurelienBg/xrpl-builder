@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>XRPL Framework — Launcher</title>
+<title>XRPL Builder — suite for founders</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -331,18 +331,25 @@
   .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
   .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
   .site-nav .nav-links a.section-start { margin-left: 12px; }
-  /* Language toggle (right side of nav) */
+  /* Language toggle (dual flag switch on right side of nav) */
   .site-nav .lang-toggle {
-    padding: 5px 12px; margin-left: 16px;
+    display: flex; margin-left: 16px;
     border: 1.5px solid var(--paper);
-    color: var(--paper); background: transparent;
+    white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 4px 9px;
     text-decoration: none;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.2em;
-    font-weight: 700; text-transform: uppercase;
-    transition: all 0.15s ease; white-space: nowrap;
+    font-size: 14px; line-height: 1.2;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
   }
-  .site-nav .lang-toggle:hover { background: var(--paper); color: var(--ink); }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
   @media (max-width: 800px) {
     .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
@@ -364,15 +371,18 @@
     <a href="/business-case-builder" data-section="outil">Case</a>
     <a href="/builder-atlas" data-section="idee" class="section-start">Atlas</a>
   </div>
-  <a class="lang-toggle" href="/en/">EN ↗</a>
+  <div class="lang-toggle">
+    <a class="lang-flag active" href="/">🇫🇷</a>
+    <a class="lang-flag" href="/en/">🇬🇧</a>
+  </div>
 </nav>
 
 <div class="page">
 
   <header class="masthead">
     <div>
-      <div class="eyebrow">XRPL Framework · Launcher · v2.0</div>
-      <h1>XRPL <em>Framework</em><br/>— builder suite</h1>
+      <div class="eyebrow">XRPL Builder · Launcher · v2.0</div>
+      <h1>XRPL <em>Builder</em><br/>— suite for founders</h1>
     </div>
     <div class="meta">
       Réseau : XRP Ledger<br/>
