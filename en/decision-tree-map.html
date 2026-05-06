@@ -3,24 +3,41 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Decision Tree (macro view) — XRPL Builder (EN translation in progress)</title>
+<title>Decision Tree — Complete macro view</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
-    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
-    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
-    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --good: #2e5d4f;
+    --bad: #c8553d;
+    --defi: #3a7b8e;
+    --identity: #5d4a78;
+    --nofit: #4a4540;
+    --ai: #2c6680;
   }
+
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    background: var(--paper); color: var(--ink);
+    background: var(--paper);
+    color: var(--ink);
     font-family: 'Fraunces', Georgia, serif;
     -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    line-height: 1.5;
   }
   body {
     background-image:
@@ -29,7 +46,259 @@
     background-size: 24px 24px;
   }
 
-  /* Site-wide nav (sticky top) */
+  .page { max-width: 1700px; margin: 0 auto; padding: 48px 32px 96px; }
+
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO + LEGEND */
+  .intro {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .intro-text {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 20px 24px;
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .intro-text p { margin: 0 0 6px 0; }
+  .intro-text p:last-child { margin-bottom: 0; }
+  .intro-text strong { font-weight: 600; }
+  .intro-text em { color: var(--chain); }
+
+  .legend {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 16px 20px;
+  }
+  .legend h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px 0;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+  }
+  .legend-row .swatch {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--ink);
+    flex-shrink: 0;
+  }
+  .legend-row .label {
+    color: var(--ink);
+  }
+  .legend-row .sub {
+    color: var(--muted);
+    font-size: 11px;
+    font-style: italic;
+  }
+
+  /* TREE CONTAINER */
+  .tree-wrap {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+  .tree-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--ink);
+  }
+  .tree-header .label { color: var(--wallet); font-weight: 700; }
+
+  .tree-svg {
+    display: block;
+    min-width: 1600px;
+    width: 100%;
+    height: auto;
+    background: var(--paper);
+  }
+
+  /* PATHS RECAP TABLE */
+  .paths-recap {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .paths-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .paths-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .paths-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); }
+  .paths-header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wallet);
+  }
+
+  table.recap {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.recap th, table.recap td {
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(14,17,22,0.12);
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  table.recap th {
+    background: var(--paper-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  table.recap tr:last-child td { border-bottom: none; }
+  table.recap td.path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  table.recap td.path strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  table.recap td.result {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+  }
+  table.recap td.result em { color: var(--chain); font-style: italic; font-weight: 400; }
+  table.recap td.cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  table.recap td .cat-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    color: var(--paper);
+    font-weight: 700;
+  }
+  table.recap td .cat-pill.payments { background: var(--user); }
+  table.recap td .cat-pill.defi { background: var(--defi); }
+  table.recap td .cat-pill.bridge { background: var(--custody); }
+  table.recap td .cat-pill.payroll { background: var(--app); }
+  table.recap td .cat-pill.rwa { background: var(--rwa); }
+  table.recap td .cat-pill.nft { background: var(--sidechain); }
+  table.recap td .cat-pill.identity { background: var(--identity); }
+  table.recap td .cat-pill.ai { background: #2c6680; }
+  table.recap td .cat-pill.nofit { background: var(--nofit); }
+
+  /* BACK LINK */
+  .back-link {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    transition: all 0.15s ease;
+  }
+  .back-link:hover { background: var(--ink); color: var(--paper); }
+
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .intro { grid-template-columns: 1fr; }
+  }
+
+  /* ============ Site-wide nav (sticky top) ============ */
   .site-nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--ink); color: var(--paper);
@@ -50,10 +319,11 @@
     color: var(--paper); text-decoration: none;
     padding: 5px 10px; text-transform: uppercase; font-weight: 700;
     transition: background 0.15s ease; white-space: nowrap;
-    position: relative;
   }
   .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
   .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  /* Section color indicator (4px top bar per nav link) */
+  .site-nav .nav-links a { position: relative; }
   .site-nav .nav-links a::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: transparent; pointer-events: none;
@@ -87,104 +357,6 @@
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
     .site-nav .nav-links a { padding: 3px 6px; }
   }
-
-  /* Placeholder content */
-  .placeholder {
-    max-width: 760px;
-    margin: 80px auto;
-    padding: 0 32px;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .placeholder h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.0;
-    margin: 0 0 24px 0;
-    letter-spacing: -0.02em;
-  }
-  .placeholder h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
-  .placeholder p {
-    font-family: 'Fraunces', serif;
-    font-size: 16px;
-    line-height: 1.55;
-    margin: 0 0 14px 0;
-  }
-  .placeholder p strong { font-weight: 600; }
-  .placeholder p em { color: var(--chain); }
-  .placeholder .cta-block {
-    margin-top: 32px;
-    padding: 22px 26px;
-    background: var(--paper-2);
-    border: 2px solid var(--ink);
-  }
-  .placeholder .cta-block h3 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-  .placeholder a.cta {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 22px;
-    border: 2px solid var(--ink);
-    background: var(--wallet);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0 var(--ink);
-    transform: translate(-1px, -1px);
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta:hover {
-    background: var(--ink);
-    color: var(--wallet);
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .placeholder a.cta-secondary {
-    display: inline-block;
-    margin-top: 12px;
-    margin-left: 10px;
-    padding: 11px 22px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta-secondary:hover { background: var(--ink); color: var(--paper); }
-
-  footer {
-    max-width: 760px;
-    margin: 56px auto 24px;
-    padding: 16px 32px 0;
-    border-top: 1px solid var(--ink);
-    display: flex; justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-  }
 </style>
 </head>
 <body>
@@ -196,7 +368,7 @@
     <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
     <a href="/en/gaps" data-section="paysage">Gaps</a>
     <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
-    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/decision-tree-map" data-section="outil" class="current">Macro</a>
     <a href="/en/cost-simulator" data-section="outil">Sim</a>
     <a href="/en/business-case-builder" data-section="outil">Case</a>
     <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
@@ -207,24 +379,632 @@
   </div>
 </nav>
 
-<div class="placeholder">
-  <div class="eyebrow">EN translation in progress</div>
-  <h1>Decision Tree (macro view)<br/>· <em>coming soon</em></h1>
-  <p>This page is <strong>not yet translated to English</strong>. The full EN version will ship in an upcoming sprint (the structure stays identical — only the text changes).</p>
-  <p>In the meantime, you have two options:</p>
+<div class="page">
 
-  <div class="cta-block">
-    <h3>While you wait</h3>
-    <p>Read the French version (same content, same layout, same data). You can also use the navbar above to jump to other pages — some are already translated to English.</p>
-    <a class="cta" href="/decision-tree-map">→ Read in French</a>
-    <a class="cta-secondary" href="/en/">Back to EN home</a>
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Decision Tree · Macro view · v1.0</div>
+      <h1>The <em>complete</em> tree<br/>all paths · 20 results</h1>
+    </div>
+    <div class="meta">
+      Format: SVG macro view<br/>
+      Steps: 4–6 per path<br/>
+      Final results: 20<br/>
+      Categories: 9
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>VALUE</span>
+    <span>USERS</span>
+    <span>LOGIC</span>
+    <span>COMPLIANCE</span>
+    <span>STACK</span>
+    <span>BOILERPLATE</span>
   </div>
+
+  <a class="back-link" href="decision-tree">← Back to the interactive tree</a>
+
+  <!-- INTRO + LEGEND -->
+  <div class="intro">
+    <div class="intro-text">
+      <p>This page shows <strong>the entire decision tree</strong> in one view. Each branch matches a different XRPL use case, from the root "Does your product transfer value?" to the 20 final results (each result = a recommended technical stack).</p>
+      <p>Useful to: <em>(1) get an overview of the covered scope</em>, <em>(2) quickly find the path to a specific result</em>, <em>(3) verify that a use case is covered</em>. For the guided walkthrough, go back to <strong>decision-tree.html</strong>.</p>
+    </div>
+    <div class="legend">
+      <h3>Legend</h3>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--chain)"></span>
+        <span class="label"><strong>Binary</strong> question</span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--amm)"></span>
+        <span class="label"><strong>Multi-choice</strong> question</span>
+      </div>
+      <div class="legend-row" style="margin-top:6px;border-top:1px solid var(--ink);padding-top:6px;">
+        <span class="swatch" style="background:var(--user)"></span>
+        <span class="label">Result · <strong>Payments</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--defi)"></span>
+        <span class="label">Result · <strong>DeFi / AMM</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--app)"></span>
+        <span class="label">Result · <strong>Streaming</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--custody)"></span>
+        <span class="label">Result · <strong>Bridge</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--rwa)"></span>
+        <span class="label">Result · <strong>RWA</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--sidechain)"></span>
+        <span class="label">Result · <strong>NFT</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--identity)"></span>
+        <span class="label">Result · <strong>Identity</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:#2c6680"></span>
+        <span class="label">Result · <strong>AI × Payments</strong></span>
+      </div>
+      <div class="legend-row">
+        <span class="swatch" style="background:var(--nofit)"></span>
+        <span class="label"><strong>Not a fit</strong> for XRPL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREE SVG -->
+  <div class="tree-wrap">
+    <div class="tree-header">
+      <span>Vue macro · arbre complet</span>
+      <span class="label">Scrollable horizontalement →</span>
+    </div>
+    <svg class="tree-svg" viewBox="0 0 1700 1340" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background grid -->
+      <defs>
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.5" fill="#0e1116" opacity="0.08"/>
+        </pattern>
+
+        <!-- Arrow marker for connections -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+        </marker>
+        <marker id="arrow-yes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e5d4f"/>
+        </marker>
+        <marker id="arrow-no" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8553d"/>
+        </marker>
+      </defs>
+      <rect width="1700" height="1340" fill="url(#dots)"/>
+
+      <!-- ============= ROW LABELS (left side) ============= -->
+      <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2" fill="#6b6358" text-anchor="end">
+        <text x="80" y="80" font-weight="700" fill="#0e1116">Q01</text>
+        <text x="80" y="92">VALUE</text>
+
+        <text x="80" y="245" font-weight="700" fill="#0e1116">Q02</text>
+        <text x="80" y="257">USERS</text>
+
+        <text x="80" y="430" font-weight="700" fill="#0e1116">Q03</text>
+        <text x="80" y="442">LOGIC</text>
+
+        <text x="80" y="660" font-weight="700" fill="#0e1116">Q04</text>
+        <text x="80" y="672">COMPLIANCE</text>
+
+        <text x="80" y="820" font-weight="700" fill="#0e1116">Q05</text>
+        <text x="80" y="832">STACK</text>
+
+        <text x="80" y="908" font-weight="700" fill="#0e1116">RESULTS</text>
+        <text x="80" y="920">(rows)</text>
+      </g>
+
+      <!-- ============= LEVEL 1 · START (binary) ============= -->
+      <g>
+        <rect x="720" y="40" width="240" height="80" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="840" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#d4a017" font-weight="700">START · BINARY</text>
+        <text x="840" y="90" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="700" fill="#f4efe6">Does it transfer</text>
+        <text x="840" y="108" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-style="italic" fill="#f4efe6">value between users?</text>
+      </g>
+
+      <!-- Lines from start -->
+      <path d="M 800 120 L 480 200" stroke="#c8553d" stroke-width="2.5" fill="none" marker-end="url(#arrow-no)"/>
+      <path d="M 880 120 L 1240 200" stroke="#2e5d4f" stroke-width="2.5" fill="none" marker-end="url(#arrow-yes)"/>
+
+      <!-- Yes/No labels on lines -->
+      <g font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">
+        <rect x="630" y="148" width="38" height="18" fill="#f4efe6" stroke="#c8553d" stroke-width="1.5"/>
+        <text x="649" y="161" text-anchor="middle" fill="#c8553d">NON</text>
+        <rect x="1040" y="148" width="38" height="18" fill="#f4efe6" stroke="#2e5d4f" stroke-width="1.5"/>
+        <text x="1059" y="161" text-anchor="middle" fill="#2e5d4f">OUI</text>
+      </g>
+
+      <!-- ============= LEVEL 2 · TWO QUESTIONS ============= -->
+
+      <!-- Q-NON-FINANCIAL (left, binary) -->
+      <g>
+        <rect x="360" y="200" width="240" height="80" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="480" y="225" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#d4a017" font-weight="700">Q-NON-FINANCIAL · BINARY</text>
+        <text x="480" y="248" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Issue a unique proof</text>
+        <text x="480" y="266" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">to users?</text>
+      </g>
+
+      <!-- Q-ASSET-TYPE (right, binary) -->
+      <g>
+        <rect x="1120" y="200" width="240" height="80" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="1240" y="225" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#d4a017" font-weight="700">Q-ASSET-TYPE · BINARY</text>
+        <text x="1240" y="248" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Native token or</text>
+        <text x="1240" y="266" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">real/regulated asset?</text>
+      </g>
+
+      <!-- Lines from Q-NON-FINANCIAL -->
+      <path d="M 440 280 L 280 380" stroke="#c8553d" stroke-width="2" fill="none" marker-end="url(#arrow-no)"/>
+      <path d="M 520 280 L 410 380" stroke="#2e5d4f" stroke-width="2" fill="none" marker-end="url(#arrow-yes)"/>
+
+      <!-- Lines from Q-ASSET-TYPE -->
+      <path d="M 1180 280 L 920 380" stroke="#2e5d4f" stroke-width="2" fill="none" marker-end="url(#arrow-yes)"/>
+      <path d="M 1300 280 L 1480 380" stroke="#c8553d" stroke-width="2" fill="none" marker-end="url(#arrow-no)"/>
+
+      <!-- Mini yes/no labels on these lines -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">
+        <text x="350" y="335" text-anchor="middle" fill="#c8553d">NON</text>
+        <text x="475" y="335" text-anchor="middle" fill="#2e5d4f">OUI</text>
+        <text x="1045" y="335" text-anchor="middle" fill="#2e5d4f">TOKEN</text>
+        <text x="1390" y="335" text-anchor="middle" fill="#c8553d">RÉEL</text>
+      </g>
+
+      <!-- ============= LEVEL 3 · QUESTIONS + RESULT ============= -->
+
+      <!-- R-NOT-FIT (leaf, left-most) -->
+      <g>
+        <rect x="160" y="380" width="220" height="80" fill="#4a4540" stroke="#0e1116" stroke-width="2"/>
+        <text x="270" y="404" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">RESULT · NOT-FIT</text>
+        <text x="270" y="427" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="700" fill="#f4efe6">Not the right tool</text>
+        <text x="270" y="445" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#f4efe6">use Web2 instead</text>
+      </g>
+
+      <!-- Q-NFT-TYPE (multi) -->
+      <g>
+        <rect x="320" y="380" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="420" y="404" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-NFT-TYPE · MULTI</text>
+        <text x="420" y="427" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Type of proof?</text>
+        <text x="420" y="445" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#f4efe6">4 options</text>
+      </g>
+
+      <!-- Q-FREQUENCY (binary) -->
+      <g>
+        <rect x="820" y="380" width="200" height="80" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="920" y="404" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#d4a017" font-weight="700">Q-FREQUENCY · BINARY</text>
+        <text x="920" y="427" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">One-shot or</text>
+        <text x="920" y="445" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">recurring flow?</text>
+      </g>
+
+      <!-- Q-RWA-TYPE (multi) -->
+      <g>
+        <rect x="1380" y="380" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="1480" y="404" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-RWA-TYPE · MULTI</text>
+        <text x="1480" y="427" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">What type of asset?</text>
+        <text x="1480" y="445" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#f4efe6">4 options</text>
+      </g>
+
+      <!-- Lines from Q-FREQUENCY -->
+      <path d="M 870 460 L 700 600" stroke="#2e5d4f" stroke-width="2" fill="none" marker-end="url(#arrow-yes)"/>
+      <path d="M 970 460 L 1150 600" stroke="#c8553d" stroke-width="2" fill="none" marker-end="url(#arrow-no)"/>
+      <g font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">
+        <text x="755" y="525" text-anchor="middle" fill="#2e5d4f">PONCTUEL</text>
+        <text x="1075" y="525" text-anchor="middle" fill="#c8553d">RÉCURRENT</text>
+      </g>
+
+      <!-- Lines from Q-NFT-TYPE (4 leaves) -->
+      <path d="M 350 460 L 130 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+      <path d="M 390 460 L 290 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+      <path d="M 450 460 L 450 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+      <path d="M 490 460 L 610 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+
+      <!-- Lines from Q-RWA-TYPE (4 leaves in 2x2 grid) -->
+      <!-- Top-left: R-RWA-SECURITIES at (1390-1530, 870-946) → top edge mid (1460, 870) -->
+      <path d="M 1430 460 L 1460 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <!-- Top-right: R-RWA-REALESTATE at (1540-1680, 870-946) → top edge mid (1610, 870) -->
+      <path d="M 1500 460 L 1610 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <!-- Bottom-left: R-RWA-COMMODITIES at (1390-1530, 965-1041) → top edge mid (1460, 965), routed via left side -->
+      <path d="M 1410 460 Q 1370 720 1370 870 L 1370 1003 L 1390 1003" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <!-- Bottom-right: R-RWA-STABLECOIN at (1540-1680, 965-1041) → top edge mid (1610, 965), routed via right side -->
+      <path d="M 1530 460 Q 1700 720 1700 870 L 1700 1003 L 1680 1003" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+      <!-- ============= LEVEL 4 · QUESTIONS + STREAMING RESULTS ============= -->
+
+      <!-- Q-CROSS-CURRENCY (multi) -->
+      <g>
+        <rect x="600" y="600" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="700" y="624" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-CROSS-CURRENCY · MULTI</text>
+        <text x="700" y="647" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Single, cross-currency</text>
+        <text x="700" y="665" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">or cross-chain?</text>
+      </g>
+
+      <!-- Q-STREAMING-TYPE (multi) -->
+      <g>
+        <rect x="1050" y="600" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="1150" y="624" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-STREAMING-TYPE · MULTI</text>
+        <text x="1150" y="647" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Which trigger</text>
+        <text x="1150" y="665" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">for the payment?</text>
+      </g>
+
+      <!-- Lines from Q-CROSS-CURRENCY (3 branches, properly targeted) -->
+      <!-- Single-currency → Q-PAYER-TYPE (routed via L-path passing right of LOYALTY at x=695, then horizontal at y=950 below NFT row, ending at Q-PAYER-TYPE top) -->
+      <path d="M 640 680 L 695 730 L 695 950 L 230 950 L 230 965" stroke="#0e1116" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+      <!-- Cross-chain → R-BRIDGE-EVM (top of result at y=780) -->
+      <path d="M 700 680 L 800 780" stroke="#0e1116" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+      <!-- Cross-currency → Q-AMM-OR-ORDERBOOK (top of question at y=780) -->
+      <path d="M 770 680 L 1050 780" stroke="#0e1116" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- Lines from Q-STREAMING-TYPE (3 results directly) -->
+      <path d="M 1090 680 L 1000 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+      <path d="M 1150 680 L 1130 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+      <path d="M 1200 680 L 1260 870" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+
+      <!-- ============= LEVEL 5 · MORE QUESTIONS ============= -->
+
+      <!-- Q-PAYER-TYPE (binary) — NEW · inserted between Q-CROSS-CURRENCY single and Q-VOLUME-PAYMENT -->
+      <g>
+        <rect x="130" y="965" width="200" height="80" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="230" y="989" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#d4a017" font-weight="700">Q-PAYER-TYPE · BINARY</text>
+        <text x="230" y="1012" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Human user or</text>
+        <text x="230" y="1030" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">autonomous agent?</text>
+      </g>
+
+      <!-- Q-VOLUME-PAYMENT (multi) — moved below NFT row to avoid visual overlap with NFT branch -->
+      <g>
+        <rect x="350" y="965" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="450" y="989" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-VOLUME-PAYMENT · MULTI</text>
+        <text x="450" y="1012" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Volume + user</text>
+        <text x="450" y="1030" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">profile?</text>
+      </g>
+
+      <!-- Connectors from Q-PAYER-TYPE -->
+      <!-- Humain → Q-VOLUME-PAYMENT (horizontal arrow, mid-row) -->
+      <path d="M 330 1005 L 350 1005" stroke="#2e5d4f" stroke-width="2" fill="none" marker-end="url(#arrow-yes)"/>
+      <!-- Agent → r-x402-agent (diagonal down-left to result row) -->
+      <path d="M 230 1045 L 150 1090" stroke="#c8553d" stroke-width="2" fill="none" marker-end="url(#arrow-no)"/>
+      <!-- Yes/No micro-labels -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">
+        <rect x="333" y="996" width="14" height="14" fill="#f4efe6"/>
+        <text x="340" y="1007" text-anchor="middle" fill="#2e5d4f">H</text>
+        <rect x="170" y="1057" width="22" height="14" fill="#f4efe6"/>
+        <text x="181" y="1068" text-anchor="middle" fill="#c8553d">AI</text>
+      </g>
+
+      <!-- R-BRIDGE-EVM (direct result, middle) -->
+      <g>
+        <rect x="700" y="780" width="200" height="80" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+        <text x="800" y="804" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">RESULT · BRIDGE-EVM</text>
+        <text x="800" y="827" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="700" fill="#f4efe6">Bridge XRPL ↔ EVM</text>
+        <text x="800" y="845" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#f4efe6">Sidechain · Solidity</text>
+      </g>
+
+      <!-- Q-AMM-OR-ORDERBOOK (multi) -->
+      <g>
+        <rect x="950" y="780" width="200" height="80" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <text x="1050" y="804" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.5" fill="#f4efe6" font-weight="700">Q-AMM-OR-ORDERBOOK · MULTI</text>
+        <text x="1050" y="827" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="#f4efe6">Liquidity model</text>
+        <text x="1050" y="845" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-style="italic" fill="#f4efe6">for the swap?</text>
+      </g>
+
+      <!-- Hierarchical correction: Q-CROSS-CURRENCY 3 branches now go to right places -->
+      <!-- Replace earlier paths with proper ones -->
+
+      <!-- ============= ROW 6 · FINAL RESULTS ============= -->
+      <!-- 4 NFT/IDENTITY results (left) + 3 streaming results + 1 x402-agent + 3 payment results + 3 amm results + 4 RWA results + 1 NOT-FIT + 1 BRIDGE = 20 -->
+
+      <!-- NFT branch (4 results, far left) -->
+      <g font-family="Fraunces, serif">
+        <rect x="60" y="870" width="140" height="76" fill="#b85c38" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="130" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · NFT-COLLECTION</text>
+        <text x="130" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Art &amp;</text>
+        <text x="130" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">collectibles</text>
+
+        <rect x="220" y="870" width="140" height="76" fill="#5d4a78" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="290" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · DID-CREDENTIAL</text>
+        <text x="290" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Identity</text>
+        <text x="290" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">+ KYC</text>
+
+        <rect x="380" y="870" width="140" height="76" fill="#b85c38" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="450" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · NFT-TICKET</text>
+        <text x="450" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Ticket</text>
+        <text x="450" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">one-shot</text>
+
+        <rect x="540" y="870" width="140" height="76" fill="#b85c38" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="610" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · LOYALTY</text>
+        <text x="610" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Loyalty</text>
+        <text x="610" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">program</text>
+      </g>
+
+      <!-- Streaming branch (3 results, middle-right) -->
+      <g font-family="Fraunces, serif">
+        <rect x="930" y="870" width="140" height="76" fill="#2e5d4f" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1000" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · PAYROLL-STREAM</text>
+        <text x="1000" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Streaming</text>
+        <text x="1000" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">salary</text>
+
+        <rect x="1080" y="870" width="140" height="76" fill="#2e5d4f" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1150" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · MILESTONE-ESCROW</text>
+        <text x="1150" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Milestone</text>
+        <text x="1150" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">escrow</text>
+
+        <rect x="1230" y="870" width="140" height="76" fill="#2e5d4f" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1300" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · SUBSCRIPTION</text>
+        <text x="1300" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Subscription</text>
+        <text x="1300" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">recurring</text>
+      </g>
+
+      <!-- RWA branch (4 results, far right, 2x2 grid) -->
+      <g font-family="Fraunces, serif">
+        <rect x="1390" y="870" width="140" height="76" fill="#4a6741" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1460" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · RWA-SECURITIES</text>
+        <text x="1460" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Bonds &amp;</text>
+        <text x="1460" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">securities</text>
+
+        <rect x="1540" y="870" width="140" height="76" fill="#4a6741" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1610" y="892" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · RWA-REALESTATE</text>
+        <text x="1610" y="912" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Real</text>
+        <text x="1610" y="928" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">estate</text>
+
+        <rect x="1390" y="965" width="140" height="76" fill="#4a6741" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1460" y="987" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · RWA-COMMODITIES</text>
+        <text x="1460" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Commodities</text>
+        <text x="1460" y="1023" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">+ carbon</text>
+
+        <rect x="1540" y="965" width="140" height="76" fill="#4a6741" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1610" y="987" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · RWA-STABLECOIN</text>
+        <text x="1610" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Stablecoin</text>
+        <text x="1610" y="1023" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">yield-bear.</text>
+      </g>
+
+      <!-- ROW 7 · r-x402-agent (left, AI × Payments) + Payment results (under Q-VOLUME-PAYMENT, now at y=1090) + AMM final results (under Q-AMM-OR-ORDERBOOK, at y=965) -->
+      <g font-family="Fraunces, serif">
+        <!-- r-x402-agent (NEW · child of Q-PAYER-TYPE agent branch) -->
+        <rect x="80" y="1090" width="140" height="76" fill="#2c6680" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="150" y="1112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · X402-AGENT</text>
+        <text x="150" y="1132" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">AI agent</text>
+        <text x="150" y="1148" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">pays API</text>
+
+        <!-- Payment branch (3 results, moved to y=1090 to avoid NFT branch overlap) -->
+        <rect x="240" y="1090" width="140" height="76" fill="#c8553d" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="310" y="1112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · PAYMENT-RETAIL</text>
+        <text x="310" y="1132" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Retail</text>
+        <text x="310" y="1148" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">payment</text>
+
+        <rect x="390" y="1090" width="140" height="76" fill="#c8553d" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="460" y="1112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · PAYMENT-B2B</text>
+        <text x="460" y="1132" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">B2B</text>
+        <text x="460" y="1148" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">payment</text>
+
+        <rect x="540" y="1090" width="140" height="76" fill="#c8553d" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="610" y="1112" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · PAYMENT-MARKET</text>
+        <text x="610" y="1132" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Marketplace</text>
+        <text x="610" y="1148" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">/ POS</text>
+
+        <!-- AMM branch (3 results, under Q-AMM-OR-ORDERBOOK) -->
+        <rect x="780" y="965" width="140" height="76" fill="#3a7b8e" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="850" y="987" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · AMM-SWAP</text>
+        <text x="850" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">AMM</text>
+        <text x="850" y="1023" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">swap pur</text>
+
+        <rect x="930" y="965" width="140" height="76" fill="#3a7b8e" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1000" y="987" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · PATHFINDING</text>
+        <text x="1000" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">Path-finding</text>
+        <text x="1000" y="1023" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">auto</text>
+
+        <rect x="1080" y="965" width="140" height="76" fill="#3a7b8e" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="1150" y="987" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="1" fill="#f4efe6" font-weight="700">R · ORDERBOOK</text>
+        <text x="1150" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">DEX order</text>
+        <text x="1150" y="1023" text-anchor="middle" font-size="12" font-weight="700" fill="#f4efe6">book</text>
+      </g>
+
+      <!-- Lines from Q-VOLUME-PAYMENT (y=1045 bottom) to its 3 results (y=1090 top) -->
+      <path d="M 410 1045 L 310 1090" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <path d="M 450 1045 L 460 1090" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <path d="M 500 1045 L 610 1090" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+      <!-- Lines from Q-AMM-OR-ORDERBOOK to its 3 results -->
+      <path d="M 1000 860 L 850 965" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <path d="M 1050 860 L 1000 965" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+      <path d="M 1100 860 L 1150 965" stroke="#0e1116" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+      <!-- Branch labels on cross-currency lines (anchored mid-line, with paper backdrop for legibility) -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="#6b6358">
+        <!-- SINGLE: on vertical segment of the L-routed line, in empty zone between Q-CROSS-CURRENCY and R-BRIDGE-EVM -->
+        <rect x="665" y="742" width="60" height="14" fill="#f4efe6"/>
+        <text x="695" y="753" text-anchor="middle">SINGLE</text>
+        <!-- CROSS-CHAIN: mid-line of straight diagonal to R-BRIDGE-EVM -->
+        <rect x="710" y="722" width="80" height="14" fill="#f4efe6"/>
+        <text x="750" y="733" text-anchor="middle">CROSS-CHAIN</text>
+        <!-- CROSS-CURR: mid-line of straight diagonal to Q-AMM-OR-ORDERBOOK -->
+        <rect x="870" y="722" width="80" height="14" fill="#f4efe6"/>
+        <text x="910" y="733" text-anchor="middle">CROSS-CURR</text>
+      </g>
+
+      <!-- ============= TITLE BANNER (bottom) ============= -->
+      <g>
+        <rect x="100" y="1200" width="1500" height="60" fill="#0e1116" stroke="#0e1116" stroke-width="2"/>
+        <text x="850" y="1222" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3" fill="#d4a017" font-weight="700">20 RESULTS · 9 CATEGORIES · 4 TO 6 STEP PATHS</text>
+        <text x="850" y="1245" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-style="italic" fill="#f4efe6">To walk through the tree, go back to decision-tree.html</text>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- PATHS RECAP TABLE -->
+  <div class="paths-recap">
+    <div class="paths-header">
+      <h2>All <em>paths</em> · recap</h2>
+      <span class="label">20 results · sorted by category</span>
+    </div>
+    <table class="recap">
+      <thead>
+        <tr>
+          <th style="width: 13%">Category</th>
+          <th style="width: 23%">Result</th>
+          <th>Path (questions → answers)</th>
+          <th style="width: 8%; text-align: right;">Steps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- PAYMENTS (3) -->
+        <tr>
+          <td><span class="cat-pill payments">PAYMENTS</span></td>
+          <td class="result">Payment <em>retail</em></td>
+          <td class="path">Value <strong>YES</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>ONE-SHOT</strong> → CrossCurr <strong>SINGLE</strong> → Payer <strong>HUMAN</strong> → Volume <strong>RETAIL</strong></td>
+          <td class="path" style="text-align: right;">6</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill payments">PAYMENTS</span></td>
+          <td class="result">Payment <em>B2B</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>SINGLE</strong> → Payer <strong>HUMAIN</strong> → Volume <strong>B2B</strong></td>
+          <td class="path" style="text-align: right;">6</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill payments">PAYMENTS</span></td>
+          <td class="result">Payment <em>marketplace / POS</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>SINGLE</strong> → Payer <strong>HUMAIN</strong> → Volume <strong>MARKET</strong></td>
+          <td class="path" style="text-align: right;">6</td>
+        </tr>
+
+        <!-- AI × PAYMENTS (1) — NEW -->
+        <tr>
+          <td><span class="cat-pill ai">AI × PAY</span></td>
+          <td class="result">x402 <em>· AI agent pays API</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>SINGLE</strong> → Payer <strong>AGENT</strong></td>
+          <td class="path" style="text-align: right;">5</td>
+        </tr>
+
+        <!-- DEFI (3) -->
+        <tr>
+          <td><span class="cat-pill defi">DEFI</span></td>
+          <td class="result">AMM <em>swap</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>CROSS</strong> → Liquidity <strong>AMM</strong></td>
+          <td class="path" style="text-align: right;">5</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill defi">DEFI</span></td>
+          <td class="result"><em>Auto</em> path-finding</td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>CROSS</strong> → Liquidity <strong>PATH</strong></td>
+          <td class="path" style="text-align: right;">5</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill defi">DEFI</span></td>
+          <td class="result"><em>Native</em> order book</td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>CROSS</strong> → Liquidity <strong>ORDER</strong></td>
+          <td class="path" style="text-align: right;">5</td>
+        </tr>
+
+        <!-- BRIDGE (1) -->
+        <tr>
+          <td><span class="cat-pill bridge">BRIDGE</span></td>
+          <td class="result">Bridge <em>XRPL ↔ EVM</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>PONCTUEL</strong> → CrossCurr <strong>CROSS-CHAIN</strong></td>
+          <td class="path" style="text-align: right;">4</td>
+        </tr>
+
+        <!-- PAYROLL (3) -->
+        <tr>
+          <td><span class="cat-pill payroll">PAYROLL</span></td>
+          <td class="result">Streaming <em>payroll</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>RECURRING</strong> → Trigger <strong>TIME</strong></td>
+          <td class="path" style="text-align: right;">4</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill payroll">PAYROLL</span></td>
+          <td class="result">Milestone <em>escrow</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>RÉCURRENT</strong> → Trigger <strong>MILESTONE</strong></td>
+          <td class="path" style="text-align: right;">4</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill payroll">PAYROLL</span></td>
+          <td class="result"><em>Recurring</em> subscription</td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>TOKEN</strong> → Frequency <strong>RÉCURRENT</strong> → Trigger <strong>SUBSCRIPTION</strong></td>
+          <td class="path" style="text-align: right;">4</td>
+        </tr>
+
+        <!-- RWA (4) -->
+        <tr>
+          <td><span class="cat-pill rwa">RWA</span></td>
+          <td class="result"><em>Tokenized</em> securities</td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>REAL</strong> → RWA-type <strong>SECURITIES</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill rwa">RWA</span></td>
+          <td class="result"><em>Fractional</em> real estate</td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>RÉEL</strong> → RWA-type <strong>REAL ESTATE</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill rwa">RWA</span></td>
+          <td class="result">Commodities &amp; <em>carbon</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>RÉEL</strong> → RWA-type <strong>COMMODITIES</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill rwa">RWA</span></td>
+          <td class="result">Yield-bearing <em>stablecoin</em></td>
+          <td class="path">Value <strong>OUI</strong> → Asset <strong>RÉEL</strong> → RWA-type <strong>STABLECOIN</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+
+        <!-- NFT (3) -->
+        <tr>
+          <td><span class="cat-pill nft">NFT</span></td>
+          <td class="result">NFT <em>collection</em></td>
+          <td class="path">Value <strong>NO</strong> → Proof <strong>YES</strong> → NFT-type <strong>COLLECTION</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill nft">NFT</span></td>
+          <td class="result">NFT <em>ticket</em></td>
+          <td class="path">Value <strong>NON</strong> → Preuve <strong>OUI</strong> → NFT-type <strong>TICKET</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+        <tr>
+          <td><span class="cat-pill nft">NFT</span></td>
+          <td class="result">Loyalty <em>program</em></td>
+          <td class="path">Value <strong>NON</strong> → Preuve <strong>OUI</strong> → NFT-type <strong>LOYALTY</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+
+        <!-- IDENTITY (1) -->
+        <tr>
+          <td><span class="cat-pill identity">IDENTITY</span></td>
+          <td class="result">DID <em>+ Credentials</em></td>
+          <td class="path">Value <strong>NON</strong> → Preuve <strong>OUI</strong> → NFT-type <strong>IDENTITY</strong></td>
+          <td class="path" style="text-align: right;">3</td>
+        </tr>
+
+        <!-- NOT-FIT (1) -->
+        <tr>
+          <td><span class="cat-pill nofit">NOT-FIT</span></td>
+          <td class="result"><em>Not a fit</em> for XRPL</td>
+          <td class="path">Value <strong>NON</strong> → Proof <strong>NO</strong></td>
+          <td class="path" style="text-align: right;">2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a class="back-link" href="decision-tree">← Retour à l'arbre interactif</a>
+
+  <footer>
+    <span>DECISION TREE · MACRO MAP · v1.0</span>
+    <span>FIG. 09 · COMPLETE PATHS</span>
+  </footer>
+
 </div>
-
-<footer>
-  <span>XRPL BUILDER · EN PLACEHOLDER · v1.6</span>
-  <span>FR VERSION READY · EN COMING</span>
-</footer>
-
 </body>
 </html>
