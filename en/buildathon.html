@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Buildathon — ideation board v0.1 — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --reco: #b85c38;
+    --alt: #6b6358;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-logo { flex-shrink: 0; display: block; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a[data-section="build"]::before { background: var(--sidechain); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
+  }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead .draft-tag {
+    display: inline-block;
+    background: var(--sidechain); color: var(--paper);
+    padding: 2px 8px; margin-right: 8px;
+    font-weight: 700;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95; margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-size: 14.5px; line-height: 1.6;
+  }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* SECTION (each Buildathon decision) */
+  .bp-section {
+    margin-bottom: 40px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .bp-section header {
+    background: var(--ink); color: var(--paper);
+    padding: 14px 24px;
+  }
+  .bp-section header .num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    color: var(--wallet);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .bp-section header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 28px);
+    margin: 4px 0 0 0;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .bp-section header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); opacity: 0.85; }
+  .bp-section .section-body {
+    padding: 0;
+  }
+
+  /* RECOMMENDATION block */
+  .reco-block {
+    background: linear-gradient(180deg, rgba(184,92,56,0.08), rgba(184,92,56,0.02));
+    border-bottom: 2px solid var(--ink);
+    padding: 22px 26px;
+    position: relative;
+  }
+  .reco-block::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 6px; background: var(--reco);
+  }
+  .reco-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 700;
+    background: var(--reco); color: var(--paper);
+    padding: 3px 10px;
+    margin-bottom: 10px;
+  }
+  .reco-block h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 6px 0 8px 0;
+    line-height: 1.15;
+  }
+  .reco-block h3 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .reco-block .reco-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+  }
+  .reco-block p {
+    font-size: 14px; line-height: 1.55;
+    margin: 0 0 8px 0;
+  }
+  .reco-block p:last-child { margin-bottom: 0; }
+  .reco-block strong { color: var(--chain); font-weight: 600; }
+  .reco-block ul { margin: 8px 0 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+  .reco-block ul li { margin-bottom: 5px; }
+
+  /* ALTERNATIVES block */
+  .alt-block {
+    padding: 18px 26px 22px;
+  }
+  .alt-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 700;
+    background: var(--paper-2); color: var(--alt);
+    padding: 3px 10px; border: 1px solid var(--alt);
+    margin-bottom: 14px;
+  }
+  .alt-list {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .alt-list li {
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(14,17,22,0.18);
+    font-size: 13.5px; line-height: 1.55;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .alt-list li:last-child { border-bottom: none; }
+  .alt-list .alt-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .alt-list .alt-desc strong { color: var(--chain); font-weight: 600; }
+  .alt-list .alt-desc em { color: var(--user); font-style: italic; }
+  @media (max-width: 700px) {
+    .alt-list li { grid-template-columns: 1fr; }
+  }
+
+  /* TIMELINE (used for timing section) */
+  .timeline {
+    margin: 12px 0;
+    border-left: 2px solid var(--ink);
+    padding-left: 16px;
+  }
+  .timeline .tl-item {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .timeline .tl-item::before {
+    content: ""; position: absolute; left: -22px; top: 6px;
+    width: 10px; height: 10px;
+    background: var(--reco); border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+  .timeline .tl-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--reco);
+    letter-spacing: 0.06em;
+  }
+  .timeline .tl-label {
+    font-size: 13.5px;
+    margin-top: 1px;
+  }
+
+  /* PRIZE TIERS */
+  .prize-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1.5px solid var(--ink);
+    margin: 12px 0;
+  }
+  .prize-tier {
+    padding: 14px 16px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .prize-tier:last-child { border-right: none; }
+  .prize-tier .tier-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; font-weight: 700;
+    color: var(--reco);
+  }
+  .prize-tier .tier-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 4px 0 6px 0;
+  }
+  .prize-tier .tier-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 700;
+    color: var(--chain);
+  }
+  .prize-tier .tier-perks {
+    font-size: 12px; line-height: 1.5;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  @media (max-width: 700px) {
+    .prize-grid { grid-template-columns: 1fr; }
+    .prize-tier { border-right: none; border-bottom: 1px solid var(--ink); }
+    .prize-tier:last-child { border-bottom: none; }
+  }
+
+  /* CRITERIA TABLE */
+  .crit-table {
+    width: 100%; border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+    border: 1.5px solid var(--ink);
+  }
+  .crit-table th {
+    background: var(--paper-2);
+    text-align: left;
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .crit-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+  }
+  .crit-table td.weight {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; color: var(--reco);
+    text-align: right;
+    width: 80px;
+  }
+
+  /* OPEN QUESTIONS box */
+  .open-q {
+    border: 2px dashed var(--ink);
+    background: rgba(212,160,23,0.06);
+    padding: 22px 28px;
+    margin-top: 36px;
+  }
+  .open-q h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 0 0 8px 0;
+  }
+  .open-q .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .open-q ul { padding-left: 18px; margin: 0; font-size: 13.5px; line-height: 1.6; }
+  .open-q ul li { margin-bottom: 6px; }
+  .open-q ul li strong { color: var(--chain); }
+
+  /* SOURCE FOOTER */
+  .sources-foot {
+    margin-top: 60px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116" transform="translate(50, 50)"><rect x="-36" y="-8" width="72" height="16" transform="rotate(45)"/><rect x="-36" y="-8" width="72" height="16" transform="rotate(-45)"/></g><text x="102" y="46" font-family="'Fraunces', Georgia, serif" font-size="44" font-weight="800" fill="#d4a017">B</text></svg><span class="nav-home-text">XRPL <em>Builder</em></span></a>
+  <div class="nav-links">
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/analysis-1" data-section="analyse" class="section-start">Analysis 1</a>
+    <a href="/en/analysis-2" data-section="analyse">Analysis 2</a>
+    <a href="/en/analysis-3" data-section="analyse">Synthesis</a>
+    <a href="/en/buildathon" data-section="build" class="section-start current">Buildathon</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag" href="/en/buildathon">🇫🇷</a>
+    <a class="lang-flag active" href="/en/buildathon">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow"><span class="draft-tag">DRAFT v0.1</span> Buildathon · ideation board · May 2026</div>
+    <h1>Buildathon <em>process</em><br/>— what we ship, when, how</h1>
+  </div>
+  <div class="meta">
+    Status: working draft<br/>
+    Audience: XRPL Commons + decision committee<br/>
+    Sections: 10 · open questions: 5<br/>
+    Source: Master Atlas (Analysis 3)
+  </div>
+</header>
+
+<div class="strap">
+  <span>Ideation board</span>
+  <span>Reco + alternatives per section</span>
+  <span>To be arbitrated by committee</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">CONTEXT</span> This page is the <strong>working blueprint</strong> for the upcoming XRPL Buildathon. It builds on the <a href="/en/analysis-3" style="color: var(--chain); font-weight: 600;">Master Atlas synthesis</a> (30 opportunities, 7 themes, 8 multipliers) and translates it into an executable program.</p>
+  <p><span class="pill">METHOD</span> For each of the <strong>10 sections</strong> (name, format, timing, challenge register, prizes, jury, criteria, teams, office hours, open questions), this page lists <em>my recommendation</em> in the orange box, then <em>all alternatives</em> below — so the committee can scan options without losing context. <strong>Nothing is decided yet.</strong></p>
+  <p><span class="pill">USAGE</span> Walk through the sections in order. When the committee aligns on a choice, we lock it as v1.0 and ship the public-facing Buildathon page (separate from this internal ideation board).</p>
+</div>
+
+<!-- ============================ SECTION 01 — NAME ============================ -->
+<section class="bp-section" id="name">
+  <header>
+    <div class="num-badge">Section 01</div>
+    <h2>Name <em>— what do we call this thing?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>XRPL Zone <em>Build</em></h3>
+      <div class="reco-sub">Tagline: "Where institutional DeFi gets built"</div>
+      <p>Capitalizes on the <strong>"XRPL Zone" brand asset</strong> already established by the 4 Paris Product Working Groups (April 2026). Avoids fragmenting the comms strategy. The "Build" suffix signals action and continuity.</p>
+      <ul>
+        <li><strong>Pros:</strong> brand recognition, narrative continuity, low marketing cost</li>
+        <li><strong>Cons:</strong> sounds like a continuation not an event; doesn't signal the time-bounded nature of a buildathon</li>
+      </ul>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">30x30</div>
+          <div class="alt-desc"><strong>Reference to SXSW</strong> (South by Southwest) format + perfect fit with the <em>30 opportunities × 30 days</em> reading of the Master Atlas. Punchy, memorable, viral-friendly. <strong>Pros:</strong> punchy, brandable, marketing gold. <strong>Cons:</strong> doesn't say "XRPL" anywhere — needs a sub-tag like "30x30 — XRPL Buildathon".</div>
+        </li>
+        <li>
+          <div class="alt-name">Build the Institutional Chain</div>
+          <div class="alt-desc">Direct quote of the strategic thesis (Atka + Analysis 3). <strong>Pros:</strong> very clear positioning, attracts the right audience (institutional founders). <strong>Cons:</strong> long, declarative, less "warm" than the others.</div>
+        </li>
+        <li>
+          <div class="alt-name">XRPL Compliance Stack</div>
+          <div class="alt-desc">Position purely on the differentiator (compliance-native DeFi). <strong>Pros:</strong> very differentiated, niche-specific. <strong>Cons:</strong> too narrow; excludes RWA, Lending, Wallets which are part of the Atlas.</div>
+        </li>
+        <li>
+          <div class="alt-name">XRPL Buildathon Paris 2026</div>
+          <div class="alt-desc">The most generic, descriptive option. <strong>Pros:</strong> instantly understood, SEO-friendly. <strong>Cons:</strong> zero brand differentiation, sounds like every other crypto event.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 02 — FORMAT ============================ -->
+<section class="bp-section" id="format">
+  <header>
+    <div class="num-badge">Section 02</div>
+    <h2>Format &amp; cadence <em>— how long, what rhythm?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>Hybrid <em>6-week sprint</em></h3>
+      <div class="reco-sub">Kickoff Paris (2 days, in person) → 4 weeks remote build → Demo Day Paris (1 day)</div>
+      <p>Sweet spot between virality (short enough to maintain momentum) and depth (long enough to ship Tier 1 multipliers, which need 8–14 weeks for full implementations — but 4 weeks is enough for a credible MVP + working demo).</p>
+      <ul>
+        <li><strong>Week 0 (pre-flight):</strong> applications open, team formation, challenge selection</li>
+        <li><strong>Week 1:</strong> Kickoff Paris — 2 days in person, spec writing, mentor matching</li>
+        <li><strong>Weeks 2–4:</strong> Remote build, 2 office-hour sessions/week, mentoring</li>
+        <li><strong>Week 5:</strong> Code freeze, polish, docs, demo prep</li>
+        <li><strong>Week 6:</strong> Demo Day Paris (live + livestream), jury, prizes</li>
+      </ul>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">72-hour hackathon</div>
+          <div class="alt-desc">Friday → Sunday, all in person, classic format. <strong>Pros:</strong> viral, FOMO-inducing, spectacular demos. <strong>Cons:</strong> only Tier 3 ships are realistic; Tier 1 multipliers need more time. Misses the "real product" goal.</div>
+        </li>
+        <li>
+          <div class="alt-name">9-week residency (Aquarium-style)</div>
+          <div class="alt-desc">Full residency, like the existing XRPL Commons Aquarium DeFi cohort. <strong>Pros:</strong> deep work, real Tier 1 ships possible. <strong>Cons:</strong> overlaps heavily with Aquarium program; cannibalizes resources; longer time = lower urgency.</div>
+        </li>
+        <li>
+          <div class="alt-name">4-month distributed</div>
+          <div class="alt-desc">Teams pick their challenge, build at their own pace, monthly check-ins. <strong>Pros:</strong> max flexibility, suits remote teams. <strong>Cons:</strong> low energy, hard to coordinate Demo Day, attention bleeds.</div>
+        </li>
+        <li>
+          <div class="alt-name">Staggered themes (6 weekends)</div>
+          <div class="alt-desc">One weekend per theme of the Master Atlas (Wallets, Institutional Infra, Lending, RWA, EVM Sidechain, Dev Tooling). <strong>Pros:</strong> covers the full Atlas, builders pick their theme. <strong>Cons:</strong> fragmented audience, harder to brand as one event.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 03 — TIMING ============================ -->
+<section class="bp-section" id="timing">
+  <header>
+    <div class="num-badge">Section 03</div>
+    <h2>Timing <em>— when does it happen?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>October 2026 <em>— Demo Day November 14</em></h3>
+      <div class="reco-sub">Coincides with post-Apex window for max momentum + press attention</div>
+      <p>Aligns with shipped XLS-66 (Lending mainnet expected summer 2026), avoids summer holidays, leverages crypto press attention right after XRPL Apex (typically late October / early November).</p>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-date">15 JUL 2026</div><div class="tl-label">Pre-flight: announcement, applications open</div></div>
+        <div class="tl-item"><div class="tl-date">15 SEP 2026</div><div class="tl-label">Applications closed, jury reviews, teams selected</div></div>
+        <div class="tl-item"><div class="tl-date">5–6 OCT 2026</div><div class="tl-label">Kickoff Paris — 2 days, in person</div></div>
+        <div class="tl-item"><div class="tl-date">7 OCT → 9 NOV</div><div class="tl-label">Remote build (4 weeks) + Office Hours</div></div>
+        <div class="tl-item"><div class="tl-date">10–13 NOV 2026</div><div class="tl-label">Code freeze, polish, demo prep</div></div>
+        <div class="tl-item"><div class="tl-date">14 NOV 2026</div><div class="tl-label">Demo Day Paris — live + livestream + prizes</div></div>
+      </div>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">September 2026</div>
+          <div class="alt-desc">Earlier window, before XRPL Apex. <strong>Pros:</strong> generates buzz feeding into Apex. <strong>Cons:</strong> some builders still on summer break (Sept 1–7), risks weak applications volume.</div>
+        </li>
+        <li>
+          <div class="alt-name">January 2027</div>
+          <div class="alt-desc">Q1 push, post-holidays focus. <strong>Pros:</strong> full team energy, RLUSD/RWA more mature by then. <strong>Cons:</strong> 9 months after PWG energy peaks — momentum lost, harder to leverage Paris narrative.</div>
+        </li>
+        <li>
+          <div class="alt-name">March 2027 (one year after PWGs)</div>
+          <div class="alt-desc">Big anniversary moment, "one year on" retrospective. <strong>Pros:</strong> good narrative arc. <strong>Cons:</strong> way too far; ecosystem will have moved on. Reject.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 04 — CHALLENGE REGISTER ============================ -->
+<section class="bp-section" id="challenges">
+  <header>
+    <div class="num-badge">Section 04</div>
+    <h2>Challenge register <em>— what can teams build?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>Master Atlas <em>— 30 opportunities, 7 themes</em></h3>
+      <div class="reco-sub">Direct mapping from Analysis 3 → Buildathon Tier 1 / Tier 2 / Tier 3</div>
+      <p>The <strong>Master Atlas</strong> already has the convergence of 4 PWGs + Atka + external challenger built in. Mapping is straightforward:</p>
+      <ul>
+        <li><strong>Tier 1 — Multipliers (×8 challenges):</strong> M-01, M-05, M-09, M-11, M-14, M-17, M-21, M-22 → Grand Prize bracket</li>
+        <li><strong>Tier 2 — High-priority (×14 challenges):</strong> M-02, M-03, M-06, M-07, M-12, M-12b, M-13, M-16b, M-18, M-19, M-20, M-24, M-25, M-26 → Major Prize</li>
+        <li><strong>Tier 3 — Medium-priority (×8 challenges):</strong> M-04, M-08, M-10, M-15, M-16, M-23, M-27, M-28, M-29, M-30 → Standard Prize (some are A1 contributions)</li>
+        <li><strong>Open category:</strong> teams can propose an off-Atlas challenge if they justify it; jury decides eligibility</li>
+      </ul>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">Curated short-list (10 challenges)</div>
+          <div class="alt-desc">Pick 10 highest-priority items only (the 8 multipliers + 2 wildcards). <strong>Pros:</strong> easier to communicate, simpler decision for builders. <strong>Cons:</strong> excludes 20+ valid opportunities; risks builders pivoting to a sub-optimal challenge.</div>
+        </li>
+        <li>
+          <div class="alt-name">Open-form (no register)</div>
+          <div class="alt-desc">Any XRPL-related project welcome, no constraints. <strong>Pros:</strong> max creativity. <strong>Cons:</strong> wastes the entire Master Atlas curation work; jury has nothing to anchor against.</div>
+        </li>
+        <li>
+          <div class="alt-name">Sponsor-driven challenges</div>
+          <div class="alt-desc">Each major sponsor (Ripple, Mastercard, Securitize, Anodos) defines their own challenge. <strong>Pros:</strong> guarantees sponsor engagement. <strong>Cons:</strong> challenges may not align with the Master Atlas; risk of "sponsored content" feel.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 05 — PRIZES ============================ -->
+<section class="bp-section" id="prizes">
+  <header>
+    <div class="num-badge">Section 05</div>
+    <h2>Prizes <em>— what do winners get?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>3 tiers <em>+ sponsor prizes</em></h3>
+      <div class="reco-sub">Total cash pool ≈ €174k + perks (Aquarium fast-track, Ripple Investments intro, mentoring)</div>
+      <div class="prize-grid">
+        <div class="prize-tier">
+          <div class="tier-tag">Tier 1 · ×3</div>
+          <div class="tier-name">Grand Prize</div>
+          <div class="tier-amount">€30,000</div>
+          <div class="tier-perks">+ Aquarium fast-track + Ripple Investments warm intro + Apex 2027 speaker slot</div>
+        </div>
+        <div class="prize-tier">
+          <div class="tier-tag">Tier 2 · ×6</div>
+          <div class="tier-name">Major Prize</div>
+          <div class="tier-amount">€10,000</div>
+          <div class="tier-perks">+ 6 months XRPL Commons mentoring + co-marketing</div>
+        </div>
+        <div class="prize-tier">
+          <div class="tier-tag">Tier 3 · ×8</div>
+          <div class="tier-name">Standard Prize</div>
+          <div class="tier-amount">€3,000</div>
+          <div class="tier-perks">+ cloud credits (AWS, GCP) + ecosystem visibility</div>
+        </div>
+      </div>
+      <p style="margin-top: 14px;"><strong>Sponsor prizes (additional):</strong> Ripple (RLUSD challenge €15k) · Evernorth (XLS-66 lending €10k) · Mastercard (RLUSD merchant €10k) · Anodos / Securitize (RWA €10k). Sponsor prizes can stack with main tiers.</p>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">Smaller cash pool (€60k)</div>
+          <div class="alt-desc">Tier 1 €15k×3, Tier 2 €5k×3, no Tier 3. <strong>Pros:</strong> sustainable, fits a smaller budget. <strong>Cons:</strong> below market rate for serious builders (Devpost top hackathons go €50k–100k for Grand Prize).</div>
+        </li>
+        <li>
+          <div class="alt-name">Equity/token pool</div>
+          <div class="alt-desc">Winners get Ripple investment commitment instead of cash. <strong>Pros:</strong> aligns long-term incentives, more capital. <strong>Cons:</strong> complex legals, dilutes ownership, adds friction.</div>
+        </li>
+        <li>
+          <div class="alt-name">Equal split (no tiers)</div>
+          <div class="alt-desc">Top 10 teams each get €15k flat. <strong>Pros:</strong> egalitarian, removes "winner's curse". <strong>Cons:</strong> removes incentive to push for excellence; Tier 1 multipliers should be rewarded more.</div>
+        </li>
+        <li>
+          <div class="alt-name">Cash + 5% revenue royalty (3y)</div>
+          <div class="alt-desc">Winners get cash + a 5% royalty on revenue for 3 years (capped). <strong>Pros:</strong> long-term aligned, recoverable for ecosystem. <strong>Cons:</strong> complex, deterring for some builders. Probably overkill for a buildathon.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 06 — JURY ============================ -->
+<section class="bp-section" id="jury">
+  <header>
+    <div class="num-badge">Section 06</div>
+    <h2>Jury composition <em>— who decides?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>5 jurors <em>— ecosystem balanced</em></h3>
+      <div class="reco-sub">Representing 5 perspectives: ecosystem, infra, market, alumni, external</div>
+      <ul>
+        <li><strong>1 · XRPL Commons</strong> — ecosystem perspective, knows builders + Atlas roadmap</li>
+        <li><strong>2 · Ripple devrel or RLUSD lead</strong> — institutional infra perspective, validates technical-fit</li>
+        <li><strong>3 · Atka analyst</strong> — DeFi market perspective, validates Tier 1 multiplier potential</li>
+        <li><strong>4 · Successful Aquarium alum</strong> (founder, repeat builder) — practitioner perspective</li>
+        <li><strong>5 · External institutional</strong> — asset manager, CEX exec, or bank crypto desk lead</li>
+      </ul>
+      <p>This composition <strong>balances internal advocacy</strong> (XRPL Commons, Ripple) with <strong>external accountability</strong> (Atka, alum, institutional). No single stakeholder can capture the jury.</p>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">3 jurors (lean)</div>
+          <div class="alt-desc">XRPL Commons + Ripple + 1 external. <strong>Pros:</strong> faster decisions, easier scheduling. <strong>Cons:</strong> too internal, lacks credibility for an external audience.</div>
+        </li>
+        <li>
+          <div class="alt-name">7+ jurors (broad)</div>
+          <div class="alt-desc">Adds Mastercard, Securitize, dev tool partner, etc. <strong>Pros:</strong> max ecosystem coverage. <strong>Cons:</strong> hard to schedule, dilutes accountability, "design by committee" risk.</div>
+        </li>
+        <li>
+          <div class="alt-name">Public vote (community-judged)</div>
+          <div class="alt-desc">Open vote on Twitter/Discord post-Demo Day. <strong>Pros:</strong> viral, engages community. <strong>Cons:</strong> popularity contest, gameable, inappropriate for technical evaluation.</div>
+        </li>
+        <li>
+          <div class="alt-name">Hybrid: 5 jurors + 1 community vote</div>
+          <div class="alt-desc">5-juror panel for Tier 1 + Tier 2, community vote for Tier 3 / "People's Choice". <strong>Pros:</strong> best of both, engages community without compromising rigor. <strong>Cons:</strong> adds complexity to the announcement.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 07 — JUDGING CRITERIA ============================ -->
+<section class="bp-section" id="criteria">
+  <header>
+    <div class="num-badge">Section 07</div>
+    <h2>Judging criteria <em>— how is "winning" measured?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>6 criteria <em>— transparent &amp; weighted</em></h3>
+      <div class="reco-sub">Total = 100%, published to candidates upfront</div>
+      <table class="crit-table">
+        <thead>
+          <tr><th>Criterion</th><th>What it measures</th><th class="weight">Weight</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Gap fit</strong></td><td>Maps to a Master Atlas Focus Area</td><td class="weight">20%</td></tr>
+          <tr><td><strong>Technical execution</strong></td><td>Code quality, security, architecture</td><td class="weight">25%</td></tr>
+          <tr><td><strong>Product completeness</strong></td><td>UX, docs, working demo</td><td class="weight">20%</td></tr>
+          <tr><td><strong>Distribution thinking</strong></td><td>CeDeFi/CEX-aware, GTM realism</td><td class="weight">15%</td></tr>
+          <tr><td><strong>Composability</strong></td><td>Other builds can consume this one</td><td class="weight">10%</td></tr>
+          <tr><td><strong>Pitch quality</strong></td><td>Clarity of demo, narrative</td><td class="weight">10%</td></tr>
+        </tbody>
+      </table>
+      <p>Publishing the criteria <strong>upfront with weights</strong> reduces "Devpost roulette" feel and lets candidates self-prioritize their build.</p>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">3 criteria only (simple)</div>
+          <div class="alt-desc">Tech (40%), Product (30%), Pitch (30%). <strong>Pros:</strong> simple to communicate. <strong>Cons:</strong> loses the gap-fit signal; risks builders shipping cool stuff that doesn't address ecosystem priorities.</div>
+        </li>
+        <li>
+          <div class="alt-name">No weights (qualitative)</div>
+          <div class="alt-desc">List criteria but no numeric weights — jurors use judgment. <strong>Pros:</strong> flexibility. <strong>Cons:</strong> opaque, candidates can't optimize, looks unprofessional.</div>
+        </li>
+        <li>
+          <div class="alt-name">Tier-specific criteria</div>
+          <div class="alt-desc">Tier 1 emphasizes multiplier impact; Tier 3 emphasizes execution polish. <strong>Pros:</strong> tailored. <strong>Cons:</strong> complex, may confuse cross-tier comparison.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 08 — TEAMS ============================ -->
+<section class="bp-section" id="teams">
+  <header>
+    <div class="num-badge">Section 08</div>
+    <h2>Team composition <em>— size &amp; profile?</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>2 to 5 people <em>— at least 1 senior dev + 1 BD/founder</em></h3>
+      <div class="reco-sub">Solo allowed but no Tier 1 prize for solo entries</div>
+      <ul>
+        <li><strong>Minimum 2 people</strong> for Tier 1 + Tier 2 prize eligibility (forces dev/BD pairing)</li>
+        <li><strong>Maximum 5 people</strong> to avoid "team of 10 hides individual contribution" problem</li>
+        <li><strong>At least 1 senior developer</strong> (verified via CV / GitHub) — gates the technical execution criterion</li>
+        <li><strong>Geographic diversity encouraged</strong> — Paris in-person for kickoff + Demo Day, remote for the build phase</li>
+        <li><strong>Aquarium / Hackathon alumni</strong> get +5% application priority (existing community signal)</li>
+      </ul>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">Solo allowed for all tiers</div>
+          <div class="alt-desc">No team requirement. <strong>Pros:</strong> max accessibility. <strong>Cons:</strong> dev-only or BD-only solo entries usually fail at Demo Day; better to force the pairing.</div>
+        </li>
+        <li>
+          <div class="alt-name">Team size 2–10</div>
+          <div class="alt-desc">Higher max, more flexibility. <strong>Pros:</strong> larger ambitious projects possible. <strong>Cons:</strong> coordination overhead, individual contribution unclear, prize money diluted.</div>
+        </li>
+        <li>
+          <div class="alt-name">Pre-formed teams only (no matching)</div>
+          <div class="alt-desc">Apply as full team or not at all. <strong>Pros:</strong> faster ramp, known dynamics. <strong>Cons:</strong> excludes solo applicants who haven't found cofounders yet.</div>
+        </li>
+        <li>
+          <div class="alt-name">Match-making service</div>
+          <div class="alt-desc">XRPL Commons runs a Discord channel + LinkedIn flow to help solos form teams. <strong>Pros:</strong> inclusive, generates ecosystem connections. <strong>Cons:</strong> ops cost, risks last-minute team chaos.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 09 — OFFICE HOURS ============================ -->
+<section class="bp-section" id="office-hours">
+  <header>
+    <div class="num-badge">Section 09 · NEW</div>
+    <h2>Office Hours <em>— team support during the build</em></h2>
+  </header>
+  <div class="section-body">
+
+    <div class="reco-block">
+      <span class="reco-tag">Recommended</span>
+      <h3>2 fixed slots/week <em>+ on-demand AMA</em></h3>
+      <div class="reco-sub">During the 4-week build phase (Oct 7 → Nov 9)</div>
+      <ul>
+        <li><strong>Tuesday 11:00–12:00 CET — Tech Office Hour</strong> (XRPL devrel + Ripple infra). Topics: XLS-66 / XLS-65 / XLS-70 specs, code review, integration debugging. Live group call (Zoom), recorded.</li>
+        <li><strong>Thursday 16:00–17:00 CET — Product / GTM Office Hour</strong> (XRPL Commons + Aquarium alum). Topics: positioning, pitch shaping, distribution strategy, RLUSD/CEX integrations. Live group call, recorded.</li>
+        <li><strong>On-demand AMA</strong> — async via dedicated Discord channel. ≤24h response from a rotating mentor pool of ~10 people.</li>
+        <li><strong>1:1 office hours</strong> bookable via shared Calendly (max 30min/week per team) — for product strategy, IP/legal, fundraising prep.</li>
+        <li><strong>Recorded archive</strong> of all sessions, accessible to all teams + future reference.</li>
+      </ul>
+      <p><strong>Why 2 fixed slots:</strong> creates a heartbeat for the cohort, makes mentor scheduling sane, lets teams plan their week. The async Discord covers everything else.</p>
+    </div>
+
+    <div class="alt-block">
+      <span class="alt-tag">Alternatives</span>
+      <ul class="alt-list">
+        <li>
+          <div class="alt-name">Daily 30-min standup</div>
+          <div class="alt-desc">Every weekday morning, all teams join. <strong>Pros:</strong> high engagement, daily momentum. <strong>Cons:</strong> heavy on mentors (5h/week), risks performative attendance, hard for global timezones.</div>
+        </li>
+        <li>
+          <div class="alt-name">Async Discord-only</div>
+          <div class="alt-desc">No live calls, dedicated channel + mentors check in. <strong>Pros:</strong> lightweight, timezone-friendly. <strong>Cons:</strong> no "magic moment" of live problem solving, lower energy, cohort doesn't bond.</div>
+        </li>
+        <li>
+          <div class="alt-name">Weekly group AMA</div>
+          <div class="alt-desc">One 90-min session per week with all teams + 4 mentors panel. <strong>Pros:</strong> minimal overhead. <strong>Cons:</strong> doesn't scale (too many teams = no time per team), 1-week feedback loop too slow for a 4-week build.</div>
+        </li>
+        <li>
+          <div class="alt-name">Office Hours by theme</div>
+          <div class="alt-desc">One slot per Master Atlas theme per week (Wallets, Lending, RWA, EVM, etc.) with theme-expert mentors. <strong>Pros:</strong> deep theme expertise. <strong>Cons:</strong> 6 weekly slots = mentor scheduling nightmare; teams in different themes don't cross-pollinate.</div>
+        </li>
+        <li>
+          <div class="alt-name">On-demand only (no fixed slots)</div>
+          <div class="alt-desc">Teams book mentors via Calendly when needed. <strong>Pros:</strong> max flexibility. <strong>Cons:</strong> no cohort heartbeat, mentor utilization unpredictable, shy teams under-use it.</div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SECTION 10 — OPEN QUESTIONS ============================ -->
+<div class="open-q">
+  <h2>Open questions for the committee</h2>
+  <div class="sub">Decisions that don't fit into the 9 main sections</div>
+  <ul>
+    <li><strong>Visual identity</strong> — does the Buildathon get its own logo (variant of X<sup>B</sup> with "Build" suffix)? Or stays under the XRPL Builder umbrella?</li>
+    <li><strong>Application platform</strong> — Devpost, Gitcoin, Typeform, or custom XRPL form? Determines the pre-flight cost + integration with Discord.</li>
+    <li><strong>Mentor pool size &amp; recruitment</strong> — target ~15 mentors (10 active + 5 backup). Mix of XRPL Commons / Ripple / Aquarium alums / external partners. Who recruits, how compensated?</li>
+    <li><strong>Sponsorship outreach</strong> — Ripple (likely yes), Mastercard (RLUSD partnership existing), Securitize / Anodos (RWA), Evernorth (XLS-66). Who owns the convo, what tier of sponsorship?</li>
+    <li><strong>Communication strategy</strong> — who announces, when (15 July hard deadline), through which channels (XRPL Twitter, Ripple Insights, devrel newsletters, crypto press)? Is there a "wave 1" in July + "wave 2" in September?</li>
+    <li><strong>Demo Day format</strong> — pitch length (5min? 8min?), fishbowl Q&amp;A or judges-only Q&amp;A, livestream with audience interaction?</li>
+    <li><strong>IP &amp; licensing</strong> — does the Buildathon require open-source MIT/Apache for prize eligibility, or is closed-source allowed (with the team retaining IP)?</li>
+  </ul>
+</div>
+
+<div class="sources-foot">
+  <strong>Status:</strong> Working draft v0.1 — ideation board, no decisions locked yet.<br/>
+  <strong>Anchors to other pages:</strong> <a href="/en/analysis-3" style="color: var(--ink); font-weight: 700;">Analysis 3 (Master Atlas)</a> · <a href="/en/analysis-2" style="color: var(--ink); font-weight: 700;">Analysis 2 (24 Focus Areas)</a> · <a href="/en/analysis-1" style="color: var(--ink); font-weight: 700;">Analysis 1 (Internal reading)</a> · <a href="/en/builder-atlas" style="color: var(--ink); font-weight: 700;">Builder Atlas (7 blueprints)</a>.<br/>
+  <strong>Audience:</strong> XRPL Commons + decision committee. <strong>Public-facing version:</strong> to be derived from this draft once the committee aligns on choices.
+</div>
+
+</div>
+</body>
+</html>
