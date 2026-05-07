@@ -3,24 +3,36 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Builder Atlas (7 startup blueprints) — XRPL Builder (EN translation in progress)</title>
+<title>Builder Atlas — 7 startup blueprints on XRPL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
-    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
-    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
-    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
   }
+
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    background: var(--paper); color: var(--ink);
+    background: var(--paper);
+    color: var(--ink);
     font-family: 'Fraunces', Georgia, serif;
     -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    line-height: 1.5;
   }
   body {
     background-image:
@@ -28,8 +40,450 @@
       linear-gradient(90deg, var(--grid) 1px, transparent 1px);
     background-size: 24px 24px;
   }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
 
-  /* Site-wide nav (sticky top) */
+  /* ============ HEADER ============ */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ============ INTRO ============ */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+  }
+  .intro-text {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .intro-text p { margin: 0 0 10px 0; }
+  .intro-text p:last-child { margin-bottom: 0; }
+  .intro-text strong { font-weight: 600; }
+  .intro-text em { color: var(--chain); }
+  .intro-stats {
+    border-left: 2px solid var(--ink);
+    padding-left: 22px;
+  }
+  .intro-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(14,17,22,0.15);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .intro-stats .stat-row:last-child { border-bottom: none; }
+  .intro-stats .stat-row .label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .intro-stats .stat-row .val {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ============ NAVIGATION (anchor links) ============ */
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 48px;
+    background: var(--paper);
+  }
+  .toc a {
+    padding: 14px 12px;
+    border-right: 1px solid var(--ink);
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--paper);
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .toc a:last-child { border-right: none; }
+  .toc a:hover { background: var(--paper-2); }
+  .toc a::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+  .toc a[data-color="payments"]::before { background: var(--user); }
+  .toc a[data-color="defi"]::before { background: var(--amm); }
+  .toc a[data-color="rwa"]::before { background: var(--rwa); }
+  .toc a[data-color="commerce"]::before { background: var(--wallet); }
+  .toc a[data-color="realestate"]::before { background: var(--custody); }
+  .toc a[data-color="payroll"]::before { background: var(--app); }
+  .toc a[data-color="agentic"]::before { background: #2c6680; }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .toc-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .toc-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ============ STARTUP CARD ============ */
+  .startup {
+    margin-bottom: 56px;
+    border: 2.5px solid var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+    position: relative;
+    scroll-margin-top: 20px;
+  }
+  .startup::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--ink);
+  }
+  .startup[data-color="payments"]::before { background: var(--user); }
+  .startup[data-color="defi"]::before { background: var(--amm); }
+  .startup[data-color="rwa"]::before { background: var(--rwa); }
+  .startup[data-color="commerce"]::before { background: var(--wallet); }
+  .startup[data-color="realestate"]::before { background: var(--custody); }
+  .startup[data-color="payroll"]::before { background: var(--app); }
+  .startup[data-color="agentic"]::before { background: #2c6680; }
+
+  /* HEADER of each startup */
+  .startup-head {
+    padding: 24px 32px 22px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .startup-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .startup-num {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .startup-cat-pill {
+    padding: 3px 10px;
+    border: 1.5px solid var(--ink);
+    color: var(--paper);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+  .startup[data-color="payments"] .startup-cat-pill { background: var(--user); }
+  .startup[data-color="defi"] .startup-cat-pill { background: var(--amm); }
+  .startup[data-color="rwa"] .startup-cat-pill { background: var(--rwa); }
+  .startup[data-color="commerce"] .startup-cat-pill { background: var(--wallet); color: var(--ink); }
+  .startup[data-color="realestate"] .startup-cat-pill { background: var(--custody); }
+  .startup[data-color="payroll"] .startup-cat-pill { background: var(--app); }
+  .startup[data-color="agentic"] .startup-cat-pill { background: #2c6680; }
+
+  .startup-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 0 0 6px 0;
+  }
+  .startup-name em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .startup-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .startup-region {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* BODY GRID — Problem/Market | Architecture | Stack/MVP | Economics */
+  .startup-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr;
+  }
+
+  .startup-section {
+    padding: 22px 28px 24px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .startup-section:nth-child(2n) { border-right: none; }
+  .startup-section:nth-last-child(-n+2) { border-bottom: none; }
+  .startup-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 6px;
+  }
+  .startup-section h3 .num {
+    color: var(--ink);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+  .startup-section p {
+    font-family: 'Fraunces', serif;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 10px 0;
+  }
+  .startup-section p:last-child { margin-bottom: 0; }
+  .startup-section strong { font-weight: 600; }
+  .startup-section em { color: var(--chain); font-style: italic; }
+  .startup-section code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+
+  /* Stat tiles inside sections */
+  .stat-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .stat-tile {
+    border: 1.5px solid var(--ink);
+    padding: 10px 12px;
+    background: var(--paper-2);
+  }
+  .stat-tile .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .stat-tile .stat-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .stat-tile .stat-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Architecture tags */
+  .arch-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 8px 0 14px;
+  }
+  .arch-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .arch-tag.used { background: var(--ink); color: var(--paper); }
+
+  /* Architecture flow diagram (mini SVG) */
+  .arch-flow {
+    margin: 14px 0;
+    border: 1px solid var(--ink);
+    background: var(--paper-2);
+    padding: 12px;
+  }
+  .arch-flow svg { width: 100%; display: block; height: auto; }
+
+  /* MVP step list */
+  ol.mvp {
+    margin: 8px 0 0;
+    padding-left: 22px;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  ol.mvp li { margin-bottom: 4px; }
+  ol.mvp li code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper);
+    padding: 1px 4px;
+    border: 1px solid var(--ink);
+  }
+
+  /* Tech stack list */
+  .stack-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .stack-list li {
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(14,17,22,0.15);
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+  }
+  .stack-list li:last-child { border-bottom: none; }
+  .stack-list .layer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    align-self: center;
+  }
+
+  /* Reference apps */
+  .refs {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .refs strong {
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 9px;
+    margin-right: 8px;
+  }
+
+  /* Risk callout */
+  .risk-callout {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--paper);
+    border-left: 3px solid var(--user);
+    border-top: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.45;
+  }
+  .risk-callout strong {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--user);
+    margin-right: 8px;
+    font-weight: 700;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 64px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 1000px) {
+    .toc { grid-template-columns: repeat(2, 1fr); }
+    .toc a { border-bottom: 1px solid var(--ink); }
+    .startup-grid { grid-template-columns: 1fr; }
+    .startup-section { border-right: none; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-stats { border-left: none; border-top: 2px solid var(--ink); padding-left: 0; padding-top: 16px; }
+  }
+
+  /* ============ Site-wide nav (sticky top) ============ */
   .site-nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--ink); color: var(--paper);
@@ -50,10 +504,11 @@
     color: var(--paper); text-decoration: none;
     padding: 5px 10px; text-transform: uppercase; font-weight: 700;
     transition: background 0.15s ease; white-space: nowrap;
-    position: relative;
   }
   .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
   .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  /* Section color indicator (4px top bar per nav link) */
+  .site-nav .nav-links a { position: relative; }
   .site-nav .nav-links a::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: transparent; pointer-events: none;
@@ -87,104 +542,6 @@
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
     .site-nav .nav-links a { padding: 3px 6px; }
   }
-
-  /* Placeholder content */
-  .placeholder {
-    max-width: 760px;
-    margin: 80px auto;
-    padding: 0 32px;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .placeholder h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.0;
-    margin: 0 0 24px 0;
-    letter-spacing: -0.02em;
-  }
-  .placeholder h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
-  .placeholder p {
-    font-family: 'Fraunces', serif;
-    font-size: 16px;
-    line-height: 1.55;
-    margin: 0 0 14px 0;
-  }
-  .placeholder p strong { font-weight: 600; }
-  .placeholder p em { color: var(--chain); }
-  .placeholder .cta-block {
-    margin-top: 32px;
-    padding: 22px 26px;
-    background: var(--paper-2);
-    border: 2px solid var(--ink);
-  }
-  .placeholder .cta-block h3 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-  .placeholder a.cta {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 22px;
-    border: 2px solid var(--ink);
-    background: var(--wallet);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0 var(--ink);
-    transform: translate(-1px, -1px);
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta:hover {
-    background: var(--ink);
-    color: var(--wallet);
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .placeholder a.cta-secondary {
-    display: inline-block;
-    margin-top: 12px;
-    margin-left: 10px;
-    padding: 11px 22px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta-secondary:hover { background: var(--ink); color: var(--paper); }
-
-  footer {
-    max-width: 760px;
-    margin: 56px auto 24px;
-    padding: 16px 32px 0;
-    border-top: 1px solid var(--ink);
-    display: flex; justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-  }
 </style>
 </head>
 <body>
@@ -199,7 +556,7 @@
     <a href="/en/decision-tree-map" data-section="outil">Macro</a>
     <a href="/en/cost-simulator" data-section="outil">Sim</a>
     <a href="/en/business-case-builder" data-section="outil">Case</a>
-    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start current">Atlas</a>
   </div>
   <div class="lang-toggle">
     <a class="lang-flag" href="/builder-atlas">🇫🇷</a>
@@ -207,24 +564,1631 @@
   </div>
 </nav>
 
-<div class="placeholder">
-  <div class="eyebrow">EN translation in progress</div>
-  <h1>Builder Atlas (7 startup blueprints)<br/>· <em>coming soon</em></h1>
-  <p>This page is <strong>not yet translated to English</strong>. The full EN version will ship in an upcoming sprint (the structure stays identical — only the text changes).</p>
-  <p>In the meantime, you have two options:</p>
+<div class="page">
 
-  <div class="cta-block">
-    <h3>While you wait</h3>
-    <p>Read the French version (same content, same layout, same data). You can also use the navbar above to jump to other pages — some are already translated to English.</p>
-    <a class="cta" href="/builder-atlas">→ Read in French</a>
-    <a class="cta-secondary" href="/en/">Back to EN home</a>
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Builder Atlas · 7 startup blueprints · v1.1</div>
+      <h1>What can you<br/><em>really</em> build<br/>on XRPL?</h1>
+    </div>
+    <div class="meta">
+      Format: blueprints<br/>
+      Depth: technical<br/>
+      Approach: pragmatic<br/>
+      Audience: builders
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>PAYMENTS</span>
+    <span>DEFI</span>
+    <span>RWA</span>
+    <span>COMMERCE</span>
+    <span>REAL ESTATE</span>
+    <span>PAYROLL</span>
+    <span>AGENTIC</span>
   </div>
+
+  <!-- ============ INTRO ============ -->
+  <div class="intro">
+    <div class="intro-text">
+      <p>The XRPL ecosystem is often pitched in terms of <em>architecture</em> — UNL, RPCA, AMM, MPT. But when you're a builder, the real question is different: <strong>which startup can I launch in the next 6 months, exploiting what XRPL does better than anywhere else?</strong></p>
+      <p>This document offers 7 precise blueprints. Each starts from a concrete market problem, identifies why XRPL is <em>structurally</em> advantaged to solve it, details the exact technical architecture, the stack to use, the unit economics, and a 3-4 week MVP plan.</p>
+      <p>The goal isn't to sell XRPL — it's to separate use cases where <strong>the ledger gives you an edge</strong> from those where you'd be better off using something else. The decision matrix at the end ranks each blueprint by the <em>opportunity × complexity</em> pair.</p>
+    </div>
+    <div class="intro-stats">
+      <div class="stat-row"><span class="label">Blueprints</span><span class="val">7</span></div>
+      <div class="stat-row"><span class="label">Total addressable market</span><span class="val">~ 1,2 T$</span></div>
+      <div class="stat-row"><span class="label">XRPL layers</span><span class="val">L1 + AMM + MPT</span></div>
+      <div class="stat-row"><span class="label">Regions covered</span><span class="val">5</span></div>
+      <div class="stat-row"><span class="label">Time-to-MVP</span><span class="val">3 – 8 sem.</span></div>
+      <div class="stat-row"><span class="label">Initial capital</span><span class="val">50k – 500k €</span></div>
+    </div>
+  </div>
+
+  <!-- ============ TABLE OF CONTENTS ============ -->
+  <nav class="toc">
+    <a href="#remitflow" data-color="payments">
+      <div class="toc-num">01</div>
+      <div class="toc-name">RemitFlow</div>
+      <div class="toc-cat">Remittances · Asia</div>
+    </a>
+    <a href="#vaultdao" data-color="defi">
+      <div class="toc-num">02</div>
+      <div class="toc-name">VaultDAO</div>
+      <div class="toc-cat">USD savings · LATAM</div>
+    </a>
+    <a href="#bondbloc" data-color="rwa">
+      <div class="toc-num">03</div>
+      <div class="toc-name">BondBloc</div>
+      <div class="toc-cat">RWA · Europe</div>
+    </a>
+    <a href="#merchantpay" data-color="commerce">
+      <div class="toc-num">04</div>
+      <div class="toc-name">MerchantPay</div>
+      <div class="toc-cat">POS · Africa</div>
+    </a>
+    <a href="#proptok" data-color="realestate">
+      <div class="toc-num">05</div>
+      <div class="toc-name">PropTok</div>
+      <div class="toc-cat">Real estate · MENA / SEA</div>
+    </a>
+    <a href="#payrollxrp" data-color="payroll">
+      <div class="toc-num">06</div>
+      <div class="toc-name">PayrollXRP</div>
+      <div class="toc-cat">Streaming payroll · Global</div>
+    </a>
+    <a href="#agentpay" data-color="agentic">
+      <div class="toc-num">07</div>
+      <div class="toc-name">AgentPay</div>
+      <div class="toc-cat">x402 facilitator · Agentic</div>
+    </a>
+  </nav>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 01 — REMITFLOW ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="payments" id="remitflow">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 01 / 07</span>
+        <span class="startup-cat-pill">Payments · Remittances</span>
+      </div>
+      <h2 class="startup-name">RemitFlow<em> — </em>Philippines ↔ US gateway</h2>
+      <p class="startup-tagline">World's #1 remittance corridor · $38B/year · 6% structural friction</p>
+      <span class="startup-region">PH ↔ US · KSA · UAE</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>A Filipino worker in Riyadh sends 500 USD to their family in Cebu. Western Union takes <strong>32 USD in fees (6.4%)</strong>, the transfer takes 1–3 days, and the recipient must visit a physical pickup point.</p>
+        <p>Recent digital players (Wise, Remitly) brought fees down to <strong>2–3%</strong> but remain dependent on banking rails and local cash-out partners that take their cut.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">TAM Philippines→World</div>
+            <div class="stat-value">38 G$</div>
+            <div class="stat-sub">2024 · BSP Central Bank</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Current avg cost</div>
+            <div class="stat-value">5,8 %</div>
+            <div class="stat-sub">vs UN target: 3%</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Monthly volume</div>
+            <div class="stat-value">3,2 G$</div>
+            <div class="stat-sub">single corridor</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Fee opportunity (2%)</div>
+            <div class="stat-value">760 M$/an</div>
+            <div class="stat-sub">to capture on this corridor</div>
+          </div>
+        </div>
+
+        <p><strong>Why XRPL over alternatives:</strong> 3–5s finality (vs 1–3 banking days), fees &lt; $0.001 per transaction, native XRP/PHP and XRP/USD AMM enables cross-currency settlement without an FX intermediary. Bitstamp and Japan's SBI VC Trade already have operational XRP↔fiat on/off-ramps in the region.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Success depends on <em>cash-out partners</em> in the Philippines (GCash, PayMaya). Without them, the recipient is stuck. Pre-launch B2B negotiation mandatory.
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>XRPL architecture</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">Payment</span>
+          <span class="arch-tag used">AMM XLS-30</span>
+          <span class="arch-tag used">Path-finding</span>
+          <span class="arch-tag used">RLUSD</span>
+          <span class="arch-tag">Sidechain EVM</span>
+          <span class="arch-tag">NFT</span>
+          <span class="arch-tag">MPT</span>
+        </div>
+
+        <p>The send is a <code>Payment</code> cross-currency single transaction:<code>USD (issuer Bitstamp) → XRP (via AMM) → PHP (issuer GCash partner)</code>. The ledger's pathfinding automatically finds the best route across available AMM pools.</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Sender -->
+            <rect x="10" y="20" width="100" height="50" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="60" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">SENDER</text>
+            <text x="60" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#f4efe6">500 USD</text>
+
+            <!-- Bitstamp on-ramp -->
+            <rect x="135" y="20" width="100" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="185" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">ON-RAMP</text>
+            <text x="185" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#f4efe6">Bitstamp</text>
+            <text x="185" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">USD → IOU</text>
+
+            <!-- AMM Pool -->
+            <rect x="260" y="20" width="120" height="50" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+            <text x="320" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">AMM XLS-30</text>
+            <text x="320" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#f4efe6">USD → XRP → PHP</text>
+            <text x="320" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">~3 sec</text>
+
+            <!-- GCash partner -->
+            <rect x="405" y="20" width="100" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="455" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">OFF-RAMP</text>
+            <text x="455" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-weight="600" fill="#f4efe6">GCash</text>
+            <text x="455" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">IOU → PHP</text>
+
+            <!-- Receiver -->
+            <rect x="525" y="20" width="65" height="50" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="557" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">FAMILY</text>
+            <text x="557" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">28k PHP</text>
+
+            <!-- Arrows -->
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 110 45 L 135 45" marker-end="url(#a-rf)"/>
+              <path d="M 235 45 L 260 45" marker-end="url(#a-rf)"/>
+              <path d="M 380 45 L 405 45" marker-end="url(#a-rf)"/>
+              <path d="M 505 45 L 525 45" marker-end="url(#a-rf)"/>
+            </g>
+            <defs>
+              <marker id="a-rf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Single tx note -->
+            <text x="300" y="100" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="11" fill="#0e1116">Single cross-currency Payment transaction · atomic finality</text>
+            <text x="300" y="115" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">SendMax: 500 USD · DeliverMin: 27,800 PHP · Paths: auto</text>
+          </svg>
+        </div>
+
+        <p><strong>Variants:</strong></p>
+        <p>— <strong>v1 (light KYC):</strong> centralized custody at RemitFlow, the user has no wallet. UX like Wise. Faster to market.</p>
+        <p>— <strong>v2 (self-custody):</strong> the sender keeps their Xaman wallet, signs themselves. More crypto-native, but onboarding friction.</p>
+        <p>— <strong>v3 (direct RLUSD):</strong> avoids the AMM swap by using RLUSD directly as a stable rail. Near-zero spread but depends on local RLUSD↔PHP liquidity.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Wise · Remitly · WorldRemit · SBI Remit (already uses XRP) · Tranglo (Ripple ODL)
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Tech stack · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">Frontend</span><span>Next.js 15 + Tailwind · mobile-first PWA · Magic.link login (no seed)</span></li>
+          <li><span class="layer">Backend</span><span>Node.js + Hono · postgres · Redis for rate-limiting</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl.js</code> v3+ · <code>ripple-binary-codec</code> · WebSocket subscribe</span></li>
+          <li><span class="layer">Custody</span><span>v1: Fireblocks (MPC) or Bitstamp custody API · v2: Xumm/Xaman SDK</span></li>
+          <li><span class="layer">On-ramp</span><span>MoonPay (card) · BSP-licensed partner (GCash, Coins.ph)</span></li>
+          <li><span class="layer">Compliance</span><span>Sumsub KYC · Chainalysis for AML · PostgreSQL audit trail</span></li>
+          <li><span class="layer">Observability</span><span>Datadog · Sentry · failed-tx alerts · AMM slippage monitoring</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP in 4 sprints (8 weeks):</strong></p>
+
+        <ol class="mvp">
+          <li><strong>W1–W2:</strong> integration <code>xrpl.js</code>, signature de Payments cross-currency en testnet, prototype CLI fonctionnel</li>
+          <li><strong>W3–W4:</strong> mobile UI + login + send flow · Bitstamp on-ramp partnership signed</li>
+          <li><strong>W5–W6:</strong> GCash/Coins.ph partnership signed · end-to-end PH→US tests on testnet</li>
+          <li><strong>W7:</strong> Sumsub KYC + Chainalysis AML integrated · BSP regulatory file started</li>
+          <li><strong>W8:</strong> closed beta avec 50 utilisateurs philippins en KSA, mainnet, plafonds bas</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Initial capex:</strong> €80–120k (1 senior dev + 1 product · 6 months + legal/KYC fees)</p>
+
+        <div class="refs">
+          <strong>Licenses</strong> US : MSB FinCEN · KSA : SAMA · PH : BSP VASP · UAE : VARA
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS & GO-TO-MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Economics · GTM</h3>
+
+        <p><strong>Revenue model:</strong> fixed spread on the swap. Target: 1.5% all-in, split with cash-out partners (~0.5–0.8% for RemitFlow). Much better margin than Wise (0.4–0.7% for them) because XRPL settlement is ~zero cost.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">User fee (target)</div>
+            <div class="stat-value">1,5 %</div>
+            <div class="stat-sub">vs 5.8% market</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Net margin</div>
+            <div class="stat-value">~ 0,7 %</div>
+            <div class="stat-sub">after partners</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">XRPL cost / tx</div>
+            <div class="stat-value">~ 0,001 $</div>
+            <div class="stat-sub">+ variable AMM spread</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Break-even</div>
+            <div class="stat-value">~ 4 M$/mois</div>
+            <div class="stat-sub">of volume processed</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market:</strong> partir d'<em>un seul couloir</em> (KSA → PH for example) with a targeted community (OFW associations in Riyadh). Acquisition through community word-of-mouth + referrals (a user who refers 3 people gets a bonus). Don't chase geographic coverage before product-market fit on 1 corridor.</p>
+
+        <p><strong>Realistic Series A timeline:</strong> 18–24 mois. Volume cible Series A : <strong>50–100 M$/mois</strong> of TPV (Total Payment Volume) — equivalent to ~3% of the KSA-PH corridor.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Wise (H1 26 — $9.2B rev) · Remitly ($3.2B) · MoneyGram · Felix Pago (LATAM, $400M valuation)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 02 — VAULTDAO ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="defi" id="vaultdao">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 02 / 07</span>
+        <span class="startup-cat-pill">DeFi · Inflation hedge</span>
+      </div>
+      <h2 class="startup-name">VaultDAO<em> — </em>épargne USD pour la classe moyenne LATAM</h2>
+      <p class="startup-tagline">Argentina, Turkey, Nigeria · 50–200% inflation · dollar access = banking privilege</p>
+      <span class="startup-region">AR · TR · NG · VE · LB</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>A mid-level executive in Buenos Aires earns pesos that lose <strong>1–3% de valeur par mois</strong>. Their bank caps official dollar purchases at 200 USD/month. The "blue" (parallel) dollar costs 30–50% more. Stablecoins via Binance require a technical path that 95% of people refuse.</p>
+        <p>Le besoin est simple : <strong>"I want my peso salary to automatically become dollar savings, without touching a crypto wallet"</strong>. C'est un produit fintech, pas un produit DeFi.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Population cible</div>
+            <div class="stat-value">~ 350 M</div>
+            <div class="stat-sub">5 pays · classe moyenne</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Stablecoin held</div>
+            <div class="stat-value">12 G$</div>
+            <div class="stat-sub">already held in LATAM</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Median inflation</div>
+            <div class="stat-value">62 %</div>
+            <div class="stat-sub">cible AR/TR/NG · 2024</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAGR stablecoins LATAM</div>
+            <div class="stat-value">+47 %</div>
+            <div class="stat-sub">last 3 years</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL :</strong> RLUSD (Ripple's USD stablecoin) deployed natively on XRPL with NY DFS regulated issuance. Auto trustline on the user's account = instant USD exposure. Zero transaction cost → enables <em>recurring deposit</em> hebdomadaire de petits montants (50 USD) qui serait insolvable sur Ethereum (gas).</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Regulation. Argentina and Turkey may classify the product as "capital flight". Structure as a remittance + savings service rather than a financial product.
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">RLUSD</span>
+          <span class="arch-tag used">Trustline</span>
+          <span class="arch-tag used">Payment recurring</span>
+          <span class="arch-tag used">AMM XLS-30</span>
+          <span class="arch-tag">DID XLS-70</span>
+          <span class="arch-tag">MPT</span>
+          <span class="arch-tag">Sidechain EVM</span>
+        </div>
+
+        <p>The user deposits pesos via card or local bank transfer. The backend triggers: <code>ARS → USD (off-chain via partenaire FX) → RLUSD (mint sur XRPL) → user trustline</code>. RLUSD is held in the user's XRPL account (hybrid custody: user multisig + VaultDAO as recovery co-signer).</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+            <!-- User salary -->
+            <rect x="10" y="15" width="110" height="55" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="65" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">USER</text>
+            <text x="65" y="50" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Salaire ARS</text>
+            <text x="65" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Recurring 100 USD</text>
+
+            <!-- VaultDAO backend -->
+            <rect x="145" y="15" width="120" height="55" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="205" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">BACKEND</text>
+            <text x="205" y="50" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">VaultDAO orchestrator</text>
+            <text x="205" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">FX off-chain · KYC</text>
+
+            <!-- RLUSD mint -->
+            <rect x="290" y="15" width="120" height="55" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+            <text x="350" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">RLUSD</text>
+            <text x="350" y="50" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Issuer Ripple</text>
+            <text x="350" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">NY DFS regulated</text>
+
+            <!-- User wallet -->
+            <rect x="435" y="15" width="155" height="55" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+            <text x="512" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="1">USER WALLET</text>
+            <text x="512" y="50" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#0e1116">Multisig 2-of-3</text>
+            <text x="512" y="64" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116">+ trustline RLUSD</text>
+
+            <!-- arrows -->
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 120 42 L 145 42" marker-end="url(#a-vd)"/>
+              <path d="M 265 42 L 290 42" marker-end="url(#a-vd)"/>
+              <path d="M 410 42 L 435 42" marker-end="url(#a-vd)"/>
+            </g>
+            <defs>
+              <marker id="a-vd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Yield branch -->
+            <rect x="145" y="100" width="265" height="50" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
+            <text x="277" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">YIELD ENGINE (optionnel)</text>
+            <text x="277" y="135" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">AMM LP (RLUSD/USDC) · ~5% APY</text>
+            <text x="277" y="146" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Strict LP only — pas de levier</text>
+
+            <line x1="350" y1="70" x2="350" y2="100" stroke="#4a6741" stroke-width="2" stroke-dasharray="3 3"/>
+            <text x="370" y="90" font-family="JetBrains Mono, monospace" font-size="8" font-style="italic" fill="#4a6741">opt-in</text>
+          </svg>
+        </div>
+
+        <p><strong>Innovation custody :</strong> 2-of-3 multisig wallet — keys split between <em>user (mobile)</em>, <em>VaultDAO (recovery)</em>, <em>notarized backup (bank vault)</em>. The user can withdraw everything alone after a 48h cooldown; if they lose their phone, recovery via video-KYC + 2FA.</p>
+
+        <p><strong>Yield optionnel :</strong> advanced users can enable a "yield" mode that puts their RLUSD into the RLUSD/USDC AMM pool (low volatility) — estimated 3–6% APY passive yield, no smart contract needed.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Lemon Cash (AR) · Bitso (MX) · Belo · Fintoc · MercadoPago crypto · Buenbit
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">Frontend</span><span>React Native (iOS + Android) · expo · Spanish + Turkish + Arabic native</span></li>
+          <li><span class="layer">Backend</span><span>Go + Postgres · queue Temporal pour les flows recurring</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl.js</code> backend side · multisig via <code>SignerListSet</code></span></li>
+          <li><span class="layer">FX Off-chain</span><span>Reach (AR), Wise FX API, Currencycloud · partner local par pays</span></li>
+          <li><span class="layer">Custody / keys</span><span>Lit Protocol for client-side MPC · server-side HSM backup</span></li>
+          <li><span class="layer">Compliance</span><span>Sumsub · Argentina UIF reporting · CRS / FATCA si relevant</span></li>
+          <li><span class="layer">Acquisition</span><span>Regional crypto-finance influencers · referral program</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP in 5 sprints (10 weeks):</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> wallet multisig <code>SignerListSet</code> on testnet · light KYC onboarding UX (video selfie)</li>
+          <li><strong>S3–S4 :</strong> local Argentine FX integration (single country to start) · recurring-deposit prototype</li>
+          <li><strong>S5–S6 :</strong> trustline RLUSD + flow ARS → USD → RLUSD end-to-end</li>
+          <li><strong>S7–S8 :</strong> mobile dashboard: USD balance, savings curve, withdrawal, security</li>
+          <li><strong>S9–S10 :</strong> beta avec 200 users argentins · monitoring intensif · ajustements UX</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> €200–300k (team of 4 over 10 months, AR regulatory fees, FX partnerships)</p>
+
+        <div class="refs">
+          <strong>Licences</strong> AR : CNV (proveedores de servicios virtuales) · TR : MASAK · NG : NDIC
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Hybrid revenue model:</strong></p>
+        <p>— <strong>Spread FX</strong> on ARS → USD conversion: ~1% (vs the parallel market that takes 30–50%)</p>
+        <p>— <strong>Yield share</strong> : sur le mode optionnel AMM, VaultDAO prend 20% du yield (le user garde 80%)</p>
+        <p>— <strong>Premium tier</strong> (€10/month): higher limits, instant KYC, 24/7 support</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">ARPU mensuel</div>
+            <div class="stat-value">~ 4 €</div>
+            <div class="stat-sub">user €500 savings</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAC cible</div>
+            <div class="stat-value">~ 8 €</div>
+            <div class="stat-sub">via referral</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Payback</div>
+            <div class="stat-value">~ 2 mois</div>
+            <div class="stat-sub">tier free</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">LTV / CAC</div>
+            <div class="stat-value">~ 12 ×</div>
+            <div class="stat-sub">user actif 24 mois</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market :</strong> launch in Argentina only (mature stablecoin culture already present). Partnerships with local personal-finance YouTube creators. After product-market fit, progressive expansion Turkey → Nigeria → Lebanon.</p>
+
+        <p><strong>Unfair leverage:</strong> competitors (Lemon, Buenbit) are stuck on Ethereum/Polygon where gas fees make $50 recurring deposits impossible. <strong>XRPL = unlocks the small-saver market.</strong></p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Lemon Cash (~$120M valo, 5M users AR) · Buenbit · Plata · Wise Multi-currency
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 03 — BONDBLOC ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="rwa" id="bondbloc">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 03 / 07</span>
+        <span class="startup-cat-pill">RWA · Corporate bonds</span>
+      </div>
+      <h2 class="startup-name">BondBloc<em> — </em>obligations corporate mid-market on-chain</h2>
+      <p class="startup-tagline">European SMBs €10–100M · poor access to bond markets · MiCA-ready</p>
+      <span class="startup-region">FR · DE · NL · LUX · CH</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>A French mid-cap (€50M revenue, €8M EBITDA) that wants to raise €5M in bonds has two options: <strong>banque (slow, dilutif)</strong> ou <strong>crowd-bonding (October, Lendix) at 7-9% TIE</strong>. The institutional bond market stays closed below €50M tickets.</p>
+        <p>Investor side: family offices, specialized funds, HNW individuals want secure 5-7% yield but have no efficient access to these tickets. <strong>Matching is broken by administrative friction</strong> (prospectus, intermediaries, T+2 settlement).</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Potential EU SMB issuers</div>
+            <div class="stat-value">~ 24 000</div>
+            <div class="stat-sub">10–100M€ CA · sain</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">EU SMB bond market</div>
+            <div class="stat-value">~ 80 G€</div>
+            <div class="stat-sub">estimated 2024 stock</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Spread vs grands corps</div>
+            <div class="stat-value">+250 bps</div>
+            <div class="stat-sub">complexity premium</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAGR RWA on-chain</div>
+            <div class="stat-value">+85 %</div>
+            <div class="stat-sub">2023–2024 (rwa.xyz)</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL :</strong> MPT (Multi-Purpose Tokens) avec <em>issuer permissions natives</em> let you model a security subject to an accredited investor whitelist. DID + Credentials XLS-70 for reusable KYC. T+0 settlement. Coupons auto-distributed via scheduled txs. Compatible with the MiCA + EU Pilot Regime framework for DLT-based securities.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Prospectus regulation + AMF/BaFin. Work with a licensed PSAN partner (not solo) to start. Significant upfront legal cost.
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">MPT</span>
+          <span class="arch-tag used">DID XLS-70</span>
+          <span class="arch-tag used">Credentials</span>
+          <span class="arch-tag used">Permissioned</span>
+          <span class="arch-tag used">Escrow</span>
+          <span class="arch-tag">AMM XLS-30</span>
+          <span class="arch-tag">Sidechain EVM</span>
+        </div>
+
+        <p>Each bond is a distinct MPT issued by BondBloc (as a regulated issuance agent) on behalf of the SMB. The MPT includes: nominal, rate, maturity, coupon frequency, ISIN identifier, prospectus hash. Native restrictions: only XRPL accounts holding a valid "EU accredited investor" Credential can receive/transfer the token.</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- Issuer (PME) -->
+            <rect x="10" y="15" width="105" height="50" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="62" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">PME ÉMETTRICE</text>
+            <text x="62" y="49" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">€5M at 6%</text>
+            <text x="62" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">5 ans · semestriel</text>
+
+            <!-- BondBloc agent -->
+            <rect x="140" y="15" width="120" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="200" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">BONDBLOC PSAN</text>
+            <text x="200" y="49" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Mint MPT</text>
+            <text x="200" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">+ ISIN + prospectus hash</text>
+
+            <!-- MPT token on chain -->
+            <rect x="285" y="15" width="125" height="50" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
+            <text x="347" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">MPT ON XRPL</text>
+            <text x="347" y="49" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">5000 tokens × 1k€</text>
+            <text x="347" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Permissioned · whitelist</text>
+
+            <!-- Investor wallet -->
+            <rect x="435" y="15" width="155" height="50" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+            <text x="512" y="33" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="1">INVESTOR</text>
+            <text x="512" y="49" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#0e1116">Family office</text>
+            <text x="512" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116">+ DID + Credential</text>
+
+            <!-- arrows top -->
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 115 40 L 140 40" marker-end="url(#a-bb)"/>
+              <path d="M 260 40 L 285 40" marker-end="url(#a-bb)"/>
+              <path d="M 410 40 L 435 40" marker-end="url(#a-bb)"/>
+            </g>
+            <defs>
+              <marker id="a-bb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Coupon flow -->
+            <rect x="60" y="105" width="200" height="55" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="160" y="123" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">COUPON ENGINE</text>
+            <text x="160" y="140" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Payment auto / 6 mois</text>
+            <text x="160" y="153" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">RLUSD ou EUR-stable</text>
+
+            <rect x="350" y="105" width="240" height="55" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+            <text x="470" y="123" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">SECONDARY MARKET</text>
+            <text x="470" y="140" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">AMM permissioned</text>
+            <text x="470" y="153" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Native MPT/RLUSD liquidity</text>
+
+            <line x1="160" y1="65" x2="160" y2="105" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="3 3"/>
+            <line x1="470" y1="65" x2="470" y2="105" stroke="#8b5a8c" stroke-width="2" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+
+        <p><strong>Automated lifecycle:</strong></p>
+        <p>— <strong>Émission :</strong> mints MPTs after 100% subscription collection (conditional escrow). If not reached, automatic refund.</p>
+        <p>— <strong>Coupons :</strong> tx <code>Payment</code> automatic every 6 months to all holders (off-chain calculation, on-chain batch).</p>
+        <p>— <strong>Secondary market:</strong> MPT/RLUSD AMM pool allows resale without waiting for maturity (with market-driven discount).</p>
+        <p>— <strong>Maturity:</strong> remboursement principal + dernier coupon, burn des MPT.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Ondo Finance · OpenEden · Backed.fi · Spiko · Centrifuge · Tokeny · ABRR (Société Générale-Forge)
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">Frontend</span><span>Next.js · 2 portails distincts (issuer + investisseur) · multilingue FR/DE/EN</span></li>
+          <li><span class="layer">Backend</span><span>Java + Spring Boot (banks appreciate) · Postgres · Kafka for events</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl4j</code> (Java) · MPT issuance · gestion DID + Credentials</span></li>
+          <li><span class="layer">KYC / KYB</span><span>Onfido + Sumsub · accredited investor status verification (AMF, BaFin)</span></li>
+          <li><span class="layer">Custody investisseurs</span><span>Fireblocks ou Taurus (white-label) · multisig institutionnel</span></li>
+          <li><span class="layer">Stablecoin coupons</span><span>RLUSD (default) · EUR-stable option (Spiko, Monerium)</span></li>
+          <li><span class="layer">Reporting</span><span>Regulatory audit trail · auto ESMA reporting · off-chain double-entry ledger</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP in 6 sprints (12 weeks):</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> PSAN partnership (e.g. Coinhouse, Bitpanda Pro) · licensed SAS issuer legal setup</li>
+          <li><strong>S3–S4 :</strong> testnet MPT issuance · Credential-based whitelist · conditional subscription escrow</li>
+          <li><strong>S5–S6 :</strong> moteur de coupons (cron + batch Payment) · UI investisseur portfolio</li>
+          <li><strong>S7–S8 :</strong> issuer portal (SMB) with KYB onboarding · auto-generated simplified prospectus</li>
+          <li><strong>S9–S10 :</strong> AMM MPT/RLUSD pool secondaire · UI orderbook</li>
+          <li><strong>S11–S12 :</strong> Quantstamp audit + Bredin Prat legal audit · 1st €500k test issuance with friendly SMB</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> €400–600k (team of 5 + €80k legal + €30k audits + PSAN setup)</p>
+
+        <div class="refs">
+          <strong>Licences</strong> EU: MiCA + DLT Pilot Regime · FR: AMF PSAN + ACPR · LUX: CSSF (recommended for scale)
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Revenue model:</strong></p>
+        <p>— <strong>Issuance fee</strong> : 1.5% of amount raised, paid by the SMB issuer (vs 3-5% banking)</p>
+        <p>— <strong>Servicing fee</strong> : 0,3% annuel sur encours (calcul coupons, reporting)</p>
+        <p>— <strong>Trading fee</strong> sur AMM secondaire : 0,1% par transaction (revenu LP)</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Rev/issuance €5M</div>
+            <div class="stat-value">75 k€</div>
+            <div class="stat-sub">issuance fee</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Recurring annual revenue</div>
+            <div class="stat-value">15 k€/an</div>
+            <div class="stat-sub">per issuance</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Cible an 2</div>
+            <div class="stat-value">50 issuances</div>
+            <div class="stat-sub">≈ 200M€ encours</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Run rate an 2</div>
+            <div class="stat-value">~ 4,5 M€</div>
+            <div class="stat-sub">issuance + servicing</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market B2B2C :</strong> two parallel sales motions.</p>
+        <p>— <strong>Issuer side:</strong> partnerships with accounting firms and wealth advisors. A mid-cap CFO will never find us via SEO; we need to be recommended by their usual finance advisor.</p>
+        <p>— <strong>Investor side:</strong> French/Lux family offices and HNWI specialized funds. Quiet networking, no consumer marketing (regulatory safety).</p>
+
+        <p><strong>Strategic edge:</strong> les concurrents Ondo/OpenEden visent les Treasury bills (low margin, scale game). BondBloc vise le <em>middle market corporate</em> (high margin, sourcing game). Moins crowded.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Spiko (~$200M AUM, 6 mois) · Centrifuge ($400M+ AUM) · October (crowd) · Tokeny (infra)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 04 — MERCHANTPAY ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="commerce" id="merchantpay">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 04 / 07</span>
+        <span class="startup-cat-pill">Commerce · POS</span>
+      </div>
+      <h2 class="startup-name">MerchantPay<em> — </em>terminal de paiement mobile-first pour l'Afrique</h2>
+      <p class="startup-tagline">Kenya, Nigeria, Ghana, Senegal · M-Pesa-killer · instant settlement</p>
+      <span class="startup-region">KE · NG · GH · SN · CI</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>Au Kenya, M-Pesa domine le mobile money mais prend <strong>1,5–2,5%</strong> per merchant transaction and runs T+1 or T+2 settlement. Merchants must wait, juggle several accounts (M-Pesa, Airtel, bank). In the CFA zone, fees rise to 3–5%. Square/Stripe POS terminals are absent or prohibitive.</p>
+        <p>Beyond payment, merchants lack<strong>analytics, loyalty, micro-credit</strong>. La data passe par le telco qui ne la rend pas exploitable.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Volume mobile money Afrique</div>
+            <div class="stat-value">912 G$</div>
+            <div class="stat-sub">2023 · GSMA</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Targeted merchants</div>
+            <div class="stat-value">~ 18 M</div>
+            <div class="stat-sub">5 pays focus</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Frais merchant moyens</div>
+            <div class="stat-value">2,3 %</div>
+            <div class="stat-sub">M-Pesa Lipa Na</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Settlement actuel</div>
+            <div class="stat-value">T+1 / T+2</div>
+            <div class="stat-sub">vs T+0 target</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL :</strong> 3-5s finality = instant settlement displayed to the customer (the merchant sees the payment before the buyer leaves). Near-zero fees = can absorb a merchant revenue cut at 0.5-1% (vs 2.3% from competitors). USDC or local stablecoin enables escaping crypto volatility. Merchant can convert to local currency via partner off-ramp.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Adoption on the <em>consumer</em> side. M-Pesa is culturally entrenched. Viable strategy: don't replace M-Pesa, offer a <em>second rail</em> that lets merchants accepter aussi crypto/stablecoin (early adopters, diaspora qui paie famille).
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">Payment</span>
+          <span class="arch-tag used">Trustline</span>
+          <span class="arch-tag used">Stablecoin (RLUSD)</span>
+          <span class="arch-tag used">QR · NFC</span>
+          <span class="arch-tag used">Path-finding</span>
+          <span class="arch-tag">NFT loyalty</span>
+          <span class="arch-tag">Sidechain (rewards)</span>
+        </div>
+
+        <p>3-entity architecture: a <strong>backend orchestrateur</strong>, l'<strong>app marchand</strong> (smartphone Android bas de gamme), l'<strong>app consommateur</strong> (ou QR scan via app crypto existante).</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 170" xmlns="http://www.w3.org/2000/svg">
+            <!-- Buyer -->
+            <rect x="10" y="20" width="100" height="50" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="60" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">CUSTOMER</text>
+            <text x="60" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Wallet phone</text>
+            <text x="60" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">scan QR</text>
+
+            <!-- Merchant POS -->
+            <rect x="135" y="20" width="100" height="50" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+            <text x="185" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="1">MERCHANT</text>
+            <text x="185" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#0e1116">App POS</text>
+            <text x="185" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116">Android phone</text>
+
+            <!-- XRPL ledger -->
+            <rect x="260" y="20" width="120" height="50" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="320" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">XRPL LEDGER</text>
+            <text x="320" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Payment 3 sec</text>
+            <text x="320" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">RLUSD or USDC</text>
+
+            <!-- Off-ramp -->
+            <rect x="405" y="20" width="105" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="457" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">OFF-RAMP</text>
+            <text x="457" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">M-Pesa partner</text>
+            <text x="457" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">USD → KES</text>
+
+            <!-- Bank account -->
+            <rect x="535" y="20" width="55" height="50" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="562" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">CASH</text>
+            <text x="562" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">KES</text>
+
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 110 45 L 135 45" marker-end="url(#a-mp)"/>
+              <path d="M 235 45 L 260 45" marker-end="url(#a-mp)"/>
+              <path d="M 380 45 L 405 45" marker-end="url(#a-mp)"/>
+              <path d="M 510 45 L 535 45" marker-end="url(#a-mp)"/>
+            </g>
+            <defs>
+              <marker id="a-mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Loyalty branch -->
+            <rect x="60" y="105" width="180" height="50" fill="#b85c38" stroke="#0e1116" stroke-width="2"/>
+            <text x="150" y="123" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">LOYALTY (sidechain)</text>
+            <text x="150" y="139" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">NFT cashback · referral</text>
+            <text x="150" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Solidity · gas free pour user</text>
+
+            <line x1="185" y1="70" x2="150" y2="105" stroke="#b85c38" stroke-width="2" stroke-dasharray="3 3"/>
+
+            <!-- Lending branch -->
+            <rect x="280" y="105" width="290" height="50" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
+            <text x="425" y="123" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">MICRO-LENDING (RWA)</text>
+            <text x="425" y="139" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Treasury advance on tx history</text>
+            <text x="425" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Scoring on-chain · MPT collat</text>
+          </svg>
+        </div>
+
+        <p><strong>3-wave product strategy:</strong></p>
+        <p>— <strong>Vague 1 (12 mois) :</strong> Pure POS. The merchant accepts stablecoin, sees realtime, instant off-ramp to M-Pesa.</p>
+        <p>— <strong>Vague 2 :</strong> loyalty program. Each purchase mints a cashback NFT (discount token for the next purchase). The EVM sidechain avoids XRPL fees at loyalty frequency.</p>
+        <p>— <strong>Vague 3 :</strong> micro-credit. The merchant's on-chain tx history becomes a credit score. Tokenized treasury advance (MPT) at 1-3% monthly, repayable on future transactions.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> M-Pesa (Vodacom) · Yellow Card (Africa) · Mara Wallet · Zone (Nigeria) · Wave (CFA) · Flutterwave
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">App marchand</span><span>Flutter (Android-first, low-end devices) · offline-first · Swahili + English + French</span></li>
+          <li><span class="layer">App customer</span><span>No dedicated app → QR scan via existing wallet (Tangem, Xaman) or progressive web app</span></li>
+          <li><span class="layer">Backend</span><span>Node.js + Postgres · Redis · low-cost VPS Hetzner Helsinki + edge Cloudflare</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl.js</code> · subscribe on the merchant account for instant notification</span></li>
+          <li><span class="layer">Stablecoin</span><span>RLUSD primary · USDC pour diaspora · trustline auto-set</span></li>
+          <li><span class="layer">Off-ramp</span><span>Yellow Card · Onafriq · Kotani Pay · M-Pesa B2C API (Daraja)</span></li>
+          <li><span class="layer">Hardware</span><span>Android smartphone €50+ as POS · optional Bluetooth receipt printer (Star Micronics)</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP en 4 sprints (8 semaines) :</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> basic merchant app (QR generation, payment listening, daily dashboard)</li>
+          <li><strong>S3–S4 :</strong> Kotani Pay off-ramp integration + M-Pesa B2C → KES into the merchant account</li>
+          <li><strong>S5–S6 :</strong> pilote Nairobi avec 20 merchants (boda-boda, kiosques, salon) · feedback intensif</li>
+          <li><strong>S7–S8 :</strong> v1.1: recurring invoicing (customer subscriptions) · Kenya tax reporting export</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> €100–150k (team of 3 + Kenya/Nigeria field trips + off-ramp partnerships)</p>
+
+        <div class="refs">
+          <strong>Licences</strong> KE : CBK Payment Service Provider · NG : NIBSS + CBN VASP · GH : BoG · CFA : BCEAO
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Revenue model:</strong></p>
+        <p>— <strong>Merchant fee</strong> : 0,8% par tx (vs 2,3% M-Pesa) — split avec off-ramp partner ~0,3% net</p>
+        <p>— <strong>Off-ramp spread</strong> : 0,5% sur conversion stablecoin → KES</p>
+        <p>— <strong>Premium tier</strong> (€5/month): advanced analytics, multi-store, API</p>
+        <p>— <strong>Vague 3 lending</strong> (futur) : 2-3% interest mensuel sur micro-credit</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Vol/merchant/mois</div>
+            <div class="stat-value">~ 2 800 $</div>
+            <div class="stat-sub">average KE merchant</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Rev/merchant/mois</div>
+            <div class="stat-value">~ 22 $</div>
+            <div class="stat-sub">all fees combined</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAC terrain</div>
+            <div class="stat-value">~ 18 $</div>
+            <div class="stat-sub">field agent + onboarding</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Cible an 2</div>
+            <div class="stat-value">25 000</div>
+            <div class="stat-sub">merchants actifs</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market terrain (pas digital) :</strong> M-Pesa won through <em>agents</em>. MerchantPay must follow the same playbook: regional sales agents who visit physical markets (Maasai Market in Nairobi, Computer Village in Lagos), demo in 5 minutes, onboard the merchant on the spot with their smartphone.</p>
+
+        <p><strong>Unfair leverage:</strong> no global player can serve the African merchant at 0.8% fee with instant settlement. Stripe absent. M-Pesa protects its margin. <em>Crack possible</em> : convince diasporas to pay family in stablecoin so they spend at MerchantPay merchants.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> M-Pesa (~$50B+ TPV/an) · Wave (~$2B raised) · Yellow Card · Fawry (Egypt, IPO)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 05 — PROPTOK ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="realestate" id="proptok">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 05 / 07</span>
+        <span class="startup-cat-pill">Real Estate · Fractional</span>
+      </div>
+      <h2 class="startup-name">PropTok<em> — </em>premium real estate fractionalization</h2>
+      <p class="startup-tagline">Dubai, Singapore, Lisbon · tickets from $100 · native secondary liquidity</p>
+      <span class="startup-region">UAE · SG · PT · ES · KSA</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>An average Indian investor wants exposure to Dubai real estate (6-8% rental yield, capital appreciation). Three current options: <strong>achat direct (200k€+, paperasse internationale)</strong>, <strong>REIT (limited real exposure, opaque)</strong>, <strong>plateformes existantes (RealT, Brickken — ETH gas friction)</strong>.</p>
+        <p>Supply side: real estate developers in the Middle East and Asia want to expand their investor base beyond local HNW. No unified solution exists today with fluid secondary trading.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Tokenized real estate market</div>
+            <div class="stat-value">~ 18 G$</div>
+            <div class="stat-sub">2024 · projected $4T by 2035 (BCG)</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Yield Dubai prime</div>
+            <div class="stat-value">6,5–8 %</div>
+            <div class="stat-sub">net rental</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Ticket min cible</div>
+            <div class="stat-value">100 $</div>
+            <div class="stat-sub">vs 200k$ achat direct</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Geographic spread</div>
+            <div class="stat-value">120 pays</div>
+            <div class="stat-sub">access via dApp</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL :</strong> MPT lets you model a fractional share of an SPV holding the property. Rents auto-distributed to holders in RLUSD via batch Payment. Secondary MPT/RLUSD AMM = native liquidity without custodial market-making. DID/Credentials for KYC reusable from one asset to the next. T+0 settlement vs T+5 in traditional real estate.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Cross-border regulation. Selling a Dubai property MPT to an Indian buyer involves VARA (Dubai) + SEBI (India) compliance. Strategy: don't sell directly to US/EU retail at the start. Focus on crypto-friendly jurisdictions (UAE, SG, MENA).
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">MPT</span>
+          <span class="arch-tag used">SPV legal wrapper</span>
+          <span class="arch-tag used">Escrow</span>
+          <span class="arch-tag used">DID + Credentials</span>
+          <span class="arch-tag used">AMM secondary</span>
+          <span class="arch-tag used">Payment batch (rents)</span>
+          <span class="arch-tag">NFT title deed</span>
+        </div>
+
+        <p>Each property is wrapped in a <strong>SPV juridique</strong> (e.g. a Dubai Free Zone Company). The SPV mints, via PropTok, an MPT on XRPL where each token = 1/N of the SPV's economic ownership. The SPV's net rents are converted to RLUSD and distributed proportionally to holders every month.</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Real Asset -->
+            <rect x="10" y="15" width="105" height="60" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="62" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">PHYSICAL ASSET</text>
+            <text x="62" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Dubai apartment</text>
+            <text x="62" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">800k$ · 7% net yield</text>
+
+            <!-- SPV -->
+            <rect x="140" y="15" width="120" height="60" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="200" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">SPV (DIFC FZ-LLC)</text>
+            <text x="200" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Owns the asset</text>
+            <text x="200" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">VARA-licensed by PropTok</text>
+
+            <!-- MPT issued -->
+            <rect x="285" y="15" width="125" height="60" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
+            <text x="347" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">MPT ON XRPL</text>
+            <text x="347" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">8000 × 100$ shares</text>
+            <text x="347" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Permissioned · KYC required</text>
+
+            <!-- Investors -->
+            <rect x="435" y="15" width="155" height="60" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+            <text x="512" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="1">INVESTORS</text>
+            <text x="512" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#0e1116">120 countries</text>
+            <text x="512" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116">From 100$ minimum</text>
+
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 115 45 L 140 45" marker-end="url(#a-pt)"/>
+              <path d="M 260 45 L 285 45" marker-end="url(#a-pt)"/>
+              <path d="M 410 45 L 435 45" marker-end="url(#a-pt)"/>
+            </g>
+            <defs>
+              <marker id="a-pt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Rent flow -->
+            <rect x="60" y="110" width="220" height="55" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="170" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">RENT DISTRIBUTION</text>
+            <text x="170" y="144" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Monthly · pro-rata · in RLUSD</text>
+            <text x="170" y="156" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Batch Payment automated</text>
+
+            <!-- Secondary -->
+            <rect x="320" y="110" width="270" height="55" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+            <text x="455" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">SECONDARY MARKET</text>
+            <text x="455" y="144" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">AMM permissioned MPT/RLUSD</text>
+            <text x="455" y="156" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Liquid 24/7 · price discovery</text>
+
+            <line x1="170" y1="75" x2="170" y2="110" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="3 3"/>
+            <line x1="455" y1="75" x2="455" y2="110" stroke="#8b5a8c" stroke-width="2" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+
+        <p><strong>Key innovation: secondary liquidity.</strong> Concurrent RealT prend 6-8 semaines pour vendre une part. PropTok via AMM permet la vente en 3 secondes (avec spread market-driven). C'est ce qui transforme l'immobilier d'<em>illiquide</em> en <em>tradable</em>.</p>
+
+        <p><strong>Title deed NFT (optionnel) :</strong> each apartment can also have a unique XLS-20 NFT representing the asset to the Dubai land registry (DLD is already piloting this). The MPT points to this NFT as proof of authenticity.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> RealT (Detroit US) · Brickken · Lofty AI · Roofstock onChain · Tangany · DAMAC tokenized projects · Tabby
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">Frontend</span><span>Next.js · marketplace catalog + dashboard portfolio · 6 langues</span></li>
+          <li><span class="layer">Backend</span><span>Python + FastAPI · Postgres · pour calculs proprata + reporting fiscal</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl-py</code> · MPT batch operations · DID/Credentials</span></li>
+          <li><span class="layer">SPV automation</span><span>Dubai legal firm partnership (Al Tamimi) for per-asset SPV setup · DocuSign</span></li>
+          <li><span class="layer">Property valuation</span><span>API CoreLogic + Bayut + manual independent appraisal · audit trimestriel</span></li>
+          <li><span class="layer">KYC & accred.</span><span>Sumsub · accredited investor verification per jurisdiction</span></li>
+          <li><span class="layer">Property mgmt</span><span>Partenariat Property Management Co (Better Homes Dubai) pour rent collection</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP en 6 sprints (12 semaines) :</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> Dubai DIFC legal setup · legal partnership · 1st SPV created for the test apartment</li>
+          <li><strong>S3–S4 :</strong> testnet MPT mint · DID-based whitelist · conditional escrow on full subscription</li>
+          <li><strong>S5–S6 :</strong> portail catalog · processus complet d'investissement (KYC → wire → mint → wallet)</li>
+          <li><strong>S7–S8 :</strong> automated rent distribution engine · multi-jurisdiction tax reporting</li>
+          <li><strong>S9–S10 :</strong> AMM secondary pool MPT/RLUSD · UI orderbook liquidity</li>
+          <li><strong>S11–S12 :</strong> 1st real offering: $800k Dubai apartment · 50 investor target</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> €350–500k (team of 4 + Dubai legal setup + 1st SPV + audit + insurance)</p>
+
+        <div class="refs">
+          <strong>Licences</strong> UAE : VARA crypto · ADGM possible · SG : MAS · PT : CMVM · ES : CNMV
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Multi-tier revenue model:</strong></p>
+        <p>— <strong>Sourcing fee</strong> (3%): paid by seller upon listing, captured at full subscription</p>
+        <p>— <strong>Annual mgmt fee</strong> (1%) : sur valeur totale du SPV, annuel</p>
+        <p>— <strong>Performance fee</strong> (10%): on capital gain at exit (property sale) — PE model</p>
+        <p>— <strong>Trading fee</strong> (0,3%) : par tx sur AMM secondaire</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Rev/SPV 800k$</div>
+            <div class="stat-value">24 k$ + 8k$/an</div>
+            <div class="stat-sub">setup + recurring</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Cible an 2</div>
+            <div class="stat-value">40 SPV</div>
+            <div class="stat-sub">~ 30M$ AUM</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Run rate an 2</div>
+            <div class="stat-value">~ 1,5 M$</div>
+            <div class="stat-sub">+ exits performance</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Investisseurs cibles</div>
+            <div class="stat-value">~ 8 000</div>
+            <div class="stat-sub">avg ticket 4k$</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market deux temps :</strong></p>
+        <p>— <strong>Sourcing side:</strong> partnership with Dubai developers (DAMAC, Sobha) wanting to broaden their audience. PropTok becomes their "tokenization-as-a-service" backend.</p>
+        <p>— <strong>Investor side:</strong> Indian and Pakistani diaspora (NRI) already mentally in "send money to Dubai" mode. Acquisition via WhatsApp communities + regional real estate influencers.</p>
+
+        <p><strong>Key moat:</strong> chaque SPV = un actif unique. À 50 SPV en marketplace, il devient impossible pour un nouveau concurrent de matcher l'inventaire en 2 ans. <em>Sourcing &gt; Software</em>.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> RealT (~$100M assets) · Lofty (~$30M) · Maecenas (art) · Roofstock onChain (~$30M tokenized)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 06 — PAYROLLXRP ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="payroll" id="payrollxrp">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 06 / 07</span>
+        <span class="startup-cat-pill">Payroll · Streaming</span>
+      </div>
+      <h2 class="startup-name">PayrollXRP<em> — </em>paie en streaming pour DAOs et freelancers globaux</h2>
+      <p class="startup-tagline">Salary that increments second by second · 80+ countries · native stablecoin</p>
+      <span class="startup-region">Global · DACH + US + APAC focus</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>Les DAOs et entreprises crypto-natives paient leurs contributeurs <strong>en bulk mensuel via Gnosis Safe + Disperse</strong>. Mediocre UX, high ETH gas, settlement still at month-end. Employee/freelancer side: they wait for paychecks like everyone else, yet are culturally used to "pay-as-you-work".</p>
+        <p>Le concept de <strong>salary streaming</strong> (Sablier, Superfluid on ETH) proves the demand but stays limited to power-users due to gas fees and complexity.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">DAOs payant en crypto</div>
+            <div class="stat-value">~ 12 000</div>
+            <div class="stat-sub">DeepDAO 2024</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Freelancers crypto</div>
+            <div class="stat-value">~ 1,2 M</div>
+            <div class="stat-sub">crypto-native estimate</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Volume payroll crypto</div>
+            <div class="stat-value">~ 14 G$/an</div>
+            <div class="stat-sub">Sablier + Superfluid + Request</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAGR 3 ans</div>
+            <div class="stat-value">+ 110 %</div>
+            <div class="stat-sub">remote work + crypto teams</div>
+          </div>
+        </div>
+
+        <p><strong>Pourquoi XRPL :</strong> stream simulated via hourly (or daily) micro-Payment at near-zero cost — impossible on ETH. RLUSD for USD stability (reduces FX risk for the employee). Native XRPL multisig for DAO treasury. Auto-compliance via Credentials on the employee side.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> Legal confusion between "salary" vs "fees". PayrollXRP must clearly position itself as <em>contractor payment</em> (B2B services) and not formal payroll to avoid the labor-law regulatory burden per country.
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">Payment</span>
+          <span class="arch-tag used">RLUSD</span>
+          <span class="arch-tag used">Multisig (DAO)</span>
+          <span class="arch-tag used">Escrow conditionnel</span>
+          <span class="arch-tag used">Credentials XLS-70</span>
+          <span class="arch-tag">Sidechain EVM</span>
+          <span class="arch-tag">NFT (token bonus)</span>
+        </div>
+
+        <p>Le pattern principal : un <strong>contrat off-chain</strong> between payor (DAO/company) and payee (freelancer/contributor) triggers a cron that runs <code>Payment</code> RLUSD at a defined frequency (hourly, daily, weekly). Conditional escrow handles project milestones (e.g. payment released on pull request approval).</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- DAO Treasury -->
+            <rect x="10" y="20" width="115" height="55" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="67" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">DAO TREASURY</text>
+            <text x="67" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Multisig 4-of-7</text>
+            <text x="67" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">RLUSD vault</text>
+
+            <!-- Stream engine -->
+            <rect x="150" y="20" width="125" height="55" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="212" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">STREAM ENGINE</text>
+            <text x="212" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Payment / hour</text>
+            <text x="212" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Cron orchestrator</text>
+
+            <!-- Recipients -->
+            <rect x="300" y="20" width="125" height="55" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+            <text x="362" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="1">RECIPIENTS</text>
+            <text x="362" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#0e1116">25 contributors</text>
+            <text x="362" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#0e1116">12 countries · RLUSD</text>
+
+            <!-- Off-ramp -->
+            <rect x="450" y="20" width="140" height="55" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="520" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">OFF-RAMP</text>
+            <text x="520" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Local fiat (option)</text>
+            <text x="520" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">Mercuryo · Ramp</text>
+
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 125 47 L 150 47" marker-end="url(#a-pr)"/>
+              <path d="M 275 47 L 300 47" marker-end="url(#a-pr)"/>
+              <path d="M 425 47 L 450 47" marker-end="url(#a-pr)"/>
+            </g>
+            <defs>
+              <marker id="a-pr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Milestone branch -->
+            <rect x="60" y="115" width="225" height="50" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="172" y="133" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">MILESTONE ESCROW</text>
+            <text x="172" y="149" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">EscrowCreate · oracle release</text>
+            <text x="172" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">PR merged → tx auto</text>
+
+            <!-- Bonus NFT -->
+            <rect x="320" y="115" width="270" height="50" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+            <text x="455" y="133" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">REPUTATION NFT (XLS-20)</text>
+            <text x="455" y="149" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-weight="600" fill="#f4efe6">Soulbound · proof of contribution</text>
+            <text x="455" y="160" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">CV portable on-chain</text>
+
+            <line x1="212" y1="75" x2="172" y2="115" stroke="#1e3a5f" stroke-width="2" stroke-dasharray="3 3"/>
+            <line x1="362" y1="75" x2="455" y2="115" stroke="#8b5a8c" stroke-width="2" stroke-dasharray="3 3"/>
+          </svg>
+        </div>
+
+        <p><strong>Variants used by clients:</strong></p>
+        <p>— <strong>Stream pur</strong> : ratio horaire fixe, le contributeur "voit" sa balance grandir en live, peut withdraw quand il veut</p>
+        <p>— <strong>Milestone-based</strong> : escrow XRPL release sur conditions (oracle GitHub : PR merged → release fund)</p>
+        <p>— <strong>Hybrid</strong> : 70% stream + 30% milestone (la norme dans les dev DAOs)</p>
+
+        <p><strong>Bonus reputation NFT :</strong> Each major milestone mints a soulbound NFT (non-transferable) to the contributor's wallet. Over time = a verified on-chain resume, portable from one project to another.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Sablier (~$1B streamed) · Superfluid · Request Finance · Utopia Labs · Coinshift · Llama (governance)
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">Frontend</span><span>Next.js · 2 portails (admin DAO + recipient) · dark mode dev-focused</span></li>
+          <li><span class="layer">Backend</span><span>Rust + Actix · Postgres · Redis pour le cron stream · idempotency strict</span></li>
+          <li><span class="layer">XRPL SDK</span><span>SDK Rust officiel · multisig SignerListSet · EscrowCreate avec conditions</span></li>
+          <li><span class="layer">Identity</span><span>Sign-in with XRPL (XLS-65 type) · GitHub OAuth pour devs · Discord OAuth pour DAOs</span></li>
+          <li><span class="layer">Off-ramp recipients</span><span>Ramp Network · Mercuryo · Transak · Toku for compliant payroll</span></li>
+          <li><span class="layer">Tax compliance</span><span>US 1099 generation · EU invoicing · accounting CSV export</span></li>
+          <li><span class="layer">Notif</span><span>Telegram bot · email · Slack webhook · Farcaster cast</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP en 4 sprints (8 semaines) :</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> basic stream engine (hourly Payment at configurable frequency) · DAO multisig setup</li>
+          <li><strong>S3–S4 :</strong> admin + recipient portals · XRPL login · realtime earned/streamed dashboard</li>
+          <li><strong>S5–S6 :</strong> escrow milestone avec oracle GitHub (issue closed → release) · invoice PDF auto</li>
+          <li><strong>S7–S8 :</strong> beta avec 5 DAOs amies (50–200 contributeurs total) · feedback intensif</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> €80–120k (team of 2 senior devs + freelance design · 6 months)</p>
+
+        <div class="refs">
+          <strong>Licences</strong> Aucune en B2B contractor pur · Toku partnership pour les clients qui veulent payroll formel
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>Pure SaaS + transaction fee model:</strong></p>
+        <p>— <strong>Free tier</strong> : up to 5 recipients, all features (Sablier-style growth lever)</p>
+        <p>— <strong>Pro</strong> (49$/month): unlimited, milestone escrow, oracles, custom integrations</p>
+        <p>— <strong>Enterprise</strong> (~500$/mois) : SSO, audit log, SLA, custom compliance</p>
+        <p>— <strong>Tx fee</strong> : 0.2% on streamed volume (captured in RLUSD as it flows)</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">ARPU SaaS Pro</div>
+            <div class="stat-value">~ 60 $/mois</div>
+            <div class="stat-sub">avec transaction fees</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">CAC bottom-up</div>
+            <div class="stat-value">~ 15 $</div>
+            <div class="stat-sub">PLG via free tier</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Cible an 2</div>
+            <div class="stat-value">2 500 DAOs</div>
+            <div class="stat-sub">+ 800 entreprises</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Run rate an 2</div>
+            <div class="stat-value">~ 2,8 M$</div>
+            <div class="stat-sub">SaaS + tx fees</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market PLG (product-led growth):</strong> Generous free tier. Acquisition via crypto dev Twitter, Mirror posts, hackathons (ETHGlobal sponsoring but also XRPL Apex). Intense DevRel: native integrations with Snapshot, Tally, Discord, Linear.</p>
+
+        <p><strong>Exclusive XRPL edge:</strong> aucun concurrent ETH-based ne peut faire du <em>true streaming</em> (actual payment, not off-chain accounting) at economically viable cost. Sablier on Ethereum streams "virtually" (lazy claim — the user claims manually and pays gas). PayrollXRP does <em>vrai</em> streaming (real payment on every tick). Strong product differentiation.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Sablier · Request Finance ($28M raised) · Coinshift · Toku ($26M raised)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- ============ STARTUP 07 — AGENTPAY ============ -->
+  <!-- =================================================================== -->
+  <section class="startup" data-color="agentic" id="agentpay">
+    <div class="startup-head">
+      <div class="startup-meta">
+        <span class="startup-num">BLUEPRINT 07 / 07</span>
+        <span class="startup-cat-pill">Agentic · x402 facilitator</span>
+      </div>
+      <h2 class="startup-name">AgentPay<em> — </em>x402 facilitator on XRPL</h2>
+      <p class="startup-tagline">Let AI agents pay for APIs in crypto without login · HTTP 402 standard · zero XRPL implementations today</p>
+      <span class="startup-region">Global · API economy</span>
+    </div>
+
+    <div class="startup-grid">
+
+      <!-- 01 PROBLEM & MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">01</span>Problem · Market</h3>
+        <p>An autonomous AI agent (Claude Computer Use, OpenAI Operator, Vercel AI SDK agent, LangChain agent) needs to pay a third-party API — weather, web search, image generation, legal scraping — <strong>sans intervention humaine et sans avoir un compte chez ce fournisseur</strong>.</p>
+        <p>Les solutions actuelles font toutes mal le job : <em>API keys + credit card</em> (impossible to scale across 1000 different services, onboarding friction), <em>centralized credit pools</em> (single point of failure, KYC entreprise lourd), ou <em>x402 sur Base/USDC</em> (Coinbase, 2024 — the only player, but limited to a single crypto rail).</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">XRPL tx cost</div>
+            <div class="stat-value">~ 5×10⁻⁷ $</div>
+            <div class="stat-sub">10 drops &lt; $0.000001</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Base / EVM tx cost</div>
+            <div class="stat-value">~ 0,001–0,01 $</div>
+            <div class="stat-sub">100–10 000× plus cher</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">XRPL finality</div>
+            <div class="stat-value">3–5 sec</div>
+            <div class="stat-sub">deterministic · not probabilistic</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Volume agent-API</div>
+            <div class="stat-value">croissance &gt; 10×/an</div>
+            <div class="stat-sub">depuis Operator/Computer Use 2024</div>
+          </div>
+        </div>
+
+        <p><strong>Why XRPL over alternatives:</strong> les frais sont <em>3–4 ordres de grandeur</em> lower than EVMs — critical when the payment cost MUST stay below the cost of the called API (typically $0.001–0.10 per call). XRPL also has native primitives that match agent needs perfectly: <code>SetRegularKey</code> for scoped sub-accounts, <code>SignerListSet</code> pour des caps quotidiens, <code>EscrowCreate</code> for multi-step workflows. No smart contract to audit. And deterministic finality (no reorg) simplifies the verification logic.</p>
+
+        <div class="risk-callout">
+          <strong>Key risk</strong> x402 adoption depends on the (still young) AI agents ecosystem. Coinbase is pushing hard on Base/USDC — risk they extend to other chains before AgentPay hits PMF. <em>Defensive strategy: become the XRPL facilitator <strong>reference</strong> — open-source, native Vercel AI SDK / LangChain / LlamaIndex integrations ahead of competitors.</em>
+        </div>
+      </div>
+
+      <!-- 02 ARCHITECTURE -->
+      <div class="startup-section">
+        <h3><span class="num">02</span>Architecture XRPL</h3>
+
+        <div class="arch-tags">
+          <span class="arch-tag used">Payment</span>
+          <span class="arch-tag used">Memo (nonce)</span>
+          <span class="arch-tag used">RLUSD</span>
+          <span class="arch-tag used">SetRegularKey</span>
+          <span class="arch-tag used">SignerListSet</span>
+          <span class="arch-tag">EscrowCreate</span>
+          <span class="arch-tag">MPT (quota tokens)</span>
+        </div>
+
+        <p>Le serveur API renvoie <code>HTTP 402</code> avec headers x402 (currency, amount, recipient, nonce). L'agent client construit une <code>Payment</code> XRPL (XRP or RLUSD), submits it, waits for finality (~3–5s), then retries the API request with the tx hash in the header <code>X-Payment</code>. The server verifies on-chain (amount, recipient, nonce in memo) and unlocks the response.</p>
+
+        <div class="arch-flow">
+          <svg viewBox="0 0 600 150" xmlns="http://www.w3.org/2000/svg">
+            <!-- Agent -->
+            <rect x="10" y="20" width="100" height="50" fill="#2c6680" stroke="#0e1116" stroke-width="2"/>
+            <text x="60" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">AI AGENT</text>
+            <text x="60" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">Claude / GPT</text>
+
+            <!-- API server (returns 402) -->
+            <rect x="135" y="20" width="100" height="50" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+            <text x="185" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">API · 402</text>
+            <text x="185" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">x402 challenge</text>
+            <text x="185" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">amount · nonce</text>
+
+            <!-- XRPL Payment -->
+            <rect x="260" y="20" width="120" height="50" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+            <text x="320" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">XRPL Payment</text>
+            <text x="320" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">Memo: nonce</text>
+            <text x="320" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">~3–5 sec finality</text>
+
+            <!-- Verifier -->
+            <rect x="405" y="20" width="100" height="50" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+            <text x="455" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">VERIFIER</text>
+            <text x="455" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">tx hash check</text>
+            <text x="455" y="65" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">X-Payment</text>
+
+            <!-- API 200 -->
+            <rect x="525" y="20" width="65" height="50" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+            <text x="557" y="42" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">200 OK</text>
+            <text x="557" y="58" text-anchor="middle" font-family="Fraunces, serif" font-size="10" fill="#f4efe6">response</text>
+
+            <!-- Arrows -->
+            <g stroke="#0e1116" stroke-width="2" fill="none">
+              <path d="M 110 45 L 135 45" marker-end="url(#a-ap)"/>
+              <path d="M 235 45 L 260 45" marker-end="url(#a-ap)"/>
+              <path d="M 380 45 L 405 45" marker-end="url(#a-ap)"/>
+              <path d="M 505 45 L 525 45" marker-end="url(#a-ap)"/>
+            </g>
+            <defs>
+              <marker id="a-ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+              </marker>
+            </defs>
+
+            <!-- Note -->
+            <text x="300" y="105" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="11" fill="#0e1116">Total round-trip: ~4 seconds · zero KYC · zero API signup</text>
+            <text x="300" y="122" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">The server gets paid · the agent pays without a human · XRPL cost is negligible vs the API price</text>
+            <text x="300" y="140" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#6b6358">stack open-source · facilitator hosted optionnel pour quota / dashboard</text>
+          </svg>
+        </div>
+
+        <p><strong>Variantes :</strong></p>
+        <p>— <strong>v1 (per-call XRP) :</strong> each API request = 1 <code>Payment</code> XRP with a memo nonce. Verifier validates hash + amount + recipient on-chain. Simplest, ideal for MVP. ~4s latency per call acceptable for most agent use cases.</p>
+        <p>— <strong>v2 (sub-account quota) :</strong> the agent receives a <em>sub-account</em> via <code>SetRegularKey</code>, avec un cap quotidien via <code>SignerListSet</code> (the human can revoke instantly). The verifier accepts payments signed by the sub-account up to quota. Near-zero latency (off-chain signature validation) but lower security — useful for ultra-frequent micropayments.</p>
+        <p>— <strong>v3 (escrow workflow) :</strong> pour les workflows multi-step (agent qui appelle 5 APIs en cascade), un <code>EscrowCreate</code> locks the total. Each sub-step triggers a <code>EscrowFinish</code> partial via crypto-condition. Benefit: pre-commit to a total budget, the human user can <code>EscrowCancel</code> avant la deadline.</p>
+
+        <div class="refs">
+          <strong>Existing</strong> Coinbase x402 (Base/USDC, 2024) · Lightning Address for AI agents (Bitcoin concept) · Privy / Crossmint for agent wallets · no XRPL implementation today
+        </div>
+      </div>
+
+      <!-- 03 STACK & MVP -->
+      <div class="startup-section">
+        <h3><span class="num">03</span>Stack technique · MVP</h3>
+
+        <ul class="stack-list">
+          <li><span class="layer">SDK serveur</span><span>Express/Hono middleware in TypeScript · published on npm <code>@agentpay/server</code> · MIT</span></li>
+          <li><span class="layer">SDK client</span><span>Lib pour agents IA · <code>@agentpay/client</code> · adapters Vercel AI SDK, LangChain, LlamaIndex</span></li>
+          <li><span class="layer">XRPL SDK</span><span><code>xrpl.js</code> v3+ · WebSocket subscribe pour verify rapide · multi-issuer pour XRP/RLUSD/USDC</span></li>
+          <li><span class="layer">Verifier hosted</span><span>Optionnel · API REST <code>/verify</code> avec cache Redis · idempotence par nonce</span></li>
+          <li><span class="layer">Dashboard</span><span>Next.js · monitoring tx volume, error rate, top APIs · pour customers enterprise</span></li>
+          <li><span class="layer">Wallet flow</span><span>Agent custody options: self-managed (key in env), Magic.link, Crossmint smart wallet</span></li>
+          <li><span class="layer">Observability</span><span>OpenTelemetry · Sentry · Datadog · alerts on failed tx and reverify mismatch</span></li>
+        </ul>
+
+        <p style="margin-top: 14px;"><strong>MVP in 3 sprints (6 weeks):</strong></p>
+
+        <ol class="mvp">
+          <li><strong>S1–S2 :</strong> Working Express middleware server SDK · verifies <code>Payment</code> XRP testnet · CLI demo (curl with X-Payment)</li>
+          <li><strong>S3–S4 :</strong> TypeScript client SDK · Vercel AI SDK + LangChain adapters · 1 end-to-end demo (agent paying a testnet API)</li>
+          <li><strong>W5:</strong> RLUSD + sub-account v2 support · complete docs · open-source GitHub launch + Hacker News post</li>
+          <li><strong>W6:</strong> Hosted verifier (Vercel) · 5 agent design partners recruited · iterations based on feedback</li>
+        </ol>
+
+        <p style="margin-top: 14px;"><strong>Capex initial :</strong> 50–80k € (1 dev senior 4 mois + 1 devrel mi-temps + hosting)</p>
+
+        <div class="refs">
+          <strong>Stack ref</strong> Coinbase x402 GitHub · xrpl.js docs · Vercel AI SDK adapters guide · LangChain custom tools doc
+        </div>
+      </div>
+
+      <!-- 04 ECONOMICS & GO-TO-MARKET -->
+      <div class="startup-section">
+        <h3><span class="num">04</span>Économie · GTM</h3>
+
+        <p><strong>3-tier revenue model:</strong></p>
+        <p>— <strong>Free / open-source :</strong> SDK serveur + client en MIT. Acquisition produit, base communautaire, pas de revenu direct.</p>
+        <p>— <strong>Hosted facilitator (paid) :</strong> $0.0001 per verified payment via the hosted verifier (Redis cache, dashboard, guaranteed idempotence). For API providers that don't want to build their own verification infra.</p>
+        <p>— <strong>Enterprise tier :</strong> $500–2,000/month for advanced dashboards (top APIs, fraud detection, SLA monitoring), priority support, custom integrations.</p>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <div class="stat-label">Marge brute SaaS</div>
+            <div class="stat-value">&gt; 90 %</div>
+            <div class="stat-sub">infra ultra-light</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">XRPL cost / verify</div>
+            <div class="stat-value">~ 0,001 ¢</div>
+            <div class="stat-sub">read-only WebSocket</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Break-even</div>
+            <div class="stat-value">~ 50 design partners</div>
+            <div class="stat-sub">tier enterprise</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Run rate an 2</div>
+            <div class="stat-value">~ 800 k$</div>
+            <div class="stat-sub">enterprise + hosted</div>
+          </div>
+        </div>
+
+        <p><strong>Go-to-market dev-first:</strong> Open-source SDK on GitHub (MIT), npm package published from day 0. Acquisition via AI dev Twitter (Latent Space, AI Engineer), Hacker News, Substack. Intense DevRel on 3 platforms: <em>Vercel AI SDK examples</em>, <em>LangChain integrations</em>, <em>LlamaIndex pack registry</em>. Sponsor de hackathons IA agents (AI Engineer Summit, Anthropic hackathons, ETHGlobal AI tracks).</p>
+
+        <p><strong>Avantage XRPL exclusif :</strong> the only chain where the payment cost stays well below the cost of even a very cheap API ($0.001). On Base, paying a $0.001 API = 100% in fees; on XRPL = &lt; 0.05% in fees. Unbeatable economic argument for API providers — it's <em>la seule</em> chain where x402 works for truly micro micropayments.</p>
+
+        <p><strong>Realistic Series A timeline:</strong> 18–24 months. Series A target metrics: <strong>5+ design partners enterprise actifs</strong>, <strong>volumes &gt; 10M verified payments/month</strong>, native integrations in 2 of the 3 main AI frameworks.</p>
+
+        <div class="refs">
+          <strong>Comparables</strong> Coinbase x402 (gratuit, Base/USDC) · Privy ($18M raised, wallets agent) · Crossmint ($23M, smart wallets agents) · Magic Link ($80M, embedded wallets)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ DECISION MATRIX -->
+  <section style="margin-top: 64px;">
+    <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 style="font-family: 'Fraunces', serif; font-weight: 800; font-size: 32px; margin: 0; letter-spacing: -0.02em;">Matrix <em style="font-style: italic; font-weight: 400; color: var(--chain);">opportunity × complexity</em></h2>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);">Builder lens</span>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; border: 2px solid var(--ink); background: var(--paper);">
+      <thead>
+        <tr>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 16%;">Blueprint</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Market (TAM)</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Time-to-MVP</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Capital initial</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Complexity</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Competition</th>
+          <th style="background: var(--ink); color: var(--paper); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; padding: 12px 14px; text-align: left; border: 1px solid var(--ink); width: 14%;">Best for…</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">RemitFlow</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$38B/an</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">8 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 100 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Moyenne</strong> (compliance)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">High (Wise, Remitly)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Solo founder fintech</td>
+        </tr>
+        <tr style="background: var(--paper-2);">
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">VaultDAO</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$12B held</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">10 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 250 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Moyenne</strong> (custody)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Locale (Lemon, Buenbit)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Team produit + dev</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">BondBloc</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$80B EU</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">12 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 500 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>High</strong> (PSAN, MiCA)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Moderate (Spiko, Tokeny)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Founder ex-finance</td>
+        </tr>
+        <tr style="background: var(--paper-2);">
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">MerchantPay</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$912B Africa</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">8 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 130 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Faible</strong> (tech) · <strong>high</strong> (terrain)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Dominante (M-Pesa)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Founder local Africa</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">PropTok</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$18B → $4T</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">12 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 450 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>High</strong> (legal SPV)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Moderate (RealT, Brickken)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Co-founders + immo</td>
+        </tr>
+        <tr style="background: var(--paper-2);">
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">PayrollXRP</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">$14B/an</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">8 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 100 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Faible</strong> (pure tech)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">High (Sablier, Request)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Solo dev senior</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px; vertical-align: top; font-weight: 600;">AgentPay</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ &gt; 10×/an growth</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">6 semaines</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">~ 60 k€</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;"><strong>Faible</strong> (pure tech, no compliance)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Coinbase x402 (Base only)</td>
+          <td style="border: 1px solid var(--ink); padding: 12px 14px; font-family: 'Fraunces', serif; font-size: 13px;">Solo dev IA-native</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 24px; padding: 18px 24px; background: var(--paper-2); border: 1.5px solid var(--ink); display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Recommandation</span>
+      <span style="font-family:'Fraunces',serif;font-size:14px;line-height:1.55;font-style:italic;">If you start solo with a limited budget: <strong style="font-style:normal;">PayrollXRP</strong> (pure tech, PLG, hot market) or <strong style="font-style:normal;">AgentPay</strong> (greenfield, dev-first, unbeatable XRPL edge on fees). If you want massive impact and an unfair XRPL edge: <strong style="font-style:normal;">VaultDAO</strong> (competitors are stuck on Ethereum gas). If you have finance expertise: <strong style="font-style:normal;">BondBloc</strong> (high margin, underserved market).</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>BUILDER ATLAS · 7 BLUEPRINTS · v1.1</span>
+    <span>FIG. 03 · STARTUP IDEAS</span>
+  </footer>
+
 </div>
-
-<footer>
-  <span>XRPL BUILDER · EN PLACEHOLDER · v1.6</span>
-  <span>FR VERSION READY · EN COMING</span>
-</footer>
-
 </body>
 </html>

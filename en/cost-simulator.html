@@ -3,24 +3,43 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cost Simulator (XRPL vs EVMs) — XRPL Builder (EN translation in progress)</title>
+<title>Cost Simulator — XRPL vs Ethereum vs Solana vs Stellar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
-    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
-    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
-    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --xrpl: #1e3a5f;
+    --eth: #6b6358;
+    --sol: #c8553d;
+    --stellar: #4a6741;
+    --good: #2e5d4f;
+    --bad: #c8553d;
+    --warn: #d4a017;
   }
+
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    background: var(--paper); color: var(--ink);
+    background: var(--paper);
+    color: var(--ink);
     font-family: 'Fraunces', Georgia, serif;
     -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
+    line-height: 1.5;
   }
   body {
     background-image:
@@ -28,8 +47,454 @@
       linear-gradient(90deg, var(--grid) 1px, transparent 1px);
     background-size: 24px 24px;
   }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
 
-  /* Site-wide nav (sticky top) */
+  /* HEADER */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .intro p { margin: 0 0 8px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); }
+
+  /* MAIN GRID */
+  .sim-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    margin-bottom: 36px;
+  }
+
+  /* CONTROL PANEL */
+  .controls {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+    align-self: start;
+    position: sticky;
+    top: 16px;
+  }
+  .controls-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .control-section {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .control-section:last-child { border-bottom: none; }
+  .control-section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px 0;
+  }
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .preset-btn {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    padding: 8px 10px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    line-height: 1.2;
+  }
+  .preset-btn:hover { background: var(--paper-2); }
+  .preset-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .preset-btn .preset-name {
+    font-weight: 700;
+    font-size: 13px;
+    display: block;
+  }
+  .preset-btn .preset-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .preset-btn.active .preset-sub { color: var(--paper); opacity: 0.7; }
+
+  .slider-block {
+    margin-bottom: 16px;
+  }
+  .slider-block:last-child { margin-bottom: 0; }
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+  }
+  .slider-label .label-name {
+    color: var(--ink);
+  }
+  .slider-label .label-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper-2);
+    padding: 2px 7px;
+    border: 1px solid var(--ink);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--ink);
+    outline: none;
+    margin: 8px 0 4px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--wallet);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    border-radius: 0;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--wallet);
+    border: 2px solid var(--ink);
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* RESULTS PANEL */
+  .results {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 24px;
+  }
+
+  /* HEADLINE TILE */
+  .headline {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 24px 28px;
+  }
+  .headline-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .headline-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--chain);
+    margin-bottom: 6px;
+  }
+  .headline-num em { font-style: italic; font-weight: 400; }
+  .headline-sub {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .headline-sub strong { color: var(--ink); font-weight: 600; }
+
+  /* COMPARISON BAR CHART */
+  .comparison {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 22px 26px;
+  }
+  .comparison h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 4px 0;
+  }
+  .comparison h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0 0 18px 0;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .comparison h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+
+  .chain-bar {
+    display: grid;
+    grid-template-columns: 110px 1fr 130px;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(14,17,22,0.15);
+  }
+  .chain-bar:last-child { border-bottom: none; }
+  .chain-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .chain-name .chain-tag {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .bar-track {
+    background: var(--paper-2);
+    border: 1px solid var(--ink);
+    height: 28px;
+    position: relative;
+    overflow: visible;
+  }
+  .bar-fill {
+    height: 100%;
+    transition: width 0.4s ease;
+    position: relative;
+  }
+  .bar-fill.xrpl { background: var(--xrpl); }
+  .bar-fill.stellar { background: var(--stellar); }
+  .bar-fill.solana { background: var(--sol); }
+  .bar-fill.ethereum { background: var(--eth); }
+
+  .bar-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+  }
+  .bar-multiplier {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--muted);
+    display: block;
+  }
+
+  /* STATS TABLE */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .stat-cell {
+    padding: 18px 18px 16px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+  }
+  .stat-cell:nth-child(4n) { border-right: none; }
+  .stat-cell:nth-last-child(-n+4) { border-bottom: none; }
+  .stat-cell::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-cell[data-chain="xrpl"]::before { background: var(--xrpl); }
+  .stat-cell[data-chain="stellar"]::before { background: var(--stellar); }
+  .stat-cell[data-chain="solana"]::before { background: var(--sol); }
+  .stat-cell[data-chain="ethereum"]::before { background: var(--eth); }
+
+  .stat-cell-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .stat-cell-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    border-bottom: 1px dotted rgba(14,17,22,0.2);
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row .row-label { color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-row .row-val { color: var(--ink); font-weight: 700; }
+  .stat-row.highlight .row-val {
+    background: var(--wallet);
+    padding: 0 4px;
+    color: var(--ink);
+  }
+
+  /* INSIGHT BOX */
+  .insight {
+    margin-top: 24px;
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .insight-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--user);
+    font-weight: 700;
+    padding-top: 4px;
+  }
+  .insight-text {
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .insight-text strong { font-weight: 600; }
+
+  /* NOTES */
+  .notes {
+    margin-top: 36px;
+    padding: 18px 22px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .notes h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 8px 0;
+  }
+  .notes p { margin: 0 0 6px 0; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 4px;
+    border: 1px solid var(--ink);
+  }
+
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 1000px) {
+    .sim-grid { grid-template-columns: 1fr; }
+    .controls { position: relative; top: auto; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-cell:nth-child(2n) { border-right: none; }
+  }
+
+  /* ============ Site-wide nav (sticky top) ============ */
   .site-nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--ink); color: var(--paper);
@@ -50,10 +515,11 @@
     color: var(--paper); text-decoration: none;
     padding: 5px 10px; text-transform: uppercase; font-weight: 700;
     transition: background 0.15s ease; white-space: nowrap;
-    position: relative;
   }
   .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
   .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  /* Section color indicator (4px top bar per nav link) */
+  .site-nav .nav-links a { position: relative; }
   .site-nav .nav-links a::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: transparent; pointer-events: none;
@@ -87,104 +553,6 @@
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
     .site-nav .nav-links a { padding: 3px 6px; }
   }
-
-  /* Placeholder content */
-  .placeholder {
-    max-width: 760px;
-    margin: 80px auto;
-    padding: 0 32px;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .placeholder h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.0;
-    margin: 0 0 24px 0;
-    letter-spacing: -0.02em;
-  }
-  .placeholder h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
-  .placeholder p {
-    font-family: 'Fraunces', serif;
-    font-size: 16px;
-    line-height: 1.55;
-    margin: 0 0 14px 0;
-  }
-  .placeholder p strong { font-weight: 600; }
-  .placeholder p em { color: var(--chain); }
-  .placeholder .cta-block {
-    margin-top: 32px;
-    padding: 22px 26px;
-    background: var(--paper-2);
-    border: 2px solid var(--ink);
-  }
-  .placeholder .cta-block h3 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-  .placeholder a.cta {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 22px;
-    border: 2px solid var(--ink);
-    background: var(--wallet);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0 var(--ink);
-    transform: translate(-1px, -1px);
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta:hover {
-    background: var(--ink);
-    color: var(--wallet);
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .placeholder a.cta-secondary {
-    display: inline-block;
-    margin-top: 12px;
-    margin-left: 10px;
-    padding: 11px 22px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta-secondary:hover { background: var(--ink); color: var(--paper); }
-
-  footer {
-    max-width: 760px;
-    margin: 56px auto 24px;
-    padding: 16px 32px 0;
-    border-top: 1px solid var(--ink);
-    display: flex; justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-  }
 </style>
 </head>
 <body>
@@ -197,7 +565,7 @@
     <a href="/en/gaps" data-section="paysage">Gaps</a>
     <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
     <a href="/en/decision-tree-map" data-section="outil">Macro</a>
-    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/cost-simulator" data-section="outil" class="current">Sim</a>
     <a href="/en/business-case-builder" data-section="outil">Case</a>
     <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
   </div>
@@ -207,24 +575,435 @@
   </div>
 </nav>
 
-<div class="placeholder">
-  <div class="eyebrow">EN translation in progress</div>
-  <h1>Cost Simulator (XRPL vs EVMs)<br/>· <em>coming soon</em></h1>
-  <p>This page is <strong>not yet translated to English</strong>. The full EN version will ship in an upcoming sprint (the structure stays identical — only the text changes).</p>
-  <p>In the meantime, you have two options:</p>
+<div class="page">
 
-  <div class="cta-block">
-    <h3>While you wait</h3>
-    <p>Read the French version (same content, same layout, same data). You can also use the navbar above to jump to other pages — some are already translated to English.</p>
-    <a class="cta" href="/cost-simulator">→ Read in French</a>
-    <a class="cta-secondary" href="/en/">Back to EN home</a>
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">Cost simulator · Live comparison · v1.0</div>
+      <h1>How much does it <em>really</em><br/>cost to build<br/>on XRPL?</h1>
+    </div>
+    <div class="meta">
+      Compared: 4 chains<br/>
+      Data: May 2026<br/>
+      Granularity: per tx<br/>
+      Computation: real-time
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>VOLUME</span>
+    <span>USERS</span>
+    <span>FEES</span>
+    <span>FINALITY</span>
+    <span>TPS</span>
+    <span>VERDICT</span>
   </div>
+
+  <div class="intro">
+    <p>Live operational cost comparator across <strong>XRPL · Stellar · Solana · Ethereum</strong> on the same use case. Adjust the parameters to see how each chain behaves with your volume.</p>
+    <p>The goal: identify <em>when</em> XRPL is the cheaper choice — and <em>when</em> it isn't. All numbers come from 2026 averages; the code is public, tweak the assumptions in the "notes" section if needed.</p>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="sim-grid">
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <div class="controls-header">Simulation parameters</div>
+
+      <div class="control-section">
+        <h3>Preset use case</h3>
+        <div class="preset-grid">
+          <button class="preset-btn active" data-preset="payment">
+            <span class="preset-name">Payment</span>
+            <span class="preset-sub">Simple transfer</span>
+          </button>
+          <button class="preset-btn" data-preset="amm">
+            <span class="preset-name">AMM Swap</span>
+            <span class="preset-sub">Cross-currency</span>
+          </button>
+          <button class="preset-btn" data-preset="nft">
+            <span class="preset-name">NFT mint</span>
+            <span class="preset-sub">Marketplace</span>
+          </button>
+          <button class="preset-btn" data-preset="payroll">
+            <span class="preset-name">Payroll</span>
+            <span class="preset-sub">Streaming</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <h3>Monthly volume</h3>
+
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="label-name">Transactions / month</span>
+            <span class="label-value" id="lbl-tx">100 000</span>
+          </div>
+          <input type="range" id="slider-tx" min="0" max="100" value="50" step="1" />
+          <div class="slider-ticks"><span>1k</span><span>10k</span><span>100k</span><span>1M</span><span>10M</span></div>
+        </div>
+
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="label-name">Active users</span>
+            <span class="label-value" id="lbl-users">10 000</span>
+          </div>
+          <input type="range" id="slider-users" min="0" max="100" value="50" step="1" />
+          <div class="slider-ticks"><span>100</span><span>1k</span><span>10k</span><span>100k</span><span>1M</span></div>
+        </div>
+
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="label-name">Avg amount / tx</span>
+            <span class="label-value" id="lbl-amount">100 $</span>
+          </div>
+          <input type="range" id="slider-amount" min="0" max="100" value="40" step="1" />
+          <div class="slider-ticks"><span>1$</span><span>10$</span><span>100$</span><span>1k$</span><span>10k$</span></div>
+        </div>
+      </div>
+
+      <div class="control-section">
+        <h3>Economic model</h3>
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="label-name">User fee (in %)</span>
+            <span class="label-value" id="lbl-fee">1,5 %</span>
+          </div>
+          <input type="range" id="slider-fee" min="0" max="100" value="30" step="1" />
+          <div class="slider-ticks"><span>0%</span><span>1%</span><span>2%</span><span>3%</span><span>5%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results">
+
+      <!-- HEADLINE -->
+      <div class="headline">
+        <div class="headline-eyebrow">ON XRPL · TOTAL MONTHLY COST</div>
+        <div class="headline-num"><em>$</em><span id="headline-num">100,00</span></div>
+        <div class="headline-sub" id="headline-sub">For 100,000 transactions per month · that's <strong>$0.001 per transaction</strong>. Net user margin: <strong id="headline-margin">99.93%</strong>.</div>
+      </div>
+
+      <!-- COMPARISON BARS -->
+      <div class="comparison">
+        <h3>Monthly cost per chain</h3>
+        <h2>XRPL vs <em>the alternatives</em></h2>
+
+        <div class="chain-bar">
+          <div class="chain-name">XRPL<span class="chain-tag">L1 native</span></div>
+          <div class="bar-track">
+            <div class="bar-fill xrpl" id="bar-xrpl" style="width: 1%;"></div>
+          </div>
+          <div class="bar-value">
+            <span id="cost-xrpl">$ 100</span>
+            <span class="bar-multiplier" id="mult-xrpl">baseline</span>
+          </div>
+        </div>
+
+        <div class="chain-bar">
+          <div class="chain-name">Stellar<span class="chain-tag">L1 native</span></div>
+          <div class="bar-track">
+            <div class="bar-fill stellar" id="bar-stellar" style="width: 2%;"></div>
+          </div>
+          <div class="bar-value">
+            <span id="cost-stellar">$ 200</span>
+            <span class="bar-multiplier" id="mult-stellar">2× XRPL</span>
+          </div>
+        </div>
+
+        <div class="chain-bar">
+          <div class="chain-name">Solana<span class="chain-tag">L1 native</span></div>
+          <div class="bar-track">
+            <div class="bar-fill solana" id="bar-solana" style="width: 5%;"></div>
+          </div>
+          <div class="bar-value">
+            <span id="cost-solana">$ 500</span>
+            <span class="bar-multiplier" id="mult-solana">5× XRPL</span>
+          </div>
+        </div>
+
+        <div class="chain-bar">
+          <div class="chain-name">Ethereum<span class="chain-tag">L1 + DeFi</span></div>
+          <div class="bar-track">
+            <div class="bar-fill ethereum" id="bar-ethereum" style="width: 100%;"></div>
+          </div>
+          <div class="bar-value">
+            <span id="cost-ethereum">$ 250 000</span>
+            <span class="bar-multiplier" id="mult-ethereum">2 500× XRPL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAILED STATS -->
+      <div class="stats-grid" id="stats-grid">
+
+        <div class="stat-cell" data-chain="xrpl">
+          <div class="stat-cell-name">XRPL</div>
+          <div class="stat-cell-sub">XRP Ledger</div>
+          <div class="stat-row"><span class="row-label">Fee/tx</span><span class="row-val" id="xrpl-fee">~0,001 $</span></div>
+          <div class="stat-row"><span class="row-label">Finality</span><span class="row-val">3–5 sec</span></div>
+          <div class="stat-row"><span class="row-label">TPS sustain.</span><span class="row-val">~1 500</span></div>
+          <div class="stat-row highlight"><span class="row-label">Total cost</span><span class="row-val" id="xrpl-total">$ 100</span></div>
+          <div class="stat-row"><span class="row-label">% revenue</span><span class="row-val" id="xrpl-pct">0,07 %</span></div>
+        </div>
+
+        <div class="stat-cell" data-chain="stellar">
+          <div class="stat-cell-name">Stellar</div>
+          <div class="stat-cell-sub">Stellar Network</div>
+          <div class="stat-row"><span class="row-label">Fee/tx</span><span class="row-val" id="stellar-fee">~0,002 $</span></div>
+          <div class="stat-row"><span class="row-label">Finality</span><span class="row-val">3–5 sec</span></div>
+          <div class="stat-row"><span class="row-label">TPS sustain.</span><span class="row-val">~1 000</span></div>
+          <div class="stat-row highlight"><span class="row-label">Total cost</span><span class="row-val" id="stellar-total">$ 200</span></div>
+          <div class="stat-row"><span class="row-label">% revenue</span><span class="row-val" id="stellar-pct">0,13 %</span></div>
+        </div>
+
+        <div class="stat-cell" data-chain="solana">
+          <div class="stat-cell-name">Solana</div>
+          <div class="stat-cell-sub">Solana Mainnet</div>
+          <div class="stat-row"><span class="row-label">Fee/tx</span><span class="row-val" id="solana-fee">~0,005 $</span></div>
+          <div class="stat-row"><span class="row-label">Finality</span><span class="row-val">~12 sec</span></div>
+          <div class="stat-row"><span class="row-label">TPS sustain.</span><span class="row-val">~3 000</span></div>
+          <div class="stat-row highlight"><span class="row-label">Total cost</span><span class="row-val" id="solana-total">$ 500</span></div>
+          <div class="stat-row"><span class="row-label">% revenue</span><span class="row-val" id="solana-pct">0,33 %</span></div>
+        </div>
+
+        <div class="stat-cell" data-chain="ethereum">
+          <div class="stat-cell-name">Ethereum</div>
+          <div class="stat-cell-sub">L1 mainnet</div>
+          <div class="stat-row"><span class="row-label">Fee/tx</span><span class="row-val" id="eth-fee">~2,50 $</span></div>
+          <div class="stat-row"><span class="row-label">Finality</span><span class="row-val">~13 min</span></div>
+          <div class="stat-row"><span class="row-label">TPS sustain.</span><span class="row-val">~15</span></div>
+          <div class="stat-row highlight"><span class="row-label">Total cost</span><span class="row-val" id="eth-total">$ 250,000</span></div>
+          <div class="stat-row"><span class="row-label">% revenue</span><span class="row-val" id="eth-pct">166 %</span></div>
+        </div>
+
+      </div>
+
+      <!-- INSIGHT -->
+      <div class="insight">
+        <span class="insight-label">⚡ Verdict</span>
+        <div class="insight-text" id="insight-text">
+          À ce volume, <strong>XRPL</strong> est viable économiquement avec une marge de <strong>99,93 %</strong> sur les frais. <strong>Ethereum</strong> would make the business unviable (fees &gt; revenue). Solana and Stellar are viable but 5× and 2× more expensive respectively.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <h3>Calculation assumptions · sources</h3>
+    <p><strong>XRPL:</strong> dynamic base fee <code>~10 drops</code> = ~$0.000004 + average AMM spread ~$0.001 for swap → rounded to <code>$0.001/tx</code>. <strong>Stellar:</strong> <code>0.00001 XLM</code> + dynamic amplification → <code>$0.002/tx</code>. <strong>Solana:</strong> <code>5000 lamports</code> base + average priority fee <code>$0.003</code> → <code>$0.005/tx</code>. <strong>Ethereum:</strong> average gas <code>21k @ 20 gwei</code> + ETH ~$3500 → <code>~$2.50/tx</code> (±50% variability based on congestion).</p>
+    <p>The simulator excludes: dev infrastructure costs (RPC nodes, indexers, monitoring), compliance/KYC costs, marketing costs. See <em>Business Case Builder</em> for those components.</p>
+  </div>
+
+  <footer>
+    <span>COST SIMULATOR · v1.0</span>
+    <span>FIG. 04 · LIVE COMPARISON</span>
+  </footer>
+
 </div>
 
-<footer>
-  <span>XRPL BUILDER · EN PLACEHOLDER · v1.6</span>
-  <span>FR VERSION READY · EN COMING</span>
-</footer>
+<script>
+(function() {
+  // ============ CONFIG ============
+  // Per-tx cost in USD by chain × use case
+  const COSTS = {
+    payment: { xrpl: 0.001, stellar: 0.002, solana: 0.005, ethereum: 2.50 },
+    amm:     { xrpl: 0.005, stellar: 0.008, solana: 0.015, ethereum: 18.00 },
+    nft:     { xrpl: 0.001, stellar: 0.003, solana: 0.012, ethereum: 35.00 },
+    payroll: { xrpl: 0.001, stellar: 0.002, solana: 0.005, ethereum: 4.50 },
+  };
+
+  const PRESET_HINTS = {
+    payment: 'Transfert direct on-chain · pas de logique complexe.',
+    amm:     'Cross-currency via AMM · sur Ethereum implique Uniswap + 1inch path.',
+    nft:     'Mint + transfer · sur Ethereum compte les frais d\'écriture stockage.',
+    payroll: 'Recurring stream · XRPL costs = 1 tx/hour × 24 × 30 = 720 tx/month/employee.',
+  };
+
+  // Slider scaling: 0–100 → log scale
+  function logScale(value, min, max) {
+    const minLog = Math.log10(min);
+    const maxLog = Math.log10(max);
+    const v = minLog + (value / 100) * (maxLog - minLog);
+    return Math.pow(10, v);
+  }
+
+  function formatNumber(n) {
+    if (n >= 1e9) return (n / 1e9).toFixed(1).replace('.0', '') + ' G';
+    if (n >= 1e6) return (n / 1e6).toFixed(1).replace('.0', '') + ' M';
+    if (n >= 1e3) return Math.round(n / 1e3) + ' k';
+    if (n >= 100) return Math.round(n).toString();
+    if (n >= 10) return n.toFixed(1).replace(/\.0$/, '');
+    if (n >= 1) return n.toFixed(2).replace(/\.00$/, '');
+    return n.toFixed(3);
+  }
+
+  function formatMoney(n) {
+    if (n >= 1e6) return '$ ' + (n / 1e6).toFixed(2).replace(/\.00$/, '') + ' M';
+    if (n >= 1e3) return '$ ' + Math.round(n / 1000) + ' k';
+    if (n >= 100) return '$ ' + Math.round(n).toLocaleString('fr-FR');
+    if (n >= 1) return '$ ' + n.toFixed(2).replace(/\.00$/, '');
+    if (n >= 0.01) return '$ ' + n.toFixed(2);
+    if (n >= 0.001) return '~ 0,00' + Math.round(n * 1000) + ' $';
+    if (n >= 0.0001) return '~ 0,000' + Math.round(n * 10000) + ' $';
+    return '< 0,0001 $';
+  }
+
+  function formatPct(n) {
+    if (n >= 100) return n.toFixed(0) + ' %';
+    if (n >= 10) return n.toFixed(1) + ' %';
+    if (n >= 1) return n.toFixed(2) + ' %';
+    if (n >= 0.01) return n.toFixed(3) + ' %';
+    return n.toExponential(1) + ' %';
+  }
+
+  // ============ STATE ============
+  let state = {
+    preset: 'payment',
+    txPerMonth: 100000,
+    users: 10000,
+    avgAmount: 100,
+    feePct: 1.5,
+  };
+
+  // ============ DOM REFS ============
+  const sliderTx = document.getElementById('slider-tx');
+  const sliderUsers = document.getElementById('slider-users');
+  const sliderAmount = document.getElementById('slider-amount');
+  const sliderFee = document.getElementById('slider-fee');
+  const lblTx = document.getElementById('lbl-tx');
+  const lblUsers = document.getElementById('lbl-users');
+  const lblAmount = document.getElementById('lbl-amount');
+  const lblFee = document.getElementById('lbl-fee');
+
+  // ============ COMPUTATION ============
+  function recompute() {
+    // Read sliders
+    state.txPerMonth = Math.round(logScale(parseFloat(sliderTx.value), 1000, 10_000_000));
+    state.users = Math.round(logScale(parseFloat(sliderUsers.value), 100, 1_000_000));
+    state.avgAmount = Math.round(logScale(parseFloat(sliderAmount.value), 1, 10_000));
+    state.feePct = (parseFloat(sliderFee.value) / 100) * 5;
+
+    // Update slider labels
+    lblTx.textContent = formatNumber(state.txPerMonth);
+    lblUsers.textContent = formatNumber(state.users);
+    lblAmount.textContent = state.avgAmount.toLocaleString('fr-FR') + ' $';
+    lblFee.textContent = state.feePct.toFixed(2).replace(/\.00$/, '') + ' %';
+
+    // Costs by chain
+    const costs = COSTS[state.preset];
+    const monthly = {
+      xrpl: costs.xrpl * state.txPerMonth,
+      stellar: costs.stellar * state.txPerMonth,
+      solana: costs.solana * state.txPerMonth,
+      ethereum: costs.ethereum * state.txPerMonth,
+    };
+
+    // Revenue from user fee (% of total volume)
+    const totalVolume = state.txPerMonth * state.avgAmount;
+    const revenue = totalVolume * (state.feePct / 100);
+
+    // Headline
+    document.getElementById('headline-num').textContent = formatNumber(monthly.xrpl).replace(' k', ' k').replace(/^(\d+)$/, m => Math.round(parseFloat(m)).toLocaleString('fr-FR'));
+    if (monthly.xrpl >= 1000) {
+      document.getElementById('headline-num').textContent = (monthly.xrpl / 1000).toFixed(2).replace(/\.00$/, '') + ' k';
+    } else if (monthly.xrpl >= 100) {
+      document.getElementById('headline-num').textContent = monthly.xrpl.toFixed(0);
+    } else {
+      document.getElementById('headline-num').textContent = monthly.xrpl.toFixed(2);
+    }
+    const xrplMargin = revenue > 0 ? ((revenue - monthly.xrpl) / revenue) * 100 : 0;
+    document.getElementById('headline-margin').textContent = formatPct(Math.max(0, xrplMargin));
+    document.getElementById('headline-sub').innerHTML = `For <strong>${state.txPerMonth.toLocaleString('en-US')}</strong> transactions/month · that's <strong>${formatMoney(costs.xrpl)} per transaction</strong>. ${revenue > 0 ? `Net user margin: <strong id="headline-margin">${formatPct(Math.max(0, xrplMargin))}</strong>.` : 'No revenue at this configuration.'}`;
+
+    // Comparison bars (logarithmic-ish for ETH outlier)
+    const max = Math.max(...Object.values(monthly));
+    const min = Math.min(...Object.values(monthly));
+
+    // Use sqrt scaling to keep XRPL visible vs ETH
+    const scale = (v) => Math.max(1, Math.sqrt(v / max) * 100);
+
+    document.getElementById('bar-xrpl').style.width = scale(monthly.xrpl) + '%';
+    document.getElementById('bar-stellar').style.width = scale(monthly.stellar) + '%';
+    document.getElementById('bar-solana').style.width = scale(monthly.solana) + '%';
+    document.getElementById('bar-ethereum').style.width = scale(monthly.ethereum) + '%';
+
+    document.getElementById('cost-xrpl').textContent = formatMoney(monthly.xrpl);
+    document.getElementById('cost-stellar').textContent = formatMoney(monthly.stellar);
+    document.getElementById('cost-solana').textContent = formatMoney(monthly.solana);
+    document.getElementById('cost-ethereum').textContent = formatMoney(monthly.ethereum);
+
+    document.getElementById('mult-xrpl').textContent = 'baseline';
+    document.getElementById('mult-stellar').textContent = (monthly.stellar / monthly.xrpl).toFixed(1).replace(/\.0$/, '') + '× XRPL';
+    document.getElementById('mult-solana').textContent = (monthly.solana / monthly.xrpl).toFixed(1).replace(/\.0$/, '') + '× XRPL';
+    document.getElementById('mult-ethereum').textContent = formatNumber(monthly.ethereum / monthly.xrpl) + '× XRPL';
+
+    // Stats grid
+    document.getElementById('xrpl-fee').textContent = formatMoney(costs.xrpl);
+    document.getElementById('stellar-fee').textContent = formatMoney(costs.stellar);
+    document.getElementById('solana-fee').textContent = formatMoney(costs.solana);
+    document.getElementById('eth-fee').textContent = formatMoney(costs.ethereum);
+
+    document.getElementById('xrpl-total').textContent = formatMoney(monthly.xrpl);
+    document.getElementById('stellar-total').textContent = formatMoney(monthly.stellar);
+    document.getElementById('solana-total').textContent = formatMoney(monthly.solana);
+    document.getElementById('eth-total').textContent = formatMoney(monthly.ethereum);
+
+    if (revenue > 0) {
+      document.getElementById('xrpl-pct').textContent = formatPct((monthly.xrpl / revenue) * 100);
+      document.getElementById('stellar-pct').textContent = formatPct((monthly.stellar / revenue) * 100);
+      document.getElementById('solana-pct').textContent = formatPct((monthly.solana / revenue) * 100);
+      document.getElementById('eth-pct').textContent = formatPct((monthly.ethereum / revenue) * 100);
+    } else {
+      ['xrpl-pct', 'stellar-pct', 'solana-pct', 'eth-pct'].forEach(id => {
+        document.getElementById(id).textContent = '—';
+      });
+    }
+
+    // Insight
+    let insight = '';
+    if (revenue === 0) {
+      insight = `At <strong>${state.feePct.toFixed(2)}%</strong> fee, you generate no revenue. Increase the fee slider to evaluate viability.`;
+    } else {
+      const xrplShare = (monthly.xrpl / revenue) * 100;
+      const ethShare = (monthly.ethereum / revenue) * 100;
+      const solShare = (monthly.solana / revenue) * 100;
+
+      if (ethShare > 100) {
+        insight = `At this volume, <strong>Ethereum is unviable</strong>: fees ${formatMoney(monthly.ethereum)} exceed your revenue ${formatMoney(revenue)}. <strong>XRPL</strong> consumes only <strong>${formatPct(xrplShare)}</strong> of your revenue, leaving <strong>${formatPct(100 - xrplShare)}</strong> of gross margin for your operational costs.`;
+      } else if (solShare > 50) {
+        insight = `At this volume, even <strong>Solana</strong> eats ${formatPct(solShare)} of your revenue. <strong>XRPL</strong> consumes only <strong>${formatPct(xrplShare)}</strong>. For a low-spread product (remittances, micropayments, payroll), it's ${(solShare/xrplShare).toFixed(0)}× more profitable.`;
+      } else if (state.txPerMonth < 10000) {
+        insight = `At this low volume, all chains are economically viable. The choice is made on <strong>finality, native primitives, ecosystem</strong> rather than pure cost. XRPL remains optimal for payment + native AMM use cases.`;
+      } else {
+        insight = `At this volume, <strong>XRPL</strong> is viable with ${formatPct(xrplShare)} of your revenue in fees. <strong>Ethereum</strong> would be ${formatNumber(monthly.ethereum / monthly.xrpl)}× more expensive. ${PRESET_HINTS[state.preset]}`;
+      }
+    }
+    document.getElementById('insight-text').innerHTML = insight;
+  }
+
+  // ============ WIRE UP ============
+  [sliderTx, sliderUsers, sliderAmount, sliderFee].forEach(s => {
+    s.addEventListener('input', recompute);
+  });
+
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.preset = btn.dataset.preset;
+      recompute();
+    });
+  });
+
+  recompute();
+})();
+</script>
 
 </body>
 </html>

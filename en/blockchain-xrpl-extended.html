@@ -3,24 +3,33 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Complete anatomy (guided tour) — XRPL Builder (EN translation in progress)</title>
+<title>Blockchain Framework — XRPL · Extended Edition v1.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
-    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
-    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
-    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;       /* plum */
+    --rwa: #4a6741;       /* olive */
+    --sidechain: #b85c38; /* burnt orange */
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    background: var(--paper); color: var(--ink);
+    background: var(--paper);
+    color: var(--ink);
     font-family: 'Fraunces', Georgia, serif;
     -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
   }
   body {
     background-image:
@@ -28,8 +37,711 @@
       linear-gradient(90deg, var(--grid) 1px, transparent 1px);
     background-size: 24px 24px;
   }
+  .page { max-width: 1320px; margin: 0 auto; padding: 48px 32px 96px; }
 
-  /* Site-wide nav (sticky top) */
+  /* ---------- HEADER ---------- */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.95;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ---------- LEGEND ---------- */
+  .legend {
+    display: grid; grid-template-columns: repeat(8, 1fr);
+    border: 1.5px solid var(--ink);
+    margin-bottom: 32px;
+    background: var(--paper-2);
+  }
+  .legend-item {
+    padding: 10px 12px;
+    border-right: 1px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .legend-item:last-child { border-right: none; }
+  .swatch { width: 12px; height: 12px; border: 1.5px solid var(--ink); flex-shrink: 0; }
+
+  /* ---------- DIAGRAM ---------- */
+  .diagram-wrap {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .diagram-wrap::before {
+    content: "FIG. 01 — XRPL EXTENDED ARCHITECTURE";
+    position: absolute; top: 12px; left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--muted); z-index: 5;
+  }
+  svg.diagram { width: 100%; height: auto; display: block; }
+
+  /* ---------- DEFI / RWA / SIDECHAIN SECTIONS ---------- */
+  .ecosystem {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+  }
+  .eco {
+    padding: 24px 26px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+  }
+  .eco:last-child { border-right: none; }
+  .eco .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .eco h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700; font-size: 26px;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .eco h3 em { font-style: italic; font-weight: 400; }
+  .eco .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-size: 14px;
+    color: var(--muted); margin-bottom: 16px;
+  }
+  .eco h3.amm em { color: var(--amm); }
+  .eco h3.rwa em { color: var(--rwa); }
+  .eco h3.side em { color: var(--sidechain); }
+  .eco-svg { width: 100%; height: 180px; margin-bottom: 16px; }
+  .eco p {
+    font-family: 'Fraunces', serif;
+    font-size: 13px; line-height: 1.55;
+    margin: 0 0 12px 0;
+  }
+  .eco code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+  .eco-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 12px;
+  }
+  .eco-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper-2);
+  }
+
+  /* ---------- INTEGRATION MAP ---------- */
+  .integration {
+    margin-top: 32px;
+    border: 2px solid var(--ink);
+    padding: 24px 28px;
+    background: var(--paper-2);
+  }
+  .integration h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 28px;
+    margin: 0 0 4px 0; letter-spacing: -0.01em;
+  }
+  .integration h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .integration .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 20px;
+  }
+  table.matrix {
+    width: 100%; border-collapse: collapse;
+    border: 2px solid var(--ink); background: var(--paper);
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid var(--ink);
+    padding: 12px 14px; text-align: left;
+    font-family: 'Fraunces', serif;
+    font-size: 13px; line-height: 1.45;
+    vertical-align: top;
+  }
+  table.matrix th {
+    background: var(--ink); color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 500;
+  }
+  table.matrix td.tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--paper-2);
+    width: 16%;
+  }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1.5px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .pill.amm { background: var(--amm); color: var(--paper); }
+  .pill.rwa { background: var(--rwa); color: var(--paper); }
+  .pill.side { background: var(--sidechain); color: var(--paper); }
+
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  @media (max-width: 1000px) {
+    .legend { grid-template-columns: repeat(4, 1fr); }
+    .legend-item { border-bottom: 1px solid var(--ink); }
+    .ecosystem { grid-template-columns: 1fr; }
+    .eco { border-right: none; border-bottom: 1px solid var(--ink); }
+  }
+
+  /* ============ MAPPING CALLOUT (use case → extension) ============ */
+  .mapping-block {
+    margin-top: 32px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 0;
+    overflow: hidden;
+  }
+  .mapping-block .mapping-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .mapping-block .mapping-header h2 {
+    margin: 0;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .mapping-block .mapping-header h2 em {
+    font-style: italic;
+    font-weight: 400;
+    color: #d4a017;
+  }
+  .mapping-block .mapping-header .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .mapping-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .mapping-cell {
+    padding: 18px 18px 22px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    min-height: 240px;
+  }
+  .mapping-cell:last-child { border-right: none; }
+  .mapping-cell .uc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .mapping-cell .uc-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .mapping-cell .uc-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  /* Connector visual */
+  .mapping-connector {
+    margin: 16px 0 14px;
+    height: 36px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mapping-connector .arrow-down {
+    width: 2px;
+    height: 100%;
+    background: var(--ink);
+    position: relative;
+  }
+  .mapping-connector .arrow-down::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid var(--ink);
+  }
+  .layer-pill {
+    display: inline-block;
+    padding: 5px 11px;
+    border: 1.5px solid var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .layer-pill.l1 { background: var(--chain); color: var(--paper); }
+  .layer-pill.amm { background: var(--amm); color: var(--paper); }
+  .layer-pill.rwa { background: var(--rwa); color: var(--paper); }
+  .layer-pill.side { background: var(--sidechain); color: var(--paper); }
+  .layer-pill.xls20 { background: var(--wallet); color: var(--ink); }
+
+  .mapping-cell .uc-uses {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .mapping-cell .uc-foot {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--ink);
+    text-align: center;
+    border-top: 1px dashed var(--ink);
+    padding-top: 10px;
+  }
+  .mapping-cell .uc-foot strong {
+    display: block;
+    margin-bottom: 2px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  /* Color stripe at top */
+  .mapping-cell::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+  .mapping-cell[data-layer="l1"]::before { background: var(--chain); }
+  .mapping-cell[data-layer="amm"]::before { background: var(--amm); }
+  .mapping-cell[data-layer="xls20"]::before { background: var(--wallet); }
+  .mapping-cell[data-layer="rwa"]::before { background: var(--rwa); }
+  .mapping-cell[data-layer="side"]::before { background: var(--sidechain); }
+
+  @media (max-width: 1000px) {
+    .mapping-grid { grid-template-columns: 1fr 1fr; }
+    .mapping-cell { border-bottom: 1px solid var(--ink); }
+  }
+
+  /* ============ USE CASES MINI-PLAY ============ */
+  .mapping-header {
+    align-items: center !important;
+  }
+  .uc-play-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    background: #d4a017;
+    color: var(--ink);
+    border: 1.5px solid #d4a017;
+    cursor: pointer;
+    margin-left: 14px;
+    font-weight: 700;
+    transition: all 0.15s ease;
+  }
+  .uc-play-btn:hover {
+    background: var(--paper);
+    border-color: var(--paper);
+  }
+  .uc-play-btn.playing {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+  }
+  .uc-play-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .mapping-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Active card during animation */
+  .mapping-cell.uc-dim {
+    opacity: 0.32;
+    transition: opacity 0.45s ease;
+  }
+  .mapping-cell.uc-active {
+    opacity: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(14,17,22,0.12);
+    z-index: 5;
+  }
+  .mapping-cell.uc-active::before {
+    height: 7px;
+    transition: height 0.3s ease;
+  }
+  .mapping-cell.uc-active .uc-title {
+    color: var(--chain);
+    transition: color 0.3s ease;
+  }
+  .mapping-cell.uc-active .layer-pill {
+    transform: scale(1.06);
+    transition: transform 0.4s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+
+  /* Pulsing arrow during animation */
+  .mapping-cell.uc-active .arrow-down {
+    background: #d4a017;
+    animation: ucArrowPulse 0.9s ease-in-out infinite alternate;
+  }
+  .mapping-cell.uc-active .arrow-down::after {
+    border-top-color: #d4a017;
+  }
+  @keyframes ucArrowPulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+  }
+
+  /* Step pill that shows current animation progress */
+  .uc-step-indicator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    opacity: 0.7;
+    margin-left: 4px;
+    min-width: 32px;
+    text-align: right;
+  }
+  .uc-step-indicator.active {
+    opacity: 1;
+    color: #d4a017;
+    font-weight: 700;
+  }
+
+  /* Per-card caption (hidden by default — replaced by header narration) */
+  .uc-caption {
+    display: none;
+  }
+
+  /* Narration line in the header that updates with each step */
+  .uc-narration {
+    flex-basis: 100%;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--paper);
+    padding: 8px 0 0;
+    margin-top: 6px;
+    border-top: 1px dashed rgba(244,239,230,0.25);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+    font-style: italic;
+  }
+  .uc-narration.visible {
+    opacity: 1;
+    max-height: 80px;
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+  .uc-narration strong {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #d4a017;
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  .mapping-header {
+    flex-wrap: wrap;
+  }
+
+  /* ============ PLAY SYSTEM ============ */
+  .play-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 2px solid var(--ink);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    flex-wrap: wrap;
+  }
+  .play-bar .play-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+  .play-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1.5px solid var(--paper);
+    color: var(--paper);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .play-btn:hover { background: var(--paper); color: var(--ink); }
+  .play-btn.primary {
+    background: #d4a017;
+    color: var(--ink);
+    border-color: #d4a017;
+    font-weight: 700;
+  }
+  .play-btn.primary:hover { background: var(--paper); }
+  .play-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .play-progress {
+    flex: 1;
+    height: 4px;
+    background: rgba(244,239,230,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 200px;
+    max-width: 400px;
+  }
+  .play-progress-fill {
+    height: 100%;
+    background: #d4a017;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .play-step-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  /* ============ TOUR HIGHLIGHT OVERLAY ============ */
+  body.tour-active {
+    overflow-x: hidden;
+  }
+  .tour-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 17, 22, 0.55);
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .tour-overlay.visible { opacity: 1; }
+
+  .tour-spotlight {
+    position: relative;
+    z-index: 60;
+    box-shadow:
+      0 0 0 4px #d4a017,
+      0 0 0 8px rgba(14,17,22,0.4),
+      0 0 30px 10px rgba(212, 160, 23, 0.4);
+    transition: box-shadow 0.4s ease;
+    background: var(--paper);
+    border-radius: 2px;
+  }
+  /* Lighter spotlight for cells inside grids */
+  .tour-spotlight-inner {
+    position: relative;
+    z-index: 60;
+    outline: 3px solid #d4a017;
+    outline-offset: 2px;
+    transition: outline 0.4s ease;
+    background: var(--paper) !important;
+  }
+
+  .tour-card {
+    position: fixed;
+    z-index: 70;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    padding: 18px 22px 16px;
+    max-width: 380px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto;
+  }
+  .tour-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .tour-card .tour-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .tour-card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.15;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+  }
+  .tour-card h3 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--chain);
+  }
+  .tour-card p {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 8px 0;
+    color: var(--ink);
+  }
+  .tour-card p:last-of-type { margin-bottom: 12px; }
+  .tour-card code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border: 1px solid var(--ink);
+  }
+  .tour-card .tour-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--ink);
+  }
+  .tour-card .tour-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 11px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .tour-card .tour-btn:hover { background: var(--ink); color: var(--paper); }
+  .tour-card .tour-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .tour-card .tour-btn.primary:hover {
+    background: #d4a017;
+    color: var(--ink);
+    border-color: #d4a017;
+  }
+  .tour-card .tour-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .tour-card .tour-progress {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-right: auto;
+    align-self: center;
+  }
+
+  /* Make sure spotlit elements stay visible above the overlay */
+  .lifted {
+    position: relative;
+    z-index: 60;
+  }
+
+  /* When tour is highlighting a section, dim the rest implicitly via overlay */
+
+  /* ============ Site-wide nav (sticky top) ============ */
   .site-nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--ink); color: var(--paper);
@@ -50,10 +762,11 @@
     color: var(--paper); text-decoration: none;
     padding: 5px 10px; text-transform: uppercase; font-weight: 700;
     transition: background 0.15s ease; white-space: nowrap;
-    position: relative;
   }
   .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
   .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  /* Section color indicator (4px top bar per nav link) */
+  .site-nav .nav-links a { position: relative; }
   .site-nav .nav-links a::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0;
     height: 3px; background: transparent; pointer-events: none;
@@ -87,104 +800,6 @@
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
     .site-nav .nav-links a { padding: 3px 6px; }
   }
-
-  /* Placeholder content */
-  .placeholder {
-    max-width: 760px;
-    margin: 80px auto;
-    padding: 0 32px;
-  }
-  .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .placeholder h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.0;
-    margin: 0 0 24px 0;
-    letter-spacing: -0.02em;
-  }
-  .placeholder h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
-  .placeholder p {
-    font-family: 'Fraunces', serif;
-    font-size: 16px;
-    line-height: 1.55;
-    margin: 0 0 14px 0;
-  }
-  .placeholder p strong { font-weight: 600; }
-  .placeholder p em { color: var(--chain); }
-  .placeholder .cta-block {
-    margin-top: 32px;
-    padding: 22px 26px;
-    background: var(--paper-2);
-    border: 2px solid var(--ink);
-  }
-  .placeholder .cta-block h3 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-  .placeholder a.cta {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 22px;
-    border: 2px solid var(--ink);
-    background: var(--wallet);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    box-shadow: 3px 3px 0 var(--ink);
-    transform: translate(-1px, -1px);
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta:hover {
-    background: var(--ink);
-    color: var(--wallet);
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .placeholder a.cta-secondary {
-    display: inline-block;
-    margin-top: 12px;
-    margin-left: 10px;
-    padding: 11px 22px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper);
-    color: var(--ink);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  .placeholder a.cta-secondary:hover { background: var(--ink); color: var(--paper); }
-
-  footer {
-    max-width: 760px;
-    margin: 56px auto 24px;
-    padding: 16px 32px 0;
-    border-top: 1px solid var(--ink);
-    display: flex; justify-content: space-between;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted);
-  }
 </style>
 </head>
 <body>
@@ -192,7 +807,7 @@
 <nav class="site-nav">
   <a class="nav-home" href="/en/">XRPL <em>Builder</em></a>
   <div class="nav-links">
-    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/blockchain-framework-xrpl" data-section="peda" class="current">Anatomy</a>
     <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
     <a href="/en/gaps" data-section="paysage">Gaps</a>
     <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
@@ -202,29 +817,1202 @@
     <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
   </div>
   <div class="lang-toggle">
-    <a class="lang-flag" href="/blockchain-xrpl-extended">🇫🇷</a>
-    <a class="lang-flag active" href="/en/blockchain-xrpl-extended">🇬🇧</a>
+    <a class="lang-flag active" href="/blockchain-xrpl-extended">🇫🇷</a>
+    <a class="lang-flag" href="/en/blockchain-xrpl-extended">🇬🇧</a>
   </div>
 </nav>
 
-<div class="placeholder">
-  <div class="eyebrow">EN translation in progress</div>
-  <h1>Complete anatomy (guided tour)<br/>· <em>coming soon</em></h1>
-  <p>This page is <strong>not yet translated to English</strong>. The full EN version will ship in an upcoming sprint (the structure stays identical — only the text changes).</p>
-  <p>In the meantime, you have two options:</p>
+<!-- ============ PLAY BAR ============ -->
+<div class="play-bar" id="play-bar">
+  <span class="play-label">Guided tour</span>
+  <button class="play-btn primary" id="tour-start">▶ Start the tour</button>
+  <button class="play-btn" id="tour-prev" disabled>← Previous</button>
+  <button class="play-btn" id="tour-next" disabled>Next →</button>
+  <button class="play-btn" id="tour-exit" disabled>Exit</button>
+  <div class="play-progress"><div class="play-progress-fill" id="play-fill"></div></div>
+  <span class="play-step-counter" id="play-counter">0 / 9</span>
+</div>
 
-  <div class="cta-block">
-    <h3>While you wait</h3>
-    <p>Read the French version (same content, same layout, same data). You can also use the navbar above to jump to other pages — some are already translated to English.</p>
-    <a class="cta" href="/blockchain-xrpl-extended">→ Read in French</a>
-    <a class="cta-secondary" href="/en/">Back to EN home</a>
+<!-- Tour overlay & card injected by JS -->
+<div class="tour-overlay" id="tour-overlay"></div>
+<div class="tour-card" id="tour-card">
+  <div class="tour-eyebrow" id="tour-eyebrow">ÉTAPE 01</div>
+  <h3 id="tour-title">Titre</h3>
+  <div id="tour-body"></div>
+  <div class="tour-actions">
+    <span class="tour-progress" id="tour-progress">1 / 9</span>
+    <button class="tour-btn" id="tour-card-prev">← Prev</button>
+    <button class="tour-btn primary" id="tour-card-next">Suivant →</button>
   </div>
 </div>
 
-<footer>
-  <span>XRPL BUILDER · EN PLACEHOLDER · v1.6</span>
-  <span>FR VERSION READY · EN COMING</span>
-</footer>
+<div class="page">
+
+  <header class="masthead" id="anchor-masthead">
+    <div>
+      <div class="eyebrow">Framework · Extended edition · v1.1</div>
+      <h1>Complete anatomy<br/>of <em>XRPL</em><br/>— DeFi, RWA, sidechains</h1>
+    </div>
+    <div class="meta">
+      Network: XRP Ledger<br/>
+      AMM natif : XLS-30<br/>
+      Sidechain EVM : live<br/>
+      RWA : Ondo, Archax…
+    </div>
+  </header>
+
+  <div class="strap">
+    <span>USER</span>
+    <span>CLIENT</span>
+    <span>WALLET</span>
+    <span>NODES</span>
+    <span>LEDGER</span>
+    <span>AMM</span>
+    <span>RWA</span>
+    <span>SIDECHAIN</span>
+  </div>
+
+  <div class="legend" id="anchor-legend">
+    <div class="legend-item"><span class="swatch" style="background:var(--user)"></span>User</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--app)"></span>App / dApp</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--wallet)"></span>Wallet</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--custody)"></span>Custody</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--chain)"></span>Ledger</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--amm)"></span>AMM</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--rwa)"></span>RWA</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--sidechain)"></span>Sidechain</div>
+  </div>
+
+  <!-- DIAGRAM -->
+  <div class="diagram-wrap" id="anchor-diagram">
+    <svg class="diagram" viewBox="0 0 1280 880" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+        </marker>
+        <marker id="arrow-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e5d4f"/>
+        </marker>
+        <marker id="arrow-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8553d"/>
+        </marker>
+        <marker id="arrow-bridge" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b85c38"/>
+        </marker>
+        <pattern id="dots" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="0.6" fill="#0e1116" opacity="0.08"/>
+        </pattern>
+        <pattern id="hatch" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#1e3a5f" stroke-width="1" opacity="0.18"/>
+        </pattern>
+        <pattern id="hatch-amm" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+          <line x1="0" y1="0" x2="0" y2="6" stroke="#8b5a8c" stroke-width="1" opacity="0.3"/>
+        </pattern>
+      </defs>
+
+      <!-- Column guides -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">
+        <text x="90" y="40" text-anchor="middle">USER</text>
+        <text x="290" y="40" text-anchor="middle">CLIENT</text>
+        <text x="500" y="40" text-anchor="middle">CUSTODY</text>
+        <text x="700" y="40" text-anchor="middle">NETWORK</text>
+        <text x="920" y="40" text-anchor="middle">LEDGER (L1)</text>
+        <text x="1140" y="40" text-anchor="middle">EXTENSIONS</text>
+      </g>
+      <g stroke="#0e1116" stroke-dasharray="2 4" opacity="0.2">
+        <line x1="180" y1="50" x2="180" y2="840"/>
+        <line x1="400" y1="50" x2="400" y2="840"/>
+        <line x1="610" y1="50" x2="610" y2="840"/>
+        <line x1="820" y1="50" x2="820" y2="840"/>
+        <line x1="1030" y1="50" x2="1030" y2="840"/>
+      </g>
+
+      <!-- USER -->
+      <g transform="translate(50,160)">
+        <rect x="0" y="0" width="120" height="140" fill="#c8553d" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="120" height="140" fill="url(#dots)"/>
+        <circle cx="60" cy="50" r="16" fill="none" stroke="#f4efe6" stroke-width="2.5"/>
+        <path d="M 32 100 Q 60 72 88 100 L 88 118 L 32 118 Z" fill="none" stroke="#f4efe6" stroke-width="2.5"/>
+        <text x="60" y="135" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4efe6" letter-spacing="2">USER</text>
+      </g>
+
+      <!-- APP -->
+      <g transform="translate(220,140)">
+        <rect x="6" y="6" width="160" height="80" fill="#ebe4d6" stroke="#0e1116" stroke-width="1.5"/>
+        <rect x="0" y="0" width="160" height="80" fill="#2e5d4f" stroke="#0e1116" stroke-width="2"/>
+        <text x="80" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="2">APP / DAPP</text>
+        <text x="80" y="44" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#f4efe6">Web · Mobile · Backend</text>
+        <text x="80" y="62" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">UX · logic · indexer</text>
+      </g>
+
+      <g transform="translate(220,250)">
+        <rect x="0" y="0" width="160" height="50" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="80" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">INDEXER · API</text>
+        <text x="80" y="36" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic">XRPL Data API · Bithomp</text>
+      </g>
+
+      <!-- WALLETS -->
+      <g transform="translate(440,100)">
+        <rect x="0" y="0" width="170" height="90" fill="#d4a017" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="170" height="90" fill="url(#dots)"/>
+        <text x="85" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116" letter-spacing="2">SELF-CUSTODY</text>
+        <text x="85" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#0e1116">Wallet personnel</text>
+        <text x="85" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#0e1116">Xaman · Crossmark · Ledger</text>
+        <g transform="translate(70, 70)">
+          <circle cx="6" cy="6" r="5" fill="none" stroke="#0e1116" stroke-width="1.5"/>
+          <line x1="11" y1="6" x2="26" y2="6" stroke="#0e1116" stroke-width="1.5"/>
+          <line x1="22" y1="6" x2="22" y2="11" stroke="#0e1116" stroke-width="1.5"/>
+          <line x1="25" y1="6" x2="25" y2="11" stroke="#0e1116" stroke-width="1.5"/>
+        </g>
+      </g>
+
+      <g transform="translate(440,210)">
+        <rect x="0" y="0" width="170" height="90" fill="#6b4226" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="170" height="90" fill="url(#dots)"/>
+        <text x="85" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="2">CUSTODIAL</text>
+        <text x="85" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#f4efe6">CEX / Plateforme</text>
+        <text x="85" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">Binance · Bitstamp · Kraken</text>
+        <text x="85" y="76" text-anchor="middle" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#f4efe6" opacity="0.85">the platform holds the keys</text>
+      </g>
+
+      <!-- ASSETS -->
+      <g transform="translate(440,330)">
+        <rect x="0" y="0" width="170" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="12" y="18" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">ASSETS</text>
+        <line x1="12" y1="26" x2="158" y2="26" stroke="#0e1116" stroke-width="0.5"/>
+        <text x="12" y="44" font-family="Fraunces, serif" font-size="11" font-weight="600">— XRP</text>
+        <text x="12" y="58" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">native</text>
+        <text x="12" y="76" font-family="Fraunces, serif" font-size="11" font-weight="600">— IOU / Trustlines</text>
+        <text x="12" y="90" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">USD, RLUSD, EUR…</text>
+        <text x="12" y="108" font-family="Fraunces, serif" font-size="11" font-weight="600">— NFTs (XLS-20)</text>
+        <text x="12" y="122" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">NFTokenID</text>
+        <text x="12" y="140" font-family="Fraunces, serif" font-size="11" font-weight="600">— LP tokens · MPT</text>
+        <text x="12" y="154" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">parts d'AMM, RWA</text>
+      </g>
+
+      <!-- NETWORK -->
+      <g transform="translate(640,100)">
+        <rect x="0" y="0" width="160" height="240" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="160" height="240" fill="url(#hatch)"/>
+        <text x="80" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#f4efe6" letter-spacing="2">P2P NETWORK</text>
+        <g fill="#f4efe6" stroke="#0e1116" stroke-width="1.5">
+          <circle cx="45" cy="70" r="13"/>
+          <circle cx="115" cy="70" r="13"/>
+          <circle cx="80" cy="115" r="13"/>
+          <circle cx="45" cy="160" r="13"/>
+          <circle cx="115" cy="160" r="13"/>
+        </g>
+        <g stroke="#f4efe6" stroke-width="1" opacity="0.7">
+          <line x1="45" y1="70" x2="115" y2="70"/>
+          <line x1="45" y1="70" x2="80" y2="115"/>
+          <line x1="115" y1="70" x2="80" y2="115"/>
+          <line x1="80" y1="115" x2="45" y2="160"/>
+          <line x1="80" y1="115" x2="115" y2="160"/>
+          <line x1="45" y1="160" x2="115" y2="160"/>
+        </g>
+        <text x="80" y="200" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#f4efe6">Validators · UNL</text>
+        <text x="80" y="218" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" opacity="0.85">RPCA · ~3–5 sec</text>
+      </g>
+
+      <g transform="translate(640,360)">
+        <rect x="0" y="0" width="160" height="60" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="80" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">RPC · WebSocket</text>
+        <text x="80" y="40" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600">rippled</text>
+        <text x="80" y="54" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9">submit · subscribe</text>
+      </g>
+
+      <!-- LEDGER L1 -->
+      <g transform="translate(850,100)">
+        <rect x="0" y="0" width="160" height="55" fill="#f4efe6" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="160" height="55" fill="url(#hatch)"/>
+        <text x="10" y="18" font-family="JetBrains Mono, monospace" font-size="9" fill="#1e3a5f" letter-spacing="1">LEDGER #92,481,001</text>
+        <text x="10" y="35" font-family="Fraunces, serif" font-size="9" font-style="italic">parent: A4F9…</text>
+        <text x="10" y="48" font-family="JetBrains Mono, monospace" font-size="9">14:02:13</text>
+
+        <rect x="0" y="65" width="160" height="55" fill="#f4efe6" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="65" width="160" height="55" fill="url(#hatch)"/>
+        <text x="10" y="83" font-family="JetBrains Mono, monospace" font-size="9" fill="#1e3a5f" letter-spacing="1">LEDGER #92,481,002</text>
+        <text x="10" y="100" font-family="Fraunces, serif" font-size="9" font-style="italic">parent: B7E1…</text>
+        <text x="10" y="113" font-family="JetBrains Mono, monospace" font-size="9">14:02:17</text>
+
+        <rect x="0" y="130" width="160" height="55" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+        <text x="10" y="148" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">LEDGER #92,481,003</text>
+        <text x="10" y="165" font-family="Fraunces, serif" font-size="9" font-style="italic" fill="#f4efe6">— validated —</text>
+        <text x="10" y="178" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">14:02:21</text>
+
+        <line x1="80" y1="55" x2="80" y2="65" stroke="#0e1116" stroke-width="1.5"/>
+        <line x1="80" y1="120" x2="80" y2="130" stroke="#0e1116" stroke-width="1.5"/>
+      </g>
+
+      <g transform="translate(850,310)">
+        <rect x="0" y="0" width="160" height="200" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="80" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358" letter-spacing="2">LEDGER OBJECTS</text>
+        <line x1="12" y1="26" x2="148" y2="26" stroke="#0e1116" stroke-width="0.5"/>
+        <text x="12" y="44" font-family="Fraunces, serif" font-size="11" font-weight="600">AccountRoot</text>
+        <text x="12" y="58" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">solde · sequence</text>
+        <text x="12" y="76" font-family="Fraunces, serif" font-size="11" font-weight="600">RippleState</text>
+        <text x="12" y="90" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">trustlines / IOU</text>
+        <text x="12" y="108" font-family="Fraunces, serif" font-size="11" font-weight="600">Offer · AMM</text>
+        <text x="12" y="122" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">DEX · pools XLS-30</text>
+        <text x="12" y="140" font-family="Fraunces, serif" font-size="11" font-weight="600">NFTokenPage</text>
+        <text x="12" y="154" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">NFTs held</text>
+        <text x="12" y="172" font-family="Fraunces, serif" font-size="11" font-weight="600">MPToken · Escrow</text>
+        <text x="12" y="186" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">RWA, conditional pay</text>
+      </g>
+
+      <!-- AMM EXTENSION -->
+      <g transform="translate(1060,100)">
+        <rect x="0" y="0" width="180" height="120" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="180" height="120" fill="url(#dots)"/>
+        <text x="90" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="2">AMM · XLS-30</text>
+        <text x="90" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="600" fill="#f4efe6">DeFi natif</text>
+        <text x="90" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">pools · LP tokens</text>
+        <text x="90" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">x · y = k</text>
+        <!-- mini pool viz -->
+        <g transform="translate(50,88)">
+          <circle cx="20" cy="12" r="11" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+          <text x="20" y="16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700" fill="#0e1116">XRP</text>
+          <circle cx="60" cy="12" r="11" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+          <text x="60" y="16" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" font-weight="700" fill="#0e1116">USD</text>
+          <line x1="31" y1="12" x2="49" y2="12" stroke="#f4efe6" stroke-width="1.5"/>
+        </g>
+      </g>
+
+      <!-- RWA EXTENSION -->
+      <g transform="translate(1060,240)">
+        <rect x="0" y="0" width="180" height="130" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="180" height="130" fill="url(#dots)"/>
+        <text x="90" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="2">RWA · MPT</text>
+        <text x="90" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="600" fill="#f4efe6">Tokenisation</text>
+        <text x="90" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">real-world assets on-chain</text>
+        <!-- icon -->
+        <g transform="translate(60,76)" stroke="#f4efe6" stroke-width="1.8" fill="none">
+          <rect x="0" y="0" width="20" height="28" />
+          <line x1="0" y1="8" x2="20" y2="8"/>
+          <line x1="0" y1="16" x2="20" y2="16"/>
+          <line x1="10" y1="0" x2="10" y2="28"/>
+          <rect x="32" y="6" width="20" height="22"/>
+          <text x="42" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" stroke="none">$</text>
+        </g>
+        <text x="90" y="120" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6" opacity="0.85">Ondo · Archax · Axelar</text>
+      </g>
+
+      <!-- SIDECHAIN EXTENSION -->
+      <g transform="translate(1060,390)">
+        <rect x="0" y="0" width="180" height="160" fill="#b85c38" stroke="#0e1116" stroke-width="2"/>
+        <rect x="0" y="0" width="180" height="160" fill="url(#dots)"/>
+        <text x="90" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="2">SIDECHAIN · EVM</text>
+        <text x="90" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="14" font-weight="600" fill="#f4efe6">XRPL EVM</text>
+        <text x="90" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">smart contracts</text>
+        <text x="90" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">Solidity · EVM</text>
+        <!-- bridge viz -->
+        <g transform="translate(20,95)">
+          <rect x="0" y="0" width="50" height="30" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+          <text x="25" y="19" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">L1</text>
+          <rect x="90" y="0" width="50" height="30" fill="#f4efe6" stroke="#0e1116" stroke-width="1.5"/>
+          <text x="115" y="19" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">EVM</text>
+          <line x1="50" y1="15" x2="90" y2="15" stroke="#f4efe6" stroke-width="2" stroke-dasharray="3 3"/>
+          <text x="70" y="11" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7" fill="#f4efe6">bridge</text>
+        </g>
+        <text x="90" y="148" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6" opacity="0.85">Axelar · Squid Router</text>
+      </g>
+
+      <!-- ARROWS -->
+      <!-- USER → APP -->
+      <g stroke="#0e1116" stroke-width="2" fill="none">
+        <path d="M 170 220 L 220 180" marker-end="url(#arrow)"/>
+      </g>
+      <text x="178" y="195" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic">interact</text>
+
+      <!-- USER → SELF-CUSTODY -->
+      <g stroke="#0e1116" stroke-width="2" fill="none" stroke-dasharray="4 3">
+        <path d="M 170 200 Q 300 130 440 145" marker-end="url(#arrow)"/>
+      </g>
+      <text x="280" y="135" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic">owns keys</text>
+
+      <!-- USER → CUSTODIAL -->
+      <g stroke="#0e1116" stroke-width="2" fill="none" stroke-dasharray="4 3">
+        <path d="M 170 280 Q 300 320 440 260" marker-end="url(#arrow)"/>
+      </g>
+      <text x="280" y="335" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic">delegates</text>
+
+      <!-- APP → WALLET (sign req) -->
+      <g stroke="#c8553d" stroke-width="2" fill="none">
+        <path d="M 380 175 L 440 150" marker-end="url(#arrow-write)"/>
+      </g>
+      <text x="385" y="165" font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d">sign</text>
+
+      <!-- WALLET → ASSETS -->
+      <g stroke="#0e1116" stroke-width="1.5" fill="none">
+        <path d="M 525 300 L 525 330" marker-end="url(#arrow)"/>
+      </g>
+
+      <!-- WALLET → NETWORK (signed tx — WRITE) -->
+      <g stroke="#c8553d" stroke-width="2.5" fill="none">
+        <path d="M 610 145 L 640 145" marker-end="url(#arrow-write)"/>
+      </g>
+      <text x="608" y="135" font-family="JetBrains Mono, monospace" font-size="10" fill="#c8553d" font-weight="700">tx WRITE →</text>
+
+      <!-- APP → RPC (READ) -->
+      <g stroke="#2e5d4f" stroke-width="2.5" fill="none">
+        <path d="M 380 280 Q 510 380 640 388" marker-end="url(#arrow-read)"/>
+      </g>
+      <text x="465" y="370" font-family="JetBrains Mono, monospace" font-size="10" fill="#2e5d4f" font-weight="700">READ ←</text>
+
+      <!-- NETWORK → LEDGER -->
+      <g stroke="#0e1116" stroke-width="2" fill="none">
+        <path d="M 800 175 L 850 165" marker-end="url(#arrow)"/>
+      </g>
+      <text x="803" y="160" font-family="JetBrains Mono, monospace" font-size="9">commit</text>
+
+      <!-- LEDGER → AMM -->
+      <g stroke="#8b5a8c" stroke-width="2" fill="none">
+        <path d="M 1010 145 L 1060 155" marker-end="url(#arrow)"/>
+      </g>
+      <text x="1013" y="140" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b5a8c">native</text>
+
+      <!-- LEDGER → RWA -->
+      <g stroke="#4a6741" stroke-width="2" fill="none">
+        <path d="M 1010 360 Q 1035 320 1060 300" marker-end="url(#arrow)"/>
+      </g>
+
+      <!-- LEDGER → SIDECHAIN (bridge) -->
+      <g stroke="#b85c38" stroke-width="2.5" fill="none" stroke-dasharray="5 4">
+        <path d="M 1010 460 L 1060 470" marker-end="url(#arrow-bridge)"/>
+      </g>
+      <text x="1013" y="453" font-family="JetBrains Mono, monospace" font-size="9" fill="#b85c38" font-weight="700">bridge</text>
+
+      <!-- ============ BOTTOM BAND: USE CASES ============ -->
+      <g transform="translate(50,580)">
+        <rect x="0" y="0" width="1190" height="240" fill="#ebe4d6" stroke="#0e1116" stroke-width="1.5"/>
+        <text x="20" y="22" font-family="JetBrains Mono, monospace" font-size="10" fill="#6b6358" letter-spacing="2">USE CASES — DU L1 AUX EXTENSIONS</text>
+        <line x1="20" y1="30" x2="1170" y2="30" stroke="#0e1116" stroke-width="0.5"/>
+
+        <!-- Use case 1: Payment -->
+        <g transform="translate(20,50)">
+          <rect x="0" y="0" width="220" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <text x="14" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#c8553d" font-weight="700">01 · PAYMENT</text>
+          <text x="14" y="42" font-family="Fraunces, serif" font-size="13" font-weight="600">Transfert XRP/IOU</text>
+          <text x="14" y="62" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">tx Payment → ledger</text>
+          <line x1="14" y1="72" x2="206" y2="72" stroke="#0e1116" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="14" y="92" font-family="JetBrains Mono, monospace" font-size="9">→ Account: rXXX…</text>
+          <text x="14" y="108" font-family="JetBrains Mono, monospace" font-size="9">→ Amount: 100 XRP</text>
+          <text x="14" y="124" font-family="JetBrains Mono, monospace" font-size="9">→ Fee: 12 drops</text>
+          <text x="14" y="148" font-family="Fraunces, serif" font-size="11">~4s finality</text>
+          <text x="14" y="162" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#6b6358">L1 natif</text>
+        </g>
+
+        <!-- Use case 3: AMM Swap -->
+        <g transform="translate(500,50)">
+          <rect x="0" y="0" width="220" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <rect x="0" y="0" width="220" height="170" fill="url(#hatch-amm)"/>
+          <text x="14" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#8b5a8c" font-weight="700">03 · AMM SWAP</text>
+          <text x="14" y="42" font-family="Fraunces, serif" font-size="13" font-weight="600">Swap XRP → USD</text>
+          <text x="14" y="62" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">pool XLS-30 natif</text>
+          <line x1="14" y1="72" x2="206" y2="72" stroke="#0e1116" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="14" y="92" font-family="JetBrains Mono, monospace" font-size="9">→ Payment cross-currency</text>
+          <text x="14" y="108" font-family="JetBrains Mono, monospace" font-size="9">→ Path: AMM pool</text>
+          <text x="14" y="124" font-family="JetBrains Mono, monospace" font-size="9">→ Slippage protection</text>
+          <text x="14" y="148" font-family="Fraunces, serif" font-size="11">Pas de smart contract</text>
+          <text x="14" y="162" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#6b6358">amendement protocole</text>
+        </g>
+
+        <!-- Use case 2: NFT Mint -->
+        <g transform="translate(260,50)">
+          <rect x="0" y="0" width="220" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <text x="14" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#d4a017" font-weight="700">02 · NFT · XLS-20</text>
+          <text x="14" y="42" font-family="Fraunces, serif" font-size="13" font-weight="600">Mint &amp; trade</text>
+          <text x="14" y="62" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">NFTokenMint / Sell</text>
+          <line x1="14" y1="72" x2="206" y2="72" stroke="#0e1116" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="14" y="92" font-family="JetBrains Mono, monospace" font-size="9">→ NFTokenID auto</text>
+          <text x="14" y="108" font-family="JetBrains Mono, monospace" font-size="9">→ TransferFee · royalties</text>
+          <text x="14" y="124" font-family="JetBrains Mono, monospace" font-size="9">→ Stored in NFTokenPage</text>
+          <text x="14" y="148" font-family="Fraunces, serif" font-size="11">Marketplace native</text>
+          <text x="14" y="162" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#6b6358">L1 natif</text>
+        </g>
+
+        <!-- Use case 4: RWA -->
+        <g transform="translate(740,50)">
+          <rect x="0" y="0" width="220" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <text x="14" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#4a6741" font-weight="700">04 · RWA · MPT</text>
+          <text x="14" y="42" font-family="Fraunces, serif" font-size="13" font-weight="600">Tokenisation actif</text>
+          <text x="14" y="62" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">Multi-Purpose Token</text>
+          <line x1="14" y1="72" x2="206" y2="72" stroke="#0e1116" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="14" y="92" font-family="JetBrains Mono, monospace" font-size="9">→ Bond, real estate, fund</text>
+          <text x="14" y="108" font-family="JetBrains Mono, monospace" font-size="9">→ Issuer + permissions</text>
+          <text x="14" y="124" font-family="JetBrains Mono, monospace" font-size="9">→ Compliance hooks</text>
+          <text x="14" y="148" font-family="Fraunces, serif" font-size="11">Ondo · Archax · OpenEden</text>
+          <text x="14" y="162" font-family="Fraunces, serif" font-size="10" font-style="italic" fill="#6b6358">L1 + DID/credentials</text>
+        </g>
+
+        <!-- Use case 5: Sidechain -->
+        <g transform="translate(980,50)">
+          <rect x="0" y="0" width="190" height="170" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <text x="14" y="20" font-family="JetBrains Mono, monospace" font-size="9" fill="#b85c38" font-weight="700">05 · EVM SIDECHAIN</text>
+          <text x="14" y="42" font-family="Fraunces, serif" font-size="13" font-weight="600">Smart contracts</text>
+          <text x="14" y="62" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">Solidity sur XRPL</text>
+          <line x1="14" y1="72" x2="176" y2="72" stroke="#0e1116" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="14" y="92" font-family="JetBrains Mono, monospace" font-size="9">→ Bridge XRP ↔ EVM</text>
+          <text x="14" y="108" font-family="JetBrains Mono, monospace" font-size="9">→ DeFi complexe</text>
+          <text x="14" y="124" font-family="JetBrains Mono, monospace" font-size="9">→ Axelar GMP</text>
+          <text x="14" y="148" font-family="Fraunces, serif" font-size="11">Use case lending,</text>
+          <text x="14" y="162" font-family="Fraunces, serif" font-size="11">perps, gaming…</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ECOSYSTEM ZOOM -->
+  <div class="ecosystem" id="anchor-ecosystem">
+
+    <!-- AMM -->
+    <div class="eco" id="eco-amm">
+      <div class="num">EXT · 01</div>
+      <h3 class="amm">AMM <em>natif</em></h3>
+      <div class="tagline">The protocol-integrated DEX — XLS-30</div>
+
+      <svg class="eco-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="320" height="180" fill="#f4efe6" stroke="#8b5a8c" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <!-- Two circles forming a pool -->
+        <circle cx="100" cy="90" r="42" fill="#8b5a8c" stroke="#0e1116" stroke-width="2" opacity="0.85"/>
+        <text x="100" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#f4efe6">XRP</text>
+        <text x="100" y="104" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6">100k</text>
+        <circle cx="220" cy="90" r="42" fill="#d4a017" stroke="#0e1116" stroke-width="2" opacity="0.9"/>
+        <text x="220" y="86" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700">USD</text>
+        <text x="220" y="104" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9">52k</text>
+        <!-- Connection -->
+        <line x1="142" y1="90" x2="178" y2="90" stroke="#0e1116" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="160" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic">x · y = k</text>
+        <!-- Labels -->
+        <text x="160" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2" fill="#6b6358">CONSTANT PRODUCT POOL</text>
+        <text x="160" y="160" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">LP tokens distributed to providers</text>
+      </svg>
+
+      <p>No smart contract to deploy: the AMM is <strong>une primitive du ledger</strong>. N'importe quelle paire de tokens (XRP/IOU ou IOU/IOU) peut avoir son pool.</p>
+      <p>Les <code>Payment</code> exploitent automatiquement l'AMM dans leur <em>pathfinding</em> — un swap est une transaction standard.</p>
+
+      <div class="eco-tags">
+        <span class="eco-tag">XLS-30</span>
+        <span class="eco-tag">LP tokens</span>
+        <span class="eco-tag">Auto-bridging</span>
+        <span class="eco-tag">No SC risk</span>
+      </div>
+    </div>
+
+    <!-- RWA -->
+    <div class="eco" id="eco-rwa">
+      <div class="num">EXT · 02</div>
+      <h3 class="rwa">Real-World <em>Assets</em></h3>
+      <div class="tagline">Tokenisation institutionnelle — MPT, DID</div>
+
+      <svg class="eco-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="320" height="180" fill="#f4efe6" stroke="#4a6741" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <!-- Building (real asset) -->
+        <g transform="translate(40,55)">
+          <rect x="0" y="20" width="60" height="80" fill="#4a6741" stroke="#0e1116" stroke-width="1.8"/>
+          <polygon points="0,20 30,0 60,20" fill="#4a6741" stroke="#0e1116" stroke-width="1.8"/>
+          <rect x="10" y="35" width="12" height="15" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <rect x="38" y="35" width="12" height="15" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <rect x="10" y="60" width="12" height="15" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <rect x="38" y="60" width="12" height="15" fill="#f4efe6" stroke="#0e1116" stroke-width="1"/>
+          <rect x="20" y="80" width="20" height="20" fill="#0e1116"/>
+        </g>
+        <text x="70" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">REAL ASSET</text>
+        <!-- Arrow -->
+        <line x1="115" y1="100" x2="170" y2="100" stroke="#0e1116" stroke-width="2" marker-end="url(#arrow-mini-rwa)"/>
+        <defs>
+          <marker id="arrow-mini-rwa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e1116"/>
+          </marker>
+        </defs>
+        <text x="142" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic">tokenize</text>
+        <!-- MPT -->
+        <g transform="translate(180,60)">
+          <rect x="0" y="0" width="100" height="80" fill="#4a6741" stroke="#0e1116" stroke-width="2" opacity="0.9"/>
+          <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">MPT</text>
+          <text x="50" y="44" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="600" fill="#f4efe6">Token</text>
+          <text x="50" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">+ metadata</text>
+          <text x="50" y="72" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">+ permissions</text>
+        </g>
+        <text x="230" y="170" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">ON-CHAIN</text>
+        <text x="160" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2" fill="#6b6358">REAL → DIGITAL</text>
+      </svg>
+
+      <p>Avec <code>Multi-Purpose Tokens</code> (MPT), an issuer can represent <strong>bonds, funds, real estate, carbon credits</strong> avec metadata, permissions et hooks de compliance natifs.</p>
+      <p>Coupled with <code>DID</code> et <code>Credentials</code> XLS-70 for on-chain KYC — fits regulated institutions.</p>
+
+      <div class="eco-tags">
+        <span class="eco-tag">MPT</span>
+        <span class="eco-tag">DID / Credentials</span>
+        <span class="eco-tag">Compliance</span>
+        <span class="eco-tag">Ondo · Archax</span>
+      </div>
+    </div>
+
+    <!-- SIDECHAIN -->
+    <div class="eco" id="eco-side">
+      <div class="num">EXT · 03</div>
+      <h3 class="side">EVM <em>Sidechain</em></h3>
+      <div class="tagline">Smart contracts complets — bridge XRP</div>
+
+      <svg class="eco-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="320" height="180" fill="#f4efe6" stroke="#b85c38" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <!-- L1 -->
+        <g transform="translate(20,55)">
+          <rect x="0" y="0" width="100" height="70" fill="#1e3a5f" stroke="#0e1116" stroke-width="2"/>
+          <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">XRPL L1</text>
+          <text x="50" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#f4efe6">Mainnet</text>
+          <text x="50" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">RPCA · UNL</text>
+        </g>
+        <!-- Bridge -->
+        <g transform="translate(120,80)">
+          <rect x="0" y="0" width="80" height="20" fill="#b85c38" stroke="#0e1116" stroke-width="1.5"/>
+          <text x="40" y="14" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" font-weight="700">BRIDGE</text>
+        </g>
+        <!-- Sidechain -->
+        <g transform="translate(200,55)">
+          <rect x="0" y="0" width="100" height="70" fill="#b85c38" stroke="#0e1116" stroke-width="2"/>
+          <text x="50" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f4efe6" letter-spacing="1">EVM CHAIN</text>
+          <text x="50" y="42" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="#f4efe6">Solidity</text>
+          <text x="50" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6">PoA · fast</text>
+        </g>
+        <!-- Connecting lines -->
+        <line x1="120" y1="90" x2="115" y2="90" stroke="#b85c38" stroke-width="2" stroke-dasharray="3 2"/>
+        <line x1="200" y1="90" x2="205" y2="90" stroke="#b85c38" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="160" y="50" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" font-style="italic" fill="#6b6358">XRP ↔ wXRP</text>
+        <text x="160" y="20" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2" fill="#6b6358">L1 ↔ SIDECHAIN</text>
+        <text x="160" y="160" text-anchor="middle" font-family="Fraunces, serif" font-size="11" font-style="italic" fill="#6b6358">Axelar General Message Passing</text>
+      </svg>
+
+      <p>Pour des cas d'usage qui exigent du <strong>code Turing-complet</strong> (lending, perps, gaming, complex contracts), a dedicated EVM sidechain exists and bridges XRP via <code>wXRP</code>.</p>
+      <p>Solidity developers deploy their existing contracts; fees are paid in XRP. MetaMask, Hardhat, Foundry compatible.</p>
+
+      <div class="eco-tags">
+        <span class="eco-tag">EVM compatible</span>
+        <span class="eco-tag">Solidity</span>
+        <span class="eco-tag">Axelar bridge</span>
+        <span class="eco-tag">wXRP</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ USE CASES → EXTENSIONS MAPPING ============ -->
+  <div class="mapping-block" id="mapping-block">
+    <div class="mapping-header">
+      <h2>Quel <em>use case</em> · quelle extension ?</h2>
+      <div class="mapping-header-actions">
+        <span class="lbl">Use cases · 5 → Extensions · 3</span>
+        <button class="uc-play-btn" id="uc-play-btn" aria-label="Lancer l'animation des 5 use cases">▶ Play les 5 cas</button>
+        <span class="uc-step-indicator" id="uc-step-indicator">0/5</span>
+      </div>
+      <div class="uc-narration" id="uc-narration">
+        <strong id="uc-narration-tag">CAS 01 / 5</strong><span id="uc-narration-text">Une simple transaction Payment sur le ledger.</span>
+      </div>
+    </div>
+    <div class="mapping-grid">
+
+      <!-- UC 01 — Payment (L1 pur) -->
+      <div class="mapping-cell" data-layer="l1" id="uc-payment">
+        <div class="uc-caption"><strong>Cas 01 / 5</strong>Une simple transaction <em>Payment</em> sur le ledger.<br/>Aucune extension.</div>
+        <div class="uc-num">USE CASE · 01</div>
+        <div class="uc-title">Payment</div>
+        <div class="uc-sub">Transfert XRP / IOU</div>
+
+        <div class="mapping-connector"><div class="arrow-down"></div></div>
+
+        <div class="uc-uses">
+          <span class="layer-pill l1">L1 natif</span>
+        </div>
+
+        <div class="uc-foot">
+          <strong>Aucune extension</strong>
+          La transaction <code>Payment</code> is a ledger primitive. 3–5s finality, fees in drops.
+        </div>
+      </div>
+
+      <!-- UC 02 — NFT (L1 pur) -->
+      <div class="mapping-cell" data-layer="xls20" id="uc-nft">
+        <div class="uc-caption"><strong>Cas 02 / 5</strong>NFT natif via XLS-20.<br/>Toujours aucune extension.</div>
+        <div class="uc-num">USE CASE · 02</div>
+        <div class="uc-title">NFT · XLS-20</div>
+        <div class="uc-sub">Mint, transfer, sell offers</div>
+
+        <div class="mapping-connector"><div class="arrow-down"></div></div>
+
+        <div class="uc-uses">
+          <span class="layer-pill xls20">L1 · XLS-20</span>
+        </div>
+
+        <div class="uc-foot">
+          <strong>Aucune extension externe</strong>
+          XLS-20 est un amendement <em>natif</em> of the protocol. Marketplace, royalties, transfers integrated in the ledger.
+        </div>
+      </div>
+
+      <!-- UC 03 — AMM Swap (extension) -->
+      <div class="mapping-cell" data-layer="amm" id="uc-amm">
+        <div class="uc-caption"><strong>Cas 03 / 5</strong>First extension: AMM XLS-30.<br/>Native liquidity pool.</div>
+        <div class="uc-num">USE CASE · 03</div>
+        <div class="uc-title">AMM Swap</div>
+        <div class="uc-sub">Swap XRP → USD (cross-currency)</div>
+
+        <div class="mapping-connector"><div class="arrow-down"></div></div>
+
+        <div class="uc-uses">
+          <span class="layer-pill l1">L1</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;margin:0 4px;color:var(--muted);">+</span>
+          <span class="layer-pill amm">EXT 01 · AMM</span>
+        </div>
+
+        <div class="uc-foot">
+          <strong>EXT 01 · AMM XLS-30</strong>
+          Le <code>Payment</code> cross-currency utilise le pool AMM natif via le pathfinding.
+        </div>
+      </div>
+
+      <!-- UC 04 — RWA (extension) -->
+      <div class="mapping-cell" data-layer="rwa" id="uc-rwa">
+        <div class="uc-caption"><strong>Cas 04 / 5</strong>Tokenization of real-world assets.<br/>Multi-Purpose Tokens + DID.</div>
+        <div class="uc-num">USE CASE · 04</div>
+        <div class="uc-title">RWA tokenisation</div>
+        <div class="uc-sub">Bond, immo, fund on-chain</div>
+
+        <div class="mapping-connector"><div class="arrow-down"></div></div>
+
+        <div class="uc-uses">
+          <span class="layer-pill l1">L1</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;margin:0 4px;color:var(--muted);">+</span>
+          <span class="layer-pill rwa">EXT 02 · MPT</span>
+        </div>
+
+        <div class="uc-foot">
+          <strong>EXT 02 · MPT + DID</strong>
+          Multi-Purpose Tokens avec metadata, permissions issuer, hooks de compliance, KYC via credentials XLS-70.
+        </div>
+      </div>
+
+      <!-- UC 05 — EVM (sidechain) -->
+      <div class="mapping-cell" data-layer="side" id="uc-evm">
+        <div class="uc-caption"><strong>Cas 05 / 5</strong>Le seul cas qui sort du L1.<br/>Sidechain EVM, smart contracts.</div>
+        <div class="uc-num">USE CASE · 05</div>
+        <div class="uc-title">Smart contracts</div>
+        <div class="uc-sub">Lending, perps, gaming</div>
+
+        <div class="mapping-connector"><div class="arrow-down"></div></div>
+
+        <div class="uc-uses">
+          <span class="layer-pill side">EXT 03 · Sidechain</span>
+        </div>
+
+        <div class="uc-foot">
+          <strong>EXT 03 · EVM Sidechain</strong>
+          Solidity code. XRP is bridged into wXRP via Axelar. <em>Not executed on L1</em>.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recap line -->
+    <div style="border-top: 1.5px solid var(--ink); padding: 12px 22px; background: var(--paper-2); display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">À retenir</span>
+      <span style="font-family:'Fraunces',serif;font-size:13px;line-height:1.5;font-style:italic;">
+        Sur 5 use cases : <strong style="font-style:normal;">2 sont en L1 pur</strong> (Payment, NFT) — <strong style="font-style:normal;">2 utilisent une extension integrated in the ledger</strong> (AMM Swap, RWA) — <strong style="font-style:normal;">1 sort du L1</strong> via la sidechain EVM (smart contracts).
+      </span>
+    </div>
+  </div>
+
+  <!-- INTEGRATION TABLE -->
+  <div class="integration" id="anchor-integration">
+    <h2>Quand utiliser <em>quoi</em> ?</h2>
+    <div class="sub">Decision matrix · L1 vs extensions</div>
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th style="width:18%">Besoin</th>
+          <th style="width:14%">Couche</th>
+          <th>What it brings</th>
+          <th style="width:24%">Trade-offs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Paiement, transfert, escrow simple</td>
+          <td><span class="pill" style="background:var(--chain);color:var(--paper)">L1 natif</span></td>
+          <td>3–5s finality, fees in drops, Payment / Escrow / Check primitives directly in the ledger.</td>
+          <td>No custom logic beyond what the protocol offers.</td>
+        </tr>
+        <tr>
+          <td>NFT, collectibles, royalties</td>
+          <td><span class="pill" style="background:var(--wallet)">L1 · XLS-20</span></td>
+          <td>Mint, transfer, sell offers, royalties on-chain natifs. Pas besoin de standard ERC.</td>
+          <td>Off-chain metadata (IPFS / URI) — as elsewhere.</td>
+        </tr>
+        <tr>
+          <td>Swap de tokens, market making</td>
+          <td><span class="pill amm">AMM XLS-30</span></td>
+          <td>Native pool, no smart contract to audit, integrated into payment pathfinding.</td>
+          <td>Constant-product model only — no stableswap or concentrated liquidity.</td>
+        </tr>
+        <tr>
+          <td>Tokeniser obligations, fonds, immo</td>
+          <td><span class="pill rwa">MPT + DID</span></td>
+          <td>Fungible tokens with rich metadata, per-issuer permissions, KYC integration via credentials.</td>
+          <td>Recent adoption — institutional ecosystem still building.</td>
+        </tr>
+        <tr>
+          <td>Lending complexe, perps, gaming</td>
+          <td><span class="pill side">Sidechain EVM</span></td>
+          <td>Solidity / standard EVM, reusable Ethereum ecosystem, secure bridge.</td>
+          <td>Trust assumption on the bridge; finality &amp; security distinct from L1.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>BLOCKCHAIN FRAMEWORK · XRPL EXTENDED</span>
+    <span>FIG. 01 · STATIC EDITION</span>
+  </footer>
+
+</div>
+
+<script>
+// ============================================================
+// USE CASES MINI-PLAY · animates the 5 cards sequentially
+// ============================================================
+(function() {
+  const ucPlayBtn = document.getElementById('uc-play-btn');
+  const ucIndicator = document.getElementById('uc-step-indicator');
+  const ucNarration = document.getElementById('uc-narration');
+  const ucNarrationTag = document.getElementById('uc-narration-tag');
+  const ucNarrationText = document.getElementById('uc-narration-text');
+  if (!ucPlayBtn) return;
+
+  const ucCards = [
+    { id: 'uc-payment', dwell: 2400, tag: 'Case 01 · pure L1',         text: 'A simple Payment transaction on the ledger. No extension needed.' },
+    { id: 'uc-nft',     dwell: 2400, tag: 'Cas 02 · L1 pur',         text: 'NFT natif via XLS-20 — toujours aucune extension. C\'est intégré au protocole.' },
+    { id: 'uc-amm',     dwell: 2700, tag: 'Case 03 · AMM extension',  text: 'First extension: AMM XLS-30 pool. The swap hits the ledger\'s native liquidity.' },
+    { id: 'uc-rwa',     dwell: 2700, tag: 'Case 04 · RWA extension',  text: 'Tokenization of real assets via Multi-Purpose Tokens (MPT) + DID for compliance.' },
+    { id: 'uc-evm',     dwell: 3000, tag: 'Case 05 · EVM Sidechain',  text: 'The only case that leaves L1 — Solidity smart contract execution on the sidechain.' },
+  ];
+
+  let isPlaying = false;
+  let timeouts = [];
+  let currentIndex = -1;
+
+  function clearAllTimeouts() {
+    timeouts.forEach(t => clearTimeout(t));
+    timeouts = [];
+  }
+
+  function clearAllStates() {
+    ucCards.forEach(uc => {
+      const el = document.getElementById(uc.id);
+      if (el) el.classList.remove('uc-active', 'uc-dim');
+    });
+    ucNarration.classList.remove('visible');
+  }
+
+  function highlightCard(index) {
+    currentIndex = index;
+    ucCards.forEach((uc, i) => {
+      const el = document.getElementById(uc.id);
+      if (!el) return;
+      if (i === index) {
+        el.classList.add('uc-active');
+        el.classList.remove('uc-dim');
+      } else {
+        el.classList.remove('uc-active');
+        el.classList.add('uc-dim');
+      }
+    });
+    // Update narration
+    const card = ucCards[index];
+    ucNarrationTag.textContent = card.tag;
+    ucNarrationText.textContent = card.text;
+    ucNarration.classList.add('visible');
+
+    // Update indicator
+    ucIndicator.textContent = `${index + 1}/5`;
+    ucIndicator.classList.add('active');
+  }
+
+  function stop() {
+    isPlaying = false;
+    clearAllTimeouts();
+    clearAllStates();
+    currentIndex = -1;
+    ucPlayBtn.textContent = '▶ Play les 5 cas';
+    ucPlayBtn.classList.remove('playing');
+    ucIndicator.textContent = '0/5';
+    ucIndicator.classList.remove('active');
+  }
+
+  function start() {
+    if (isPlaying) {
+      stop();
+      return;
+    }
+    isPlaying = true;
+    ucPlayBtn.textContent = '◼ Stop';
+    ucPlayBtn.classList.add('playing');
+
+    // Scroll the mapping block into view first
+    const mapBlock = document.getElementById('mapping-block');
+    if (mapBlock) {
+      mapBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Wait for scroll, then start sequence
+    timeouts.push(setTimeout(() => {
+      runSequence(0);
+    }, 600));
+  }
+
+  function runSequence(index) {
+    if (!isPlaying) return;
+    if (index >= ucCards.length) {
+      // End: dramatic pause then auto-stop
+      timeouts.push(setTimeout(() => {
+        if (isPlaying) {
+          ucCards.forEach(uc => {
+            const el = document.getElementById(uc.id);
+            if (el) el.classList.remove('uc-active', 'uc-dim');
+          });
+          ucNarrationTag.textContent = '✓ Tour complete';
+          ucNarrationText.textContent = '2 cases on pure L1, 2 with native extension, 1 on the sidechain. That\'s how the XRPL ecosystem splits.';
+          ucIndicator.textContent = '✓ 5/5';
+          timeouts.push(setTimeout(stop, 3000));
+        }
+      }, 600));
+      return;
+    }
+    highlightCard(index);
+    const dwell = ucCards[index].dwell;
+    timeouts.push(setTimeout(() => runSequence(index + 1), dwell));
+  }
+
+  ucPlayBtn.addEventListener('click', start);
+
+  // Stop animation if user starts the global tour (avoid conflicts)
+  const tourStart = document.getElementById('tour-start');
+  if (tourStart) {
+    tourStart.addEventListener('click', () => {
+      if (isPlaying) stop();
+    });
+  }
+
+  // Stop with Escape if running
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isPlaying) {
+      stop();
+    }
+  });
+})();
+</script>
+
+<script>
+(function() {
+  // ============ TOUR DEFINITION ============
+  const tourSteps = [
+    {
+      target: '#anchor-masthead',
+      eyebrow: 'INTRO',
+      title: 'Complete anatomy du <em>XRPL</em>',
+      body: `<p>This page decomposes everything that happens when a user interacts with the XRP Ledger: <strong>de l'humain qui clique, jusqu'au bloc qui se ferme</strong>.</p>
+             <p>The tour will guide you through 9 steps across the key concepts. You can navigate with arrows or exit anytime.</p>`,
+      placement: 'bottom',
+    },
+    {
+      target: '#anchor-legend',
+      eyebrow: 'STEP 01 · LEGEND',
+      title: '8 zones · 3 main roles',
+      body: `<p>Each color represents <strong>un acteur distinct</strong> of the system:</p>
+             <p>— red / green / yellow / brown = side <strong>utilisateur et applicatif</strong> (ce qui tourne sur ton appareil ou un serveur)</p>
+             <p>— bleu = le <strong>XRPL network</strong> (validators, ledger)</p>
+             <p>— violet / olive / orange = les <strong>3 extensions</strong> of the ecosystem (AMM, RWA, Sidechain)</p>`,
+      placement: 'bottom',
+    },
+    {
+      target: '#anchor-diagram',
+      eyebrow: 'STEP 02 · ARCHITECTURE',
+      title: 'Le diagramme principal',
+      body: `<p>Left-to-right reading: <strong>USER → CLIENT → CUSTODY → NETWORK → LEDGER</strong>, avec les <strong>extensions</strong> in the last column.</p>
+             <p>Arrows <span style="color:#c8553d;font-weight:700;">rouges</span> = writes (signed transactions). Arrows <span style="color:#2e5d4f;font-weight:700;">vertes</span> = reads (free, no signature). Dashed arrows = ownership or delegation relationships.</p>`,
+      placement: 'bottom',
+    },
+    {
+      target: '#eco-amm',
+      eyebrow: 'STEP 03 · EXT 01',
+      title: 'AMM <em>natif</em>',
+      body: `<p>L'<strong>Automated Market Maker</strong> is integrated directly into the XRPL protocol (amendment <code>XLS-30</code>). No smart contract to deploy or audit.</p>
+             <p>N'importe quel <code>Payment</code> cross-currency peut traverser un pool AMM via le pathfinding — un swap est juste une transaction standard.</p>`,
+      placement: 'right',
+    },
+    {
+      target: '#eco-rwa',
+      eyebrow: 'STEP 04 · EXT 02',
+      title: 'Real-World <em>Assets</em>',
+      body: `<p>With <code>Multi-Purpose Tokens</code> (MPT), an issuer can represent <strong>bonds, real estate, funds, carbon credits</strong> with metadata, per-issuer permissions and native compliance hooks.</p>
+             <p>Coupled with <code>DID</code> and <code>Credentials</code> XLS-70 for on-chain KYC.</p>`,
+      placement: 'top',
+    },
+    {
+      target: '#eco-side',
+      eyebrow: 'STEP 05 · EXT 03',
+      title: 'EVM <em>Sidechain</em>',
+      body: `<p>Pour les cas qui exigent du <strong>code Turing-complet</strong> (lending, perps, gaming), a dedicated EVM sidechain exists and bridges XRP via <code>wXRP</code>.</p>
+             <p>Solidity-, MetaMask-, Hardhat-, Foundry-compatible — the Ethereum ecosystem is reusable. <em>But execution no longer happens on L1.</em></p>`,
+      placement: 'top',
+    },
+    {
+      target: '#mapping-block',
+      eyebrow: 'STEP 06 · MAPPING',
+      title: 'Quel use case · quelle extension ?',
+      body: `<p>Important point: <strong>the 5 use cases don't map 1-to-1 onto the 3 extensions</strong>.</p>
+             <p>— <strong>Payment</strong> and <strong>NFT</strong> run on <strong>pure L1</strong> (no extension).</p>
+             <p>— <strong>AMM Swap</strong> and <strong>RWA</strong> use a <strong>ledger-integrated</strong> extension.</p>
+             <p>— <strong>EVM smart contracts</strong> is the only case that <strong>leaves L1</strong>.</p>`,
+      placement: 'top',
+    },
+    {
+      target: '#anchor-integration',
+      eyebrow: 'STEP 07 · DECISION',
+      title: 'Quand utiliser <em>quoi</em> ?',
+      body: `<p>The decision matrix summarizes every trade-off: what each layer gives you, what it costs you.</p>
+             <p>Lecture utile : si ton besoin est exprimable avec les primitives du L1 ou ses extensions natives (AMM, NFT, MPT, escrow…), reste sur le L1. Tu n'as <strong>pas besoin de smart contract</strong>. The sidechain is only for what truly exceeds what the protocol offers.</p>`,
+      placement: 'top',
+    },
+    {
+      target: '#anchor-masthead',
+      eyebrow: 'STEP 08 · TOUR COMPLETE',
+      title: 'C\'est tout !',
+      body: `<p>Tu as parcouru les concepts essentiels. Tu peux maintenant <strong>naviguer librement</strong> in the page — each section is independent.</p>
+             <p>To go further: the animated version shows the end-to-end transaction flow, and the PDF is printable on A3.</p>`,
+      placement: 'bottom',
+    },
+  ];
+
+  // ============ STATE ============
+  let currentStep = -1; // -1 = not started
+  let isActive = false;
+
+  // ============ DOM REFS ============
+  const overlay = document.getElementById('tour-overlay');
+  const card = document.getElementById('tour-card');
+  const eyebrow = document.getElementById('tour-eyebrow');
+  const title = document.getElementById('tour-title');
+  const body = document.getElementById('tour-body');
+  const progress = document.getElementById('tour-progress');
+  const cardPrev = document.getElementById('tour-card-prev');
+  const cardNext = document.getElementById('tour-card-next');
+
+  const startBtn = document.getElementById('tour-start');
+  const prevBtn = document.getElementById('tour-prev');
+  const nextBtn = document.getElementById('tour-next');
+  const exitBtn = document.getElementById('tour-exit');
+  const fill = document.getElementById('play-fill');
+  const counter = document.getElementById('play-counter');
+
+  let lastSpotlit = null;
+
+  // ============ HELPERS ============
+  function clearSpotlight() {
+    if (lastSpotlit) {
+      lastSpotlit.classList.remove('tour-spotlight', 'tour-spotlight-inner', 'lifted');
+      lastSpotlit = null;
+    }
+  }
+
+  function applySpotlight(el) {
+    clearSpotlight();
+    if (!el) return;
+    // Use lighter outline for grid cells (mapping-cell, eco card)
+    if (el.classList.contains('mapping-cell') || el.classList.contains('eco')) {
+      el.classList.add('tour-spotlight-inner', 'lifted');
+    } else {
+      el.classList.add('tour-spotlight', 'lifted');
+    }
+    lastSpotlit = el;
+  }
+
+  function positionCard(targetEl, placement) {
+    const rect = targetEl.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const margin = 18;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    let top, left;
+
+    // Auto-pick placement if it doesn't fit
+    const spaceBelow = vh - rect.bottom;
+    const spaceAbove = rect.top;
+    const spaceRight = vw - rect.right;
+    const spaceLeft = rect.left;
+
+    let actualPlacement = placement;
+    if (placement === 'bottom' && spaceBelow < cardRect.height + margin && spaceAbove > spaceBelow) {
+      actualPlacement = 'top';
+    }
+    if (placement === 'top' && spaceAbove < cardRect.height + margin && spaceBelow > spaceAbove) {
+      actualPlacement = 'bottom';
+    }
+    if (placement === 'right' && spaceRight < cardRect.width + margin && spaceLeft > spaceRight) {
+      actualPlacement = 'left';
+    }
+
+    switch (actualPlacement) {
+      case 'top':
+        top = rect.top - cardRect.height - margin;
+        left = rect.left + (rect.width / 2) - (cardRect.width / 2);
+        break;
+      case 'bottom':
+        top = rect.bottom + margin;
+        left = rect.left + (rect.width / 2) - (cardRect.width / 2);
+        break;
+      case 'left':
+        top = rect.top + (rect.height / 2) - (cardRect.height / 2);
+        left = rect.left - cardRect.width - margin;
+        break;
+      case 'right':
+        top = rect.top + (rect.height / 2) - (cardRect.height / 2);
+        left = rect.right + margin;
+        break;
+    }
+
+    // Clamp to viewport
+    top = Math.max(70, Math.min(top, vh - cardRect.height - 12));
+    left = Math.max(12, Math.min(left, vw - cardRect.width - 12));
+
+    card.style.top = top + 'px';
+    card.style.left = left + 'px';
+  }
+
+  function showStep(n) {
+    if (n < 0 || n >= tourSteps.length) return;
+    currentStep = n;
+    const step = tourSteps[n];
+    const target = document.querySelector(step.target);
+    if (!target) {
+      console.warn('Tour target not found:', step.target);
+      return;
+    }
+
+    // Scroll target into view smoothly
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Wait briefly for scroll, then spotlight & position card
+    setTimeout(() => {
+      applySpotlight(target);
+      eyebrow.textContent = step.eyebrow;
+      title.innerHTML = step.title;
+      body.innerHTML = step.body;
+      progress.textContent = `${n + 1} / ${tourSteps.length}`;
+      counter.textContent = `${n + 1} / ${tourSteps.length}`;
+      fill.style.width = `${((n + 1) / tourSteps.length) * 100}%`;
+
+      // Show card after a short delay so it doesn't snap
+      requestAnimationFrame(() => {
+        // First measure with display ready
+        card.style.opacity = '0';
+        card.classList.add('visible');
+        positionCard(target, step.placement || 'bottom');
+        requestAnimationFrame(() => {
+          card.style.opacity = '';
+        });
+      });
+
+      // Update buttons
+      cardPrev.disabled = n === 0;
+      prevBtn.disabled = n === 0;
+      cardNext.textContent = n === tourSteps.length - 1 ? 'Terminer ✓' : 'Suivant →';
+      nextBtn.textContent = n === tourSteps.length - 1 ? '✓ Terminer' : 'Suivant →';
+    }, 380);
+  }
+
+  function startTour() {
+    if (isActive) return;
+    isActive = true;
+    document.body.classList.add('tour-active');
+    overlay.classList.add('visible');
+    startBtn.textContent = '▶ En cours…';
+    startBtn.disabled = true;
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+    exitBtn.disabled = false;
+    showStep(0);
+  }
+
+  function exitTour() {
+    isActive = false;
+    document.body.classList.remove('tour-active');
+    overlay.classList.remove('visible');
+    card.classList.remove('visible');
+    clearSpotlight();
+    currentStep = -1;
+    startBtn.textContent = '▶ Start the tour';
+    startBtn.disabled = false;
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    exitBtn.disabled = true;
+    fill.style.width = '0%';
+    counter.textContent = `0 / ${tourSteps.length}`;
+  }
+
+  function nextStep() {
+    if (!isActive) return;
+    if (currentStep >= tourSteps.length - 1) {
+      exitTour();
+      return;
+    }
+    showStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (!isActive || currentStep <= 0) return;
+    showStep(currentStep - 1);
+  }
+
+  // ============ WIRING ============
+  startBtn.addEventListener('click', startTour);
+  exitBtn.addEventListener('click', exitTour);
+  nextBtn.addEventListener('click', nextStep);
+  prevBtn.addEventListener('click', prevStep);
+  cardNext.addEventListener('click', nextStep);
+  cardPrev.addEventListener('click', prevStep);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!isActive) return;
+    if (e.key === 'ArrowRight' || e.key === 'Enter') { e.preventDefault(); nextStep(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevStep(); }
+    if (e.key === 'Escape') { e.preventDefault(); exitTour(); }
+  });
+
+  // Reposition card on resize / scroll while tour active
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (!isActive || currentStep < 0) return;
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const step = tourSteps[currentStep];
+      const target = document.querySelector(step.target);
+      if (target) positionCard(target, step.placement || 'bottom');
+    }, 50);
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (!isActive || currentStep < 0) return;
+    const step = tourSteps[currentStep];
+    const target = document.querySelector(step.target);
+    if (target) positionCard(target, step.placement || 'bottom');
+  });
+
+  // Init counter
+  counter.textContent = `0 / ${tourSteps.length}`;
+})();
+</script>
 
 </body>
 </html>
