@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Master Gaps — unified register — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --ink: #0e1116; --paper: #f4efe6; --paper-2: #ebe4d6; --paper-3: #e0d8c5;
+    --user: #c8553d; --app: #2e5d4f; --wallet: #d4a017; --chain: #1e3a5f;
+    --custody: #6b4226; --amm: #8b5a8c; --rwa: #4a6741; --sidechain: #b85c38;
+    --muted: #6b6358; --grid: rgba(14,17,22,0.06);
+    --tag-atlas: #1e3a5f; --tag-gaps: #d4a017; --tag-yc: #c8553d; --tag-service: #8b5a8c;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: 'Fraunces', Georgia, serif; -webkit-font-smoothing: antialiased; line-height: 1.55; }
+  body { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 24px 24px; }
+  .page { max-width: 1320px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV (same as other pages) */
+  .site-nav { position: sticky; top: 0; z-index: 100; background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; border-bottom: 2px solid var(--ink); }
+  .site-nav .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-logo { flex-shrink: 0; display: block; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a { color: var(--paper); text-decoration: none; padding: 5px 10px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; white-space: nowrap; position: relative; }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: transparent; pointer-events: none; }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a[data-section="build"]::before { background: var(--sidechain); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle { display: flex; margin-left: 16px; border: 1.5px solid var(--paper); white-space: nowrap; }
+  .site-nav .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 28px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
+  @media (max-width: 800px) { .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; } .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; } .site-nav .nav-links a { padding: 3px 6px; } }
+
+  /* MASTHEAD */
+  .masthead { display: grid; grid-template-columns: 1fr auto; align-items: end; border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 8px; }
+  .masthead .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .masthead h1 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 0.95; margin: 0; letter-spacing: -0.02em; }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: right; color: var(--muted); line-height: 1.6; }
+  .strap { display: flex; justify-content: space-between; border-bottom: 1px solid var(--ink); padding: 8px 0; margin-bottom: 28px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  /* INTRO */
+  .intro { border: 2px solid var(--ink); background: var(--paper-2); padding: 22px 28px; margin-bottom: 28px; font-size: 14.5px; line-height: 1.6; }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill { display: inline-block; background: var(--ink); color: var(--paper); padding: 2px 10px; margin-right: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+
+  /* STAT STRIP */
+  .stat-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 2px solid var(--ink); margin-bottom: 28px; background: var(--paper); }
+  .stat { padding: 14px 16px; border-right: 1px solid var(--ink); text-align: center; }
+  .stat:last-child { border-right: none; }
+  .stat .num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 800; line-height: 1; color: var(--chain); }
+  .stat .lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  @media (max-width: 800px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } }
+
+  /* THESIS BOX */
+  .thesis { border: 2px solid var(--ink); background: var(--chain); color: var(--paper); padding: 22px 28px; margin-bottom: 28px; }
+  .thesis h3 { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--wallet); text-transform: uppercase; font-weight: 700; margin: 0 0 10px 0; }
+  .thesis p { font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.5; margin: 0; }
+  .thesis strong { color: var(--wallet); font-weight: 600; }
+
+  /* FILTERS */
+  .filters { padding: 16px 20px; border: 2px solid var(--ink); background: var(--paper-2); display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
+  .filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .filter-row .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 700; min-width: 100px; }
+  .filter-btn { padding: 5px 12px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.15s ease; }
+  .filter-btn:hover { background: var(--paper-3); }
+  .filter-btn.active { background: var(--sidechain); color: var(--paper); border-color: var(--sidechain); }
+  .filter-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-left: auto; }
+
+  /* MASTER TABLE */
+  .master-table-wrap { overflow-x: auto; border: 2px solid var(--ink); background: var(--paper); margin-bottom: 32px; }
+  .master-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .master-table th { background: var(--ink); color: var(--paper); padding: 10px 12px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; white-space: nowrap; position: sticky; top: 0; z-index: 5; }
+  .master-table td { padding: 9px 12px; border-bottom: 1px solid rgba(14,17,22,0.08); vertical-align: top; font-family: 'Fraunces', serif; }
+  .master-table tr:hover td { background: var(--paper-2); }
+  .master-table tr.row-hidden { display: none; }
+  .master-table .id-cell { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .master-table .title-cell { font-weight: 600; min-width: 230px; }
+  .master-table .title-cell small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .src-tag { display: inline-block; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .src-atlas { background: var(--tag-atlas); color: var(--paper); }
+  .src-gaps  { background: var(--tag-gaps); color: var(--ink); }
+  .src-yc    { background: var(--tag-yc); color: var(--paper); }
+  .src-svc   { background: var(--tag-service); color: var(--paper); }
+  .tier { display: inline-block; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+  .tier-mult { background: var(--ink); color: var(--paper); }
+  .tier-high { background: var(--wallet); color: var(--ink); }
+  .tier-med  { background: var(--paper-2); color: var(--muted); border: 1px solid var(--muted); }
+  .chain-badge { display: inline-block; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
+  .ch-xrpl { background: #e7eef9; color: var(--chain); }
+  .ch-evm  { background: #fbe7d8; color: var(--sidechain); }
+  .ch-both { background: var(--paper-3); color: var(--ink); }
+
+  /* STRATEGIC FRAME */
+  .frame { border: 2px solid var(--ink); background: var(--paper-2); padding: 24px 28px; margin-top: 28px; margin-bottom: 24px; }
+  .frame h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: 24px; margin: 0 0 14px 0; }
+  .frame h2 em { font-style: italic; color: var(--chain); }
+  .frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .frame-cell { padding: 18px; background: var(--paper); border: 1.5px solid var(--ink); }
+  .frame-cell h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--user); margin: 0 0 10px 0; font-weight: 700; }
+  .frame-cell ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+  .frame-cell ul li { margin-bottom: 6px; }
+  .frame-cell ul li strong { color: var(--chain); font-weight: 600; }
+  @media (max-width: 800px) { .frame-grid { grid-template-columns: 1fr; } }
+
+  /* TENSIONS TABLE */
+  .tensions-table { width: 100%; border-collapse: collapse; border: 2px solid var(--ink); margin: 12px 0 24px; background: var(--paper); font-size: 13px; }
+  .tensions-table th { background: var(--ink); color: var(--paper); padding: 9px 12px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; }
+  .tensions-table td { padding: 9px 12px; border-bottom: 1px solid rgba(14,17,22,0.1); vertical-align: top; }
+  .tensions-table td.tnum { font-family: 'JetBrains Mono', monospace; font-weight: 700; background: var(--wallet); width: 38px; text-align: center; }
+
+  /* META FINDING */
+  .meta-finding { border: 2px dashed var(--ink); background: rgba(212,160,23,0.08); padding: 20px 26px; margin-bottom: 24px; }
+  .meta-finding .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+  .meta-finding p { font-size: 14px; line-height: 1.55; margin: 0 0 8px 0; }
+  .meta-finding p:last-child { margin: 0; }
+
+  /* SOURCE LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 14px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+
+  /* SOURCE FOOTER */
+  .sources-foot { margin-top: 50px; border-top: 2px solid var(--ink); padding-top: 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.7; }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116" transform="translate(50, 50)"><rect x="-36" y="-8" width="72" height="16" transform="rotate(45)"/><rect x="-36" y="-8" width="72" height="16" transform="rotate(-45)"/></g><text x="102" y="46" font-family="'Fraunces', Georgia, serif" font-size="44" font-weight="800" fill="#d4a017">B</text></svg><span class="nav-home-text">XRPL <em>Builder</em></span></a>
+  <div class="nav-links">
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/master-gaps" data-section="paysage" class="current">Master Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/analysis-1" data-section="analyse" class="section-start">Analysis 1</a>
+    <a href="/en/analysis-2" data-section="analyse">Analysis 2</a>
+    <a href="/en/analysis-3" data-section="analyse">Synthesis</a>
+    <a href="/en/buildathon" data-section="build" class="section-start">Buildathon</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag active" href="/en/master-gaps">🇫🇷</a>
+    <a class="lang-flag" href="/en/master-gaps">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Master Gaps · unified register · v1.0 · May 2026</div>
+    <h1>Master <em>Gaps</em><br/>— the unified register</h1>
+  </div>
+  <div class="meta">
+    Sources: Master Atlas + /gaps + YC RFS<br/>
+    Total: 40 unique opportunities<br/>
+    Snapshot: May 2026<br/>
+    Filter: chain · source · tier
+  </div>
+</header>
+
+<div class="strap">
+  <span>The unified register</span>
+  <span>Atlas (internal analysis) + Gaps (builder lens) + YC RFS Summer 2026</span>
+  <span>Single source of truth for the Buildathon</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">CONTEXT</span> This page is the <strong>final unified register</strong> of opportunities to build on XRPL. It <em>merges without duplication</em> the 30 opportunities from the <a href="/en/analysis-3" style="color: var(--chain); font-weight: 600;">Master Atlas</a> (internal reading of 4 PWG + Atka), the uniques from <a href="/en/gaps" style="color: var(--chain); font-weight: 600;">/gaps</a> (builder lens + AI-native services), and the 4 YC RFS Summer 2026 additions.</p>
+  <p><span class="pill">USAGE</span> Filter by <em>chain</em> (XRPL native / EVM Sidechain / both), by <em>source</em> (Atlas / Gaps / YC), by <em>tier</em> (Multiplier / High / Medium). Click on an ID to jump to the detailed card (on /gaps or /analysis-3).</p>
+  <p><span class="pill">ROLE</span> <strong>Single source of truth for the Buildathon challenge register.</strong> The 3 analysis pages (1, 2, 3) remain accessible as the methodology trail; /gaps remains accessible as the detailed registry with scoring (rich cards). /master-gaps is the executive dashboard.</p>
+</div>
+
+<!-- THESIS -->
+<div class="thesis">
+  <h3>The thesis in one sentence</h3>
+  <p>XRPL becomes the L1 of <strong>Institutional &amp; Compliant DeFi</strong> — RLUSD as settlement stablecoin, XLS-66/65 as lending/vault rails, XLS-70/80 as Identity infra, EVM Sidechain as the cross-chain innovation zone. The bottleneck is not the protocol — it's <strong>distribution</strong> (CeDeFi via CEX) and <strong>integration plumbing</strong> (data, accounting, KYC).</p>
+</div>
+
+<div class="stat-strip">
+  <div class="stat"><div class="num">40</div><div class="lbl">unique opportunities</div></div>
+  <div class="stat"><div class="num">8</div><div class="lbl">multipliers (Tier 1)</div></div>
+  <div class="stat"><div class="num">7</div><div class="lbl">themes</div></div>
+  <div class="stat"><div class="num">3</div><div class="lbl">sources</div></div>
+  <div class="stat"><div class="num">5</div><div class="lbl">tensions arbitrated</div></div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter-row">
+    <span class="label">Chain</span>
+    <button class="filter-btn active" data-filter-type="chain" data-filter="all">All</button>
+    <button class="filter-btn" data-filter-type="chain" data-filter="xrpl">XRPL native</button>
+    <button class="filter-btn" data-filter-type="chain" data-filter="evm">EVM Sidechain</button>
+    <button class="filter-btn" data-filter-type="chain" data-filter="both">Both</button>
+  </div>
+  <div class="filter-row">
+    <span class="label">Source</span>
+    <button class="filter-btn active" data-filter-type="source" data-filter="all">All</button>
+    <button class="filter-btn" data-filter-type="source" data-filter="atlas">Master Atlas</button>
+    <button class="filter-btn" data-filter-type="source" data-filter="gaps">Gaps (unique)</button>
+    <button class="filter-btn" data-filter-type="source" data-filter="yc">YC RFS</button>
+    <button class="filter-btn" data-filter-type="source" data-filter="svc">AI-native service</button>
+  </div>
+  <div class="filter-row">
+    <span class="label">Tier</span>
+    <button class="filter-btn active" data-filter-type="tier" data-filter="all">All</button>
+    <button class="filter-btn" data-filter-type="tier" data-filter="mult">Multiplier</button>
+    <button class="filter-btn" data-filter-type="tier" data-filter="high">High</button>
+    <button class="filter-btn" data-filter-type="tier" data-filter="med">Medium</button>
+    <span class="filter-count"></span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="item"><span class="src-tag src-atlas">Atlas</span> Master Atlas (analysis-3)</div>
+  <div class="item"><span class="src-tag src-gaps">Gaps</span> /gaps unique tooling</div>
+  <div class="item"><span class="src-tag src-svc">Svc</span> /gaps unique service</div>
+  <div class="item"><span class="src-tag src-yc">YC</span> YC RFS Summer 2026</div>
+</div>
+
+<!-- MASTER TABLE -->
+<div class="master-table-wrap">
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Opportunity</th>
+        <th>Theme</th>
+        <th>Source</th>
+        <th>Tier</th>
+        <th>Chain</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- THEME 1 — WALLETS -->
+      <tr data-chain="both" data-source="atlas" data-tier="mult"><td class="id-cell">M-01</td><td class="title-cell">Cross-Device Session Continuity Library<small>FA-01 / C-01 · top non-trading product unlock</small></td><td>Wallets</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-01">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-02</td><td class="title-cell">Institutional Multisig Wallet (Full UI)<small>FA-02 / Safe-equivalent for XRPL</small></td><td>Wallets</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-02">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="high"><td class="id-cell">M-03</td><td class="title-cell">Smart Contract Wallet on EVM Sidechain<small>FA-03 / ERC-4337 · table-stakes vs Base/Arbitrum</small></td><td>Wallets</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-03">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="med"><td class="id-cell">M-04</td><td class="title-cell">Unified Cross-Chain Wallet SDK<small>FA-04 / single SDK for XRPL + EVM</small></td><td>Wallets</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-04">→</a></td></tr>
+
+      <!-- THEME 2 — INSTITUTIONAL INFRA -->
+      <tr data-chain="xrpl" data-source="atlas" data-tier="mult"><td class="id-cell">M-05</td><td class="title-cell">Institutional Data Emission Adapter Library<small>FA-05 / ISIN/CFI/LEI/FIX/IFRS · highest leverage</small></td><td>Inst Infra</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-05">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-06</td><td class="title-cell">Stablecoin Accounting &amp; Reconciliation Export<small>FA-06 / QuickBooks/Xero/IFRS · merchant adoption unlock</small></td><td>Inst Infra</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-06">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-07</td><td class="title-cell">Multi-Flow Institutional Access Control Library<small>FA-07 / Permissioned Domains × Credentials</small></td><td>Inst Infra</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-07">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="med"><td class="id-cell">M-08</td><td class="title-cell">Pluggable Proof Primitives Library<small>FA-08 / hash/signature/ZK/BYO-scheme</small></td><td>Inst Infra</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-08">→</a></td></tr>
+
+      <!-- THEME 3 — LENDING & VAULTS -->
+      <tr data-chain="xrpl" data-source="atlas" data-tier="mult"><td class="id-cell">M-09</td><td class="title-cell">Vault Wrapper Pattern Library (XLS-65)<small>FA-09 / timing arbitrage on XLS-65 amendment</small></td><td>Lending</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-09">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="med"><td class="id-cell">M-10</td><td class="title-cell">Risk-Signal Aggregation from MPT Trading<small>FA-10 / Kennedy Reassurance · XRPL-native novel</small></td><td>Lending</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-10">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="mult"><td class="id-cell">M-11</td><td class="title-cell">Lending Protocol on EVM Sidechain (Morpho-style)<small>FA-11 / top community survey need</small></td><td>Lending</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-11">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-12</td><td class="title-cell">Uncollateralized Lending Interface (XLS-66)<small>FA-12 / Evernorth announced intent</small></td><td>Lending</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-12">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-12b</td><td class="title-cell">Compliant Credit Vault (institutional service)<small>A1 Tier 1 #1 · agent-curator with attestations</small></td><td>Lending</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-1">→</a></td></tr>
+
+      <!-- THEME 4 — RWA & STABLECOINS -->
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-13</td><td class="title-cell">Physical-to-Digital Binding (EU DPP)<small>FA-13 · regulatory deadline · 12-month window</small></td><td>RWA</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-13">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="mult"><td class="id-cell">M-14</td><td class="title-cell">Yield-Bearing Stablecoin (T-bill backed)<small>FA-14 · USDe parallel · top community demand · also Gap 13</small></td><td>Stablecoins</td><td><span class="src-tag src-atlas">Atlas</span> <span class="src-tag src-yc">YC</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-13">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="med"><td class="id-cell">M-15</td><td class="title-cell">Non-USD Stablecoin DeFi Rails<small>FA-15 / EUR/BRL/SGD/AUD · positioning alignment</small></td><td>Stablecoins</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-15">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="med"><td class="id-cell">M-16</td><td class="title-cell">Chunked Data + On-Chain Anchoring Pattern<small>FA-16 / IPFS/S3/self-hosted backends</small></td><td>RWA</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2#fa-16">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-16b</td><td class="title-cell">RWA Issuance Studio EU/MiCA<small>A1 Tier 1 #2 · MPT + DID + cap table</small></td><td>RWA</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-1">→</a></td></tr>
+
+      <!-- THEME 5 — EVM SIDECHAIN DEFI -->
+      <tr data-chain="evm" data-source="atlas" data-tier="mult"><td class="id-cell">M-17</td><td class="title-cell">Restaking Protocol for XRP (Babylon-fork)<small>FA-17 · $110B+ XRP cap underutilized</small></td><td>EVM DeFi</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-17">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="high"><td class="id-cell">M-18</td><td class="title-cell">Synthetic Assets / CDP Protocol (× Axiom)<small>FA-18 · gold/stocks/forex synthetic</small></td><td>EVM DeFi</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-18">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="high"><td class="id-cell">M-19</td><td class="title-cell">Perpetual DEX (vAMM or order book)<small>FA-19 · derivatives = highest volume</small></td><td>EVM DeFi</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-19">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="high"><td class="id-cell">M-20</td><td class="title-cell">Decentralized Insurance Protocol<small>FA-20 · maturity signal for institutional</small></td><td>EVM DeFi</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-2#fa-20">→</a></td></tr>
+
+      <!-- THEME 6 — DEV TOOLING & PUBLIC GOODS -->
+      <tr data-chain="both" data-source="atlas" data-tier="mult"><td class="id-cell">M-21</td><td class="title-cell">Pre-Deployed Testnet Infrastructure<small>FA-21 · multiplier across everything</small></td><td>Dev Tooling</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-mult">MULT</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-21">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="high"><td class="id-cell">M-22</td><td class="title-cell">XRPL Capabilities Registry<small>FA-22 · auto-update XLS feed · solves awareness gap</small></td><td>Dev Tooling</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-22">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="med"><td class="id-cell">M-23</td><td class="title-cell">Vendor-Neutral Oracle / Bridge / Ramp Adapters<small>FA-23 · zero-code-change provider swap</small></td><td>Dev Tooling</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-23">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="high"><td class="id-cell">M-24</td><td class="title-cell">CeDeFi Yield Integration SDK (CEX channel)<small>FA-24 · 60%+ XRP on CEX · #1 distribution play</small></td><td>Distribution</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/analysis-2#fa-24">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-25</td><td class="title-cell">P-256 / secp256r1 Signing (XLS proposal)<small>cross-cutting · Apple Secure Enclave + WebAuthn + HSM</small></td><td>Protocol</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-2">→</a></td></tr>
+
+      <!-- THEME 7 — AI-NATIVE & AGENTS -->
+      <tr data-chain="both" data-source="atlas" data-tier="high"><td class="id-cell">M-26</td><td class="title-cell">AgentPay — x402 + XRPL settlement<small>A1 blueprint · AI agent payments · also Gap 07</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/builder-atlas">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="high"><td class="id-cell">M-27</td><td class="title-cell">AI-Native Compliance Ops (service company)<small>A1 service-thesis · YC RFS lens · also Service-01</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/gaps">→</a></td></tr>
+      <tr data-chain="both" data-source="atlas" data-tier="med"><td class="id-cell">M-28</td><td class="title-cell">AI-Native Treasury Ops (RLUSD automation)<small>A1 service-thesis · also Service-02 Treasury-aaS</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps">→</a></td></tr>
+      <tr data-chain="evm" data-source="atlas" data-tier="med"><td class="id-cell">M-29</td><td class="title-cell">AI-Native Restaking Manager (yield optimizer)<small>A1 service-thesis · auto-rebalance</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-evm">EVM</span></td><td><a href="/en/analysis-3">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="atlas" data-tier="med"><td class="id-cell">M-30</td><td class="title-cell">Onchain Reputation for AI Agents (KYA)<small>A1 service-thesis · agent identity layer</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-atlas">Atlas</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/analysis-3">→</a></td></tr>
+
+      <!-- UNIQUE FROM /gaps TOOLING -->
+      <tr data-chain="both" data-source="gaps" data-tier="high"><td class="id-cell">G-02</td><td class="title-cell">Monitoring &amp; B2B alerting<small>XRPL's Tenderly/Forta · cross-cutting infra</small></td><td>Dev Tooling</td><td><span class="src-tag src-gaps">Gaps</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-02">→</a></td></tr>
+      <tr data-chain="both" data-source="gaps" data-tier="high"><td class="id-cell">G-03</td><td class="title-cell">Native yield aggregator (Yearn-XRPL)<small>cross-protocol yield routing</small></td><td>DeFi</td><td><span class="src-tag src-gaps">Gaps</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-03">→</a></td></tr>
+      <tr data-chain="both" data-source="gaps" data-tier="high"><td class="id-cell">G-05</td><td class="title-cell">Regional POS / merchant tooling<small>retail merchants in emerging markets + EU/MiCA</small></td><td>Payments</td><td><span class="src-tag src-gaps">Gaps</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-05">→</a></td></tr>
+      <tr data-chain="xrpl" data-source="gaps" data-tier="med"><td class="id-cell">G-11</td><td class="title-cell">Gaming utility-NFT framework<small>play-to-earn + asset interop · XRPL NFT primitives</small></td><td>Gaming</td><td><span class="src-tag src-gaps">Gaps</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-xrpl">XRPL</span></td><td><a href="/en/gaps#gap-11">→</a></td></tr>
+
+      <!-- UNIQUE FROM /gaps SERVICES (AI-native) -->
+      <tr data-chain="both" data-source="svc" data-tier="high"><td class="id-cell">S-03</td><td class="title-cell">Market-making-as-a-Service<small>AI agent provides liquidity · 70-90% margin</small></td><td>AI Services</td><td><span class="src-tag src-svc">Svc</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps">→</a></td></tr>
+      <tr data-chain="both" data-source="svc" data-tier="high"><td class="id-cell">S-05</td><td class="title-cell">Community-ops-as-a-Service<small>AI agent runs Discord + Twitter + grants ops</small></td><td>AI Services</td><td><span class="src-tag src-svc">Svc</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps">→</a></td></tr>
+      <tr data-chain="both" data-source="svc" data-tier="med"><td class="id-cell">S-07</td><td class="title-cell">Dispute resolution &amp; recovery<small>AI agent handles claims, refunds, recovery</small></td><td>AI Services</td><td><span class="src-tag src-svc">Svc</span></td><td><span class="tier tier-med">MED</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps">→</a></td></tr>
+
+      <!-- FROM YC RFS Summer 2026 (NEW unique) -->
+      <tr data-chain="both" data-source="yc" data-tier="high"><td class="id-cell">Y-14</td><td class="title-cell">Prediction markets infrastructure<small>engine layer · Polymarket equivalent · Gap 14</small></td><td>DeFi</td><td><span class="src-tag src-yc">YC</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-14">→</a></td></tr>
+      <tr data-chain="both" data-source="yc" data-tier="high"><td class="id-cell">Y-15</td><td class="title-cell">Prediction markets dApps (consumer)<small>Polymarket-style · politics/sports/crypto · Gap 15</small></td><td>DeFi</td><td><span class="src-tag src-yc">YC</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-15">→</a></td></tr>
+      <tr data-chain="both" data-source="yc" data-tier="high"><td class="id-cell">Y-16</td><td class="title-cell">AI trading agents (DCA, momentum, alpha)<small>quant agents on XRPL · alpha generation · Gap 16</small></td><td>AI &amp; Agents</td><td><span class="src-tag src-yc">YC</span></td><td><span class="tier tier-high">HIGH</span></td><td><span class="chain-badge ch-both">Both</span></td><td><a href="/en/gaps#gap-16">→</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 5 TENSIONS -->
+<div class="frame">
+  <h2>5 strategic tensions <em>— arbitrated</em></h2>
+  <table class="tensions-table">
+    <thead>
+      <tr><th>#</th><th>Tension</th><th>Arbitration</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="tnum">T1</td><td>XRPL native vs EVM Sidechain — where to place builders?</td><td><strong style="color: var(--app);">RESOLVED</strong> · Each opportunity has a precise chain-target (filter above).</td></tr>
+      <tr><td class="tnum">T2</td><td>Credentials = horizontal infra, or let it emerge?</td><td><strong style="color: var(--app);">RESOLVED</strong> · Push it via M-07 Multi-Flow ACL + pre-deployed sandbox (M-21).</td></tr>
+      <tr><td class="tnum">T3</td><td>Mandatory CeDeFi vs pure institutional DeFi?</td><td><strong style="color: var(--app);">RESOLVED</strong> · CeDeFi via CEX = #1 distribution play (M-24).</td></tr>
+      <tr><td class="tnum">T4</td><td>RLUSD-first vs multi-stablecoin?</td><td><strong style="color: var(--user);">PARTIELLEMENT RESOLVED</strong> · RLUSD-first by default + opt-in non-USD rails (M-15). Tension persists for founders risk-averse to Ripple dependency.</td></tr>
+      <tr><td class="tnum">T5</td><td>Cloning Morpho/Babylon vs XRPL-native originality?</td><td><strong style="color: var(--app);">RESOLVED</strong> · "Both, with a twist": fork to catch up + 1 XRPL-unique innovation (M-10 Risk-Signal MPT).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TOP BETS -->
+<div class="frame">
+  <h2>Top bets <em>— by audience</em></h2>
+  <div class="frame-grid">
+    <div class="frame-cell">
+      <h4>For a founder · top 5 bets</h4>
+      <ul>
+        <li><strong>M-24 CeDeFi Yield SDK</strong> — distribution play #1 (60%+ XRP on CEXes)</li>
+        <li><strong>M-09 Vault Wrapper</strong> — timing arbitrage on XLS-65</li>
+        <li><strong>M-14 Yield-Bearing Stablecoin</strong> — top community demand × USDe parallel</li>
+        <li><strong>M-19 Perp DEX</strong> — XRPL is at zero, derivatives = highest DeFi volume</li>
+        <li><strong>Y-15 Prediction dApps</strong> — Polymarket did $3B on US elections alone</li>
+      </ul>
+    </div>
+    <div class="frame-cell">
+      <h4>For XRPL Commons · top 5 priorities</h4>
+      <ul>
+        <li><strong>M-22 Capabilities Registry</strong> — solves the awareness gap directly</li>
+        <li><strong>M-21 Pre-Deployed Testnet</strong> — multiplier on everything else</li>
+        <li><strong>M-25 P-256 / secp256r1</strong> — highest-leverage XLS</li>
+        <li><strong>M-05 Institutional Data Adapter</strong> — unblocks every future institutional integration</li>
+        <li><strong>M-07 Multi-Flow ACL</strong> — unblocks institutional compliance flows</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- META FINDING -->
+<div class="meta-finding">
+  <div class="label">Meta-finding · do not forget</div>
+  <p>The XRPL ecosystem suffers from an <strong>awareness gap, not a protocol gap</strong>. <strong>76% of items identified as "missing"</strong> by the Working Groups are <strong>already addressed by existing primitives</strong>.</p>
+  <p><strong>Direct consequence:</strong> M-22 Capabilities Registry + M-21 Pre-Deployed Testnet alone have more impact than the majority of products on this list. A Buildathon must allocate a meaningful share to these structural multipliers.</p>
+</div>
+
+<div class="sources-foot">
+  <strong>Synthesis sources:</strong><br/>
+  <a href="/en/analysis-1" style="color: var(--ink); font-weight: 700;">Analysis 1</a> — Internal reading (4 Paris PWGs + Atka XRPL DeFi Report 89 slides)<br/>
+  <a href="/en/analysis-2" style="color: var(--ink); font-weight: 700;">Analysis 2</a> — External challenger (24 Focus Areas / 6 Themes)<br/>
+  <a href="/en/analysis-3" style="color: var(--ink); font-weight: 700;">Analysis 3</a> — Master Atlas synthesis A1+A2 (30 opportunities)<br/>
+  <a href="/en/gaps" style="color: var(--ink); font-weight: 700;">/gaps</a> — Builder lens + AI-native services (16 tooling + 8 services + 4 YC)<br/>
+  <strong>YC RFS Summer 2026</strong> — tokenization, stablecoins, prediction markets, AI trading<br/>
+  <br/>
+  <strong>Method:</strong> cross-source dedup, source-tagging per line, multi-axis filter UI (chain × source × tier).<br/>
+  <strong>Guard-rails:</strong> no silent suppression, traceability by ID (M-XX, G-XX, S-XX, Y-XX).
+</div>
+
+</div>
+
+<script>
+(function() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const rows = document.querySelectorAll('.master-table tbody tr[data-chain]');
+  const countEl = document.querySelector('.filter-count');
+  const activeFilters = { chain: 'all', source: 'all', tier: 'all' };
+
+  function updateRows() {
+    let visible = 0;
+    rows.forEach(row => {
+      const chainOk = activeFilters.chain === 'all' || row.dataset.chain === activeFilters.chain;
+      const sourceOk = activeFilters.source === 'all' || row.dataset.source === activeFilters.source;
+      const tierOk = activeFilters.tier === 'all' || row.dataset.tier === activeFilters.tier;
+      if (chainOk && sourceOk && tierOk) {
+        row.classList.remove('row-hidden');
+        visible++;
+      } else {
+        row.classList.add('row-hidden');
+      }
+    });
+    if (countEl) countEl.textContent = visible + ' / ' + rows.length + ' visible';
+  }
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.filterType;
+      const value = btn.dataset.filter;
+      // Deactivate other buttons in same filter type
+      document.querySelectorAll(`.filter-btn[data-filter-type="${type}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilters[type] = value;
+      updateRows();
+    });
+  });
+
+  updateRows();
+})();
+</script>
+
+</body>
+</html>
