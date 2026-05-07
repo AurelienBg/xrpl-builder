@@ -828,10 +828,10 @@
   <header class="masthead">
     <div>
       <div class="eyebrow">Opportunity Gaps · Vue globale · v1.3 · Mai 2026</div>
-      <h1>Les <em>vides</em> de l'écosystème<br/>27 tooling + 8 services AI-native</h1>
+      <h1>Les <em>vides</em> de l'écosystème<br/>27 tooling + 8 services + synthèse stratégique</h1>
     </div>
     <div class="meta">
-      Format : matrice + cards · 3 lentilles<br/>
+      Format : matrice + cards · 4 lentilles<br/>
       Snapshot : mai 2026<br/>
       Catégories : 8 · Services : 8<br/>
       Sources : ecosystem-map · YC RFS
@@ -1377,8 +1377,313 @@
     </div>
   </section>
 
-  
-  <!-- ============= SECTION 1.5 · LENS 3 — MASTER ATLAS + YC RFS SYNTHESIS ============= -->
+  <!-- ============= SECTION 2 · AI-NATIVE SERVICES (YC RFS lens) ============= -->
+  <section class="gaps-section services-section">
+    <div class="section-head">
+      <h2>AI-native <em>services</em> · YC RFS lens</h2>
+      <span class="meta">8 services · économie 60–90 % marge brute</span>
+    </div>
+
+    <div class="services-intro">
+      <p>YC's RFS « <em>AI-native service companies</em> » pivote la question. Au lieu de demander « quel <strong>tool</strong> manque sur XRPL ? », on demande « quel <strong>service</strong> est encore fait par des humains que l'agent IA peut faire mieux ? ». Au lieu de <strong>vendre</strong> l'outil, tu <strong>deviens</strong> le service.</p>
+      <div class="pullquote">L'économie change tout : SaaS classique fait ~75 % de marge brute mais ARPU $50–500/mois. AI-native service = ~70–90 % de marge mais ARPU <strong style="font-style:normal;">$5–30k/mois</strong>. 10–100× le revenu par compte avec des marges quasi-équivalentes.</div>
+      <p>XRPL est exceptionnellement bien placé : <strong>multisig + RegularKey natifs</strong> (agent IA autonome avec garde-fous humains, sans smart contract), <strong>XLS-70 DID + Credentials</strong> (porter ta licence sur ton agent), <strong>frais ~zéro</strong> (chaque action de l'agent loggée on-chain pour audit).</p>
+      <p>Les 8 idées ci-dessous sont scorées sur 4 axes spécifiques aux services : maturité du marché, taille (TAM en revenu), <em>régulation requise</em>, et <em>marge brute cible</em>. Chaque card termine par une ligne <em>Moat</em> qui code 1-2 lettres pour la défensibilité (T tech AI · R régulatoire · N network effect · C capital · B brand).</p>
+    </div>
+
+    <div class="legend-bar services-legend">
+      <div class="legend-block">
+        <h4>Régulation requise</h4>
+        <div class="legend-row"><span class="icon reg-light">LIGHT</span><span>Aucune licence · launch en <em>~6 sem</em></span></div>
+        <div class="legend-row"><span class="icon reg-medium">MEDIUM</span><span>Partenariat licensed entity · <em>3 mois</em></span></div>
+        <div class="legend-row"><span class="icon reg-heavy">HEAVY</span><span>Licence obligatoire · <em>6–18 mois</em> mais barrière défensive</span></div>
+      </div>
+      <div class="legend-block">
+        <h4>Marge brute cible (★ teal)</h4>
+        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★</span><span>~ 60 % · early AI-native, encore beaucoup d'humain</span></div>
+        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★</span><span>~ 70 % · sweet spot an 1</span></div>
+        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★★</span><span>~ 80 % · vraiment AI-native</span></div>
+        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★★★</span><span>~ 90 % · pure AI service (rare)</span></div>
+      </div>
+    </div>
+
+    <div class="gaps-grid">
+
+      <!-- S01 · Compliance-as-a-Service -->
+      <article class="gap-card" data-cat="identity" id="service-01">
+        <div class="gap-head">
+          <span class="cat-pill">Compliance · service</span>
+          <span class="gap-num">S01</span>
+        </div>
+        <h3>Compliance-<em>as-a-Service</em></h3>
+        <p class="tagline">Be le département compliance pour les projets XRPL régulés.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★★</span>
+          <span class="tag reg-heavy">REG HEAVY</span>
+          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
+        </div>
+        <p class="desc">L'agent IA fait le travail répétitif d'un compliance officer : <strong>surveillance tx 24/7</strong> (sanctions Chainalysis, AML), génération <em>SAR/CTR/MiCA reports</em> trimestriels, audit trails on-chain. Humain (compliance lead avec licence PSAN/RIA) signe les rapports et gère les régulateurs. <strong>Tu remplaces une équipe de 3–5 compliance analysts par 1 senior + agent IA.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">~200+ projets XRPL régulés (RWA issuers, exchanges, B2B payment) · chacun paye $3–15k/mois en compliance interne aujourd'hui</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">MiCA reporting CASP Q4 2024+ obligatoire · RLUSD/Mastercard pilots scaling · RWA on-chain en explosion</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · XLS-70 DID (porter licence)</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">R + N</span> · Régulatoire (license PSAN) + Network effect (plus de clients = meilleure data anomalies)
+        </div>
+      </article>
+
+      <!-- S02 · Treasury-as-a-Service -->
+      <article class="gap-card" data-cat="treasury" id="service-02">
+        <div class="gap-head">
+          <span class="cat-pill">Treasury · AI CFO</span>
+          <span class="gap-num">S02</span>
+        </div>
+        <h3>Treasury-as-a-Service <em>(AI CFO)</em></h3>
+        <p class="tagline">Be le CFO pour les DAOs et token projects.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag reg-medium">REG MEDIUM</span>
+          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
+        </div>
+        <p class="desc">L'agent IA gère la trésorerie crypto : <strong>multisig signing flow</strong>, allocation yield (rebalance entre AMM XLS-30 / RWA stablecoins / lending sidechain), <em>P&amp;L mensuel</em>, payroll streaming, déclaration fiscale crypto. Board approval pour décisions &gt; seuil. <strong>Tu remplaces un CFO fractional ($150k/an) par $5–20k/mois SaaS.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">~2 500+ DAOs + token projects + boîtes Web3 · chacun a 1 trésorerie crypto à gérer aujourd'hui en bricolage Excel</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Post-FTX traumatisme treasury · MiCA CASP reporting obligatoire · RLUSD permet enfin du cash management on-chain régulé</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">SignerListSet · AMM · Payment streaming · account_lines</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas#payrollxrp"><span class="link-tag">Atlas</span><span class="link-name">PayrollXRP (treasury angle)</span><span class="link-arrow">→</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">B + T</span> · Brand (trust client) + Tech (algo allocation AI)
+        </div>
+      </article>
+
+      <!-- S03 · Market-making-as-a-Service -->
+      <article class="gap-card" data-cat="defi" id="service-03">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi · MM</span>
+          <span class="gap-num">S03</span>
+        </div>
+        <h3>Market-making-<em>as-a-Service</em></h3>
+        <p class="tagline">Be le market maker pour les nouveaux tokens XRPL.</p>
+        <div class="tags">
+          <span class="tag fragmented">FRAGMENTÉ</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag reg-light">REG LIGHT</span>
+          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
+        </div>
+        <p class="desc">L'agent fournit la liquidité aux <strong>pools AMM XLS-30 sur paires illiquides</strong> (RWA tokens, project tokens, RLUSD pairs nouveaux), gère le spread dynamiquement, hedge cross-exchange. Capital initial requis (balance sheet). <strong>Tu factures les issuers en mensuel ou tu captures le spread + token allocation à la signature.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">100s de nouveaux tokens XRPL/an + RWA token launches mensuels (Spiko, BondBloc-style, etc.)</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">AMM XLS-30 mature depuis mars 2024 · RWA issuance en explosion · frais ~zero permettent quoting très tight</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">AMMDeposit · OfferCreate · ripple_path_find</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">C + T</span> · Capital (balance sheet quoting) + Tech (AI quoting algos)
+        </div>
+      </article>
+
+      <!-- S04 · RWA structuring (AI lawyer) -->
+      <article class="gap-card" data-cat="rwa" id="service-04">
+        <div class="gap-head">
+          <span class="cat-pill">RWA · AI lawyer</span>
+          <span class="gap-num">S04</span>
+        </div>
+        <h3>RWA structuring <em>firm</em></h3>
+        <p class="tagline">Be le cabinet d'avocats pour les issuers RWA mid-market.</p>
+        <div class="tags">
+          <span class="tag fragmented">FRAGMENTÉ</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag reg-heavy">REG HEAVY</span>
+          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
+        </div>
+        <p class="desc">L'agent IA produit <strong>80 % du legal</strong> pour des deals tokenisés 5–50 M€ : SPV setup (Free Zone, Luxembourg), prospectus drafting, MiCA filing, ongoing reporting trimestriel. Avocat senior partner reviewer + signataire. <strong>Tu remplaces un Big Law à 800 €/h par un service à 0,5–2 % de l'émission.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">PME EU 5–50 M€ d'émission · 80 G€ TAM stock potentiel · zéro acteur dédié XRPL aujourd'hui</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">MiCA cadre clair · MPT XLS-33d live · BondBloc blueprint comme acheteur · mid-market sous-servi par Big Law</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">MPT XLS-33d · XLS-70 DID + Credentials</span><span class="link-arrow">→</span></a>
+          <a class="gap-link" href="builder-atlas#bondbloc"><span class="link-tag">Atlas</span><span class="link-name">BondBloc (acheteur potentiel)</span><span class="link-arrow">→</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">R + B</span> · Régulatoire (lawyer license) + Brand (relations régulateurs)
+        </div>
+      </article>
+
+      <!-- S05 · Community-ops-as-a-Service -->
+      <article class="gap-card" data-cat="nft" id="service-05">
+        <div class="gap-head">
+          <span class="cat-pill">Community ops</span>
+          <span class="gap-num">S05</span>
+        </div>
+        <h3>Community-ops-<em>as-a-Service</em></h3>
+        <p class="tagline">Be l'équipe support / community pour les projets XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag reg-light">REG LIGHT</span>
+          <span class="tag margin">MARGE <span class="star">★★★★</span> 90%</span>
+        </div>
+        <p class="desc">L'agent gère le <strong>Discord/Telegram 24/7 multilingue</strong> : résolution issues classiques (trustline pas activée, NFT mint failed, lost tx), <em>transcript memory</em> (mémoire des users récurrents), escalation rare. Pour les apps grand public où le support est un coût significatif. <strong>90 % de marge possible — l'agent fait quasi tout, escalade très rare.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">~500+ projets XRPL avec community Discord/Telegram active · facturable $2–8k/mois par projet</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Claude/GPT-4o suffisamment bons pour résolution L1 · intégration native xrpl.js permet à l'agent de signer une tx de récupération autorisée</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">xrpl.js · SetRegularKey (sub-account agent) · Memo</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Transverse · pas de blueprint</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">N</span> · Network effect (training data + cas accumulés deviennent edge produit)
+        </div>
+      </article>
+
+      <!-- S06 · Audit & continuous monitoring -->
+      <article class="gap-card" data-cat="infra" id="service-06">
+        <div class="gap-head">
+          <span class="cat-pill">Audit · Monitoring</span>
+          <span class="gap-num">S06</span>
+        </div>
+        <h3>Audit & <em>continuous monitoring</em></h3>
+        <p class="tagline">Be l'auditeur + monitoring continu pour smart contracts EVM Sidechain + config XRPL natif.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag reg-medium">REG MEDIUM</span>
+          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
+        </div>
+        <p class="desc">L'agent fait le <strong>code review Solidity (sidechain) + config trustline/MPT/AMM côté natif</strong>, détecte anomalies on-chain en continu (txs suspects, oracle health, drift de réserve), génère <em>rapports hebdo + alertes critiques</em>. Senior auditeur reviewer + signataire de la certification. <strong>$20–100k initial audit + $1–5k/mois monitoring.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Smart contracts EVM Sidechain en croissance · RWA issuers · bridges · projets institutionnels (Aviva, Ondo, Spiko)</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">EVM Sidechain mature · RWA explosion + Lending XLS-66 imminent = besoin urgent d'audits XRPL-natif (CertiK / Trail of Bits font surtout EVM mainnet)</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · account_objects · validators monitoring</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">B + T</span> · Brand (réputation certification) + Tech (AI catches more patterns)
+        </div>
+      </article>
+
+      <!-- S07 · Dispute resolution & recovery -->
+      <article class="gap-card" data-cat="identity" id="service-07">
+        <div class="gap-head">
+          <span class="cat-pill">Dispute · médiation</span>
+          <span class="gap-num">S07</span>
+        </div>
+        <h3>Dispute resolution <em>& recovery</em></h3>
+        <p class="tagline">Be le médiateur pour utilisateurs et disputes B2B.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
+          <span class="tag reg-light">REG LIGHT</span>
+          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
+        </div>
+        <p class="desc">L'agent <strong>analyse on-chain les disputes</strong> (paiement bloqué, escrow contesté, NFT lost, send to wrong address), drafte la résolution, négocie avec exchanges/issuers. Cas typiques : utilisateur a envoyé à mauvaise adresse, escrow time-out à clarifier, NFT contesté. <strong>Charge par cas ($200–2 000) ou retainer mensuel pour exchanges/marketplaces.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">Niche mais récurrent · exchanges (Bitstamp, GateHub), marketplaces NFT, victimes scam, B2B litigation crypto</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Croissance retail XRPL (RLUSD adoption) = plus de cas · user-friendly recourse manque vs adoption institutionnelle</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · EscrowCancel/Finish · escrow conditions</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · niche</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">B + N</span> · Brand (réputation médiateur) + Network effect (cas history accumulé)
+        </div>
+      </article>
+
+      <!-- S08 · DeFi underwriting / insurance -->
+      <article class="gap-card" data-cat="defi" id="service-08">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi · Insurance</span>
+          <span class="gap-num">S08</span>
+        </div>
+        <h3>DeFi <em>underwriting / insurance</em></h3>
+        <p class="tagline">Be la compagnie d'assurance pour les positions DeFi XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span>
+          <span class="tag size">★★★<span class="star empty">★</span></span>
+          <span class="tag reg-heavy">REG HEAVY</span>
+          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
+        </div>
+        <p class="desc">L'agent fait du <strong>risk scoring temps réel</strong> sur AMM positions (impermanent loss), RWA exposure (issuer credit risk), oracle health, futures lending positions (XLS-66). <em>Tarification de prime automatique</em>. Humain : claims approval, capital management. <strong>Pour les insti qui veulent du DeFi mais ont besoin de hedge.</strong></p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Marché</span>
+            <span class="meta-val">TVL DeFi XRPL en croissance · FXRP 196 M$ + Flare 210 M$ + futur XLS-66 lending pourrait débloquer des G$</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Pourquoi maintenant</span>
+            <span class="meta-val">Post-2022 leçons risk (Anchor, Celsius, FTX) · RWA scaling exige hedge · XRPL absent du marché crypto insurance</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">account_lines · AMM stats · oracle Band · Escrow conditional (claims)</span><span class="link-arrow">→</span></a>
+          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
+        </div>
+        <div class="moat-line">
+          <span class="moat-label">Moat</span> <span class="moat-code">C + R</span> · Capital (balance sheet réserves) + Régulatoire (license assurance)
+        </div>
+      </article>
+
+    </div>
+  </section>
+<!-- ============= SECTION 1.5 · LENS 3 — MASTER ATLAS + YC RFS SYNTHESIS ============= -->
   <section class="gaps-section" style="margin-top: 48px;">
     <div class="section-head">
       <h2>Lentille 3 — Synthèse Master Atlas + YC RFS Summer 2026</h2>
@@ -1812,312 +2117,78 @@
     </div>
   </section>
 
-  <!-- ============= SECTION 2 · AI-NATIVE SERVICES (YC RFS lens) ============= -->
-  <section class="gaps-section services-section">
+  <!-- ============= SECTION 3 · LENS 4 — STRATEGIC SYNTHESIS (from /analysis-3) ============= -->
+  <section class="gaps-section" style="margin-top: 48px;">
     <div class="section-head">
-      <h2>AI-native <em>services</em> · YC RFS lens</h2>
-      <span class="meta">8 services · économie 60–90 % marge brute</span>
+      <h2>Lentille 4 — <em>Synthèse stratégique</em> · la boussole du fondateur</h2>
+      <span class="meta">5 tensions · top bets · méta-finding</span>
     </div>
-
     <div class="services-intro">
-      <p>YC's RFS « <em>AI-native service companies</em> » pivote la question. Au lieu de demander « quel <strong>tool</strong> manque sur XRPL ? », on demande « quel <strong>service</strong> est encore fait par des humains que l'agent IA peut faire mieux ? ». Au lieu de <strong>vendre</strong> l'outil, tu <strong>deviens</strong> le service.</p>
-      <div class="pullquote">L'économie change tout : SaaS classique fait ~75 % de marge brute mais ARPU $50–500/mois. AI-native service = ~70–90 % de marge mais ARPU <strong style="font-style:normal;">$5–30k/mois</strong>. 10–100× le revenu par compte avec des marges quasi-équivalentes.</div>
-      <p>XRPL est exceptionnellement bien placé : <strong>multisig + RegularKey natifs</strong> (agent IA autonome avec garde-fous humains, sans smart contract), <strong>XLS-70 DID + Credentials</strong> (porter ta licence sur ton agent), <strong>frais ~zéro</strong> (chaque action de l'agent loggée on-chain pour audit).</p>
-      <p>Les 8 idées ci-dessous sont scorées sur 4 axes spécifiques aux services : maturité du marché, taille (TAM en revenu), <em>régulation requise</em>, et <em>marge brute cible</em>. Chaque card termine par une ligne <em>Moat</em> qui code 1-2 lettres pour la défensibilité (T tech AI · R régulatoire · N network effect · C capital · B brand).</p>
+      <p>Cette lentille n'est <strong>pas une autre liste d'opportunités</strong> — c'est le <em>cadre de décision stratégique</em> distillé depuis <a href="analysis-3">la synthèse Master Atlas</a>. Les 35+ opportunités des Lentilles 1–3 disent <em>quoi construire</em> ; cette lentille répond <em>sur quoi parier, et pourquoi</em>.</p>
     </div>
 
-    <div class="legend-bar services-legend">
-      <div class="legend-block">
-        <h4>Régulation requise</h4>
-        <div class="legend-row"><span class="icon reg-light">LIGHT</span><span>Aucune licence · launch en <em>~6 sem</em></span></div>
-        <div class="legend-row"><span class="icon reg-medium">MEDIUM</span><span>Partenariat licensed entity · <em>3 mois</em></span></div>
-        <div class="legend-row"><span class="icon reg-heavy">HEAVY</span><span>Licence obligatoire · <em>6–18 mois</em> mais barrière défensive</span></div>
+    <!-- The thesis -->
+    <div style="border: 2px solid var(--ink); background: var(--chain); color: var(--paper); padding: 22px 28px; margin-bottom: 24px;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; color: var(--wallet); text-transform: uppercase; font-weight: 700; margin-bottom: 8px;">La thèse en une phrase</div>
+      <p style="font-family: 'Fraunces', serif; font-size: 17px; line-height: 1.5; margin: 0;">XRPL devient le L1 de l'<strong style="color: var(--wallet);">Institutional &amp; Compliant DeFi</strong> — RLUSD comme stablecoin de settlement, XLS-66/65 comme rails de lending/vault, XLS-70/80 comme infra Identity, EVM Sidechain comme zone d'innovation cross-chain. Le bottleneck n'est pas le protocole — c'est la <strong style="color: var(--wallet);">distribution</strong> (CeDeFi via CEX) et la <strong style="color: var(--wallet);">plumberie d'intégration</strong> (data, accounting, KYC).</p>
+    </div>
+
+    <!-- 5 tensions arbitrated -->
+    <div style="margin-bottom: 24px;">
+      <h3 style="font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; margin-bottom: 10px;">5 tensions stratégiques <em style="color: var(--chain);">— arbitrées</em></h3>
+      <table style="width: 100%; border-collapse: collapse; border: 2px solid var(--ink); background: var(--paper); font-size: 13px;">
+        <thead>
+          <tr>
+            <th style="background: var(--ink); color: var(--paper); padding: 10px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;">#</th>
+            <th style="background: var(--ink); color: var(--paper); padding: 10px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;">Tension</th>
+            <th style="background: var(--ink); color: var(--paper); padding: 10px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;">Arbitrage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #ddd; background: var(--wallet); text-align: center; font-family: monospace; font-weight: 700;">T1</td><td style="padding: 10px; border-bottom: 1px solid #ddd;">XRPL natif vs EVM Sidechain — où mettre les builders ?</td><td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: var(--app);">RÉSOLU</strong> · Chaque opportunité a un chain-target précis (voir Master Atlas).</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #ddd; background: var(--wallet); text-align: center; font-family: monospace; font-weight: 700;">T2</td><td style="padding: 10px; border-bottom: 1px solid #ddd;">Credentials = infra horizontale, ou laisser émerger ?</td><td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: var(--app);">RÉSOLU</strong> · Push it via Multi-Flow ACL (Gap 04) + sandbox pré-déployée.</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #ddd; background: var(--wallet); text-align: center; font-family: monospace; font-weight: 700;">T3</td><td style="padding: 10px; border-bottom: 1px solid #ddd;">CeDeFi obligatoire vs DeFi pure institutionnelle ?</td><td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: var(--app);">RÉSOLU</strong> · CeDeFi via CEX = distribution play #1 (Gap 23 / M-24).</td></tr>
+          <tr><td style="padding: 10px; border-bottom: 1px solid #ddd; background: var(--wallet); text-align: center; font-family: monospace; font-weight: 700;">T4</td><td style="padding: 10px; border-bottom: 1px solid #ddd;">RLUSD-first vs multi-stablecoin ?</td><td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong style="color: var(--user);">PARTIELLEMENT RÉSOLU</strong> · RLUSD-first par défaut + non-USD rails opt-in. Tension persiste pour fondateurs risk-averse à la dépendance Ripple.</td></tr>
+          <tr><td style="padding: 10px;">T5</td><td style="padding: 10px;">Cloning Morpho/Babylon vs originalité XRPL-native ?</td><td style="padding: 10px;"><strong style="color: var(--app);">RÉSOLU</strong> · « Both, with a twist » : forker pour rattraper + 1 innovation propre à XRPL (Risk-Signal MPT, Gap 17).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Top bets grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px;">
+      <div style="border: 2px solid var(--ink); background: var(--paper-2); padding: 20px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--user); margin-bottom: 10px; font-weight: 700;">Pour un fondateur · top 5 bets</div>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55;">
+          <li><strong>Gap 23 — CeDeFi Yield SDK</strong> — distribution play #1 (60%+ XRP sur CEX)</li>
+          <li><strong>Gap 16 — Vault Wrapper</strong> — timing arbitrage sur XLS-65</li>
+          <li><strong>Gap 24 — Stablecoin Yield-Bearing</strong> — top demande communauté × parallèle USDe</li>
+          <li><strong>Gap 19 — Perpetual DEX</strong> — XRPL est à zéro, derivatives = +gros volume DeFi</li>
+          <li><strong>Gap 26 — Prediction dApps</strong> — Polymarket a fait 3B$ rien que sur les élections US</li>
+        </ul>
       </div>
-      <div class="legend-block">
-        <h4>Marge brute cible (★ teal)</h4>
-        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★</span><span>~ 60 % · early AI-native, encore beaucoup d'humain</span></div>
-        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★</span><span>~ 70 % · sweet spot an 1</span></div>
-        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★★</span><span>~ 80 % · vraiment AI-native</span></div>
-        <div class="legend-row"><span class="star" style="color:var(--ai);font-size:14px;">★★★★</span><span>~ 90 % · pure AI service (rare)</span></div>
+      <div style="border: 2px solid var(--ink); background: var(--paper-2); padding: 20px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--user); margin-bottom: 10px; font-weight: 700;">Pour XRPL Commons · top 5 priorités écosystème</div>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55;">
+          <li><strong>Gap 20 — Capabilities Registry</strong> — résout l'awareness gap directement</li>
+          <li><strong>Pre-deployed Testnet</strong> (M-21 dans l'Atlas) — multiplicateur sur tout le reste</li>
+          <li><strong>P-256 / secp256r1 signing</strong> (M-25) — XLS le plus haut leverage</li>
+          <li><strong>Institutional Data Adapter</strong> (M-05) — débloque chaque future intégration institutionnelle</li>
+          <li><strong>Gap 04 — Multi-Flow ACL</strong> — débloque les flows compliance institutionnels</li>
+        </ul>
       </div>
     </div>
 
-    <div class="gaps-grid">
-
-      <!-- S01 · Compliance-as-a-Service -->
-      <article class="gap-card" data-cat="identity" id="service-01">
-        <div class="gap-head">
-          <span class="cat-pill">Compliance · service</span>
-          <span class="gap-num">S01</span>
-        </div>
-        <h3>Compliance-<em>as-a-Service</em></h3>
-        <p class="tagline">Be le département compliance pour les projets XRPL régulés.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★★★</span>
-          <span class="tag reg-heavy">REG HEAVY</span>
-          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
-        </div>
-        <p class="desc">L'agent IA fait le travail répétitif d'un compliance officer : <strong>surveillance tx 24/7</strong> (sanctions Chainalysis, AML), génération <em>SAR/CTR/MiCA reports</em> trimestriels, audit trails on-chain. Humain (compliance lead avec licence PSAN/RIA) signe les rapports et gère les régulateurs. <strong>Tu remplaces une équipe de 3–5 compliance analysts par 1 senior + agent IA.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">~200+ projets XRPL régulés (RWA issuers, exchanges, B2B payment) · chacun paye $3–15k/mois en compliance interne aujourd'hui</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">MiCA reporting CASP Q4 2024+ obligatoire · RLUSD/Mastercard pilots scaling · RWA on-chain en explosion</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · XLS-70 DID (porter licence)</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">R + N</span> · Régulatoire (license PSAN) + Network effect (plus de clients = meilleure data anomalies)
-        </div>
-      </article>
-
-      <!-- S02 · Treasury-as-a-Service -->
-      <article class="gap-card" data-cat="treasury" id="service-02">
-        <div class="gap-head">
-          <span class="cat-pill">Treasury · AI CFO</span>
-          <span class="gap-num">S02</span>
-        </div>
-        <h3>Treasury-as-a-Service <em>(AI CFO)</em></h3>
-        <p class="tagline">Be le CFO pour les DAOs et token projects.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★★<span class="star empty">★</span></span>
-          <span class="tag reg-medium">REG MEDIUM</span>
-          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
-        </div>
-        <p class="desc">L'agent IA gère la trésorerie crypto : <strong>multisig signing flow</strong>, allocation yield (rebalance entre AMM XLS-30 / RWA stablecoins / lending sidechain), <em>P&amp;L mensuel</em>, payroll streaming, déclaration fiscale crypto. Board approval pour décisions &gt; seuil. <strong>Tu remplaces un CFO fractional ($150k/an) par $5–20k/mois SaaS.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">~2 500+ DAOs + token projects + boîtes Web3 · chacun a 1 trésorerie crypto à gérer aujourd'hui en bricolage Excel</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">Post-FTX traumatisme treasury · MiCA CASP reporting obligatoire · RLUSD permet enfin du cash management on-chain régulé</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">SignerListSet · AMM · Payment streaming · account_lines</span><span class="link-arrow">→</span></a>
-          <a class="gap-link" href="builder-atlas#payrollxrp"><span class="link-tag">Atlas</span><span class="link-name">PayrollXRP (treasury angle)</span><span class="link-arrow">→</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">B + T</span> · Brand (trust client) + Tech (algo allocation AI)
-        </div>
-      </article>
-
-      <!-- S03 · Market-making-as-a-Service -->
-      <article class="gap-card" data-cat="defi" id="service-03">
-        <div class="gap-head">
-          <span class="cat-pill">DeFi · MM</span>
-          <span class="gap-num">S03</span>
-        </div>
-        <h3>Market-making-<em>as-a-Service</em></h3>
-        <p class="tagline">Be le market maker pour les nouveaux tokens XRPL.</p>
-        <div class="tags">
-          <span class="tag fragmented">FRAGMENTÉ</span>
-          <span class="tag size">★★★<span class="star empty">★</span></span>
-          <span class="tag reg-light">REG LIGHT</span>
-          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
-        </div>
-        <p class="desc">L'agent fournit la liquidité aux <strong>pools AMM XLS-30 sur paires illiquides</strong> (RWA tokens, project tokens, RLUSD pairs nouveaux), gère le spread dynamiquement, hedge cross-exchange. Capital initial requis (balance sheet). <strong>Tu factures les issuers en mensuel ou tu captures le spread + token allocation à la signature.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">100s de nouveaux tokens XRPL/an + RWA token launches mensuels (Spiko, BondBloc-style, etc.)</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">AMM XLS-30 mature depuis mars 2024 · RWA issuance en explosion · frais ~zero permettent quoting très tight</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">AMMDeposit · OfferCreate · ripple_path_find</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">C + T</span> · Capital (balance sheet quoting) + Tech (AI quoting algos)
-        </div>
-      </article>
-
-      <!-- S04 · RWA structuring (AI lawyer) -->
-      <article class="gap-card" data-cat="rwa" id="service-04">
-        <div class="gap-head">
-          <span class="cat-pill">RWA · AI lawyer</span>
-          <span class="gap-num">S04</span>
-        </div>
-        <h3>RWA structuring <em>firm</em></h3>
-        <p class="tagline">Be le cabinet d'avocats pour les issuers RWA mid-market.</p>
-        <div class="tags">
-          <span class="tag fragmented">FRAGMENTÉ</span>
-          <span class="tag size">★★★<span class="star empty">★</span></span>
-          <span class="tag reg-heavy">REG HEAVY</span>
-          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
-        </div>
-        <p class="desc">L'agent IA produit <strong>80 % du legal</strong> pour des deals tokenisés 5–50 M€ : SPV setup (Free Zone, Luxembourg), prospectus drafting, MiCA filing, ongoing reporting trimestriel. Avocat senior partner reviewer + signataire. <strong>Tu remplaces un Big Law à 800 €/h par un service à 0,5–2 % de l'émission.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">PME EU 5–50 M€ d'émission · 80 G€ TAM stock potentiel · zéro acteur dédié XRPL aujourd'hui</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">MiCA cadre clair · MPT XLS-33d live · BondBloc blueprint comme acheteur · mid-market sous-servi par Big Law</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">MPT XLS-33d · XLS-70 DID + Credentials</span><span class="link-arrow">→</span></a>
-          <a class="gap-link" href="builder-atlas#bondbloc"><span class="link-tag">Atlas</span><span class="link-name">BondBloc (acheteur potentiel)</span><span class="link-arrow">→</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">R + B</span> · Régulatoire (lawyer license) + Brand (relations régulateurs)
-        </div>
-      </article>
-
-      <!-- S05 · Community-ops-as-a-Service -->
-      <article class="gap-card" data-cat="nft" id="service-05">
-        <div class="gap-head">
-          <span class="cat-pill">Community ops</span>
-          <span class="gap-num">S05</span>
-        </div>
-        <h3>Community-ops-<em>as-a-Service</em></h3>
-        <p class="tagline">Be l'équipe support / community pour les projets XRPL.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
-          <span class="tag reg-light">REG LIGHT</span>
-          <span class="tag margin">MARGE <span class="star">★★★★</span> 90%</span>
-        </div>
-        <p class="desc">L'agent gère le <strong>Discord/Telegram 24/7 multilingue</strong> : résolution issues classiques (trustline pas activée, NFT mint failed, lost tx), <em>transcript memory</em> (mémoire des users récurrents), escalation rare. Pour les apps grand public où le support est un coût significatif. <strong>90 % de marge possible — l'agent fait quasi tout, escalade très rare.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">~500+ projets XRPL avec community Discord/Telegram active · facturable $2–8k/mois par projet</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">Claude/GPT-4o suffisamment bons pour résolution L1 · intégration native xrpl.js permet à l'agent de signer une tx de récupération autorisée</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">xrpl.js · SetRegularKey (sub-account agent) · Memo</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Transverse · pas de blueprint</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">N</span> · Network effect (training data + cas accumulés deviennent edge produit)
-        </div>
-      </article>
-
-      <!-- S06 · Audit & continuous monitoring -->
-      <article class="gap-card" data-cat="infra" id="service-06">
-        <div class="gap-head">
-          <span class="cat-pill">Audit · Monitoring</span>
-          <span class="gap-num">S06</span>
-        </div>
-        <h3>Audit & <em>continuous monitoring</em></h3>
-        <p class="tagline">Be l'auditeur + monitoring continu pour smart contracts EVM Sidechain + config XRPL natif.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
-          <span class="tag reg-medium">REG MEDIUM</span>
-          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
-        </div>
-        <p class="desc">L'agent fait le <strong>code review Solidity (sidechain) + config trustline/MPT/AMM côté natif</strong>, détecte anomalies on-chain en continu (txs suspects, oracle health, drift de réserve), génère <em>rapports hebdo + alertes critiques</em>. Senior auditeur reviewer + signataire de la certification. <strong>$20–100k initial audit + $1–5k/mois monitoring.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">Smart contracts EVM Sidechain en croissance · RWA issuers · bridges · projets institutionnels (Aviva, Ondo, Spiko)</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">EVM Sidechain mature · RWA explosion + Lending XLS-66 imminent = besoin urgent d'audits XRPL-natif (CertiK / Trail of Bits font surtout EVM mainnet)</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · account_objects · validators monitoring</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">B + T</span> · Brand (réputation certification) + Tech (AI catches more patterns)
-        </div>
-      </article>
-
-      <!-- S07 · Dispute resolution & recovery -->
-      <article class="gap-card" data-cat="identity" id="service-07">
-        <div class="gap-head">
-          <span class="cat-pill">Dispute · médiation</span>
-          <span class="gap-num">S07</span>
-        </div>
-        <h3>Dispute resolution <em>& recovery</em></h3>
-        <p class="tagline">Be le médiateur pour utilisateurs et disputes B2B.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★<span class="star empty">★</span><span class="star empty">★</span></span>
-          <span class="tag reg-light">REG LIGHT</span>
-          <span class="tag margin">MARGE <span class="star">★★</span><span class="star empty">★</span><span class="star empty">★</span> 70%</span>
-        </div>
-        <p class="desc">L'agent <strong>analyse on-chain les disputes</strong> (paiement bloqué, escrow contesté, NFT lost, send to wrong address), drafte la résolution, négocie avec exchanges/issuers. Cas typiques : utilisateur a envoyé à mauvaise adresse, escrow time-out à clarifier, NFT contesté. <strong>Charge par cas ($200–2 000) ou retainer mensuel pour exchanges/marketplaces.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">Niche mais récurrent · exchanges (Bitstamp, GateHub), marketplaces NFT, victimes scam, B2B litigation crypto</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">Croissance retail XRPL (RLUSD adoption) = plus de cas · user-friendly recourse manque vs adoption institutionnelle</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">tx_history · EscrowCancel/Finish · escrow conditions</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · niche</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">B + N</span> · Brand (réputation médiateur) + Network effect (cas history accumulé)
-        </div>
-      </article>
-
-      <!-- S08 · DeFi underwriting / insurance -->
-      <article class="gap-card" data-cat="defi" id="service-08">
-        <div class="gap-head">
-          <span class="cat-pill">DeFi · Insurance</span>
-          <span class="gap-num">S08</span>
-        </div>
-        <h3>DeFi <em>underwriting / insurance</em></h3>
-        <p class="tagline">Be la compagnie d'assurance pour les positions DeFi XRPL.</p>
-        <div class="tags">
-          <span class="tag greenfield">GREENFIELD</span>
-          <span class="tag size">★★★<span class="star empty">★</span></span>
-          <span class="tag reg-heavy">REG HEAVY</span>
-          <span class="tag margin">MARGE <span class="star">★★★</span><span class="star empty">★</span> 80%</span>
-        </div>
-        <p class="desc">L'agent fait du <strong>risk scoring temps réel</strong> sur AMM positions (impermanent loss), RWA exposure (issuer credit risk), oracle health, futures lending positions (XLS-66). <em>Tarification de prime automatique</em>. Humain : claims approval, capital management. <strong>Pour les insti qui veulent du DeFi mais ont besoin de hedge.</strong></p>
-        <div class="gap-meta">
-          <div class="meta-block">
-            <span class="meta-label">Marché</span>
-            <span class="meta-val">TVL DeFi XRPL en croissance · FXRP 196 M$ + Flare 210 M$ + futur XLS-66 lending pourrait débloquer des G$</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Pourquoi maintenant</span>
-            <span class="meta-val">Post-2022 leçons risk (Anchor, Celsius, FTX) · RWA scaling exige hedge · XRPL absent du marché crypto insurance</span>
-          </div>
-        </div>
-        <div class="gap-links">
-          <a class="gap-link" href="decision-tree-map"><span class="link-tag">Stack</span><span class="link-name">account_lines · AMM stats · oracle Band · Escrow conditional (claims)</span><span class="link-arrow">→</span></a>
-          <a class="gap-link disabled"><span class="link-tag">Atlas</span><span class="link-name">Pas de blueprint · candidat futur</span><span class="link-arrow">·</span></a>
-        </div>
-        <div class="moat-line">
-          <span class="moat-label">Moat</span> <span class="moat-code">C + R</span> · Capital (balance sheet réserves) + Régulatoire (license assurance)
-        </div>
-      </article>
-
+    <!-- Meta-finding -->
+    <div style="border: 2px dashed var(--ink); background: rgba(212,160,23,0.08); padding: 22px 28px; margin-bottom: 16px;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; font-weight: 700;">Méta-finding · à ne pas oublier</div>
+      <p style="font-size: 14px; line-height: 1.55; margin: 0 0 8px 0;">L'écosystème XRPL souffre d'un <strong>awareness gap, pas d'un protocol gap</strong>. <strong>76% des items identifiés comme « manquants »</strong> par les Working Groups sont <strong>déjà adressés par des primitives existantes</strong>.</p>
+      <p style="font-size: 14px; line-height: 1.55; margin: 0;"><strong>Conséquence directe :</strong> un Capabilities Registry (Gap 20) + un sandbox pré-déployé ont à eux seuls plus d'impact que la majorité des produits de cette liste. Un Buildathon doit allouer une part non-négligeable à ces multiplicateurs structurels.</p>
     </div>
+
+    <p style="font-size: 13px; color: var(--muted); font-style: italic; text-align: center; margin: 0;">→ Narrative stratégique complète, convergences A1∩A2 et table Master Atlas (30 lignes) sur <a href="analysis-3" style="color: var(--ink); font-weight: 600;">/analysis-3</a></p>
+
   </section>
+
 
   <!-- NOTES -->
   <div class="notes">
