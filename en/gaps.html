@@ -828,10 +828,10 @@
   <header class="masthead">
     <div>
       <div class="eyebrow">Opportunity Gaps · Global view · v1.3 · May 2026</div>
-      <h1>The <em>gaps</em> in the ecosystem<br/>12 tooling + 8 AI-native services</h1>
+      <h1>The <em>gaps</em> in the ecosystem<br/>27 tooling + 8 AI-native services</h1>
     </div>
     <div class="meta">
-      Format: matrix + cards · 2 lenses<br/>
+      Format: matrix + cards · 3 lenses<br/>
       Snapshot: May 2026<br/>
       Categories: 8 · Services: 8<br/>
       Sources: ecosystem-map · YC RFS
@@ -1374,6 +1374,441 @@
         </div>
       </article>
 
+    </div>
+  </section>
+
+  
+  <!-- ============= SECTION 1.5 · LENS 3 — MASTER ATLAS + YC RFS SYNTHESIS ============= -->
+  <section class="gaps-section" style="margin-top: 48px;">
+    <div class="section-head">
+      <h2>Lens 3 — Master Atlas + YC RFS Summer 2026 synthesis</h2>
+      <span class="meta">15 opportunities · from Master Atlas + YC RFS Summer 2026</span>
+    </div>
+    <div class="services-intro">
+      <p>This section consolidates the <strong>15 unique opportunities</strong> from the Master Atlas (<a href="analysis-3">/analysis-3</a>) and the YC RFS Summer 2026 thesis (<em>"tokenization, stablecoins, prediction markets, AI trading"</em>) that aren't covered in Lens 1 (12 tooling) or Lens 2 (8 services). Source-tagged, ready for the Buildathon challenge register.</p>
+    </div>
+    <div class="gaps-grid">
+
+      <!-- GAP 13 -->
+      <article class="gap-card" data-cat="wallets" data-build="ready-now" id="gap-13">
+        <div class="gap-head">
+          <span class="cat-pill">Wallets</span>
+          <span class="gap-num">Gap 13</span>
+        </div>
+        <h3>Cross-device <em>session continuity</em></h3>
+        <p class="tagline">WalletConnect didn't solve the device-switch problem. XRPL needs its own answer.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">MULTIPLIER</span>
+        </div>
+        <p class="desc">Subscriptions, merchant SDKs, credential-gated apps all break at the first device switch. <strong>Open library: device pairing (QR), shared session derivation, per-device permissions, revocation</strong>. Unlocks the entire layer of non-trading XRPL apps. Multiplier across all wallet-dependent products.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">All non-trading XRPL apps · ~50–200 startups in production</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Web2 patterns are well-known (QR pairing, scoped sessions). XRPL-specific work: 6–10 weeks.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Cross-cutting · M-01 Atlas</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-01 Cross-Device · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 14 -->
+      <article class="gap-card" data-cat="wallets" data-build="ready-now" id="gap-14">
+        <div class="gap-head">
+          <span class="cat-pill">Wallets</span>
+          <span class="gap-num">Gap 14</span>
+        </div>
+        <h3>Institutional multisig <em>UI (Safe-equivalent)</em></h3>
+        <p class="tagline">XRPL multisig is mature. The Safe-grade UI is missing.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">XRPL multisig (<em>SignerListSet</em>) is mature and battle-tested. <strong>Missing: a real management UI</strong> — proposal queue, role-based signers, approval workflows, audit log, transaction history. Gnosis Safe runs ~30k multisigs. Last-mile UX problem; protocol work is done.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Institutions + DAOs managing shared treasuries on XRPL · ~5–15k entities</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Open-source ref (Gnosis Safe). XRPL multisig simpler than EVM. MVP in 8–12 weeks.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">r-payment-b2b · treasury</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-02 Multisig UI · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 15 -->
+      <article class="gap-card" data-cat="wallets" data-build="ready-now" id="gap-15">
+        <div class="gap-head">
+          <span class="cat-pill">Wallets · EVM</span>
+          <span class="gap-num">Gap 15</span>
+        </div>
+        <h3>Smart contract wallet <em>on EVM Sidechain</em></h3>
+        <p class="tagline">ERC-4337 is table-stakes on Base/Arbitrum. EVM Sidechain has zero SCW.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">ERC-4337 brings social recovery, gas sponsorship (paymaster), session keys, batched transactions. <strong>XRP holders are TradFi-savvy, not crypto-savvy</strong> — gasless onboarding via paymaster is the unlock. Without SCW, EVM Sidechain loses builders to Base/Arbitrum.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">All EVM Sidechain users · gateway for non-crypto-native onboarding</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Reference impls (eth-infinitism). Standard Solidity. 8–12 weeks for working SCW + paymaster.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">EVM-Sidechain · onboarding</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-03 SCW EVM · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 16 -->
+      <article class="gap-card" data-cat="defi" data-build="amendment-pending" id="gap-16">
+        <div class="gap-head">
+          <span class="cat-pill">Lending</span>
+          <span class="gap-num">Gap 16</span>
+        </div>
+        <h3>Vault wrapper <em>pattern library (XLS-65)</em></h3>
+        <p class="tagline">XLS-65 is voting. Wrap today, migrate to native when amendment ships.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag amendment">AMENDMENT-PENDING</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">MULTIPLIER</span>
+        </div>
+        <p class="desc">Institutional capital won't deploy without familiar liquidity controls: <strong>cool-down periods, redemption caps, emergency pause, gated redemption</strong>. Build a wrapper around XLS-65 today using existing primitives + multisig; migrate to native controls when the amendment goes live. Timing arbitrage on a multi-year amendment cycle.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Asset managers + tokenized fund builders · institutional TVL waiting on the sidelines</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">XLS-65 in voting Jan 2026. Wrapper buys 1–2 years; once native ships, migration is config-driven.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">r-defi-vault · institutional</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-09 Vault Wrapper · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 17 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-17">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi · Risk</span>
+          <span class="gap-num">Gap 17</span>
+        </div>
+        <h3>Risk-signal <em>aggregation from MPT trading</em></h3>
+        <p class="tagline">Oracle-free risk signals from on-ledger trading. Unique to XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★<span class="star empty">★★</span></span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">NOVEL</span>
+        </div>
+        <p class="desc">MPT trading patterns can serve as <strong>oracle-free risk signals</strong> (Kennedy Reassurance pattern). Genuinely novel — not a catch-up to other ecosystems but something new XRPL's architecture enables. Useful for insurance, lending vaults, decentralized risk monitoring. Open-source library with backtesting framework.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Insurance / lending / risk-aware DeFi builders · public good</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Quant validation needed (backtest). Engineering not complex. 8–10 weeks with quant team.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Cross-cutting · DeFi infra</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-10 Risk Signal MPT · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 18 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-18">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi · EVM</span>
+          <span class="gap-num">Gap 18</span>
+        </div>
+        <h3>Synthetic assets <em>/ CDP protocol</em></h3>
+        <p class="tagline">Synthetic gold/stocks/forex on EVM. Composable with Axiom prediction markets.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-high">TICKET HIGH</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">CDP mechanism with XRP/RLUSD collateral, mint synthetic assets (gold, stocks, forex). <strong>Showcases what the EVM Sidechain enables that XRPL native cannot</strong>: composable financial primitives. Synthetics + Axiom (prediction markets) + restaking = real reasons to bridge XRP. Reference: Synthetix, Liquity.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">DeFi traders wanting on-chain RWA exposure · ~$5B+ TVL segment globally</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Oracle reliability (Band/DIA on Sidechain). Economic design crucial. 12–14 weeks.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">EVM-Sidechain · synthetics</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-18 Synthetics · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 19 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-19">
+        <div class="gap-head">
+          <span class="cat-pill">DeFi · EVM</span>
+          <span class="gap-num">Gap 19</span>
+        </div>
+        <h3>Perpetual <em>DEX on EVM Sidechain</em></h3>
+        <p class="tagline">Derivatives = highest DeFi volume. XRPL is at zero. Wide-open lane.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-high">TICKET HIGH</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">Perpetual futures on XRP/USD + others. vAMM (GMX-style) or order-book (dYdX-style). <strong>Derivatives generate 2–3× more volume than spot</strong> across every major chain. Mature chains have GMX, dYdX, Vertex. XRPL has nothing — first mover wins meaningful market share.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Active traders + market makers · highest-revenue DeFi segment</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Hard engineering. Liquidation engine, oracle manipulation. 14–18 weeks production-grade.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">EVM-Sidechain · derivatives</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-19 Perp DEX · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 20 -->
+      <article class="gap-card" data-cat="infra" data-build="transverse" id="gap-20">
+        <div class="gap-head">
+          <span class="cat-pill">Dev tools · Public good</span>
+          <span class="gap-num">Gap 20</span>
+        </div>
+        <h3>XRPL <em>capabilities registry</em></h3>
+        <p class="tagline">Working groups flag shipped capabilities as 'missing'. Solves the awareness gap.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-low">TICKET LOW</span> <span class="tag transverse">TRANSVERSE</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">META-MULTIPLIER</span>
+        </div>
+        <p class="desc">Searchable database of XRPL primitives, libraries, tools, datasets. <strong>Auto-update from XLS repo + amendments feed</strong>. Use-case-organized navigation. Status indicators (mainnet/voting/testnet). Direct fix for the meta-finding from the 4 PWGs: 76% of perceived 'gaps' are already addressed by existing primitives — pure awareness problem.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Every XRPL builder · institutional evaluators · ecosystem coordination</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Web app + curation. Auto-update straightforward. 6–8 weeks initial + ongoing maintenance.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Cross-cutting · public good</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-22 Capabilities Registry · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 21 -->
+      <article class="gap-card" data-cat="rwa" data-build="ready-now" id="gap-21">
+        <div class="gap-head">
+          <span class="cat-pill">RWA · Compliance</span>
+          <span class="gap-num">Gap 21</span>
+        </div>
+        <h3>Physical-to-digital <em>binding (EU DPP)</em></h3>
+        <p class="tagline">EU Digital Product Passport is mandatory for textile + electronics. ~12-month window.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">REGULATORY</span>
+        </div>
+        <p class="desc">NFC tag or QR code linked to XRPL NFT with mutable URI. <strong>Ownership transfer flow, claim handoff (manufacturer → retailer → consumer), integrity verification</strong>. EU Digital Product Passport regulation creates a hard deadline for clothing + electronics. First-mover on a documented standard captures the wave.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">EU manufacturers (textile, electronics, luxury) · regulatory-driven adoption</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">NFC standard mobile capability. XRPL NFT mutable URI is a shipped primitive. 8–12 weeks.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">r-rwa-physical · provenance</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-13 EU DPP · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 22 -->
+      <article class="gap-card" data-cat="infra" data-build="ready-now" id="gap-22">
+        <div class="gap-head">
+          <span class="cat-pill">Infrastructure · Data</span>
+          <span class="gap-num">Gap 22</span>
+        </div>
+        <h3>Chunked data <em>+ on-chain anchoring</em></h3>
+        <p class="tagline">Each institution rebuilds its IPFS+XRPL anchor. Coordination problem, not technical.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★<span class="star empty">★★</span></span> <span class="tag ticket-low">TICKET LOW</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">MEDIUM</span>
+        </div>
+        <p class="desc">Institutional use cases involve large data: regulatory documents, audit trails, compliance reports. <strong>Open-source library: file segmentation, Merkle tree builder, content-addressed retrieval, pluggable storage (IPFS/S3/self-hosted), pluggable proof schemes</strong>. Each integrator currently solves it independently and incompatibly.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Institutional integrators · RWA issuers · compliance auditors</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Standard distributed-systems engineering. 6–8 weeks with experienced team.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Cross-cutting · data layer</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-16 Chunked Data · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 23 -->
+      <article class="gap-card" data-cat="infra" data-build="ready-now" id="gap-23">
+        <div class="gap-head">
+          <span class="cat-pill">Distribution · CEX</span>
+          <span class="gap-num">Gap 23</span>
+        </div>
+        <h3>CeDeFi <em>yield SDK for exchanges</em></h3>
+        <p class="tagline">60% of XRP is on CEXes. The CEX→DeFi yield bridge is the #1 distribution play.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-high">TICKET HIGH</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">API layer abstracting XRPL DeFi yield interactions. <strong>Custody-compatible transaction patterns, yield aggregation, risk scoring, reconciliation, white-label widget for exchange UIs</strong>. The largest pool of potential XRPL DeFi users is on Binance/Coinbase/Bitstamp — wallet-only products miss the majority. This SDK bridges the gap.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Centralized exchanges holding XRP · ~60% of all circulating XRP</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Custody-compatible patterns are the technical novel work. 10–14 weeks with exchange exp.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Distribution · CeDeFi</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-24 CeDeFi SDK · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 24 -->
+      <article class="gap-card" data-cat="stablecoins" data-build="ready-now" id="gap-24">
+        <div class="gap-head">
+          <span class="cat-pill">Stablecoins · YC RFS</span>
+          <span class="gap-num">Gap 24</span>
+        </div>
+        <h3>Yield-bearing <em>stablecoin (T-bill backed)</em></h3>
+        <p class="tagline">USDe did $5B in <1 year. XRP holders are yield-seeking. Match made for XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-high">TICKET HIGH</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">MULTIPLIER</span>
+        </div>
+        <p class="desc">Stablecoin with automatic yield distribution backed by RWA (treasuries, corporate debt). <strong>Collateral model + peg + redemption + reserve-verification dashboard</strong>. Top community-survey demand. Persona match: XRP holders are TradFi-savvy, long-term, yield-seeking. USDe (Ethena) reached $5B+ in <1 year — even fractional capture transforms XRPL TVL.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">All XRP holders + DeFi yield-seekers · USD-denominated yield = top global DeFi segment</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Sustainable + transparent + institutional-grade yield source. T-bill model (Ondo USDY ref). 12–16 weeks.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">r-rwa-yield · stablecoin yield</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-14 Yield Stablecoin · Master Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 25 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-25">
+        <div class="gap-head">
+          <span class="cat-pill">Prediction · Infra · YC RFS</span>
+          <span class="gap-num">Gap 25</span>
+        </div>
+        <h3>Prediction markets <em>infrastructure</em></h3>
+        <p class="tagline">Polymarket runs on Polygon. The engine layer is missing on XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">The <strong>engine layer</strong> for prediction markets: market creation, oracle resolution, settlement (RLUSD-denominated), AMM for outcome tokens, liquidity provider tooling. Vendor-agnostic platform that consumer apps (#26) build on top of. Axiom on EVM Sidechain is a starting point — extend it XRPL-native or build cleaner.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Builders of prediction dApps + sport betting + insurance + decision markets</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Atka identified prediction × synthetics as a key DeFi composability lane. 10–12 weeks engine.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">DeFi · markets infra</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">M-18 (Synthetics × Prediction) · Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 26 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-26">
+        <div class="gap-head">
+          <span class="cat-pill">Prediction · dApps · YC RFS</span>
+          <span class="gap-num">Gap 26</span>
+        </div>
+        <h3>Prediction <em>markets dApps (consumer)</em></h3>
+        <p class="tagline">The Polymarket of XRPL. Politics, sports, crypto, weather — consumer apps.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">Consumer-facing prediction markets built on top of #25's infra. Vertical specialization wins: <strong>politics (election years), sports (high-velocity), crypto-native (perpetual interest), insurance/weather (B2B)</strong>. Polymarket reached >$3B in volume on US 2024 elections alone. XRPL has zero presence — multiple verticals available simultaneously.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Mass retail (politics/sports) + crypto natives · ~$10B+ predicted segment by 2027</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Multiple players can coexist (vertical specialization). 8–10 weeks per vertical-app on existing infra.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">Consumer dApp · prediction markets</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">Polymarket-style consumer apps</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
+      <!-- GAP 27 -->
+      <article class="gap-card" data-cat="ai" data-build="ready-now" id="gap-27">
+        <div class="gap-head">
+          <span class="cat-pill">AI Trading · YC RFS</span>
+          <span class="gap-num">Gap 27</span>
+        </div>
+        <h3>AI trading <em>agents (DCA, momentum, rebalance)</em></h3>
+        <p class="tagline">Quant agents on XRPL. RegularKey + multisig = perfect substrate for autonomous AI traders.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+          <span class="tag" style="background:#2c6680;color:#f4efe6;border-color:#2c6680;">HIGH</span>
+        </div>
+        <p class="desc">AI-driven trading strategies running on XRPL: <strong>DCA (dollar-cost-averaging), momentum signals, portfolio rebalancing, AMM arbitrage, MPT-pattern alpha</strong>. Different from market-making (Service-03) — this is alpha generation for retail/HNWI. Native XRPL stack (RegularKey for agent autonomy + multisig human guardrails + zero-fee on-chain audit) is exceptionally well-suited.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Retail crypto + HNWI seeking automated yield/alpha · multi-billion segment globally</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">AI-LLM tooling matured 2024–25. XRPL native primitives ready. 10–14 weeks for serious agent.</span>
+          </div>
+        </div>
+        <div class="gap-links">
+          <a class="gap-link disabled"><span class="link-tag">Path</span><span class="link-name">DeFi · AI agents</span><span class="link-arrow">·</span></a>
+          <a class="gap-link" href="analysis-3"><span class="link-tag">Source</span><span class="link-name">AgentPay (related) · Builder Atlas</span><span class="link-arrow">→</span></a>
+        </div>
+      </article>
     </div>
   </section>
 
