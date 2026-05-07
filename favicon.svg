@@ -3,15 +3,21 @@
   <rect width="140" height="100" fill="#f4efe6"/>
   <!-- Ink frame -->
   <rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/>
-  <!-- XRP token-style X: two thick crossed bars, full-size, square corners -->
-  <g fill="#0e1116" transform="translate(50, 50)">
-    <rect x="-36" y="-8" width="72" height="16" transform="rotate(45)"/>
-    <rect x="-36" y="-8" width="72" height="16" transform="rotate(-45)"/>
+  <!-- XRP X: 4 wedges pointing toward center (actual XRP token logo shape) -->
+  <g fill="#0e1116">
+    <!-- Top-left wedge: corner to center -->
+    <path d="M 14 22 L 24 12 L 50 50 Z"/>
+    <!-- Top-right wedge -->
+    <path d="M 76 12 L 86 22 L 50 50 Z"/>
+    <!-- Bottom-right wedge -->
+    <path d="M 86 78 L 76 88 L 50 50 Z"/>
+    <!-- Bottom-left wedge -->
+    <path d="M 24 88 L 14 78 L 50 50 Z"/>
   </g>
-  <!-- B exponent: gold, raised, clearly to the right -->
-  <text x="102" y="46"
+  <!-- B exponent (gold, top-right superscript) -->
+  <text x="100" y="44"
         font-family="'Fraunces', Georgia, 'Times New Roman', serif"
-        font-size="44"
+        font-size="46"
         font-weight="800"
         fill="#d4a017">B</text>
 </svg>
