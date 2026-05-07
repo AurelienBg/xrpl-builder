@@ -190,6 +190,7 @@
   .card[data-type="business"]::before { background: var(--rwa); }
   .card[data-type="decision"]::before { background: var(--sidechain); }
   .card[data-type="ecosystem"]::before { background: var(--chain); }
+  .card[data-type="feedback"]::before { background: #2c6680; }
   .card[data-type="gaps"]::before { background: var(--wallet); }
 
   .card:hover {
@@ -225,6 +226,7 @@
   .card-eyebrow .badge.business { background: var(--rwa); color: var(--paper); }
   .card-eyebrow .badge.decision { background: var(--sidechain); color: var(--paper); }
   .card-eyebrow .badge.ecosystem { background: var(--chain); color: var(--paper); }
+  .card-eyebrow .badge.feedback { background: #2c6680; color: var(--paper); }
   .card-eyebrow .badge.gaps { background: var(--wallet); color: var(--ink); }
   .card-eyebrow .badge.pdf { background: var(--custody); color: var(--paper); }
 
@@ -539,12 +541,12 @@
 
   <!-- ============ 04 · PAYSAGE ============ -->
   <div class="section-head">
-    <h2><span class="num">04</span>Paysage · <em>écosystème & gaps</em></h2>
-    <span class="count">2 fichiers · HTML</span>
+    <h2><span class="num">04</span>Paysage · <em>écosystème, feedback &amp; gaps</em></h2>
+    <span class="count">3 fichiers · HTML</span>
   </div>
-  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026 + vue consolidée des <strong>12 opportunity gaps</strong>. <strong>Identifie les espaces saturés à éviter et les zones blanches</strong> où personne ne joue encore — scoré par maturité, taille de marché et ticket d'entrée technique.</div>
+  <div class="section-summary">Carte des 50+ projets actifs sur XRPL en mai 2026 + retours consolidés des <strong>builders &amp; partenaires</strong> (4 PWG Paris + Atka DeFi Report) + vue consolidée des <strong>12 opportunity gaps</strong>. <strong>Identifie les espaces saturés à éviter, écoute la voix de l'écosystème, repère les zones blanches</strong> où personne ne joue encore.</div>
 
-  <div class="grid">
+  <div class="grid cols-3">
 
     <a class="card" href="ecosystem-map" data-type="ecosystem">
       <div class="card-eyebrow">
@@ -556,6 +558,20 @@
       <p>Carte structurée de l'écosystème XRPL : <strong>DeFi, Stablecoins, RWA, Payments, Wallets, Infrastructure, NFT, Bridges</strong>. Chaque projet étiqueté par état (Live/Beta/Upcoming/Partner). Section <strong>Opportunity Gaps</strong> en fin de page : 6 espaces inoccupés où lancer une startup. Page éditable manuellement pour maintenance.</p>
       <div class="card-foot">
         <span class="filename">ecosystem-map.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="analysis-1" data-type="feedback">
+      <div class="card-eyebrow">
+        <span>FIG · 09</span>
+        <span class="badge feedback">3 lectures · 30 opportunités</span>
+        <span>4 PWG + Atka Report</span>
+      </div>
+      <h3>Ecosystem <em>Feedback</em> · de builders &amp; partenaires</h3>
+      <p>Synthèse en <strong>3 passes</strong> des retours écosystème issus des 4 Product Working Groups Paris (RWA, Stablecoins, Lending, Identity) et du XRPL DeFi Report d'Atka. <strong>Analysis 1</strong> — lecture interne (4 frictions, 5 themes, 5 tensions). <strong>Analysis 2</strong> — external challenger (24 Focus Areas / 6 Themes). <strong>Analysis 3</strong> — synthèse Master Atlas (30 opportunités, 7 thèmes). C'est la base actionable du Buildathon.</p>
+      <div class="card-foot">
+        <span class="filename">analysis-1 → 2 → 3</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
