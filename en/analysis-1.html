@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analysis 1 — Internal reading (4 PWG + Atka) — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1200px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
+  }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95; margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-size: 14.5px; line-height: 1.6;
+  }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* SECTIONS */
+  .sec-h {
+    margin-top: 56px; margin-bottom: 24px;
+  }
+  .sec-h .num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sec-h h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(26px, 3.6vw, 38px);
+    margin: 0; line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .sec-h h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .sec-h .lead {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px; line-height: 1.55;
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 760px;
+  }
+
+  /* THESIS BOX */
+  .thesis {
+    border: 2px solid var(--ink);
+    background: var(--chain); color: var(--paper);
+    padding: 28px 32px;
+    margin-bottom: 36px;
+  }
+  .thesis h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 700;
+    margin: 0 0 12px 0; color: var(--wallet);
+  }
+  .thesis p {
+    font-family: 'Fraunces', serif;
+    font-size: 18px; line-height: 1.55;
+    margin: 0 0 12px 0;
+  }
+  .thesis p:last-child { margin-bottom: 0; }
+  .thesis strong { color: var(--wallet); font-weight: 600; }
+  .thesis em { color: var(--paper); font-style: italic; opacity: 0.9; }
+
+  /* FRICTIONS GRID */
+  .frictions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 36px;
+  }
+  .friction {
+    padding: 20px 22px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .friction:nth-child(2n) { border-right: none; }
+  .friction:nth-last-child(-n+2) { border-bottom: none; }
+  @media (max-width: 800px) {
+    .frictions-grid { grid-template-columns: 1fr; }
+    .friction { border-right: none; border-bottom: 1px solid var(--ink); }
+    .friction:last-child { border-bottom: none; }
+  }
+  .friction .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px; font-weight: 800;
+    color: var(--user);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .friction h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700; font-size: 18px;
+    margin: 0 0 10px 0;
+  }
+  .friction p {
+    font-size: 13.5px; line-height: 1.55;
+    margin: 0; color: var(--ink);
+  }
+  .friction p strong { color: var(--chain); }
+
+  /* THEMES (cross-cutting) */
+  .themes-list {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 36px;
+  }
+  .theme-item {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+  }
+  .theme-item:last-child { border-bottom: none; }
+  .theme-item h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0 0 6px 0;
+  }
+  .theme-item .ttag {
+    display: inline-block;
+    background: var(--wallet);
+    padding: 2px 8px;
+    margin-right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .theme-item p {
+    font-size: 13.5px; line-height: 1.55;
+    margin: 0; color: var(--ink);
+  }
+  .theme-item p strong { color: var(--chain); font-weight: 600; }
+  .theme-item p em { color: var(--user); font-style: italic; }
+
+  /* PWG GRID */
+  .pwg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 36px;
+  }
+  .pwg {
+    padding: 22px 24px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .pwg:nth-child(2n) { border-right: none; }
+  .pwg:nth-last-child(-n+2) { border-bottom: none; }
+  @media (max-width: 800px) {
+    .pwg-grid { grid-template-columns: 1fr; }
+    .pwg { border-right: none; border-bottom: 1px solid var(--ink); }
+    .pwg:last-child { border-bottom: none; }
+  }
+  .pwg .ptag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; font-weight: 700;
+    color: var(--user);
+  }
+  .pwg h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 22px;
+    margin: 4px 0 12px 0;
+  }
+  .pwg ul { padding-left: 18px; margin: 0; font-size: 13.5px; line-height: 1.55; }
+  .pwg ul li { margin-bottom: 6px; }
+  .pwg ul li strong { color: var(--chain); font-weight: 600; }
+
+  /* TABLE */
+  .swot {
+    border: 2px solid var(--ink);
+    margin-bottom: 36px;
+    background: var(--paper);
+  }
+  .swot table { width: 100%; border-collapse: collapse; }
+  .swot th, .swot td { padding: 12px 16px; vertical-align: top; }
+  .swot th {
+    background: var(--ink); color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; font-weight: 700;
+    text-align: left;
+  }
+  .swot td {
+    font-size: 13.5px; line-height: 1.55;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+    width: 50%;
+  }
+  .swot td.f { background: rgba(46,93,79,0.06); }
+  .swot td.w { background: rgba(200,85,61,0.06); }
+
+  /* TIERS */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 36px;
+  }
+  .tier {
+    padding: 22px;
+    border-right: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .tier:last-child { border-right: none; }
+  @media (max-width: 800px) {
+    .tiers { grid-template-columns: 1fr; }
+    .tier { border-right: none; border-bottom: 1px solid var(--ink); }
+    .tier:last-child { border-bottom: none; }
+  }
+  .tier .tnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--user);
+    font-weight: 700;
+  }
+  .tier h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 19px;
+    margin: 4px 0 12px 0;
+  }
+  .tier ol { padding-left: 22px; margin: 0; font-size: 13px; line-height: 1.55; }
+  .tier ol li { margin-bottom: 8px; }
+  .tier ol li strong { color: var(--chain); font-weight: 600; }
+
+  /* TENSIONS */
+  .tensions-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 36px;
+    font-size: 13px;
+  }
+  .tensions-table th {
+    background: var(--ink); color: var(--paper);
+    padding: 10px 14px; text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 700;
+  }
+  .tensions-table td {
+    padding: 10px 14px; vertical-align: top;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+  }
+  .tensions-table td.tnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    background: var(--wallet);
+    width: 38px; text-align: center;
+  }
+
+  /* SOURCE FOOTER */
+  .sources-foot {
+    margin-top: 60px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/">XRPL <em>Builder</em></a>
+  <div class="nav-links">
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/analysis-1" data-section="analyse" class="section-start current">Analysis 1</a>
+    <a href="/en/analysis-2" data-section="analyse">Analysis 2</a>
+    <a href="/en/analysis-3" data-section="analyse">Synthesis</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag" href="/analysis-1">🇫🇷</a>
+    <a class="lang-flag active" href="/en/analysis-1">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Analysis 1 · Internal reading · v1.0 · May 2026</div>
+    <h1>Internal <em>synthesis</em><br/>4 PWG + Atka</h1>
+  </div>
+  <div class="meta">
+    Sources: 4 PWG Paris (Apr 2026)<br/>
+    + Atka XRPL DeFi Report (Jan 2026)<br/>
+    Total: 6 documents · 89 slides<br/>
+    Snapshot: May 2026
+  </div>
+</header>
+
+<div class="strap">
+  <span>Internal reading</span>
+  <span>RWA · Stablecoins · Lending · Identity · DeFi</span>
+  <span>Cross-cutting + per-PWG findings</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">CONTEXT</span> This page consolidates the <strong>first reading</strong> of the 6 founding documents of the Buildathon: the 4 transcripts of the XRPL Zone Paris Product Working Groups (RWA, Stablecoins, Lending, Identity &amp; Credentials) held in April 2026, the PWG 4 summary PDF, and the <em>XRPL DeFi Report</em> by Atka (89 slides, January 2026).</p>
+  <p><span class="pill">METHOD</span> Three-pass reading: (1) cross-cutting themes that recur in 3+ documents; (2) per-PWG findings; (3) strategic tensions to arbitrate. This analysis is then confronted with <a href="/en/analysis-2" style="color: var(--chain); font-weight: 600;">Analysis 2</a> (external challenger) to produce the <a href="/en/analysis-3" style="color: var(--chain); font-weight: 600;">Synthesis</a>.</p>
+  <p><span class="pill">USAGE</span> This analysis feeds the Buildathon challenge register. The 5 strategic tensions formalized here are the choices left to the founder — not arbitrated by default.</p>
+</div>
+
+<!-- THESIS -->
+<div class="thesis">
+  <h3>The thesis in one sentence</h3>
+  <p>XRPL is shifting from a payment L1 to an <strong>Institutional DeFi</strong> L1 — but this shift is hindered by <strong>four structural frictions</strong> that recur across all documents.</p>
+  <p><em>Strategic conclusion:</em> the next wave of XRPL builders will need to build <strong>not "pure DeFi" products, but institutional CeDeFi products with native compliance</strong> (DID/Credentials), that solve liquidity fragmentation (cross-XRPL/EVM) and treat RLUSD as default settlement infrastructure.</p>
+</div>
+
+<!-- 4 FRICTIONS -->
+<div class="sec-h">
+  <div class="num-badge">Section 01 · The 4 structural frictions</div>
+  <h2>Four structural <em>frictions</em></h2>
+  <p class="lead">Recur across 3+ of the 6 documents. A significant portion of the Buildathon should be dedicated to addressing them.</p>
+</div>
+
+<div class="frictions-grid">
+  <div class="friction">
+    <div class="num">01</div>
+    <h3>Fragmented liquidity XRPL/EVM</h3>
+    <p>Each PWG (Lending, RWA, Stablecoins) ends up hitting the question <strong>"where is liquidity, how do we make it flow"</strong> between native XRPL and the EVM Sidechain.</p>
+  </div>
+  <div class="friction">
+    <div class="num">02</div>
+    <h3>Default compliance absent</h3>
+    <p>XLS-70 (DID) and Credentials exist but <strong>real-flow usage</strong> (reusable KYC, transferable attestations, transitive accreditation) <strong>is not wired up</strong>. No product in production.</p>
+  </div>
+  <div class="friction">
+    <div class="num">03</div>
+    <h3>Stablecoin fragmentation</h3>
+    <p>RLUSD is growing fast (&gt; $150M) but USDC/USDT are missing. B2B/RWA use cases require a <strong>stable, MiCA-compatible stablecoin map</strong>.</p>
+  </div>
+  <div class="friction">
+    <div class="num">04</div>
+    <h3>Off-chain distribution</h3>
+    <p>60% of circulating XRP is on CEXes or held by Ripple Foundation. <strong>XRPL DeFi will only reach these holders through the CEXes</strong> — CeDeFi is mandatory, not optional.</p>
+  </div>
+</div>
+
+<!-- CROSS-CUTTING THEMES -->
+<div class="sec-h">
+  <div class="num-badge">Section 02 · 5 cross-cutting themes</div>
+  <h2><em>Cross-cutting</em> themes (4+ docs)</h2>
+  <p class="lead">Five patterns recurring across RWA, Stablecoins, Lending, Identity and the Atka report.</p>
+</div>
+
+<div class="themes-list">
+  <div class="theme-item">
+    <h3><span class="ttag">B.1</span>The "compliance gap" is the #1 blocker for institutional adoption</h3>
+    <p>PWG 4: KYC duplicated N times by each issuer. PWG 2 RWA: token-level whitelist/permissioning (MPT XLS-33d enables it, lightly adopted). PWG 1 Lending: institutional pools = onchain accreditation. PWG 3 Stablecoins: MiCA + Travel Rule. <strong>Pattern: "Identity &amp; Credentials" is not a vertical — it's the horizontal infra that unblocks the other 3.</strong></p>
+  </div>
+  <div class="theme-item">
+    <h3><span class="ttag">B.2</span>XRPL native vs EVM Sidechain: the civil war</h3>
+    <p>Atka devotes 30+ slides to the EVM Sidechain as <strong>growth vector #1</strong> (Restaking, Morpho, Pendle, Babylon). PWG 1 Lending speaks almost exclusively about native (XLS-66). PWG 2 RWA mixes both. <em>No document settles the question.</em> Opportunity: "chain-agnostic XRPL" products that expose ONE interface and route to native OR EVM depending on the use case.</p>
+  </div>
+  <div class="theme-item">
+    <h3><span class="ttag">B.3</span>RLUSD as "USDC-killer institutional"</h3>
+    <p>Atka: RLUSD = $150M+ issued in less than 12 months, growth &gt; initial USDe. PWG Stablecoins: MiCA-ready, NY-DFS regulated. PWG RWA: Ondo + OpenEden $2bn TVL combined, fueled in large part by RLUSD as settlement pair. PWG Lending: RLUSD = premium collateral. <strong>Any serious XRPL B2B product must have RLUSD at its core.</strong></p>
+  </div>
+  <div class="theme-item">
+    <h3><span class="ttag">B.4</span>The "first user" problem (chicken-and-egg)</h3>
+    <p>Atka §64-66: Avalanche Rush ($180M), Polygon BD push, Base Build, Morpho×Base partnership. PWGs 1 and 2: not enough serious builders, not enough initial liquidity. <strong>Repeated solution:</strong> $XRP incentives + partnerships with cross-chain leaders (Morpho, Babylon, Pendle, Securitize).</p>
+  </div>
+  <div class="theme-item">
+    <h3><span class="ttag">B.5</span>The "service company" vs "tooling" thesis</h3>
+    <p>PWG 2 RWA and PWG 4 Identity insist: <em>RWA issuers and KYC providers want a complete service, not an SDK</em>. Atka §70: "ironically, onboarding XRP holders into DeFi runs through CEXes" → CEX→DeFi-yield bridge service, not a tool. <strong>Pattern: the most monetizable opportunities are AI-native services that internalize operations.</strong></p>
+  </div>
+</div>
+
+<!-- PER-PWG FINDINGS -->
+<div class="sec-h">
+  <div class="num-badge">Section 03 · Per-PWG findings</div>
+  <h2>Findings by <em>working group</em></h2>
+  <p class="lead">Each PWG's specifics + a global Atka synthesis.</p>
+</div>
+
+<div class="pwg-grid">
+  <div class="pwg">
+    <div class="ptag">PWG 1 · Lending</div>
+    <h3>Lending (XLS-66/65)</h3>
+    <ul>
+      <li><strong>Amendment brick:</strong> XLS-66 (native lending primitive) — not yet live (voting Jan 2026)</li>
+      <li><strong>Tension:</strong> generic pool (Aave-like) vs vault providers (Morpho-like)</li>
+      <li><strong>Critical gap:</strong> no institutional uncollateralized lending (Maple/Goldfinch) — this is where the TradFi margin is made</li>
+      <li><strong>Opportunity:</strong> "Compliant Credit Vault" — agent-curator that underwrites institutional borrowers via XLS-70 attestations</li>
+    </ul>
+  </div>
+  <div class="pwg">
+    <div class="ptag">PWG 2 · RWA</div>
+    <h3>Real-World Assets</h3>
+    <ul>
+      <li><strong>Brick:</strong> MPT (XLS-33d) + AMM XLS-30 + DID XLS-70</li>
+      <li><strong>Gap:</strong> no RWA-spec standard (who holds what, dividend rights, voting, redemption)</li>
+      <li><strong>Tension:</strong> Ondo &amp; OpenEden do RWA "off-XRPL then bridge" — XRPL is settlement, not native issuance</li>
+      <li><strong>Opportunity:</strong> "RWA Issuance Studio" for European SMEs/asset managers — MiFID + MPT tokenization + cap table in 1 service</li>
+    </ul>
+  </div>
+  <div class="pwg">
+    <div class="ptag">PWG 3 · Stablecoins</div>
+    <h3>Stablecoins</h3>
+    <ul>
+      <li><strong>Brick:</strong> RLUSD live, EURC pending, MiCA-compliant</li>
+      <li><strong>Gap:</strong> no native EUR stablecoin on XRPL; no programmable stablecoin (revenue-share, programmable yield)</li>
+      <li><strong>Opportunity:</strong> "Programmable RLUSD treasury" — DAO/corporate treasury layer that automates RLUSD allocation → vault yields</li>
+    </ul>
+  </div>
+  <div class="pwg">
+    <div class="ptag">PWG 4 · Identity</div>
+    <h3>Identity &amp; Credentials</h3>
+    <ul>
+      <li><strong>Brick:</strong> XLS-70 (DID), Credentials (live testnet)</li>
+      <li><strong>Huge gap:</strong> no product-market-fit on credential usage — not a single XRPL DeFi protocol in production consumes an XLS-70 attestation</li>
+      <li><strong>Opportunity:</strong> "KYC-as-a-Credential" service — a KYC issuer (alternative to Sumsub/Onfido) that delivers a reusable XRPL credential. <em>Massive captive market.</em></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ATKA RECOMMENDATIONS -->
+<div class="sec-h">
+  <div class="num-badge">Section 04 · Atka — DeFi global view</div>
+  <h2>The 9 <em>Atka</em> recommendations in synthesis</h2>
+  <p class="lead">The <em>XRPL DeFi Report</em> (89 slides, Jan 2026) proposes a North Star and 9 growth recommendations. Condensed synthesis:</p>
+</div>
+
+<div class="themes-list">
+  <div class="theme-item">
+    <p><strong>Proposed North Star:</strong> "Become the leading <em>institutional &amp; compliant DeFi chain</em>"</p>
+  </div>
+  <div class="theme-item">
+    <p><strong>1.</strong> Position institutional/compliant · <strong>2.</strong> Unified XRPL+EVM messaging · <strong>3.</strong> Match sub-segments to the XRP holder persona (yield-seeking, long-term)</p>
+  </div>
+  <div class="theme-item">
+    <p><strong>4.</strong> EVM Sidechain Labs (dedicated EVM BD team) · <strong>5.</strong> Push specific concepts on EVM (Babylon-fork for XRP, Morpho-fork, Prediction × Synthetics)</p>
+  </div>
+  <div class="theme-item">
+    <p><strong>6.</strong> Partner with cross-chain landmarks (Morpho, Babylon, Pendle, Securitize) · <strong>7.</strong> EVM Sidechain funding alleys (extend XRPL Grants/Aquarium/Ripple Investments to EVM)</p>
+  </div>
+  <div class="theme-item">
+    <p><strong>8.</strong> Double down on institution-centric XRPL native (RLUSD, RWA, Lending) · <strong>9.</strong> GTM via CEX (CeDeFi mandatory — 60% of XRP is on CEXes)</p>
+  </div>
+</div>
+
+<!-- SWOT -->
+<div class="sec-h">
+  <div class="num-badge">Section 05 · Strategic position</div>
+  <h2>Consolidated <em>strategic</em> position</h2>
+  <p class="lead">XRPL strengths &amp; weaknesses after reading the 6 documents.</p>
+</div>
+
+<div class="swot">
+  <table>
+    <thead>
+      <tr><th>Strengths</th><th>Weaknesses</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="f">RLUSD régulé, MiCA-ready, NY-DFS</td>
+        <td class="w">Liquidité fragmentée XRPL / EVM Sidechain</td>
+      </tr>
+      <tr>
+        <td class="f">Native AMM + MPT + DID = complete institutional stack</td>
+        <td class="w">Few builders, no "Morpho XRPL"</td>
+      </tr>
+      <tr>
+        <td class="f">Coût/finalité competitive vs Eth/Sol</td>
+        <td class="w">Distribution = CEX-dependent (Coinbase, Binance, Bitstamp)</td>
+      </tr>
+      <tr>
+        <td class="f">XLS-70 + Credentials = compliance native</td>
+        <td class="w">No production product really uses it</td>
+      </tr>
+      <tr>
+        <td class="f">Aquarium + Grants + Investments = funding stack</td>
+        <td class="w">No liquidity incentive program (Avalanche Rush style)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- OPPORTUNITIES -->
+<div class="sec-h">
+  <div class="num-badge">Section 06 · Builder opportunities</div>
+  <h2>Map of <em>builder</em> opportunities</h2>
+  <p class="lead">10 opportunities ranked in 3 tiers based on source convergence and market maturity.</p>
+</div>
+
+<div class="tiers">
+  <div class="tier">
+    <div class="tnum">Tier 1 · High conviction</div>
+    <h3>Multiple PWG + Atka converge</h3>
+    <ol>
+      <li><strong>Compliant Credit Vault</strong> (Lending + Identity) — agent-curator institutional pools with underwriting via Credentials</li>
+      <li><strong>RWA Issuance Studio EU/MiCA</strong> (RWA + Identity + Stablecoins) — complete service for European asset managers</li>
+      <li><strong>KYC-as-Credential issuer</strong> (Identity → unblocks everything else) — an XRPL-native Sumsub/Onfido</li>
+      <li><strong>CeDeFi Yield Router via CEX</strong> (Atka §70) — yield to XRP holders <em>from the CEX interface</em> via API</li>
+    </ol>
+  </div>
+  <div class="tier">
+    <div class="tnum">Tier 2 · High potential</div>
+    <h3>One PWG + Atka</h3>
+    <ol>
+      <li><strong>Programmable RLUSD Treasury</strong> (Stablecoins) — DAO/corp treasury automation</li>
+      <li><strong>XRPL Restaking (Babylon-fork for XRP)</strong> (Atka §63) — native restaking layer</li>
+      <li><strong>Cross-XRPL/EVM Liquidity Router</strong> — single abstraction for cross-chain DEX/lending</li>
+      <li><strong>Prediction Markets × Synthetic Dollars</strong> (Atka §63) — innovative composability use case</li>
+    </ol>
+  </div>
+  <div class="tier">
+    <div class="tnum">Tier 3 · Niche / experimental</div>
+    <h3>Mention</h3>
+    <ol>
+      <li><strong>XRPL-native Insurance protocol</strong> (cross-PWG)</li>
+      <li><strong>Onchain reputation for DeFi credit scoring</strong> (Identity)</li>
+    </ol>
+  </div>
+</div>
+
+<!-- TENSIONS -->
+<div class="sec-h">
+  <div class="num-badge">Section 07 · Strategic tensions</div>
+  <h2>5 tensions <em>to arbitrate</em></h2>
+  <p class="lead">Open questions left to the founder. The <a href="/en/analysis-3" style="color: var(--chain); font-weight: 600;">Synthesis</a> page arbitrates 4 of 5 by confronting these tensions with Analysis 2.</p>
+</div>
+
+<table class="tensions-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Source A</th>
+      <th>Source B</th>
+      <th>Tension</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tnum">T1</td>
+      <td>Atka: prioritize EVM Sidechain</td>
+      <td>PWG 1: prioritize native XLS-66</td>
+      <td>Where to place the next 100 builders?</td>
+    </tr>
+    <tr>
+      <td class="tnum">T2</td>
+      <td>PWG 4: Credentials is the horizontal infra</td>
+      <td>No product uses it</td>
+      <td>Push it or let it emerge?</td>
+    </tr>
+    <tr>
+      <td class="tnum">T3</td>
+      <td>Atka: CeDeFi via CEX mandatory</td>
+      <td>PWG 2/3: pure institutional DeFi</td>
+      <td>Distribution model?</td>
+    </tr>
+    <tr>
+      <td class="tnum">T4</td>
+      <td>RLUSD-first</td>
+      <td>Multi-stablecoin (USDC, EURC, USDT)</td>
+      <td>What bet on Ripple dependency?</td>
+    </tr>
+    <tr>
+      <td class="tnum">T5</td>
+      <td>Atka: fork Morpho/Babylon</td>
+      <td>XRPL Commons: native builders</td>
+      <td>Cloning vs originality?</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="sources-foot">
+  <strong>Source documents analyzed (6 documents):</strong><br/>
+  PWG 1 — Lending (Apr 14, 2026, md transcript)<br/>
+  PWG 2 — RWA (Apr 14, 2026, md transcript, 200KB)<br/>
+  PWG 3 — Stablecoins (Apr 14, 2026, md transcript)<br/>
+  PWG 4 — Identity &amp; Credentials (Apr 14, 2026, md transcript, 500KB) + summary PDF (18 slides)<br/>
+  Atka — XRPL DeFi Report (89 slides, Jan 2026)<br/>
+  <br/>
+  <strong>Next:</strong> <a href="/en/analysis-2" style="color: var(--ink); font-weight: 700;">Analysis 2 (External challenger)</a> · <a href="/en/analysis-3" style="color: var(--ink); font-weight: 700;">Synthesis</a>
+</div>
+
+</div>
+</body>
+</html>

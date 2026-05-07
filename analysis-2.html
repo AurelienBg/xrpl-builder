@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analysis 2 — 24 Focus Areas / 6 Thèmes — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+
+    /* THEME COLORS */
+    --t1: #5a85b8;   /* Wallets - blue */
+    --t2: #6b4226;   /* Institutional Infra - brown */
+    --t3: #d4a017;   /* Lending Vaults Risk - gold */
+    --t4: #4a6741;   /* RWA & Stablecoins - forest */
+    --t5: #b85c38;   /* EVM Sidechain - orange */
+    --t6: #8b5a8c;   /* Dev Tooling - mauve */
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
+  }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95; margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO BLOCK */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* STAT STRIP */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin-bottom: 36px;
+    background: var(--paper);
+  }
+  .stat {
+    padding: 16px 20px;
+    border-right: 1px solid var(--ink);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 36px; font-weight: 800;
+    line-height: 1;
+    color: var(--chain);
+  }
+  .stat .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    margin-top: 6px;
+  }
+  @media (max-width: 700px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--ink); }
+  }
+
+  /* THEME BLOCKS */
+  .theme {
+    margin-bottom: 48px;
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    overflow: hidden;
+  }
+  .theme-header {
+    padding: 18px 24px;
+    color: var(--paper);
+    border-bottom: 2px solid var(--ink);
+  }
+  .theme-header .num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    opacity: 0.85;
+    text-transform: uppercase;
+  }
+  .theme-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(22px, 2.6vw, 30px);
+    margin: 4px 0 8px 0;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .theme-header .sub {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.45;
+    opacity: 0.95;
+    max-width: 720px;
+  }
+  .theme-1 .theme-header { background: var(--t1); }
+  .theme-2 .theme-header { background: var(--t2); }
+  .theme-3 .theme-header { background: var(--t3); color: var(--ink); }
+  .theme-4 .theme-header { background: var(--t4); }
+  .theme-5 .theme-header { background: var(--t5); }
+  .theme-6 .theme-header { background: var(--t6); }
+
+  /* FA GRID */
+  .fa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .fa {
+    padding: 18px 22px;
+    border-right: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .fa:nth-child(2n) { border-right: none; }
+  .fa:nth-last-child(-n+2) { border-bottom: none; }
+  @media (max-width: 800px) {
+    .fa-grid { grid-template-columns: 1fr; }
+    .fa { border-right: none; border-bottom: 1px solid var(--ink); }
+    .fa:last-child { border-bottom: none; }
+  }
+  .fa .fa-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.16em;
+    color: var(--muted); font-weight: 700;
+  }
+  .fa h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 4px 0 10px 0;
+    line-height: 1.2;
+  }
+
+  .fa .fa-meta {
+    display: flex; flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700;
+    padding: 3px 7px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .badge.chain-native { background: #e7eef9; }
+  .badge.chain-evm { background: #fbe7d8; }
+  .badge.chain-both { background: var(--paper-3); }
+  .badge.prio-multiplier { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .badge.prio-high { background: var(--wallet); }
+  .badge.prio-medium { background: var(--paper-2); }
+  .badge.src {
+    font-size: 9px; opacity: 0.75;
+    border-color: var(--muted); color: var(--muted);
+  }
+
+  .fa .pb {
+    font-size: 13.5px; line-height: 1.5;
+    margin: 6px 0 12px 0;
+    color: var(--ink);
+  }
+  .fa .pb strong { font-weight: 600; }
+
+  .fa .impact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(14,17,22,0.25);
+  }
+  .impact-cell .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .impact-cell .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--ink);
+  }
+  .impact-cell.very-high .val { color: var(--app); }
+  .impact-cell.high .val { color: var(--app); }
+  .impact-cell.medium-high .val { color: var(--chain); }
+  .impact-cell.medium .val { color: var(--muted); }
+
+  /* LEGEND ROW */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .legend .item {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .legend .swatch {
+    width: 14px; height: 14px;
+    border: 1px solid var(--ink);
+  }
+
+  /* CROSS-CUTTING SECTION */
+  .cross {
+    margin-top: 48px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 28px 32px;
+  }
+  .cross h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 28px;
+    margin: 0 0 8px 0; line-height: 1.05;
+  }
+  .cross .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 22px;
+  }
+  .cross ol {
+    margin: 0; padding-left: 0;
+    list-style: none;
+    counter-reset: cc;
+  }
+  .cross li {
+    counter-increment: cc;
+    padding: 12px 0 12px 48px;
+    border-bottom: 1px solid rgba(14,17,22,0.12);
+    position: relative;
+    font-size: 14px; line-height: 1.55;
+  }
+  .cross li:last-child { border-bottom: none; }
+  .cross li::before {
+    content: counter(cc, decimal-leading-zero);
+    position: absolute; left: 0; top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px; font-weight: 700;
+    color: var(--wallet); line-height: 1;
+  }
+  .cross li strong { color: var(--chain); font-weight: 600; }
+
+  /* SUMMARY TABLE */
+  .summary-section {
+    margin-top: 56px;
+  }
+  .summary-section h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 28px;
+    margin: 0 0 8px 0;
+  }
+  .summary-section .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 22px;
+  }
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    font-size: 12px;
+  }
+  .summary-table th {
+    background: var(--ink); color: var(--paper);
+    padding: 8px 10px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .summary-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+    font-family: 'Fraunces', serif;
+  }
+  .summary-table tr:hover td { background: var(--paper-2); }
+  .summary-table .num-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; color: var(--muted);
+    width: 36px;
+  }
+  .summary-table .theme-tag {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .summary-table .t-tag-1 { background: var(--t1); }
+  .summary-table .t-tag-2 { background: var(--t2); }
+  .summary-table .t-tag-3 { background: var(--t3); }
+  .summary-table .t-tag-4 { background: var(--t4); }
+  .summary-table .t-tag-5 { background: var(--t5); }
+  .summary-table .t-tag-6 { background: var(--t6); }
+
+  /* SOURCE FOOTER */
+  .sources-foot {
+    margin-top: 60px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/">XRPL <em>Builder</em></a>
+  <div class="nav-links">
+    <a href="/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/gaps" data-section="paysage">Gaps</a>
+    <a href="/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/cost-simulator" data-section="outil">Sim</a>
+    <a href="/business-case-builder" data-section="outil">Case</a>
+    <a href="/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/analysis-1" data-section="analyse" class="section-start">Analysis 1</a>
+    <a href="/analysis-2" data-section="analyse" class="current">Analysis 2</a>
+    <a href="/analysis-3" data-section="analyse">Synthesis</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag active" href="/analysis-2">🇫🇷</a>
+    <a class="lang-flag" href="/en/analysis-2">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Analysis 2 · External challenger lens · v1.0 · Mai 2026</div>
+    <h1>24 <em>Focus Areas</em><br/>sur 6 Thèmes</h1>
+  </div>
+  <div class="meta">
+    Sources : 3 documents (a/b/c)<br/>
+    Méthodo : Cornell PE × Atka<br/>
+    Périmètre : XRPL Native + EVM<br/>
+    Snapshot : Mai 2026
+  </div>
+</header>
+
+<div class="strap">
+  <span>Buildathon Challenge Register</span>
+  <span>19 genuine gaps · 24 focus areas · 6 themes</span>
+  <span>Tier 1 ×6 · Tier 2 ×12 · Tier 3 ×6</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">CONTEXTE</span> Cette page est la <strong>seconde lecture</strong> (Analysis 2 — external challenger) des opportunités à construire sur XRPL. Elle synthétise 3 documents produits par un analyste externe à partir des 4 PWG (RWA, Stablecoins, Lending, Identity) tenus à Paris en avril 2026 et du <em>XRPL DeFi Report d'Atka</em> (jan. 2026).</p>
+  <p><span class="pill">MÉTHODE</span> 80 sujets de gaps ont été identifiés à travers les 4 sessions de PWG. Après filtrage rigoureux contre l'état actuel de l'écosystème, <strong>19 gaps sont jugés "genuine"</strong> (24%) — les 76% restants étant déjà adressés par des primitives XRPL existantes. Ces gaps ont été reformulés en <strong>24 Focus Areas actionables</strong>, regroupées en <strong>6 Thèmes</strong>.</p>
+  <p><span class="pill">FINDING #1</span> L'écosystème souffre principalement d'un <em>awareness gap</em>, pas d'un <em>protocol gap</em>. Les working groups ont régulièrement signalé comme manquantes des capacités déjà livrées. La conséquence : un registre de capacités unifié (Focus Area #22) et une infra testnet pré-déployée (Focus Area #21) sont des multiplicateurs avant même de penser produits.</p>
+</div>
+
+<div class="stat-strip">
+  <div class="stat"><div class="num">24</div><div class="lbl">Focus Areas</div></div>
+  <div class="stat"><div class="num">6</div><div class="lbl">Thèmes</div></div>
+  <div class="stat"><div class="num">19</div><div class="lbl">Genuine gaps</div></div>
+  <div class="stat"><div class="num">8</div><div class="lbl">Ecosystem multipliers</div></div>
+</div>
+
+<div class="legend">
+  <div class="item"><span class="swatch" style="background:var(--t1)"></span>Theme 1 — Wallets</div>
+  <div class="item"><span class="swatch" style="background:var(--t2)"></span>Theme 2 — Institutional Infra</div>
+  <div class="item"><span class="swatch" style="background:var(--t3)"></span>Theme 3 — Lending & Vaults</div>
+  <div class="item"><span class="swatch" style="background:var(--t4)"></span>Theme 4 — RWA & Stablecoins</div>
+  <div class="item"><span class="swatch" style="background:var(--t5)"></span>Theme 5 — EVM Sidechain DeFi</div>
+  <div class="item"><span class="swatch" style="background:var(--t6)"></span>Theme 6 — Dev Tooling</div>
+</div>
+
+<!-- THEME 1 -->
+<section class="theme theme-1">
+  <div class="theme-header">
+    <div class="num-badge">Theme 01 · 4 Focus Areas</div>
+    <h2>Wallets &amp; Cross-Device Experience</h2>
+    <div class="sub">Les wallets sont la porte d'entrée XRPL, mais les intégrations actuelles sont optimisées pour le trading. Tout produit au-delà de "buy-hold-trade" se heurte au mur de la continuité multi-device.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 01 · C-01</div>
+      <h3>Cross-Device Session Continuity Library</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">R-06 · G-01 · I-01</span>
+      </div>
+      <div class="pb">Subscriptions, merchant SDKs, credential-gated apps : tous bloqués au premier device switch. <strong>Lib partagée = débloque toute une catégorie produit non-trading.</strong></div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–10 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 02 · C-02</div>
+      <h3>Institutional Multisig Wallet with Full UI</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-03 · PRS wallets</span>
+      </div>
+      <div class="pb">Multisig XRPL natif est mature, mais aucun équivalent Safe (queue, rôles, audit). <strong>Last-mile UX</strong> bloquant pour treasury management institutionnel.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium-high"><div class="lbl">Ecosystem Impact</div><div class="val">Medium-High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–12 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 03 · C-03</div>
+      <h3>Smart Contract Wallet on EVM Sidechain</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-02 · Atka slide 13</span>
+      </div>
+      <div class="pb">ERC-4337 (social recovery, paymaster, session keys). <strong>Table-stakes</strong> pour rivaliser avec Base/Arbitrum/Avalanche. Critique pour onboarder les holders XRP TradFi-savvy.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium-high"><div class="lbl">Ecosystem Impact</div><div class="val">Medium-High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–12 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 04 · C-04</div>
+      <h3>Unified Cross-Chain Wallet SDK</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">R-01 · R-05</span>
+      </div>
+      <div class="pb">Une seule SDK pour XRPL natif + EVM. <strong>Sans cela, les builders choisissent une chaîne et ignorent l'autre</strong> — fragmentation accrue.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–8 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THEME 2 -->
+<section class="theme theme-2">
+  <div class="theme-header">
+    <div class="num-badge">Theme 02 · 4 Focus Areas</div>
+    <h2>Institutional Infrastructure</h2>
+    <div class="sub">Les institutions ne peuvent pas se brancher à XRPL sans un travail d'intégration sur-mesure. La couche de traduction entre data XRPL et systèmes institutionnels n'existe pas — chaque institution la rebuild from scratch.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 05 · C-05</div>
+      <h3>Institutional Data Emission Adapter Library</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">R-07 · G-02 · I-02</span>
+      </div>
+      <div class="pb">ISIN/CFI/LEI parser (XLS-89), IFRS exports, FIX protocol. <strong>Argué le plus haut leverage de toute la liste</strong> — chaque future intégration institutionnelle en bénéficie.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 10–14 sem.<br/><span style="color:var(--muted);font-weight:400">requires TradFi+crypto crossover</span></div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 06 · C-06</div>
+      <h3>Stablecoin Accounting &amp; Reconciliation Export</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-08 · G-03 · I-03</span>
+      </div>
+      <div class="pb">QuickBooks (IIF/QBO), Xero (CSV), IFRS-tagged, traitement FX juridiction-aware. RLUSD &gt; $1Bn cap : <strong>l'adoption merchant cale au reporting comptable</strong>, pas au paiement.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–8 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 07 · C-07</div>
+      <h3>Multi-Flow Institutional Access Control Library</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-09 · G-04 · I-04</span>
+      </div>
+      <div class="pb">Compose Permissioned Domains + Credentials en patterns multi-flow. <strong>Les institutions exécutent 4–5 flows parallèles par scope régulatoire</strong> et ne changeront pas leur process.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell medium-high"><div class="lbl">Feasibility</div><div class="val">Med-High · 10–14 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 08 · C-08</div>
+      <h3>Pluggable Proof Primitives Library</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">R-10 · G-05 · I-05</span>
+      </div>
+      <div class="pb">API commune (commitment, verification, attestation) avec adaptateurs hash/signature/ZK/BYO-scheme. <strong>Correction de cadrage</strong> : les WG avaient priorisé le ZK comme flagship ; les institutions veulent du choix.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–10 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THEME 3 -->
+<section class="theme theme-3">
+  <div class="theme-header">
+    <div class="num-badge">Theme 03 · 4 Focus Areas</div>
+    <h2>Lending, Vaults &amp; Risk Infrastructure</h2>
+    <div class="sub">Le XRPL Lending Protocol (XLS-65/66) entre en vote validateurs (jan. 2026). Les primitives protocole seules ne font pas des produits livrables — il faut des contrôles familiers, des signaux de risque et de l'app-layer.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 09 · C-09</div>
+      <h3>Vault Wrapper Pattern Library</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">R-12 · G-07 · I-07</span>
+      </div>
+      <div class="pb">Cool-down, redemption caps, emergency pause, gated redemption. <strong>Wrap XLS-65 aujourd'hui, migre vers natif quand l'amendment ship.</strong> Sans cela, le capital institutionnel attend l'amendment des années.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–12 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 10 · C-10</div>
+      <h3>Risk-Signal Aggregation from MPT Trading Patterns</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">R-13 · G-08 · I-08</span>
+      </div>
+      <div class="pb">Signaux de risque oracle-free issus des patterns trading on-ledger (Kennedy Reassurance). <strong>Contribution genuinement novatrice</strong> propre à l'archi XRPL — utile pour insurance, lending, monitoring.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell medium-high"><div class="lbl">Feasibility</div><div class="val">Med-High · 8–10 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 11 · C-11</div>
+      <h3>Lending Protocol on EVM Sidechain</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">Atka rec #5 — Morpho for XRP</span>
+      </div>
+      <div class="pb">Architecture modulaire vault-based (Morpho-style). <strong>Top besoin community survey</strong>, sweet-spot use case selon Atka. Lending est le plus gros TVL en DeFi (AAVE seul ~$30B).</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High proto · Med liquidité<br/><span style="color:var(--muted);font-weight:400">10–14 sem. contrats</span></div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 12 · C-12</div>
+      <h3>Uncollateralized Lending Interface</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">Atka rec #8 · XLS-66</span>
+      </div>
+      <div class="pb">Front-end XLS-66 (lender dashboard, borrower app, portfolio, repayment, risk analytics). <strong>Evernorth a annoncé son intention d'utiliser XLS-66</strong> — il faudra des UI pour ça.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–10 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THEME 4 -->
+<section class="theme theme-4">
+  <div class="theme-header">
+    <div class="num-badge">Theme 04 · 4 Focus Areas</div>
+    <h2>Tokenization, RWA &amp; Stablecoins</h2>
+    <div class="sub">RWA et stablecoins sont les segments les plus en croissance sur XRPL — RLUSD &gt; $1Bn cap, Ondo/OpenEden combinés à $2Bn+ TVL. Mais des gaps critiques d'infra subsistent entre la capacité protocole et les produits livrables.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 13 · C-13</div>
+      <h3>Physical-to-Digital Binding for Product Authentication</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-14 · G-09 · I-09</span>
+      </div>
+      <div class="pb">NFC/QR ↔ XRPL NFT (mutable URI). <strong>EU Digital Product Passport</strong> crée une deadline réglementaire pour textile et électronique — opportunité de capturer une vague d'adoption avant les autres chaînes.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium-high"><div class="lbl">Ecosystem Impact</div><div class="val">Medium-High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 8–12 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 14 · C-14</div>
+      <h3>Yield-Bearing Stablecoin</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native or EVM</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">Atka rec #3 · survey</span>
+      </div>
+      <div class="pb">RLUSD-backed yield ou collateral RWA (T-bills). <strong>Top demande community survey</strong>. Persona XRP holder = TradFi-savvy, yield-seeking → match parfait. USDe a fait $5B en moins d'un an.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell medium-high"><div class="lbl">Feasibility</div><div class="val">Med-High · 12–16 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 15 · C-15</div>
+      <h3>Non-USD Stablecoin DeFi Rails</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">Survey · Atka slide 31</span>
+      </div>
+      <div class="pb">AMM EUR/BRL/SGD/AUD, cross-currency routing via pathfinding XRPL natif. <strong>Alignement positioning</strong> : XRPL = cross-border, mais sa DeFi est 100% USD.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High tooling · Med liquidité</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 16 · C-16</div>
+      <h3>Chunked Data + On-Chain Anchoring Pattern</h3>
+      <div class="fa-meta">
+        <span class="badge chain-native">XRPL Native</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">R-11 · G-06 · I-06</span>
+      </div>
+      <div class="pb">Merkle, content-addressed retrieval, storage backends pluggables (IPFS/S3/self-hosted). <strong>Coordination problem, pas technique</strong> — chaque institution rebuild un truc incompatible.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–8 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THEME 5 -->
+<section class="theme theme-5">
+  <div class="theme-header">
+    <div class="num-badge">Theme 05 · 4 Focus Areas</div>
+    <h2>EVM Sidechain DeFi Innovation</h2>
+    <div class="sub">L'EVM Sidechain a lancé en juin 2025 avec $40M+ TVL et 35+ dApps. Les benchmarks Atka révèlent que XRPL est à <strong>zéro</strong> sur restaking, derivatives, insurance et synthetics — les segments DeFi qui croissent le plus vite.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 17 · C-17</div>
+      <h3>Restaking Protocol for XRP</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">Atka rec #5 — Babylon for XRP</span>
+      </div>
+      <div class="pb">XRP $110B+ market cap = collateral de sécurité massif sous-utilisé. <strong>Babylon = $6B+ pour BTC</strong>. Même fraction sur XRP → transformation de la position compétitive du Sidechain.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High contrats · 12–16 sem.<br/><span style="color:var(--muted);font-weight:400">Med pour ecosystem operators</span></div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 18 · C-18</div>
+      <h3>Synthetic Assets / CDP Protocol</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">Atka rec #5 — Synthetics</span>
+      </div>
+      <div class="pb">Collateral XRP/RLUSD → mint synthetic gold/stocks/forex. <strong>Composabilité avec Axiom (prediction markets)</strong> = stack DeFi qui montre pourquoi le Sidechain existe.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell medium-high"><div class="lbl">Feasibility</div><div class="val">Med-High · 12–14 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 19 · C-19</div>
+      <h3>Perpetual DEX</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">Atka benchmark — Derivatives</span>
+      </div>
+      <div class="pb">vAMM ou order-book, cross/isolated margin, liquidation, funding rates. <strong>Derivatives = +2x à +3x volume vs spot</strong> sur les chaînes mainstream. XRPL totalement absent.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell medium"><div class="lbl">Feasibility</div><div class="val">Medium · 14–18 sem.<br/><span style="color:var(--muted);font-weight:400">DeFi protocol expertise required</span></div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 20 · C-20</div>
+      <h3>Decentralized Insurance Protocol</h3>
+      <div class="fa-meta">
+        <span class="badge chain-evm">EVM Sidechain</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">Atka benchmark — Insurance</span>
+      </div>
+      <div class="pb">Pools de cover (smart contract risk, bridge, slashing). <strong>Indicateur de maturité que les capitaux institutionnels watch</strong> — sans assurance, chaque déploiement DeFi reste un risk-committee blocker.</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell medium-high"><div class="lbl">Feasibility</div><div class="val">Med-High · 10–14 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- THEME 6 -->
+<section class="theme theme-6">
+  <div class="theme-header">
+    <div class="num-badge">Theme 06 · 4 Focus Areas</div>
+    <h2>Developer Tooling &amp; Ecosystem Public Goods</h2>
+    <div class="sub">Toutes les autres focus areas profitent d'un meilleur tooling. Le gap analysis a montré que les WG signalent comme manquantes des capacités déjà livrées — c'est un échec de coordination, pas de capacité. Ce thème construit l'infra-multiplicateur.</div>
+  </div>
+  <div class="fa-grid">
+
+    <div class="fa">
+      <div class="fa-num">FA 21 · C-21</div>
+      <h3>Pre-Deployed Testnet Infrastructure</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-multiplier">High — Multiplier</span>
+        <span class="badge src">R-15 · G-10 · I-10</span>
+      </div>
+      <div class="pb">Permissioned domains pré-funded, credential issuers déployés, vault templates, MPT issuer templates, sample feeds. <strong>Le levier le plus haut sur tout autre challenge</strong> — chaque builder gagne du temps.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High build · 6–8 sem.<br/><span style="color:var(--muted);font-weight:400">Maintenance = ongoing</span></div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 22 · C-22</div>
+      <h3>XRPL Capabilities Registry</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">R-16 · G-11 · I-11</span>
+      </div>
+      <div class="pb">Base searchable de primitives, libs, tools, datasets. Auto-update XLS repo + amendments feed. <strong>Méta-multiplicateur</strong> : résout l'awareness gap directement (Finding #1 ci-dessus).</div>
+      <div class="impact-row">
+        <div class="impact-cell high"><div class="lbl">Ecosystem Impact</div><div class="val">High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–8 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 23 · C-23</div>
+      <h3>Vendor-Neutral Oracle / Bridge / Ramp Adapters</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-medium">Medium</span>
+        <span class="badge src">R-17 · G-12 · I-12</span>
+      </div>
+      <div class="pb">Adapter pattern uniforme oracle (Band, DIA), bridge (Axelar), fiat ramp. Réduit le vendor lock-in pour les produits institutionnels long-cycle.</div>
+      <div class="impact-row">
+        <div class="impact-cell medium"><div class="lbl">Ecosystem Impact</div><div class="val">Medium</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 6–8 sem.</div></div>
+      </div>
+    </div>
+
+    <div class="fa">
+      <div class="fa-num">FA 24 · C-24</div>
+      <h3>CeDeFi Yield Integration SDK</h3>
+      <div class="fa-meta">
+        <span class="badge chain-both">XRPL Native + EVM</span>
+        <span class="badge prio-high">High</span>
+        <span class="badge src">Atka rec #9 — CEX yield</span>
+      </div>
+      <div class="pb">SDK custody-compatible pour permettre aux CEX d'offrir du yield XRPL DeFi à leurs holders. <strong>60%+ du XRP est sur CEX</strong> — sans ce pont, la DeFi XRPL ignore la majorité de sa demand-side.</div>
+      <div class="impact-row">
+        <div class="impact-cell very-high"><div class="lbl">Ecosystem Impact</div><div class="val">Very High</div></div>
+        <div class="impact-cell high"><div class="lbl">Feasibility</div><div class="val">High · 10–14 sem.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CROSS-CUTTING FINDINGS -->
+<section class="cross">
+  <h2>Cross-cutting findings (4 PWG × Atka)</h2>
+  <div class="sub">Synthèse transversale issue de 80 sujets, 19 genuine gaps, 4 working groups</div>
+  <ol>
+    <li><strong>KYC harmonization cross-jurisdiction</strong> est le thème dominant. Florence Tison l'a cadré comme contrainte ("impossible en pratique") en Stablecoins ; le WG Identity comme la plus grosse opportunité ("Universal KYC"). <em>Même gap, deux angles.</em> La tech est live (XLS-70 + XLS-80) ; le bottleneck = régulateurs.</li>
+    <li><strong>P-256 / secp256r1 signing</strong> : la plus haute opportunité protocole. Petit spec, impact disproportionné — débloque Apple Secure Enclave, Android Keystore, FIDO2/WebAuthn et la majorité des HSM enterprise. Reference impl Ethereum (EIP-7951) déjà existante. Single most actionable XLS proposal.</li>
+    <li><strong>Lending domine la liste protocole</strong> : 5 sur 7 protocol gaps viennent du Lending WG. Raison : XLS-66 v1 est intentionnellement minimal — uncollat seulement, pas de time-locks, pas de fee splitting. La plupart traitables en XLS-66.1 follow-up.</li>
+    <li><strong>Acceptance networks</strong> : "merchant acceptance pour stablecoins" (WG Stablecoins) et "acceptance pour digital proofs" (WG Identity) se répondent — deux problèmes d'effets de réseau. Pilote Mastercard (RLUSD sur XRPL depuis nov. 2025) = template partnership-driven, pas protocol-driven.</li>
+    <li><strong>ISIN/CFI/LEI native fields</strong> (RWA gap #8) = probablement la XLS la plus facile à ship. Besoin concret (intégration TradFi), spec straightforward (extension XLS-89), aucun travail crypto novel. Quick win.</li>
+    <li><strong>Les 4 gaps régulatoires</strong> (cross-juridictionnels) ne peuvent pas être résolus par Ripple, XRPL Commons ou aucune équipe protocole seule. Multi-stakeholder, multi-années. À tracker, pas à actionner comme priorité engineering.</li>
+    <li><strong>Le plus grand finding global</strong> : 80 raw → 19 genuine (24%). Les 76% restants sont déjà adressés par des primitives XRPL existantes ou en dev. Confirmation : le ressenti "manque de capacités" des WG est un <em>awareness gap</em>, pas un <em>protocol gap</em>.</li>
+  </ol>
+</section>
+
+<!-- SUMMARY TABLE -->
+<section class="summary-section">
+  <h2>Summary table — 24 Focus Areas</h2>
+  <div class="sub">Vue compacte pour décision rapide</div>
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>#</th><th>Focus Area</th><th>Chain</th><th>Priority</th><th>Impact</th><th>Feas.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="num-cell">01</td><td><span class="theme-tag t-tag-1"></span>Cross-Device Session Continuity Library</td><td>XRPL+EVM</td><td>Multiplier</td><td>High</td><td>High</td></tr>
+      <tr><td class="num-cell">02</td><td><span class="theme-tag t-tag-1"></span>Institutional Multisig Wallet (Full UI)</td><td>XRPL</td><td>High</td><td>Med-High</td><td>High</td></tr>
+      <tr><td class="num-cell">03</td><td><span class="theme-tag t-tag-1"></span>Smart Contract Wallet on EVM Sidechain</td><td>EVM</td><td>High</td><td>Med-High</td><td>High</td></tr>
+      <tr><td class="num-cell">04</td><td><span class="theme-tag t-tag-1"></span>Unified Cross-Chain Wallet SDK</td><td>XRPL+EVM</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+      <tr><td class="num-cell">05</td><td><span class="theme-tag t-tag-2"></span>Institutional Data Emission Adapter Library</td><td>XRPL</td><td>Multiplier</td><td>Very High</td><td>High*</td></tr>
+      <tr><td class="num-cell">06</td><td><span class="theme-tag t-tag-2"></span>Stablecoin Accounting & Reconciliation Export</td><td>XRPL</td><td>High</td><td>High</td><td>High</td></tr>
+      <tr><td class="num-cell">07</td><td><span class="theme-tag t-tag-2"></span>Multi-Flow Institutional Access Control Library</td><td>XRPL</td><td>High</td><td>High</td><td>Med-High</td></tr>
+      <tr><td class="num-cell">08</td><td><span class="theme-tag t-tag-2"></span>Pluggable Proof Primitives Library</td><td>XRPL</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+      <tr><td class="num-cell">09</td><td><span class="theme-tag t-tag-3"></span>Vault Wrapper Pattern Library</td><td>XRPL</td><td>Multiplier</td><td>Very High</td><td>High</td></tr>
+      <tr><td class="num-cell">10</td><td><span class="theme-tag t-tag-3"></span>Risk-Signal Aggregation from MPT Patterns</td><td>XRPL</td><td>Medium</td><td>Medium</td><td>Med-High</td></tr>
+      <tr><td class="num-cell">11</td><td><span class="theme-tag t-tag-3"></span>Lending Protocol on EVM Sidechain</td><td>EVM</td><td>Multiplier</td><td>Very High</td><td>High*</td></tr>
+      <tr><td class="num-cell">12</td><td><span class="theme-tag t-tag-3"></span>Uncollateralized Lending Interface (XLS-66)</td><td>XRPL</td><td>High</td><td>High</td><td>High</td></tr>
+      <tr><td class="num-cell">13</td><td><span class="theme-tag t-tag-4"></span>Physical-to-Digital Binding (EU DPP)</td><td>XRPL</td><td>High</td><td>Med-High</td><td>High</td></tr>
+      <tr><td class="num-cell">14</td><td><span class="theme-tag t-tag-4"></span>Yield-Bearing Stablecoin</td><td>XRPL or EVM</td><td>Multiplier</td><td>Very High</td><td>Med-High</td></tr>
+      <tr><td class="num-cell">15</td><td><span class="theme-tag t-tag-4"></span>Non-USD Stablecoin DeFi Rails</td><td>XRPL+EVM</td><td>Medium</td><td>Medium</td><td>High*</td></tr>
+      <tr><td class="num-cell">16</td><td><span class="theme-tag t-tag-4"></span>Chunked Data + On-Chain Anchoring Pattern</td><td>XRPL</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+      <tr><td class="num-cell">17</td><td><span class="theme-tag t-tag-5"></span>Restaking Protocol for XRP</td><td>EVM</td><td>Multiplier</td><td>Very High</td><td>High*</td></tr>
+      <tr><td class="num-cell">18</td><td><span class="theme-tag t-tag-5"></span>Synthetic Assets / CDP Protocol</td><td>EVM</td><td>High</td><td>High</td><td>Med-High</td></tr>
+      <tr><td class="num-cell">19</td><td><span class="theme-tag t-tag-5"></span>Perpetual DEX</td><td>EVM</td><td>High</td><td>High</td><td>Medium</td></tr>
+      <tr><td class="num-cell">20</td><td><span class="theme-tag t-tag-5"></span>Decentralized Insurance Protocol</td><td>EVM</td><td>High</td><td>High</td><td>Med-High</td></tr>
+      <tr><td class="num-cell">21</td><td><span class="theme-tag t-tag-6"></span>Pre-Deployed Testnet Infrastructure</td><td>XRPL+EVM</td><td>Multiplier</td><td>Very High</td><td>High*</td></tr>
+      <tr><td class="num-cell">22</td><td><span class="theme-tag t-tag-6"></span>XRPL Capabilities Registry</td><td>XRPL+EVM</td><td>High</td><td>High</td><td>High</td></tr>
+      <tr><td class="num-cell">23</td><td><span class="theme-tag t-tag-6"></span>Vendor-Neutral Oracle / Bridge / Ramp Adapters</td><td>XRPL+EVM</td><td>Medium</td><td>Medium</td><td>High</td></tr>
+      <tr><td class="num-cell">24</td><td><span class="theme-tag t-tag-6"></span>CeDeFi Yield Integration SDK</td><td>XRPL+EVM</td><td>High</td><td>Very High</td><td>High*</td></tr>
+    </tbody>
+  </table>
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 12px;">
+    * = Faisabilité conditionnée à compétences spécifiques (TradFi, ecosystem coordination, exchange integration, etc.). Voir détail par focus area ci-dessus.
+  </div>
+</section>
+
+<div class="sources-foot">
+  <strong>Source documents :</strong><br/>
+  a — Consolidated gaps · 19 genuine gaps filtered from 80 PWG topics · April 28, 2026<br/>
+  b — XRPL_Buildathon_Challenges · 24 challenges across 6 themes · Tier 1×6, Tier 2×12, Tier 3×6<br/>
+  c — XRPL_What_To_Build_And_Why · 24 focus areas long-form · Cornell Process Engineering × Atka DeFi Report (Jan 2026)<br/><br/>
+  <strong>Working groups Paris (Apr 2026) :</strong> RWA · Stablecoins · Lending · Identity &amp; Credentials<br/>
+  <strong>External report :</strong> Atka XRPL DeFi Report (89 slides, January 2026)
+</div>
+
+</div>
+</body>
+</html>

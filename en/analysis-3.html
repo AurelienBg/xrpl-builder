@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analysis 3 — Unified synthesis — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+
+    --t1: #5a85b8;
+    --t2: #6b4226;
+    --t3: #d4a017;
+    --t4: #4a6741;
+    --t5: #b85c38;
+    --t6: #8b5a8c;
+    --t7: #2c6680;  /* AI-Native — A1 contribution */
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
+  }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95; margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-size: 14.5px; line-height: 1.6;
+  }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* SECTION HEADER */
+  .sec-h {
+    margin-top: 56px; margin-bottom: 24px;
+  }
+  .sec-h .num-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .sec-h h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(26px, 3.6vw, 38px);
+    margin: 0; line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .sec-h h2 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .sec-h .lead {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px; line-height: 1.55;
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 760px;
+  }
+
+  /* COMPARISON BLOCK */
+  .convergences, .a2-adds, .a1-adds {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 28px;
+  }
+  .conv-header {
+    background: var(--ink); color: var(--paper);
+    padding: 14px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.16em;
+    text-transform: uppercase; font-weight: 700;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .conv-header .badge-side {
+    font-size: 10px; opacity: 0.8;
+  }
+  .a2-adds .conv-header { background: var(--t1); }
+  .a1-adds .conv-header { background: var(--user); }
+  .conv-list {
+    padding: 8px 0;
+  }
+  .conv-list .item {
+    padding: 14px 22px;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+  }
+  .conv-list .item:last-child { border-bottom: none; }
+  .conv-list .item .text {
+    font-size: 13.5px; line-height: 1.55;
+  }
+  .conv-list .item .text strong {
+    font-weight: 600; color: var(--chain);
+  }
+  .conv-list .item .ref {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .conv-list .item .ref .ref-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--muted);
+    margin: 2px 0 2px 4px;
+    background: var(--paper);
+  }
+
+  /* TENSIONS / ARBITRATIONS */
+  .tensions {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 28px;
+  }
+  .tensions .conv-header {
+    background: var(--wallet); color: var(--ink);
+  }
+  .tensions table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tensions th, .tensions td {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 12.5px;
+    border-bottom: 1px solid rgba(14,17,22,0.1);
+    vertical-align: top;
+  }
+  .tensions th {
+    background: var(--paper-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 2px solid var(--ink);
+  }
+  .tensions td.tnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; color: var(--wallet);
+    width: 38px;
+    background: var(--ink); color: var(--paper);
+    text-align: center;
+  }
+  .tensions td .arb {
+    background: var(--t4);
+    color: var(--paper);
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    margin-right: 4px;
+    font-weight: 700;
+  }
+
+  /* MASTER ATLAS */
+  .atlas {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    margin-bottom: 32px;
+  }
+  .atlas-header {
+    background: var(--chain); color: var(--paper);
+    padding: 16px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.18em;
+    text-transform: uppercase; font-weight: 700;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .atlas table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .atlas th {
+    background: var(--paper-2);
+    padding: 8px 10px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 700;
+    border-bottom: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+  .atlas td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(14,17,22,0.08);
+    font-family: 'Fraunces', serif;
+    vertical-align: top;
+  }
+  .atlas tr:hover td { background: var(--paper-2); }
+  .atlas td.idn {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .atlas td.fa-name { font-weight: 600; min-width: 240px; }
+  .atlas td.fa-name small {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px; font-weight: 400;
+    color: var(--muted); margin-top: 2px;
+  }
+  .atlas .theme-tag {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  .atlas .t-tag-1 { background: var(--t1); }
+  .atlas .t-tag-2 { background: var(--t2); }
+  .atlas .t-tag-3 { background: var(--t3); }
+  .atlas .t-tag-4 { background: var(--t4); }
+  .atlas .t-tag-5 { background: var(--t5); }
+  .atlas .t-tag-6 { background: var(--t6); }
+  .atlas .t-tag-7 { background: var(--t7); }
+  .atlas .src-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    padding: 1px 5px;
+    background: var(--paper-2);
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .atlas .src-A1 { background: #fde8e0; border-color: var(--user); color: var(--user); }
+  .atlas .src-A2 { background: #e0eaf5; border-color: var(--t1); color: var(--t1); }
+  .atlas .src-BOTH { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .atlas .pri-mult {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 1px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+  }
+  .atlas .pri-high {
+    display: inline-block;
+    background: var(--wallet);
+    padding: 1px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+  }
+  .atlas .pri-medium {
+    display: inline-block;
+    background: var(--paper-2);
+    border: 1px solid var(--muted);
+    padding: 1px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; font-weight: 700;
+    color: var(--muted);
+  }
+
+  /* STRATEGIC FRAME */
+  .frame {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 28px 32px;
+    margin-bottom: 36px;
+  }
+  .frame h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 0 0 12px 0;
+  }
+  .frame h3 em { font-style: italic; color: var(--chain); }
+  .frame .frame-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 20px;
+  }
+  .frame-cell {
+    padding: 18px;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+  }
+  .frame-cell h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--chain);
+    margin: 0 0 10px 0;
+    font-weight: 700;
+  }
+  .frame-cell ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; }
+  .frame-cell ul li { margin-bottom: 6px; }
+  @media (max-width: 800px) {
+    .frame .frame-grid { grid-template-columns: 1fr; }
+  }
+
+  /* SOURCE FOOTER */
+  .sources-foot {
+    margin-top: 60px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/">XRPL <em>Builder</em></a>
+  <div class="nav-links">
+    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/en/gaps" data-section="paysage">Gaps</a>
+    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/en/cost-simulator" data-section="outil">Sim</a>
+    <a href="/en/business-case-builder" data-section="outil">Case</a>
+    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/en/analysis-1" data-section="analyse" class="section-start">Analysis 1</a>
+    <a href="/en/analysis-2" data-section="analyse" >Analysis 2</a>
+    <a href="/en/analysis-3" data-section="analyse" class="current">Synthesis</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag" href="/analysis-3">🇫🇷</a>
+    <a class="lang-flag active" href="/en/analysis-3">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Analysis 3 · Synthesis · Best of both worlds · v1.0 · May 2026</div>
+    <h1>The unified <em>synthesis</em><br/>A1 + A2 → Master Atlas</h1>
+  </div>
+  <div class="meta">
+    Sources: Analysis 1 (internal) + Analysis 2 (challenger)<br/>
+    Method: convergences + additive + arbitration<br/>
+    Total: 30 opportunities across 7 themes<br/>
+    Snapshot: May 2026
+  </div>
+</header>
+
+<div class="strap">
+  <span>Best-of-Both Synthesis</span>
+  <span>Convergences · Additives · Arbitrations</span>
+  <span>Master Atlas opportunity register</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">PRINCIPLE</span> This page is the <strong>"best of both worlds" synthesis</strong> between <em>Analysis 1</em> (internal reading from the 4 PWGs + Atka) and <em>Analysis 2</em> (external challenger, 24 Focus Areas / 6 Themes). <strong>No insight is lost</strong>: what converges is consolidated, what diverges is arbitrated, what is unique to one is preserved as additive.</p>
+  <p><span class="pill">METHOD</span> Four successive passes: (1) <em>convergences</em> — where A1 and A2 say the same thing, we consolidate; (2) <em>A2 → A1 additives</em> — what A2 brings that A1 didn't have; (3) <em>A1 → A2 additives</em> — what A1 brings that A2 didn't have; (4) <em>tension arbitration</em> — each inconsistency arbitrated with justification.</p>
+  <p><span class="pill">RESULT</span> A <strong>Master Atlas</strong> of 30 opportunities across 7 themes (the 6 from A2 + an "AI-Native Services & Agents" theme from A1), with source-tag (A1, A2, or BOTH), unified priority, and chain-target. <strong>It is the actionable base of the Buildathon.</strong></p>
+</div>
+
+<!-- ========================== SECTION 1: CONVERGENCES ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 01 · Where they agree</div>
+  <h2><em>A1 ∩ A2</em> convergences</h2>
+  <p class="lead">Seven points where A1 and A2 say essentially the same thing. These convergences are the <strong>strongest convictions</strong> of the Master Atlas — to prioritize from the start of the Buildathon.</p>
+</div>
+
+<div class="convergences">
+  <div class="conv-header">
+    <span>Shared convictions</span>
+    <span class="badge-side">A1 ∩ A2 = high conviction</span>
+  </div>
+  <div class="conv-list">
+    <div class="item">
+      <div class="text"><strong>CeDeFi via CEX = distribution channel #1.</strong> 60%+ of XRP is on centralized exchanges. Without a CEX↔DeFi bridge, XRPL DeFi ignores the majority of demand-side.</div>
+      <div class="ref">A1 finding B.4<span class="ref-tag">Tier 1 #4</span><br/>A2 FA-24<span class="ref-tag">CeDeFi SDK</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Lending = central multiplier.</strong> Top community survey need (A2), perfect match with XRP holder persona (Atka). XLS-66 + EVM Sidechain Morpho-style = double-leg lending stack.</div>
+      <div class="ref">A1 Tier 1 #1<span class="ref-tag">Compliant Credit Vault</span><br/>A2 FA-09 + FA-11 + FA-12</div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>RWA + Stablecoins = institutional sweet spot.</strong> RLUSD &gt; $1Bn cap, Ondo + OpenEden $2Bn TVL. Issuance studio + yield-bearing stablecoin = massive TVL drivers.</div>
+      <div class="ref">A1 Tier 1 #2<span class="ref-tag">RWA Studio EU</span><br/>A2 FA-13 + FA-14</div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Identity / Credentials = horizontal infra, not a vertical.</strong> XLS-70 + Credentials are live but no product uses them. Unblocks RWA, Lending, Stablecoins simultaneously.</div>
+      <div class="ref">A1 finding B.1<span class="ref-tag">Tier 1 #3</span><br/>A2 FA-07<span class="ref-tag">Multi-Flow ACL</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Restaking for XRP = structural TVL driver.</strong> Babylon did $6B+ for BTC. XRP $110B market = massive underutilized collateral.</div>
+      <div class="ref">A1 Tier 2 #6<span class="ref-tag">Babylon-fork</span><br/>A2 FA-17</div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Insurance gap.</strong> No decentralized insurance on XRPL/EVM. Maturity signal that institutional capital watches before deploying.</div>
+      <div class="ref">A1 Tier 3 #9<br/>A2 FA-20</div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Strategic RLUSD-first.</strong> Regulated, MiCA-ready, NY-DFS, growth &gt; initial USDe. Settlement + collateral + fee + payout default for any serious B2B product.</div>
+      <div class="ref">A1 finding B.3<br/>A2 cross-cutting + FA-06 + FA-14</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== SECTION 2: A2 ADDS ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 02 · A2 → A1 (additive)</div>
+  <h2>What A2 brings<br/>that <em>A1 didn't have</em></h2>
+  <p class="lead">The external challenger saw things the internal reading had missed — these additives are <strong>preserved in full</strong>.</p>
+</div>
+
+<div class="a2-adds">
+  <div class="conv-header">
+    <span>A2 additives (added to Master Atlas)</span>
+    <span class="badge-side">11 A2-unique contributions</span>
+  </div>
+  <div class="conv-list">
+    <div class="item">
+      <div class="text"><strong>Entire "Wallets & Cross-Device" theme</strong> — A1 had no wallet/UX analysis. Cross-device session continuity (FA-01) blocks the whole non-trading product layer. SCW EVM (FA-03) = table-stakes against Base/Arbitrum.</div>
+      <div class="ref"><span class="ref-tag">FA-01 → FA-04</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Pre-Deployed Testnet Infrastructure</strong> (FA-21). Structural multiplier: pre-funded permissioned domains, deployed credential issuers, vault templates, MPT issuer templates. A1 hadn't seen this tooling leverage.</div>
+      <div class="ref"><span class="ref-tag">FA-21</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>XRPL Capabilities Registry</strong> (FA-22). Meta-multiplier that solves the <em>awareness gap</em> directly. Auto-update XLS repo + amendments feed.</div>
+      <div class="ref"><span class="ref-tag">FA-22</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Vault Wrapper Pattern Library</strong> (FA-09). Timing-arbitrage insight: wrap XLS-65 today, migrate to native when the amendment ships. Without this, institutional capital waits years.</div>
+      <div class="ref"><span class="ref-tag">FA-09</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Risk-Signal Aggregation from MPT Trading Patterns</strong> (FA-10). Genuinely novel contribution unique to XRPL's architecture — A1 hadn't flagged this specificity (Kennedy Reassurance pattern).</div>
+      <div class="ref"><span class="ref-tag">FA-10</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Stablecoin Accounting & Reconciliation Export</strong> (FA-06). Critical insight: merchant adoption stalls at accounting reporting, not at payment. QuickBooks/Xero/IFRS = essential plumbing.</div>
+      <div class="ref"><span class="ref-tag">FA-06</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Pluggable Proof Primitives Library</strong> (FA-08). Framing correction: WGs had prioritized ZK as flagship; institutions want choice (hash, signature, ZK, BYO-scheme).</div>
+      <div class="ref"><span class="ref-tag">FA-08</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Synthetic Assets / CDP + Axiom composability</strong> (FA-18). Showcase of why the Sidechain exists — composability that native XRPL cannot do.</div>
+      <div class="ref"><span class="ref-tag">FA-18</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Physical-to-Digital Binding (EU DPP)</strong> (FA-13). Short-window regulatory opportunity (clothing + electronics). A1 hadn't flagged the EU DPP deadline.</div>
+      <div class="ref"><span class="ref-tag">FA-13</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>P-256 / secp256r1 signing</strong> (cross-cutting). Single most actionable XLS proposal — unlocks Apple Secure Enclave, Android Keystore, FIDO2/WebAuthn, HSM. Ethereum reference impl (EIP-7951).</div>
+      <div class="ref"><span class="ref-tag">cross-cutting #2</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>"Awareness gap > Protocol gap" finding.</strong> 80 raw → 19 genuine (24%). The remaining 76% are already addressed by existing primitives. Critical reframe for the ecosystem strategy.</div>
+      <div class="ref"><span class="ref-tag">cross-cutting #7</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== SECTION 3: A1 ADDS ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 03 · A1 → A2 (additive)</div>
+  <h2>What A1 brings<br/>that <em>A2 didn't have</em></h2>
+  <p class="lead">The internal reading surfaced strategic angles absent from the external challenger — preserved and integrated into the Master Atlas as <strong>Theme 7</strong>.</p>
+</div>
+
+<div class="a1-adds">
+  <div class="conv-header">
+    <span>A1 additives (preserved in Master Atlas)</span>
+    <span class="badge-side">6 A1-unique contributions</span>
+  </div>
+  <div class="conv-list">
+    <div class="item">
+      <div class="text"><strong>Entire x402 / AgentPay vertical.</strong> The Coinbase HTTP 402 standard and AI agent payments is invisible in A2. A1 has a complete AgentPay blueprint (Atlas #7) + decision tree path.</div>
+      <div class="ref"><span class="ref-tag">Theme 7 — AI-Native</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>"AI-Native Services" YC RFS thesis.</strong> 8 services that internalize operations (compliance ops, treasury ops, restaking management) — not an SDK. A2 stays at the tooling/product layer, without the service lens.</div>
+      <div class="ref"><span class="ref-tag">A1 Tier 1+2</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>5 formalized strategic tensions (T1–T5).</strong> A2 has cross-cutting findings, but no "choices to arbitrate" framework for the founder. See Section 4 below.</div>
+      <div class="ref"><span class="ref-tag">A1 section F</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Explicit "service company vs tooling" framing.</strong> A2 suggests it implicitly (FA-24 exchange SDK = service-flavored), but A1 establishes it as a strategic axis for founders.</div>
+      <div class="ref"><span class="ref-tag">A1 finding B.5</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>7 concrete blueprints</strong> (RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP, AgentPay). A2 stays at FA layer — A1 goes down to product-with-economics layer.</div>
+      <div class="ref"><span class="ref-tag">/builder-atlas</span></div>
+    </div>
+    <div class="item">
+      <div class="text"><strong>Detailed primitive mapping</strong> AMM XLS-30 / MPT XLS-33d / DID XLS-70 / Credentials XLS-80 / Lending XLS-66 / Vault XLS-65 — A2 doesn't describe this stack at that level of detail.</div>
+      <div class="ref"><span class="ref-tag">/blockchain-framework + /ecosystem-map</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== SECTION 4: TENSIONS ARBITRÉES ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 04 · Arbitration</div>
+  <h2>The <em>5 strategic</em> tensions — arbitrated</h2>
+  <p class="lead">The 5 A1 tensions tested against A2. Each divergence is arbitrated with justification, or marked "persistent strategic tension" if the choice belongs to the founder.</p>
+</div>
+
+<div class="tensions">
+  <div class="conv-header" style="background: var(--wallet); color: var(--ink);">
+    <span>Arbitrated tensions</span>
+    <span class="badge-side" style="color: var(--ink);">A1 × A2 = decisions</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tension</th>
+        <th>A1 position</th>
+        <th>A2 position</th>
+        <th>Master Atlas arbitration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tnum">T1</td>
+        <td>XRPL native vs EVM Sidechain: where to place builders?</td>
+        <td>Unresolved tension</td>
+        <td>Implicit: <em>both depending on use case</em>, explicit chain per FA</td>
+        <td><span class="arb">RESOLVED</span> A2 position. Each opportunity has a precise chain-target in the Master Atlas.</td>
+      </tr>
+      <tr>
+        <td class="tnum">T2</td>
+        <td>Credentials = horizontal infra, or let it emerge?</td>
+        <td>Push it (Tier 1 #3)</td>
+        <td>Push it explicit (FA-07 + FA-21 pre-funded sandbox)</td>
+        <td><span class="arb">RESOLVED</span> A1+A2 convergence. Push via Multi-Flow ACL + pre-deployed sandbox.</td>
+      </tr>
+      <tr>
+        <td class="tnum">T3</td>
+        <td>Mandatory CeDeFi vs pure institutional DeFi?</td>
+        <td>Mandatory CeDeFi (Atka)</td>
+        <td>Confirms via FA-24 (CeDeFi Yield SDK)</td>
+        <td><span class="arb">RESOLVED</span> Strong convergence. CeDeFi via CEX = distribution play #1.</td>
+      </tr>
+      <tr>
+        <td class="tnum">T4</td>
+        <td>RLUSD-first vs multi-stablecoin?</td>
+        <td>Strategic tension (Ripple dependency)</td>
+        <td>Pragmatic: RLUSD = settlement + Add FA-15 non-USD rails</td>
+        <td><span class="arb">PARTIALLY RESOLVED</span> RLUSD-first by default + opt-in diversification via non-USD rails. Tension persists for founders very risk-averse to Ripple dependency.</td>
+      </tr>
+      <tr>
+        <td class="tnum">T5</td>
+        <td>Cloning Morpho/Babylon vs XRPL-native originality?</td>
+        <td>Unresolved tension</td>
+        <td>Both + an originality (FA-10 risk-signal MPT) unique to XRPL</td>
+        <td><span class="arb">RESOLVED</span> "Both, with a twist": fork to catch up (Lending, Restaking) + one XRPL-unique innovation to differentiate (Risk-Signal MPT).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========================== SECTION 5: MASTER ATLAS ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 05 · Unified opportunity register</div>
+  <h2>Master Atlas — <em>30 opportunities · 7 themes</em></h2>
+  <p class="lead">Final operational synthesis. Each line points to (a) its source origin, (b) its unified priority, (c) its chain-target. <strong>This is the table that becomes the Buildathon challenge register.</strong></p>
+</div>
+
+<div class="atlas">
+  <div class="atlas-header">
+    <span>Master Atlas — opportunity register</span>
+    <span style="font-size:10px; opacity:0.85;">A1 ×6 · A2 ×24 · BOTH-confirmed marked · 8 multipliers</span>
+  </div>
+  <div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr>
+        <th>Theme</th>
+        <th>#</th>
+        <th>Focus Area</th>
+        <th>Chain</th>
+        <th>Source</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Theme 1 -->
+      <tr><td><span class="theme-tag t-tag-1"></span>T1 — Wallets</td><td class="idn">M-01</td><td class="fa-name">Cross-Device Session Continuity Library<small>FA-01 / C-01</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-1"></span>T1</td><td class="idn">M-02</td><td class="fa-name">Institutional Multisig Wallet (Full UI)<small>FA-02 / C-02</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-1"></span>T1</td><td class="idn">M-03</td><td class="fa-name">Smart Contract Wallet on EVM Sidechain<small>FA-03 / C-03</small></td><td>EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-1"></span>T1</td><td class="idn">M-04</td><td class="fa-name">Unified Cross-Chain Wallet SDK<small>FA-04 / C-04</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <!-- Theme 2 -->
+      <tr><td><span class="theme-tag t-tag-2"></span>T2 — Institutional Infra</td><td class="idn">M-05</td><td class="fa-name">Institutional Data Emission Adapter Library<small>FA-05 / C-05 · ISIN/CFI/LEI/FIX/IFRS</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-2"></span>T2</td><td class="idn">M-06</td><td class="fa-name">Stablecoin Accounting & Reconciliation Export<small>FA-06 / C-06 · QuickBooks/Xero/IFRS</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-2"></span>T2</td><td class="idn">M-07</td><td class="fa-name">Multi-Flow Institutional Access Control Library<small>FA-07 / C-07 · Permissioned Domains × Credentials</small></td><td>XRPL</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-2"></span>T2</td><td class="idn">M-08</td><td class="fa-name">Pluggable Proof Primitives Library<small>FA-08 / C-08 · Hash/Sig/ZK/BYO</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <!-- Theme 3 -->
+      <tr><td><span class="theme-tag t-tag-3"></span>T3 — Lending & Vaults</td><td class="idn">M-09</td><td class="fa-name">Vault Wrapper Pattern Library (timing arbitrage)<small>FA-09 / C-09 · XLS-65 wrapper</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-3"></span>T3</td><td class="idn">M-10</td><td class="fa-name">Risk-Signal Aggregation from MPT Trading Patterns<small>FA-10 / C-10 · Kennedy Reassurance · XRPL-native novel</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-3"></span>T3</td><td class="idn">M-11</td><td class="fa-name">Lending Protocol on EVM Sidechain (Morpho-style)<small>FA-11 / C-11 · top community survey</small></td><td>EVM</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-3"></span>T3</td><td class="idn">M-12</td><td class="fa-name">Uncollateralized Lending Interface (XLS-66)<small>FA-12 / C-12 · Evernorth announced intent</small></td><td>XRPL</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-3"></span>T3</td><td class="idn">M-12b</td><td class="fa-name">Compliant Credit Vault (institutional service)<small>A1 Tier 1 #1 · agent-curator with attestations</small></td><td>XRPL</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <!-- Theme 4 -->
+      <tr><td><span class="theme-tag t-tag-4"></span>T4 — RWA & Stablecoins</td><td class="idn">M-13</td><td class="fa-name">Physical-to-Digital Binding for Authentication (EU DPP)<small>FA-13 / C-13 · regulatory deadline</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-4"></span>T4</td><td class="idn">M-14</td><td class="fa-name">Yield-Bearing Stablecoin (T-bill backed)<small>FA-14 / C-14 · USDe parallel</small></td><td>XRPL or EVM</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-4"></span>T4</td><td class="idn">M-15</td><td class="fa-name">Non-USD Stablecoin DeFi Rails (EUR/BRL/SGD/AUD)<small>FA-15 / C-15 · positioning alignment</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-4"></span>T4</td><td class="idn">M-16</td><td class="fa-name">Chunked Data + On-Chain Anchoring Pattern<small>FA-16 / C-16 · IPFS/S3/self-hosted backends</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-4"></span>T4</td><td class="idn">M-16b</td><td class="fa-name">RWA Issuance Studio EU/MiCA (institutional service)<small>A1 Tier 1 #2 · MPT + DID + cap table</small></td><td>XRPL</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <!-- Theme 5 -->
+      <tr><td><span class="theme-tag t-tag-5"></span>T5 — EVM Sidechain DeFi</td><td class="idn">M-17</td><td class="fa-name">Restaking Protocol for XRP (Babylon-fork)<small>FA-17 / C-17 · $110B+ XRP cap underutilized</small></td><td>EVM</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-5"></span>T5</td><td class="idn">M-18</td><td class="fa-name">Synthetic Assets / CDP Protocol (× Axiom)<small>FA-18 / C-18 · gold/stocks/forex synthetic</small></td><td>EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-5"></span>T5</td><td class="idn">M-19</td><td class="fa-name">Perpetual DEX (vAMM or order book)<small>FA-19 / C-19 · derivatives = highest volume</small></td><td>EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-5"></span>T5</td><td class="idn">M-20</td><td class="fa-name">Decentralized Insurance Protocol<small>FA-20 / C-20 · maturity signal for institutional</small></td><td>EVM</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <!-- Theme 6 -->
+      <tr><td><span class="theme-tag t-tag-6"></span>T6 — Dev Tooling</td><td class="idn">M-21</td><td class="fa-name">Pre-Deployed Testnet Infrastructure<small>FA-21 / C-21 · multiplier across everything</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-mult">MULT</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-6"></span>T6</td><td class="idn">M-22</td><td class="fa-name">XRPL Capabilities Registry<small>FA-22 / C-22 · auto-update XLS feed · solves awareness gap</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-6"></span>T6</td><td class="idn">M-23</td><td class="fa-name">Vendor-Neutral Oracle / Bridge / Ramp Adapters<small>FA-23 / C-23 · zero-code-change provider swap</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-6"></span>T6</td><td class="idn">M-24</td><td class="fa-name">CeDeFi Yield Integration SDK (CEX channel)<small>FA-24 / C-24 · 60%+ XRP on CEX</small></td><td>XRPL+EVM</td><td><span class="src-tag src-BOTH">BOTH</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-6"></span>T6</td><td class="idn">M-25</td><td class="fa-name">P-256 / secp256r1 Signing (XLS proposal)<small>cross-cutting · Apple Secure Enclave + WebAuthn + HSM</small></td><td>XRPL</td><td><span class="src-tag src-A2">A2</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <!-- Theme 7 — A1 contribution -->
+      <tr><td><span class="theme-tag t-tag-7"></span>T7 — AI-Native &amp; Agents</td><td class="idn">M-26</td><td class="fa-name">AgentPay — x402 + XRPL settlement<small>A1 blueprint #7 · /builder-atlas</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-7"></span>T7</td><td class="idn">M-27</td><td class="fa-name">AI-Native Compliance Ops (service company)<small>A1 service-thesis · YC RFS lens</small></td><td>XRPL</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-high">HIGH</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-7"></span>T7</td><td class="idn">M-28</td><td class="fa-name">AI-Native Treasury Operations (RLUSD automation)<small>A1 service-thesis · programmable RLUSD</small></td><td>XRPL+EVM</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-7"></span>T7</td><td class="idn">M-29</td><td class="fa-name">AI-Native Restaking Manager (yield optimizer)<small>A1 service-thesis · auto-rebalance</small></td><td>EVM</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-medium">MED</span></td></tr>
+      <tr><td><span class="theme-tag t-tag-7"></span>T7</td><td class="idn">M-30</td><td class="fa-name">Onchain Reputation for AI Agents (KYA)<small>A1 service-thesis · agent identity layer</small></td><td>XRPL</td><td><span class="src-tag src-A1">A1</span></td><td><span class="pri-medium">MED</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ========================== SECTION 6: STRATEGIC FRAME ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 06 · The unified strategic frame</div>
+  <h2><em>Final</em> strategic frame for XRPL Builders</h2>
+  <p class="lead">Distillation of both analyses: what a founder needs to know before starting.</p>
+</div>
+
+<div class="frame">
+  <h3>The <em>thesis</em> in one sentence</h3>
+  <p style="font-size: 16px; line-height: 1.55; margin: 0;">XRPL becomes the L1 of <strong>Institutional &amp; Compliant DeFi</strong> — RLUSD as settlement stablecoin, XLS-66/65 as lending/vault rails, XLS-70/80 as Identity infra, EVM Sidechain as the cross-chain innovation zone (Morpho/Babylon/Pendle composables). The bottleneck is not the protocol, it's <strong>distribution</strong> (CeDeFi via CEX) and <strong>integration plumbing</strong> (data, accounting, KYC).</p>
+
+  <div class="frame-grid">
+    <div class="frame-cell">
+      <h4>For a founder — top 5 bets</h4>
+      <ul>
+        <li><strong>M-24 CeDeFi Yield SDK</strong> — distribution play #1, 60%+ XRP on CEXes</li>
+        <li><strong>M-09 Vault Wrapper</strong> — timing arbitrage on XLS-65, institutional capital ready</li>
+        <li><strong>M-14 Yield-Bearing Stablecoin</strong> — top community demand × USDe did $5B in &lt; 1 year</li>
+        <li><strong>M-17 Restaking for XRP</strong> — Babylon did $6B on BTC, XRP market $110B</li>
+        <li><strong>M-26 AgentPay (x402)</strong> — AI agents narrative is trendy, XRPL perfectly positioned</li>
+      </ul>
+    </div>
+    <div class="frame-cell">
+      <h4>For XRPL Commons — top 5 ecosystem priorities</h4>
+      <ul>
+        <li><strong>M-21 Pre-Deployed Testnet</strong> — multiplier across everything else</li>
+        <li><strong>M-22 Capabilities Registry</strong> — solves the awareness gap directly</li>
+        <li><strong>M-25 P-256 / secp256r1</strong> — highest-leverage XLS (Apple/Android/HSM)</li>
+        <li><strong>M-05 Institutional Data Adapter</strong> — unblocks every future institutional integration</li>
+        <li><strong>M-07 Multi-Flow ACL</strong> — unblocks institutional compliance flows</li>
+      </ul>
+    </div>
+    <div class="frame-cell">
+      <h4>Persistent tensions</h4>
+      <ul>
+        <li><strong>T4 RLUSD-first vs multi-stablecoin</strong> — risk profile choice vs Ripple dependency</li>
+        <li><strong>Speed-to-market</strong> via fork (Morpho/Babylon) vs <strong>originality</strong> XRPL-native (Risk-Signal MPT) — each founder picks their angle</li>
+        <li><strong>Pure DeFi</strong> vs <strong>service company</strong> — revenue model × execution capability</li>
+      </ul>
+    </div>
+    <div class="frame-cell">
+      <h4>Meta-finding (do not forget)</h4>
+      <ul>
+        <li>The ecosystem suffers from an <strong>awareness gap, not a protocol gap</strong> — 76% of "missing" items identified by WGs are already addressed by existing primitives.</li>
+        <li>Direct consequence: a capabilities registry (M-22) + pre-deployed sandbox (M-21) alone have more impact than the majority of products on the list.</li>
+        <li>A Buildathon must therefore allocate a non-negligible fraction of its resources to these two structural multipliers.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== SECTION 7: NEXT STEPS ========================== -->
+
+<div class="sec-h">
+  <div class="num-badge">Section 07 · From synthesis to action</div>
+  <h2>What's next?</h2>
+  <p class="lead">The Master Atlas synthesis feeds directly into the Buildathon format — next deliverable.</p>
+</div>
+
+<div class="frame" style="background: var(--paper); border: 2px solid var(--ink);">
+  <p style="font-size: 14px; line-height: 1.6; margin: 0;">The Master Atlas's <strong>30 opportunities</strong> feed the XRPL Buildathon challenge register:</p>
+  <ul style="font-size: 13.5px; line-height: 1.55; margin-top: 12px;">
+    <li><strong>8 multipliers</strong> (M-01, M-05, M-09, M-11, M-14, M-17, M-21) → <em>Tier 1 / Grand Prize</em> — projects that unblock other projects</li>
+    <li><strong>14 high-priority</strong> → <em>Tier 2 / Major Prize</em> — strategic gaps with clear adoption impact</li>
+    <li><strong>8 medium-priority</strong> → <em>Tier 3 / Standard Prize</em> — tactical improvements & surface coverage</li>
+  </ul>
+  <p style="font-size: 14px; line-height: 1.6; margin: 16px 0 0 0;">From this structure, we can now answer the three open questions:<br/>
+  &nbsp;&nbsp;<strong>1. What <em>name</em> for the Buildathon?</strong> (XRPL Zone Paris? "Build the Institutional Chain"? "30 Days, 30 Builds"?)<br/>
+  &nbsp;&nbsp;<strong>2. What <em>format</em>?</strong> (duration, teams, mentorship, infra provided, jury, expected deliverables)<br/>
+  &nbsp;&nbsp;<strong>3. What <em>timing</em>?</strong> (dates, XLS-66/65 voting dependencies, amendment calendar)</p>
+</div>
+
+<div class="sources-foot">
+  <strong>Synthesis sources:</strong><br/>
+  Analysis 1 — XRPL Builder internal synthesis (4 PWG + Atka Report, 89 slides)<br/>
+  Analysis 2 — external challenger (3 documents: Consolidated gaps, Buildathon Challenges, What To Build And Why)<br/>
+  <br/>
+  <strong>Method:</strong> Convergences (A1 ∩ A2) → Additive complements (A2 → A1, A1 → A2) → Tension arbitration (T1–T5) → Unified Master Atlas.<br/>
+  <strong>Guard-rails:</strong> no silent suppression, source traceability per line, persistent tensions explicitly marked.
+</div>
+
+</div>
+</body>
+</html>
