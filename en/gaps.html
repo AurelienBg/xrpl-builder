@@ -797,6 +797,24 @@
     .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
     .site-nav .nav-links a { padding: 3px 6px; }
   }
+
+  .chain-btn {
+    padding: 6px 14px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chain-btn:hover { background: var(--paper-3); }
+  .chain-btn.active { background: var(--sidechain); color: var(--paper); border-color: var(--sidechain); }
+  .gap-card.filter-hidden { display: none; }
+
 </style>
 </head>
 <body>
@@ -828,7 +846,7 @@
   <header class="masthead">
     <div>
       <div class="eyebrow">Opportunity Gaps · Global view · v1.3 · May 2026</div>
-      <h1>The <em>gaps</em> in the ecosystem<br/>12 tooling + 8 AI-native services</h1>
+      <h1>The <em>gaps</em> in the ecosystem<br/>16 tooling + 8 AI-native services</h1>
     </div>
     <div class="meta">
       Format: matrix + cards · 2 lenses<br/>
@@ -997,10 +1015,20 @@
       <h2>The <em>12 gaps</em> · detailed cards</h2>
       <span class="meta">sorted by #</span>
     </div>
+    
+    <div class="chain-filter" style="margin-bottom: 24px; padding: 16px 20px; border: 2px solid var(--ink); background: var(--paper-2); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 700;">Filter by chain:</span>
+      <button class="chain-btn active" data-filter="all">All</button>
+      <button class="chain-btn" data-filter="xrpl">XRPL native</button>
+      <button class="chain-btn" data-filter="evm">EVM Sidechain</button>
+      <button class="chain-btn" data-filter="both">Both chains</button>
+      <span class="filter-count" style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);"></span>
+    </div>
+
     <div class="gaps-grid">
 
       <!-- GAP 01 -->
-      <article class="gap-card" data-cat="treasury" data-build="ready-now" id="gap-01">
+      <article class="gap-card" data-cat="treasury" data-build="ready-now" data-chain="xrpl" id="gap-01">
         <div class="gap-head">
           <span class="cat-pill">B2B Treasury</span>
           <span class="gap-num">Gap 01</span>
@@ -1031,7 +1059,7 @@
       </article>
 
       <!-- GAP 02 -->
-      <article class="gap-card" data-cat="infra" data-build="transverse" id="gap-02">
+      <article class="gap-card" data-cat="infra" data-build="transverse" data-chain="both" id="gap-02">
         <div class="gap-head">
           <span class="cat-pill">Infrastructure</span>
           <span class="gap-num">Gap 02</span>
@@ -1063,7 +1091,7 @@
       </article>
 
       <!-- GAP 03 -->
-      <article class="gap-card" data-cat="defi" data-build="ready-now" id="gap-03">
+      <article class="gap-card" data-cat="defi" data-build="ready-now" data-chain="both" id="gap-03">
         <div class="gap-head">
           <span class="cat-pill">DeFi</span>
           <span class="gap-num">Gap 03</span>
@@ -1094,7 +1122,7 @@
       </article>
 
       <!-- GAP 04 -->
-      <article class="gap-card" data-cat="identity" data-build="ready-now" id="gap-04">
+      <article class="gap-card" data-cat="identity" data-build="ready-now" data-chain="xrpl" id="gap-04">
         <div class="gap-head">
           <span class="cat-pill">Identity</span>
           <span class="gap-num">Gap 04</span>
@@ -1125,7 +1153,7 @@
       </article>
 
       <!-- GAP 05 -->
-      <article class="gap-card" data-cat="payments" data-build="ready-now" id="gap-05">
+      <article class="gap-card" data-cat="payments" data-build="ready-now" data-chain="both" id="gap-05">
         <div class="gap-head">
           <span class="cat-pill">Payments</span>
           <span class="gap-num">Gap 05</span>
@@ -1156,7 +1184,7 @@
       </article>
 
       <!-- GAP 06 -->
-      <article class="gap-card" data-cat="rwa" data-build="ready-now" id="gap-06">
+      <article class="gap-card" data-cat="rwa" data-build="ready-now" data-chain="xrpl" id="gap-06">
         <div class="gap-head">
           <span class="cat-pill">RWA</span>
           <span class="gap-num">Gap 06</span>
@@ -1187,7 +1215,7 @@
       </article>
 
       <!-- GAP 07 -->
-      <article class="gap-card" data-cat="ai" data-build="ready-now" id="gap-07">
+      <article class="gap-card" data-cat="ai" data-build="ready-now" data-chain="both" id="gap-07">
         <div class="gap-head">
           <span class="cat-pill">AI × Crypto</span>
           <span class="gap-num">Gap 07 ★</span>
@@ -1218,7 +1246,7 @@
       </article>
 
       <!-- GAP 08 -->
-      <article class="gap-card" data-cat="defi" data-build="amendment-pending" id="gap-08">
+      <article class="gap-card" data-cat="defi" data-build="amendment-pending" data-chain="xrpl" id="gap-08">
         <div class="gap-head">
           <span class="cat-pill">DeFi</span>
           <span class="gap-num">Gap 08</span>
@@ -1250,7 +1278,7 @@
       </article>
 
       <!-- GAP 09 -->
-      <article class="gap-card" data-cat="ai" data-build="ready-now" id="gap-09">
+      <article class="gap-card" data-cat="ai" data-build="ready-now" data-chain="both" id="gap-09">
         <div class="gap-head">
           <span class="cat-pill">AI × Crypto</span>
           <span class="gap-num">Gap 09 ★</span>
@@ -1281,7 +1309,7 @@
       </article>
 
       <!-- GAP 10 -->
-      <article class="gap-card" data-cat="treasury" data-build="transverse" id="gap-10">
+      <article class="gap-card" data-cat="treasury" data-build="transverse" data-chain="both" id="gap-10">
         <div class="gap-head">
           <span class="cat-pill">B2B Treasury</span>
           <span class="gap-num">Gap 10</span>
@@ -1313,7 +1341,7 @@
       </article>
 
       <!-- GAP 11 -->
-      <article class="gap-card" data-cat="nft" data-build="ready-now" id="gap-11">
+      <article class="gap-card" data-cat="nft" data-build="ready-now" data-chain="xrpl" id="gap-11">
         <div class="gap-head">
           <span class="cat-pill">NFT-utility</span>
           <span class="gap-num">Gap 11</span>
@@ -1344,7 +1372,7 @@
       </article>
 
       <!-- GAP 12 (last tooling gap) -->
-      <article class="gap-card" data-cat="infra" data-build="ready-now" id="gap-12">
+      <article class="gap-card" data-cat="infra" data-build="ready-now" data-chain="both" id="gap-12">
         <div class="gap-head">
           <span class="cat-pill">Infrastructure</span>
           <span class="gap-num">Gap 12</span>
@@ -1374,6 +1402,99 @@
         </div>
       </article>
 
+    
+      <!-- GAP 13 -->
+      <article class="gap-card" data-cat="stablecoins" data-build="ready-now" data-chain="both" id="gap-13">
+        <div class="gap-head">
+          <span class="cat-pill">Stablecoins · YC RFS</span>
+          <span class="gap-num">Gap 13</span>
+        </div>
+        <h3>Yield-bearing <em>stablecoin (T-bill backed)</em></h3>
+        <p class="tagline">USDe did $5B in <1 year. XRP holders are yield-seeking. Match made for XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-high">TICKET HIGH</span> <span class="tag ready-now">READY NOW</span>
+        </div>
+        <p class="desc">Stablecoin with automatic yield distribution backed by RWA (treasuries, corporate debt). <strong>Collateral model + peg + redemption + reserve-verification dashboard</strong>. Top community-survey demand. Persona match: XRP holders are TradFi-savvy, long-term, yield-seeking. USDe (Ethena) reached $5B+ in <1 year — even fractional capture transforms XRPL TVL.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">All XRP holders + DeFi yield-seekers · USD-denominated yield = top global DeFi segment</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">T-bill model (Ondo USDY ref). Sustainable + transparent. 12–16 weeks for MVP.</span>
+          </div>
+        </div>
+      </article>
+      <!-- GAP 14 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" data-chain="both" id="gap-14">
+        <div class="gap-head">
+          <span class="cat-pill">Prediction · Infra · YC RFS</span>
+          <span class="gap-num">Gap 14</span>
+        </div>
+        <h3>Prediction markets <em>infrastructure</em></h3>
+        <p class="tagline">Polymarket runs on Polygon. The engine layer is missing on XRPL.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+        </div>
+        <p class="desc">The <strong>engine layer</strong> for prediction markets: market creation, oracle resolution, RLUSD-denominated settlement, AMM for outcome tokens, liquidity-provider tooling. Vendor-agnostic platform that consumer apps (#15) build on top of. Axiom on EVM Sidechain is a starting point — extend it XRPL-native or build cleaner.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Builders of prediction dApps + sport betting + insurance + decision markets</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Atka identified prediction × synthetics as a key DeFi composability lane. 10–12 weeks engine.</span>
+          </div>
+        </div>
+      </article>
+      <!-- GAP 15 -->
+      <article class="gap-card" data-cat="defi" data-build="ready-now" data-chain="both" id="gap-15">
+        <div class="gap-head">
+          <span class="cat-pill">Prediction · dApps · YC RFS</span>
+          <span class="gap-num">Gap 15</span>
+        </div>
+        <h3>Prediction <em>markets dApps (consumer)</em></h3>
+        <p class="tagline">The Polymarket of XRPL. Politics, sports, crypto, weather — consumer apps.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+        </div>
+        <p class="desc">Consumer-facing prediction markets built on top of #14's infra. Vertical specialization wins: <strong>politics (election years), sports (high-velocity), crypto-native (perpetual interest), insurance/weather (B2B)</strong>. Polymarket reached >$3B in volume on US 2024 elections alone. XRPL has zero presence — multiple verticals available simultaneously.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Mass retail (politics/sports) + crypto natives · ~$10B+ predicted segment by 2027</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">Multiple players can coexist (vertical specialization). 8–10 weeks per vertical-app on existing infra.</span>
+          </div>
+        </div>
+      </article>
+      <!-- GAP 16 -->
+      <article class="gap-card" data-cat="ai" data-build="ready-now" data-chain="both" id="gap-16">
+        <div class="gap-head">
+          <span class="cat-pill">AI Trading · YC RFS</span>
+          <span class="gap-num">Gap 16</span>
+        </div>
+        <h3>AI trading <em>agents (DCA, momentum, rebalance)</em></h3>
+        <p class="tagline">Quant agents on XRPL. RegularKey + multisig = perfect substrate for autonomous AI traders.</p>
+        <div class="tags">
+          <span class="tag greenfield">GREENFIELD</span> <span class="tag size">★★★</span> <span class="tag ticket-mid">TICKET MID</span> <span class="tag ready-now">READY NOW</span>
+        </div>
+        <p class="desc">AI-driven trading strategies running on XRPL: <strong>DCA (dollar-cost-averaging), momentum signals, portfolio rebalancing, AMM arbitrage, MPT-pattern alpha</strong>. Different from market-making (Service-03) — this is alpha generation for retail/HNWI. Native XRPL stack (RegularKey for agent autonomy + multisig human guardrails + zero-fee on-chain audit) is exceptionally well-suited.</p>
+        <div class="gap-meta">
+          <div class="meta-block">
+            <span class="meta-label">Market</span>
+            <span class="meta-val">Retail crypto + HNWI seeking automated yield/alpha · multi-billion segment globally</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Why now</span>
+            <span class="meta-val">AI-LLM tooling matured 2024–25. XRPL native primitives ready. 10–14 weeks for serious agent.</span>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -1699,5 +1820,41 @@
   </footer>
 
 </div>
+
+<script>
+(function() {
+  const buttons = document.querySelectorAll('.chain-btn');
+  const cards = document.querySelectorAll('.gap-card[data-chain]');
+  const countEl = document.querySelector('.filter-count');
+  
+  function updateCount(visible) {
+    if (countEl) countEl.textContent = visible + ' / ' + cards.length + ' shown';
+  }
+  
+  function filter(value) {
+    let visible = 0;
+    cards.forEach(card => {
+      if (value === 'all' || card.dataset.chain === value) {
+        card.classList.remove('filter-hidden');
+        visible++;
+      } else {
+        card.classList.add('filter-hidden');
+      }
+    });
+    updateCount(visible);
+  }
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter(btn.dataset.filter);
+    });
+  });
+  
+  updateCount(cards.length);
+})();
+</script>
+
 </body>
 </html>
