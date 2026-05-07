@@ -174,7 +174,7 @@
   </div>
   <div class="meta">
     Sources: Master Atlas + /gaps + YC RFS<br/>
-    Total: 40 unique opportunities<br/>
+    Total: 42 unique opportunities<br/>
     Snapshot: May 2026<br/>
     Filter: chain · source · tier
   </div>
@@ -199,7 +199,7 @@
 </div>
 
 <div class="stat-strip">
-  <div class="stat"><div class="num">40</div><div class="lbl">unique opportunities</div></div>
+  <div class="stat"><div class="num">42</div><div class="lbl">unique opportunities</div></div>
   <div class="stat"><div class="num">8</div><div class="lbl">multipliers (Tier 1)</div></div>
   <div class="stat"><div class="num">7</div><div class="lbl">themes</div></div>
   <div class="stat"><div class="num">3</div><div class="lbl">sources</div></div>
@@ -402,16 +402,20 @@
   const filterButtons = document.querySelectorAll('.filter-btn');
   const rows = document.querySelectorAll('.master-table tbody tr[data-chain]');
   const countEl = document.querySelector('.filter-count');
-  const activeFilters = { chain: 'all', source: 'all', tier: 'all', theme: 'all' };
+  // Each filter type holds a Set of active specific values; empty Set = "all"
+  const active = { chain: new Set(), source: new Set(), tier: new Set(), theme: new Set() };
+
+  function rowMatches(row) {
+    return ['chain', 'source', 'tier', 'theme'].every(type => {
+      const set = active[type];
+      return set.size === 0 || set.has(row.dataset[type]);
+    });
+  }
 
   function updateRows() {
     let visible = 0;
     rows.forEach(row => {
-      const chainOk = activeFilters.chain === 'all' || row.dataset.chain === activeFilters.chain;
-      const sourceOk = activeFilters.source === 'all' || row.dataset.source === activeFilters.source;
-      const tierOk = activeFilters.tier === 'all' || row.dataset.tier === activeFilters.tier;
-      const themeOk = activeFilters.theme === 'all' || row.dataset.theme === activeFilters.theme;
-      if (chainOk && sourceOk && tierOk && themeOk) {
+      if (rowMatches(row)) {
         row.classList.remove('row-hidden');
         visible++;
       } else {
@@ -421,14 +425,42 @@
     if (countEl) countEl.textContent = visible + ' / ' + rows.length + ' visible';
   }
 
+  function syncAllButton(type) {
+    // The "All" button for a given filter type is the one with data-filter="all"
+    const allBtn = document.querySelector('.filter-btn[data-filter-type="' + type + '"][data-filter="all"]');
+    if (!allBtn) return;
+    if (active[type].size === 0) {
+      allBtn.classList.add('active');
+    } else {
+      allBtn.classList.remove('active');
+    }
+  }
+
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.dataset.filterType;
       const value = btn.dataset.filter;
-      // Deactivate other buttons in same filter type
-      document.querySelectorAll(`.filter-btn[data-filter-type="${type}"]`).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilters[type] = value;
+
+      if (value === 'all') {
+        // Clicking "All" clears the set for that type
+        active[type].clear();
+        // Deactivate all specific buttons of that type
+        document.querySelectorAll('.filter-btn[data-filter-type="' + type + '"]').forEach(b => {
+          b.classList.toggle('active', b.dataset.filter === 'all');
+        });
+      } else {
+        // Toggle this specific value in the set
+        if (active[type].has(value)) {
+          active[type].delete(value);
+          btn.classList.remove('active');
+        } else {
+          active[type].add(value);
+          btn.classList.add('active');
+        }
+        // Sync the "All" button visibility based on whether set is empty
+        syncAllButton(type);
+      }
+
       updateRows();
     });
   });
