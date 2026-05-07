@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100" width="140" height="100">
   <!-- Paper background -->
-  <rect width="100" height="100" fill="#f4efe6"/>
+  <rect width="140" height="100" fill="#f4efe6"/>
   <!-- Ink frame -->
-  <rect x="2" y="2" width="96" height="96" fill="none" stroke="#0e1116" stroke-width="4"/>
-  <!-- XRP token-style X: two crossed bars, centered LEFT to leave room for B -->
-  <g fill="#0e1116" transform="translate(35, 50)">
-    <rect x="-26" y="-5" width="52" height="10" rx="1.5" transform="rotate(45)"/>
-    <rect x="-26" y="-5" width="52" height="10" rx="1.5" transform="rotate(-45)"/>
+  <rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/>
+  <!-- XRP token-style X: two thick crossed bars, full-size, square corners -->
+  <g fill="#0e1116" transform="translate(50, 50)">
+    <rect x="-36" y="-8" width="72" height="16" transform="rotate(45)"/>
+    <rect x="-36" y="-8" width="72" height="16" transform="rotate(-45)"/>
   </g>
-  <!-- B exponent: gold, raised, clearly to the right of X (no overlap) -->
-  <text x="60" y="44"
+  <!-- B exponent: gold, raised, clearly to the right -->
+  <text x="102" y="46"
         font-family="'Fraunces', Georgia, 'Times New Roman', serif"
-        font-size="32"
+        font-size="44"
         font-weight="800"
         fill="#d4a017">B</text>
 </svg>
