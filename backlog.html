@@ -293,7 +293,7 @@
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
-    Items : 4<br/>
+    Items : 5<br/>
     Status : tous OPEN<br/>
     Audience : interne<br/>
     Mise à jour : Mai 2026
@@ -485,6 +485,53 @@
     <div class="block">
       <span class="block-tag action">Action attendue</span>
       <p><strong>Tu choisis un angle</strong> parmi : (a) ajustement minimal (juste renommer "Pitch" → "Demo video"), (b) refonte vers 3-4 critères simples, (c) tier-specific, (d) autre. Et je code.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ ITEM 05 — NAVBAR ============================ -->
+<section class="item">
+  <div class="item-header">
+    <div class="num-and-title">
+      <div class="num">05</div>
+      <h2>Navbar <em>— à revoir</em></h2>
+    </div>
+    <span class="status open">OPEN</span>
+  </div>
+  <div class="item-body">
+
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>La navbar a accumulé <strong>14 entrées</strong> en plus du logo et du toggle de langue : Anatomy · Ecosystem · Gaps · Master Gaps · Tree · Macro · Sim · Case · Atlas · Analysis 1 · Analysis 2 · Synthesis · Buildathon · Backlog. C'est <strong>trop chargé</strong> visuellement, surtout sur écrans de taille moyenne (laptop 13"), et la hiérarchie des sections (PÉDA / PAYSAGE / OUTIL / IDÉE / ANALYSE / BUILD / BACKLOG) avec ses 7 couleurs commence à brouiller plus qu'à clarifier.</p>
+      <p>Le mobile gère via <code>flex-wrap</code> mais le résultat est plusieurs lignes serrées peu lisibles.</p>
+    </div>
+
+    <div class="block">
+      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <ul>
+        <li><strong>Dropdown / mega-menu par section</strong> — au lieu de 14 liens à plat, 5-6 entrées top-level avec menu déroulant au hover :
+          <ul style="margin-top: 6px;">
+            <li><em>Learn</em> ▾ : Anatomy / Ecosystem / Gaps / Master Gaps</li>
+            <li><em>Tools</em> ▾ : Tree / Macro / Sim / Case</li>
+            <li><em>Atlas</em> (direct)</li>
+            <li><em>Analysis</em> ▾ : 1 / 2 / Synthesis</li>
+            <li><em>Buildathon</em> (direct)</li>
+            <li><em>Backlog</em> (direct, optionnel — peut-être footer-only)</li>
+          </ul>
+        </li>
+        <li><strong>Grouping visuel + séparateurs</strong> — garder à plat mais avec des <em>séparateurs verticaux</em> entre sections, et réduire la taille du texte/padding pour gagner de la place. Plus simple, pas de JS dropdown.</li>
+        <li><strong>Hamburger sur tout, sauf desktop large</strong> — masquer en menu burger dès <code>&lt; 1100px</code> ; sur desktop large, garder à plat. Standard pattern, simple.</li>
+        <li><strong>Sidebar collapsible</strong> à gauche au lieu de top — gagne en hauteur, libère le top de page. Plus radical.</li>
+        <li><strong>Two-tier navbar</strong> — top-bar minimal (Home / Atlas / Buildathon / Backlog) + sub-bar contextuelle qui change selon la section où tu es (ex: sur Gaps tu vois Lens 1/2/3 ; sur Analyses tu vois 1/2/3).</li>
+        <li><strong>Retirer Backlog de la navbar</strong> — il est interne/admin, peut vivre en footer ou sur une URL discrète sans link visible.</li>
+        <li><strong>Fusionner /gaps et /master-gaps</strong> — réduit 1 entrée (déjà discuté ailleurs, lié à l'item 02).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <span class="block-tag action">Action attendue</span>
+      <p><strong>Tu choisis une direction</strong> (dropdown / grouping inline / hamburger / sidebar / two-tier / autre) ou tu m'envoies un mockup. Si tu veux je peux faire un proto rapide d'une option avant qu'on tranche.</p>
     </div>
 
   </div>
