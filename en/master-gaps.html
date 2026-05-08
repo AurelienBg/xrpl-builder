@@ -405,30 +405,11 @@
   // Each filter type holds a Set of active specific values; empty Set = "all"
   const active = { chain: new Set(), source: new Set(), tier: new Set(), theme: new Set() };
 
-  // Chain filter is INCLUSIVE: XRPL native button matches xrpl + both, EVM matches evm + both, Both is strict.
-  const CHAIN_EXPANSION = {
-    xrpl: ['xrpl', 'both'],
-    evm:  ['evm', 'both'],
-    both: ['both']
-  };
-
-  function chainOk(row) {
-    const set = active.chain;
-    if (set.size === 0) return true;
-    for (const v of set) {
-      const allowed = CHAIN_EXPANSION[v] || [v];
-      if (allowed.indexOf(row.dataset.chain) !== -1) return true;
-    }
-    return false;
-  }
-
-  function dimOk(row, type) {
-    const set = active[type];
-    return set.size === 0 || set.has(row.dataset[type]);
-  }
-
   function rowMatches(row) {
-    return chainOk(row) && dimOk(row, 'source') && dimOk(row, 'tier') && dimOk(row, 'theme');
+    return ['chain', 'source', 'tier', 'theme'].every(type => {
+      const set = active[type];
+      return set.size === 0 || set.has(row.dataset[type]);
+    });
   }
 
   function updateRows() {
@@ -445,6 +426,7 @@
   }
 
   function syncAllButton(type) {
+    // The "All" button for a given filter type is the one with data-filter="all"
     const allBtn = document.querySelector('.filter-btn[data-filter-type="' + type + '"][data-filter="all"]');
     if (!allBtn) return;
     if (active[type].size === 0) {
@@ -460,11 +442,14 @@
       const value = btn.dataset.filter;
 
       if (value === 'all') {
+        // Clicking "All" clears the set for that type
         active[type].clear();
+        // Deactivate all specific buttons of that type
         document.querySelectorAll('.filter-btn[data-filter-type="' + type + '"]').forEach(b => {
           b.classList.toggle('active', b.dataset.filter === 'all');
         });
       } else {
+        // Toggle this specific value in the set
         if (active[type].has(value)) {
           active[type].delete(value);
           btn.classList.remove('active');
@@ -472,6 +457,7 @@
           active[type].add(value);
           btn.classList.add('active');
         }
+        // Sync the "All" button visibility based on whether set is empty
         syncAllButton(type);
       }
 
