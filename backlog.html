@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Backlog — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+    --status-open: #b85c38;
+    --status-progress: #d4a017;
+    --status-done: #2e5d4f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 40px 32px 96px; }
+
+  /* SITE NAV */
+  .site-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .site-nav .nav-logo { flex-shrink: 0; display: block; }
+  .site-nav .nav-links { display: flex; gap: 2px; }
+  .site-nav .nav-links a {
+    color: var(--paper); text-decoration: none;
+    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease; white-space: nowrap;
+    position: relative;
+  }
+  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
+  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
+  .site-nav .nav-links a::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: transparent; pointer-events: none;
+  }
+  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
+  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
+  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
+  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
+  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
+  .site-nav .nav-links a[data-section="build"]::before { background: var(--sidechain); }
+  .site-nav .nav-links a[data-section="backlog"]::before { background: var(--muted); }
+  .site-nav .nav-links a.section-start { margin-left: 12px; }
+  .site-nav .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .site-nav .lang-toggle .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+    transition: all 0.15s ease;
+  }
+  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .site-nav .lang-toggle .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+  @media (max-width: 800px) {
+    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .site-nav .nav-links a { padding: 3px 6px; }
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 8px;
+  }
+  .masthead .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 0.95; margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-align: right;
+    color: var(--muted); line-height: 1.6;
+  }
+  .strap {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--ink);
+    padding: 8px 0; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 22px 28px;
+    margin-bottom: 40px;
+    font-size: 14.5px; line-height: 1.6;
+  }
+  .intro p { margin: 0 0 10px 0; }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro strong { font-weight: 600; }
+  .intro em { color: var(--chain); font-style: italic; }
+  .intro .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* BACKLOG ITEM */
+  .item {
+    margin-bottom: 36px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .item-header {
+    background: var(--ink); color: var(--paper);
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .item-header .num-and-title {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  }
+  .item-header .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; font-weight: 800;
+    color: var(--wallet);
+    line-height: 1;
+  }
+  .item-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(20px, 2.4vw, 26px);
+    margin: 0;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .item-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); opacity: 0.85; }
+  .status {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; font-weight: 700;
+    padding: 4px 10px;
+    border: 1.5px solid var(--paper);
+    background: transparent;
+    color: var(--paper);
+  }
+  .status.open { background: var(--status-open); border-color: var(--status-open); }
+  .status.progress { background: var(--status-progress); color: var(--ink); border-color: var(--status-progress); }
+  .status.done { background: var(--status-done); border-color: var(--status-done); }
+
+  .item-body { padding: 22px 26px; }
+
+  .block {
+    margin-bottom: 18px;
+  }
+  .block:last-child { margin-bottom: 0; }
+  .block-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; font-weight: 700;
+    padding: 3px 10px;
+    background: var(--paper-2);
+    color: var(--ink);
+    margin-bottom: 8px;
+    border: 1px solid var(--ink);
+  }
+  .block-tag.problem { background: var(--user); color: var(--paper); border-color: var(--user); }
+  .block-tag.solutions { background: var(--app); color: var(--paper); border-color: var(--app); }
+  .block-tag.action { background: var(--wallet); border-color: var(--wallet); }
+
+  .block p {
+    font-size: 14.5px; line-height: 1.6;
+    margin: 0 0 10px 0;
+  }
+  .block p:last-child { margin: 0; }
+  .block p strong { color: var(--chain); font-weight: 600; }
+  .block p em { color: var(--user); font-style: italic; }
+  .block ul {
+    margin: 8px 0 0 0; padding-left: 22px;
+    font-size: 14px; line-height: 1.6;
+  }
+  .block ul li { margin-bottom: 8px; }
+  .block ul li strong { color: var(--chain); font-weight: 600; }
+  .block ul li em { color: var(--user); font-style: italic; }
+
+  /* SOURCE FOOTER */
+  .sources-foot {
+    margin-top: 50px;
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sources-foot strong { color: var(--ink); font-weight: 700; }
+  .sources-foot a { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116"><path d="M 14 22 L 24 12 L 50 50 Z"/><path d="M 76 12 L 86 22 L 50 50 Z"/><path d="M 86 78 L 76 88 L 50 50 Z"/><path d="M 24 88 L 14 78 L 50 50 Z"/></g><text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text></svg><span class="nav-home-text">XRPL <em>Builder</em></span></a>
+  <div class="nav-links">
+    <a href="/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
+    <a href="/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
+    <a href="/gaps" data-section="paysage">Gaps</a>
+    <a href="/master-gaps" data-section="paysage">Master Gaps</a>
+    <a href="/decision-tree" data-section="outil" class="section-start">Tree</a>
+    <a href="/decision-tree-map" data-section="outil">Macro</a>
+    <a href="/cost-simulator" data-section="outil">Sim</a>
+    <a href="/business-case-builder" data-section="outil">Case</a>
+    <a href="/builder-atlas" data-section="idee" class="section-start">Atlas</a>
+    <a href="/analysis-1" data-section="analyse" class="section-start">Analysis 1</a>
+    <a href="/analysis-2" data-section="analyse">Analysis 2</a>
+    <a href="/analysis-3" data-section="analyse">Synthesis</a>
+    <a href="/buildathon" data-section="build" class="section-start">Buildathon</a>
+    <a href="/backlog" data-section="backlog" class="section-start current">Backlog</a>
+  </div>
+  <div class="lang-toggle">
+    <a class="lang-flag active" href="/backlog">🇫🇷</a>
+    <a class="lang-flag" href="/backlog">🇬🇧</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Backlog · todo / parking · v0.1 · Mai 2026</div>
+    <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
+  </div>
+  <div class="meta">
+    Items : 4<br/>
+    Status : tous OPEN<br/>
+    Audience : interne<br/>
+    Mise à jour : Mai 2026
+  </div>
+</header>
+
+<div class="strap">
+  <span>Tableau de parking</span>
+  <span>Items à arbitrer / itérer</span>
+  <span>Pas une roadmap, un to-do</span>
+</div>
+
+<div class="intro">
+  <p><span class="pill">USAGE</span> Cette page est un <strong>tableau de parking</strong> : une liste vivante des items qui n'ont pas encore été tranchés ou itérés. Chaque item a (a) le <em>problème</em>, (b) les <em>pistes/solutions possibles</em>, (c) l'<em>action attendue</em> pour avancer.</p>
+  <p><span class="pill">UPDATE</span> Quand un item est traité, son statut passe de <em>OPEN</em> à <em>IN PROGRESS</em> ou <em>DONE</em>. Les items DONE restent visibles avec leur résolution pour traçabilité.</p>
+  <p><span class="pill">PRIORITÉ</span> Aucune priorité fixée — au feeling. Tu peux taper sur n'importe quel item au coup par coup.</p>
+</div>
+
+<!-- ============================ ITEM 01 — LOGO ============================ -->
+<section class="item">
+  <div class="item-header">
+    <div class="num-and-title">
+      <div class="num">01</div>
+      <h2>Logo X<sup style="color:#d4a017;">B</sup> <em>— toujours pas conforme au vrai XRP</em></h2>
+    </div>
+    <span class="status open">OPEN</span>
+  </div>
+  <div class="item-body">
+
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Plusieurs itérations du logo X<sup>B</sup> ont été tentées (caractère typographique italique, 2 rectangles rotés ±45°, 4 wedges pointant vers le centre) — <strong>aucune ne correspond visuellement au logo officiel du token XRP</strong>. Le rendu actuel (4 wedges) ressemble plus à une étoile qu'à l'X iconique de Ripple. Le B doré en exposant top-right fonctionne, le X est le seul élément à itérer.</p>
+    </div>
+
+    <div class="block">
+      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <ul>
+        <li><strong>Reproduire le logo XRP officiel</strong> avec un SVG path fidèle (depuis xrpl.org branding kit, Wikimedia, ou source officielle Ripple). Risque : copyright à vérifier mais le logo est largement utilisé en wallets/exchanges sans souci connu.</li>
+        <li><strong>Approche curve-based</strong> — au lieu de barres droites ou triangles, deux courbes douces (style chevron / wave) qui se croisent au centre. Plus organique, plus proche du look Ripple récent.</li>
+        <li><strong>Logo lettre "X" stylisé</strong> dans une font géométrique sans-serif moderne (genre Aktiv Grotesk, Söhne) — abandonner l'idée de reproduire le logo token et faire un X typographique propre.</li>
+        <li><strong>Changer de direction</strong> — abandonner la métaphore X<sup>B</sup> "math" et trouver une autre identité visuelle (ex: Builder pictogramme, gradient, etc.).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <span class="block-tag action">Action attendue</span>
+      <p><strong>Tu m'envoies l'image cible exacte</strong> ou un lien vers le logo XRP officiel à reproduire pixel-near. Sinon, tu choisis une direction parmi les 4 pistes ci-dessus et j'itère.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ ITEM 02 — CLEANUP GAPS + SOURCES ============================ -->
+<section class="item">
+  <div class="item-header">
+    <div class="num-and-title">
+      <div class="num">02</div>
+      <h2>Cleanup <em>/gaps + /master-gaps + source attribution</em></h2>
+    </div>
+    <span class="status open">OPEN</span>
+  </div>
+  <div class="item-body">
+
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Les pages d'opportunités ont accumulé du contenu venant de <strong>sources hétérogènes</strong> (Master Atlas / PWG Paris / Atka Report / YC RFS / Ecosystem map) sans toujours <strong>tagger explicitement</strong> d'où vient chaque opportunité.</p>
+      <p>Sur <strong>/master-gaps</strong> le source-tagging est en place (tags <code>src-atlas</code>, <code>src-gaps</code>, <code>src-yc</code>, <code>src-svc</code>). Sur <strong>/gaps</strong> les cards Lens 1+2 n'ont pas le même tagging visuel — c'est moins lisible quand on veut savoir <em>« qui a dit ça »</em>.</p>
+    </div>
+
+    <div class="block">
+      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <ul>
+        <li><strong>Ajouter un encart "Source(s)" visible</strong> sur chaque card de <code>/gaps</code> avec :
+          <ul style="margin-top: 6px;">
+            <li>Master Atlas (M-XX) avec lien vers /analysis-3</li>
+            <li>PWG Paris avril 2026 (RWA / Stablecoins / Lending / Identity) avec lien vers /analysis-1</li>
+            <li>Atka XRPL DeFi Report (slide N) avec lien vers /analysis-1</li>
+            <li>YC RFS (Summer 2026 ou AI-native services) avec lien externe</li>
+            <li>Ecosystem map mai 2026 avec lien vers /ecosystem-map</li>
+            <li><strong>Interview iN</strong> (avec le item 03 ci-dessous)</li>
+          </ul>
+        </li>
+        <li><strong>Étendre le système de tags visuels</strong> de <code>/master-gaps</code> à <code>/gaps</code> — réutiliser les classes <code>src-atlas / src-gaps / src-yc / src-svc</code>, ajouter <code>src-pwg</code>, <code>src-atka</code>, <code>src-ecosystem</code>, <code>src-interview</code>.</li>
+        <li><strong>Pareil sur /builder-atlas</strong> (les 7 blueprints) — tagger d'où vient l'inspiration de chaque blueprint.</li>
+        <li><strong>Audit de cohérence</strong> : vérifier que chaque opportunité présente sur plusieurs pages a le <strong>même</strong> source-tagging partout (pas de divergence).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <span class="block-tag action">Action attendue</span>
+      <p><strong>Tu valides la liste des source-tags</strong> à utiliser (atlas / gaps / yc / svc / pwg / atka / ecosystem / interview / autre ?) et je propage l'attribution sur les 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) en FR + EN.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ ITEM 03 — INTERVIEWS ============================ -->
+<section class="item">
+  <div class="item-header">
+    <div class="num-and-title">
+      <div class="num">03</div>
+      <h2>Interview-sourced gaps <em>— ajouter i1 → iN</em></h2>
+    </div>
+    <span class="status open">OPEN</span>
+  </div>
+  <div class="item-body">
+
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Les opportunités actuelles viennent de <strong>4 PWG + Atka + Ecosystem map + YC RFS</strong>. Elles manquent les <strong>signaux qualitatifs</strong> directement issus d'<em>interviews 1:1</em> avec des builders, partners, founders du réseau XRPL — où des frictions, idées et besoins concrets sont souvent verbalisés différemment qu'en working group.</p>
+    </div>
+
+    <div class="block">
+      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <ul>
+        <li><strong>Interviewees déjà identifiés</strong> (6) :
+          <ul style="margin-top: 6px;">
+            <li>i1 — <strong>Djason</strong></li>
+            <li>i2 — <strong>Stan</strong></li>
+            <li>i3 — <strong>Kevin</strong></li>
+            <li>i4 — <strong>Adrien</strong></li>
+            <li>i5 — <strong>Denis</strong></li>
+            <li>i6 — <strong>Andy</strong></li>
+            <li><em>+ d'autres à venir selon ce qui ressort</em></li>
+          </ul>
+        </li>
+        <li><strong>Format des notes d'interview</strong> à transformer en gap cards :
+          <ul style="margin-top: 6px;">
+            <li><em>Citation key</em> : la phrase ou idée saillante</li>
+            <li><em>Interviewee</em> : nom + contexte (Aquarium alum / partner / institutional / etc.)</li>
+            <li><em>Date interview</em> : pour traçabilité</li>
+            <li><em>Gap dérivé</em> : le besoin/opportunité concret extrait de la conversation</li>
+            <li><em>Convergence</em> : si le gap recoupe un Master Atlas item ou un YC RFS thème</li>
+          </ul>
+        </li>
+        <li><strong>Display options</strong> :
+          <ul style="margin-top: 6px;">
+            <li><strong>A</strong> — Nouvelle Lens 4 sur <code>/gaps</code> dédiée "From interviews" (visible séparément)</li>
+            <li><strong>B</strong> — Fusionner dans Lens 1+2 existantes avec source-tag <code>interview</code> (couleur dédiée, ex: vert sage)</li>
+            <li><strong>C</strong> — Mix : tagger inline ET ajouter une page dédiée <code>/interviews</code> avec les notes complètes</li>
+          </ul>
+        </li>
+        <li><strong>Tag visuel</strong> : <code>src-interview</code> avec couleur distincte (proposition : sage green <code>#5d7d4a</code> ou autre).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <span class="block-tag action">Action attendue</span>
+      <p><strong>Tu m'envoies les notes brutes d'une interview</strong> (la plus avancée — Djason ?) et on fixe ensemble le pattern. Les autres suivront le même template. Choix du display A/B/C à arbitrer.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ ITEM 04 — WINNING CRITERIA ============================ -->
+<section class="item">
+  <div class="item-header">
+    <div class="num-and-title">
+      <div class="num">04</div>
+      <h2>Winning criteria <em>— à revoir (Section 07 Buildathon)</em></h2>
+    </div>
+    <span class="status open">OPEN</span>
+  </div>
+  <div class="item-body">
+
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Les critères actuels (Section 07 de <a href="/buildathon">/buildathon</a>) ont été figés <strong>avant</strong> les changements récents :</p>
+      <ul>
+        <li>Avant : format hybride 6 semaines avec Demo Day Paris en présentiel · Maintenant : <strong>30 jours full online</strong>, Demo Day livestream</li>
+        <li>Avant : pas de Users prizes · Maintenant : <strong>Users Prize $1k / Super Users $10k / Community €500</strong></li>
+        <li>Avant : team de 2-5 obligatoire · Maintenant : <strong>solo ou team OK, no min/max</strong></li>
+      </ul>
+      <p>Les <strong>6 critères pondérés</strong> (Gap fit 20% / Tech 25% / Product 20% / Distribution 15% / Composability 10% / Pitch 10%) ne reflètent plus tout à fait le programme.</p>
+    </div>
+
+    <div class="block">
+      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <ul>
+        <li><strong>Aligner avec les Users prizes</strong> — si l'onboarding réel est récompensé séparément, est-ce qu'on garde "Distribution thinking" comme critère du Tier 1/2/3 ou on le sort ?</li>
+        <li><strong>Format full online → "Demo video quality"</strong> remplace "Pitch quality" (changement de medium : ce sera majoritairement de la vidéo + livestream pas de pitch live in-person).</li>
+        <li><strong>Ajouter critère "Audience reach"</strong> — nb de signups / waitlist / followers acquis pendant le build, social engagement, traction démontrée.</li>
+        <li><strong>Simplification</strong> — passer à 3-4 critères au lieu de 6 (moins d'overhead jury, plus lisible) : par exemple <em>Tech execution / Product completeness / Traction & impact / Pitch clarity</em>.</li>
+        <li><strong>Tier-specific criteria</strong> — Tier 1 (multipliers) pondère plus l'impact systémique (composability, ecosystem unlock). Tier 3 (tactical) pondère plus l'exécution rapide. Compliqué mais juste.</li>
+        <li><strong>Bonus implicite "alumni"</strong> — actuellement les alumni bénéficient d'une priorité dans le filter applications + sont éligibles au Community Prize ; faut-il un bonus de scoring aussi ? (probablement non — risque de bias).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <span class="block-tag action">Action attendue</span>
+      <p><strong>Tu choisis un angle</strong> parmi : (a) ajustement minimal (juste renommer "Pitch" → "Demo video"), (b) refonte vers 3-4 critères simples, (c) tier-specific, (d) autre. Et je code.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="sources-foot">
+  <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent en cours d'itération. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe. Le but : ne pas perdre les idées, et pouvoir y revenir au coup par coup.<br/>
+  <br/>
+  <strong>Pages liées au backlog :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
+  <br/>
+  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération) · DONE (résolu, conservé pour traçabilité)
+</div>
+
+</div>
+</body>
+</html>
