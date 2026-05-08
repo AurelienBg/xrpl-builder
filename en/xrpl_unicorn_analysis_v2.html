@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V2 — Why no unicorn in XRPL? | Extended analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0a;
+  --paper: #f4efe6;
+  --paper-warm: #ede5d3;
+  --accent: #c8553d;
+  --accent-deep: #8b2e1f;
+  --gold: #b8893d;
+  --rule: #1a1a1a;
+  --muted: #5a5550;
+  --highlight: #fff2c2;
+  --green-soft: #6b8e4e;
+  --red-soft: #a84032;
+  --orange-soft: #c87a2c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  font-feature-settings: "ss01", "ss02";
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(184,137,61,0.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(200,85,61,0.04) 0%, transparent 40%);
+}
+
+/* VERSION BANNER */
+.archive-banner {
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gold);
+}
+.archive-banner .tag { color: var(--gold); }
+.archive-banner .label { opacity: 0.7; }
+.archive-banner a {
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+}
+.archive-banner a:hover { opacity: 0.7; }
+
+/* MASTHEAD */
+.masthead {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 48px 60px;
+  border-bottom: 3px double var(--ink);
+}
+.masthead .meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  color: var(--muted);
+}
+.masthead h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  font-variation-settings: "opsz" 144;
+}
+.masthead h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent-deep);
+}
+.masthead .deck {
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: 300;
+  max-width: 760px;
+  color: var(--muted);
+  font-style: italic;
+}
+.masthead .byline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 32px;
+  color: var(--muted);
+}
+
+/* TOC */
+.toc {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 48px 0;
+}
+.toc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink);
+}
+.toc ol {
+  list-style: none;
+  margin: 0;
+  columns: 2;
+  column-gap: 48px;
+}
+.toc ol li {
+  padding: 10px 0;
+  border-bottom: 1px dotted rgba(0,0,0,0.2);
+  break-inside: avoid;
+  margin: 0;
+}
+.toc ol li a {
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.toc ol li a:hover { color: var(--accent); }
+.toc ol li a .label { font-style: italic; }
+.toc ol li a .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* CONTENT */
+.content {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 60px 48px;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 80px 0 32px;
+  position: relative;
+  padding-top: 24px;
+  border-top: 1px solid var(--ink);
+}
+h2 .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 12px;
+  letter-spacing: 0.2em;
+}
+
+h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.3;
+  margin: 48px 0 18px;
+  color: var(--ink);
+}
+
+h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 32px 0 12px;
+  color: var(--accent-deep);
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+p strong { font-weight: 600; }
+p em { font-style: italic; }
+
+/* TABLE */
+.table-wrap {
+  margin: 32px 0;
+  overflow-x: auto;
+  border: 1px solid var(--ink);
+  background: var(--paper-warm);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+th {
+  background: var(--ink);
+  color: var(--paper);
+  text-align: left;
+  padding: 14px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  font-family: 'Fraunces', serif;
+}
+td:first-child { font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: rgba(0,0,0,0.02); }
+.xrpl-row { background: rgba(200,85,61,0.08) !important; }
+.xrpl-row td { font-weight: 500; }
+.xrpl-row td:first-child { color: var(--accent-deep); }
+.xrpl-cell { color: var(--accent-deep); font-weight: 600; }
+
+/* CALLOUT */
+.callout {
+  border-left: 4px solid var(--accent);
+  padding: 20px 28px;
+  margin: 32px 0;
+  background: var(--paper-warm);
+  font-style: italic;
+  font-size: 17px;
+}
+
+/* PULL QUOTE */
+.pull-quote {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  line-height: 1.4;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink);
+  margin: 48px 0;
+  padding: 28px 0 28px 36px;
+  border-left: 3px solid var(--accent);
+  letter-spacing: -0.01em;
+}
+.pull-quote .attribution {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 18px;
+}
+
+/* OL UL */
+ol, ul {
+  margin: 16px 0 24px 32px;
+}
+li {
+  margin-bottom: 10px;
+  padding-left: 8px;
+}
+
+/* GAP RATIO VIZ */
+.gap-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 100px;
+  gap: 20px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dotted rgba(0,0,0,0.2);
+}
+.gap-row:last-child { border-bottom: none; }
+.gap-row .label {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-size: 11px;
+}
+.gap-row .bar {
+  height: 18px;
+  background: var(--paper-warm);
+  border: 1px solid var(--ink);
+  position: relative;
+}
+.gap-row .fill {
+  height: 100%;
+  background: var(--accent);
+}
+.gap-row .value {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: right;
+  font-weight: 700;
+  color: var(--accent-deep);
+  font-size: 14px;
+}
+
+/* METHODO LIST — ligne par ligne, sans cards */
+.methodo-list {
+  margin: 32px 0;
+  border-top: 1px solid var(--ink);
+}
+.methodo-item {
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+.methodo-item .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.methodo-item.warning .tag { color: var(--accent-deep); }
+.methodo-item.covered .tag { color: var(--green-soft); }
+.methodo-item.next .tag { color: var(--gold); }
+.methodo-item .body strong {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+.methodo-item .body p {
+  font-size: 15px;
+  margin: 0;
+  color: var(--muted);
+}
+
+/* CLUSTERS — sections en flux, pas de cards */
+.cluster-section {
+  margin: 48px 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--ink);
+}
+.cluster-section .cluster-head {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+.cluster-section .cluster-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 64px;
+  line-height: 0.9;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+.cluster-section .cluster-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.cluster-section .cluster-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-deep);
+  margin-bottom: 6px;
+}
+
+/* JOURNEY MAP */
+.journey-map {
+  margin: 36px 0 20px;
+  padding: 8px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.journey-stage {
+  display: grid;
+  grid-template-columns: 80px 200px 1fr;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px dotted rgba(0,0,0,0.2);
+  align-items: center;
+}
+.journey-stage:last-child { border-bottom: none; }
+.journey-stage .step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.journey-stage .name {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.journey-stage .name::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.journey-stage.healthy .name::before { background: var(--green-soft); }
+.journey-stage.weak .name::before { background: var(--orange-soft); }
+.journey-stage.broken .name::before { background: var(--red-soft); }
+.journey-stage .friction {
+  font-size: 15px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+.journey-stage.broken .friction { color: var(--accent-deep); font-style: normal; }
+.journey-legend {
+  margin-top: 18px;
+  display: flex;
+  gap: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.journey-legend span { display: flex; align-items: center; gap: 8px; }
+.journey-legend .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+
+/* CIMETIÈRE */
+.morgue-list {
+  margin: 32px 0;
+  border-top: 1px solid var(--ink);
+}
+.tomb-row {
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  display: grid;
+  grid-template-columns: 180px 200px 1fr;
+  gap: 28px;
+  align-items: baseline;
+}
+.tomb-row .name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  font-style: italic;
+}
+.tomb-row .epitaph {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+.tomb-row .lesson {
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+/* GAPS Q&A */
+.gaps-qa {
+  margin: 32px 0;
+}
+.gap-qa-row {
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+.gap-qa-row:first-child { border-top: 1px solid var(--ink); }
+.gap-qa-row .question {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.gap-qa-row .answer {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.55;
+  padding-left: 20px;
+  border-left: 2px solid var(--accent);
+}
+
+/* PRIORITIES */
+.priority-list {
+  margin: 32px 0;
+}
+.priority {
+  display: grid;
+  grid-template-columns: 80px 1fr 100px;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  align-items: baseline;
+}
+.priority:first-child { border-top: 1px solid var(--ink); }
+.priority .rank {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+}
+.priority .body strong {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+.priority .body p {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+}
+.priority .impact {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: right;
+  font-weight: 700;
+}
+.priority .impact.crit { color: var(--accent-deep); }
+.priority .impact.high { color: var(--gold); }
+.priority .impact.mid { color: var(--muted); }
+
+/* OPPORTUNITIES */
+.opp-list {
+  margin: 32px 0;
+}
+.opp-row {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 28px;
+  align-items: baseline;
+}
+.opp-row:first-child { border-top: 1px solid var(--ink); }
+.opp-row .when {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-soft);
+  font-weight: 700;
+}
+.opp-row.risk .when { color: var(--accent-deep); }
+.opp-row .body strong {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 21px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+.opp-row .body p {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* FOOTER */
+.footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 48px 80px;
+  border-top: 3px double var(--ink);
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.footer .ornament {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+.footer .versions {
+  margin-top: 24px;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 10px;
+  align-items: center;
+}
+.footer .versions a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--muted);
+}
+.footer .versions a:hover { color: var(--accent); }
+.footer .versions .active { color: var(--accent-deep); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .masthead { padding: 60px 24px 40px; }
+  .toc { padding: 32px 24px 0; }
+  .toc ol { columns: 1; }
+  .content { padding: 40px 24px; }
+  .footer { padding: 40px 24px 60px; }
+  .gap-row { grid-template-columns: 1fr; gap: 8px; }
+  .methodo-item { grid-template-columns: 1fr; gap: 8px; }
+  .cluster-section .cluster-head { grid-template-columns: 60px 1fr; gap: 16px; }
+  .cluster-section .cluster-num { font-size: 48px; }
+  .journey-stage { grid-template-columns: 1fr; gap: 6px; }
+  .tomb-row { grid-template-columns: 1fr; gap: 8px; }
+  .gap-qa-row { grid-template-columns: 1fr; gap: 12px; }
+  .priority { grid-template-columns: 50px 1fr; gap: 16px; }
+  .priority .impact { display: none; }
+  .opp-row { grid-template-columns: 1fr; gap: 8px; }
+  .pull-quote { font-size: 20px; padding-left: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="archive-banner">
+  <span><span class="tag">●</span> VERSION 2.0 — EXTENDED ANALYSIS · Active</span>
+  <span class="label"><a href="/xrpl_unicorn_analysis_v1.html">← View V1.0 archived (in French)</a></span>
+</div>
+
+<header class="masthead">
+  <div class="meta-row">
+    <span>XRPL Commons · Strategic research</span>
+    <span>v2.0 — May 4, 2026</span>
+  </div>
+  <h1>Why <em>no unicorn</em><br>in the XRPL ecosystem?</h1>
+  <p class="deck">Multi-layer analysis, extended comparisons, friction mapping, and asymmetric opportunities 2026–2027.</p>
+  <p class="byline">Working draft — Active iteration · ~25 min read</p>
+</header>
+
+<nav class="toc">
+  <div class="toc-title">Contents — 9 sections</div>
+  <ol>
+    <li><a href="#methodo"><span class="label">Methodology &amp; limitations</span><span class="num">01</span></a></li>
+    <li><a href="#constat"><span class="label">The raw observation</span><span class="num">02</span></a></li>
+    <li><a href="#clusters"><span class="label">5 causal clusters</span><span class="num">03</span></a></li>
+    <li><a href="#journey"><span class="label">Founder Journey Map</span><span class="num">04</span></a></li>
+    <li><a href="#benchmarks"><span class="label">Extended comparisons</span><span class="num">05</span></a></li>
+    <li><a href="#morgue"><span class="label">Dead ecosystems</span><span class="num">06</span></a></li>
+    <li><a href="#gaps"><span class="label">Data &amp; voice gaps</span><span class="num">07</span></a></li>
+    <li><a href="#priorites"><span class="label">8 priorities</span><span class="num">08</span></a></li>
+    <li><a href="#opportunites"><span class="label">Opportunities 2026–2027</span><span class="num">09</span></a></li>
+  </ol>
+</nav>
+
+<main class="content">
+
+<!-- 01 — MÉTHODOLOGIE -->
+<h2 id="methodo"><span class="num">— 01 —</span>Methodology &amp; limitations</h2>
+
+<p>This analysis is <strong>primarily desk research</strong>: web sources (DefiLlama, Messari, Electric Capital, CryptoRank, CB Insights, PitchBook, Failory, specialized press), official documents from Ripple / XRPL Foundation / XRPL Commons, and public benchmarks of the Ethereum, Solana, Polygon, Avalanche, BNB Chain, and Bitcoin/Lightning ecosystems.</p>
+
+<p>Three complementary angles were applied to the material: <em>multi-layer</em> (tech, business, regulatory, culture), <em>comparative</em> (top 6 blockchain ecosystems + "dead" ecosystems like Cardano, Tezos, EOS, Algorand), and <em>chrono-strategic</em> (historical opportunity windows missed, the 2026–2027 window).</p>
+
+<h3>What is covered, what is missing, what to do next</h3>
+
+<div class="methodo-list">
+
+  <div class="methodo-item warning">
+    <div class="tag">⚠ LIMITATION 01</div>
+    <div class="body">
+      <strong>No founder interviews.</strong>
+      <p>The direct voices of XRPL founders who failed, pivoted, or abandoned the ecosystem are not represented. Filling this gap is the first methodological brick of any future program.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item warning">
+    <div class="tag">⚠ LIMITATION 02</div>
+    <div class="body">
+      <strong>No VC perspective.</strong>
+      <p>The concrete objections of funds that <em>declined</em> to invest in XRPL are not documented. Yet these are precisely what reveal the real negative thesis.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item warning">
+    <div class="tag">⚠ LIMITATION 03</div>
+    <div class="body">
+      <strong>No mortality funnel.</strong>
+      <p>How many XRPL Grants / Aquarium / Accelerator projects are still active today? How many raised seed? Series A? These conversion rates are the most actionable missing KPI.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item covered">
+    <div class="tag">✓ COVERED</div>
+    <div class="body">
+      <strong>Quantitative data.</strong>
+      <p>TVL, active devs, DEX volumes, market cap, stablecoins, cumulative funding, # unicorns — public sources cross-referenced and dated 2025-2026.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item covered">
+    <div class="tag">✓ COVERED</div>
+    <div class="body">
+      <strong>Regulatory history.</strong>
+      <p>SEC v. Ripple lawsuit 2020–2025, settlement, XRP spot ETFs, GENIUS Act, FIT21, CLARITY Act — chronology and direct impacts.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item covered">
+    <div class="tag">✓ COVERED</div>
+    <div class="body">
+      <strong>XRPL technical stack.</strong>
+      <p>Hooks, EVM Sidechain, XLS-101, AMM, RLUSD, MPTokensV1, Lending Protocol — capabilities, limitations, comparisons.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item next">
+    <div class="tag">→ NEXT</div>
+    <div class="body">
+      <strong>Complete with field research.</strong>
+      <p>30–50 interviews: 20 XRPL founders (active + dropouts), 10 Solana/Ethereum founders (for benchmark), 10 tier-1 VCs, 5 corporate Ripple/XRPL Commons.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item next">
+    <div class="tag">→ NEXT</div>
+    <div class="body">
+      <strong>Map the active projects.</strong>
+      <p>Exhaustive inventory: how many XRPL startups actually exist, in which verticals, at what stage, with which traction metrics.</p>
+    </div>
+  </div>
+
+  <div class="methodo-item next">
+    <div class="tag">→ NEXT</div>
+    <div class="body">
+      <strong>Inverted Theory of Change.</strong>
+      <p>Start from a hypothetical XRPL unicorn in 2030, walk back through each stage (ideation → exit) and identify where the chain breaks today.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="pull-quote">
+  The limitations of this analysis become the first brick of any program: what we don't know, we must go find on the field.
+  <span class="attribution">Methodology note · v2.0</span>
+</div>
+
+<!-- 02 — CONSTAT -->
+<h2 id="constat"><span class="num">— 02 —</span>The raw observation: a staggering gap</h2>
+
+<p>Before explaining, we must first quantify the gap. The comparative numbers leave no doubt.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Indicator</th><th>XRPL</th><th>Solana</th><th>Ethereum</th></tr>
+</thead>
+<tbody>
+<tr class="xrpl-row"><td>DeFi TVL</td><td class="xrpl-cell">~$46M</td><td>~$9.2B</td><td>~$50B+</td></tr>
+<tr><td>TVL / Market cap</td><td class="xrpl-cell">&lt;0,05 %</td><td>~10 %</td><td>~20 %</td></tr>
+<tr class="xrpl-row"><td>Active monthly devs</td><td class="xrpl-cell">288 (84 FTE)</td><td>~1,500</td><td>~8,500</td></tr>
+<tr><td>Native stablecoins</td><td class="xrpl-cell">$385M (RLUSD ~82 %)</td><td>$15B</td><td>&gt;$150B</td></tr>
+<tr class="xrpl-row"><td>24h DEX volume</td><td class="xrpl-cell">$3.46M</td><td>&gt;$2B</td><td>&gt;$1.5B</td></tr>
+<tr><td>Unicorns born from the ecosystem</td><td class="xrpl-cell"><strong>0</strong> (hors Ripple)</td><td>~6–8</td><td>30+</td></tr>
+<tr class="xrpl-row"><td>Ecosystem funding (cumulative)</td><td class="xrpl-cell">~$550M (Ripple)</td><td>&gt;$1B multi-VC</td><td>&gt;$5B multi-VC</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>XRPL / Ethereum ratio on the 3 structural indicators</h3>
+
+<div style="margin: 24px 0;">
+  <div class="gap-row">
+    <div class="label">DeFi TVL</div>
+    <div class="bar"><div class="fill" style="width: 0.5%"></div></div>
+    <div class="value">×1 087</div>
+  </div>
+  <div class="gap-row">
+    <div class="label">Active devs</div>
+    <div class="bar"><div class="fill" style="width: 3.4%"></div></div>
+    <div class="value">×29</div>
+  </div>
+  <div class="gap-row">
+    <div class="label">Stablecoins</div>
+    <div class="bar"><div class="fill" style="width: 0.25%"></div></div>
+    <div class="value">×389</div>
+  </div>
+</div>
+
+<p style="font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); letter-spacing:0.1em; margin-top:12px;">→ Reading: XRPL / Ethereum ratio expressed in percentage and lag multiplier.</p>
+
+<p>Note: Ripple itself is valued at ~$40B and is technically the only "unicorn" of the ecosystem — but it is the <strong>historical operator</strong> of the protocol, not a startup <em>born</em> on XRPL. <strong>No third-party builder has reached unicorn status.</strong> For comparison, the blockchain ecosystem counts 71-76 unicorns total according to CB Insights/Failory (2026).</p>
+
+<!-- 03 — CLUSTERS -->
+<h2 id="clusters"><span class="num">— 03 —</span>The 5 causal clusters</h2>
+
+<p>Re-clustering of blockers by their causal root rather than by surface typology (tech / business / regulatory). Each cluster maps directly to a programmatic pillar.</p>
+
+<div class="cluster-section">
+  <div class="cluster-head">
+    <div class="cluster-num">i</div>
+    <div>
+      <div class="cluster-tagline">Cluster #1</div>
+      <h3 class="cluster-title">Capital</h3>
+    </div>
+  </div>
+  <p>Fuel is missing, and what exists is concentrated in a single hand. No unicorn without a deep, independent financing chain.</p>
+  <ul>
+    <li>No tier-1 crypto-native VC focused on XRPL (no a16z, no Paradigm, no Multicoin, no Jump)</li>
+    <li>~$550M deployed since 2017 — but almost exclusively by Ripple (structural conflict of interest)</li>
+    <li>No ecosystem fund equivalent to Polygon's $450M Sequoia/SoftBank</li>
+    <li>Distorted exit market: Ripple is the only realistic buyer, which discourages founders</li>
+    <li>No institutional LP actively backing the XRPL thesis</li>
+  </ul>
+</div>
+
+<div class="cluster-section">
+  <div class="cluster-head">
+    <div class="cluster-num">ii</div>
+    <div>
+      <div class="cluster-tagline">Cluster #2</div>
+      <h3 class="cluster-title">Tech &amp; Tooling</h3>
+    </div>
+  </div>
+  <p>10 years of delay on smart contracts, a fragmented dev stack, fragmented liquidity. The technical foundation to build ambitious products is incomplete.</p>
+  <ul>
+    <li>No native Turing-complete smart contracts for &gt;10 years (EVM Sidechain only since June 2025)</li>
+    <li>Hooks written in modified non-Turing-complete C — extreme entry barrier</li>
+    <li>EVM Sidechain: 168 devs, ~$100K TVL post-launch</li>
+    <li>No mature equivalent of Hardhat / Foundry / Anchor</li>
+    <li>RLUSD: 88% of supply lives on Ethereum, not XRPL — the in-house stablecoin doesn't generate native demand</li>
+    <li>No tier-1 data infrastructure (Dune/Nansen/Messari quality) for XRPL</li>
+  </ul>
+</div>
+
+<div class="cluster-section">
+  <div class="cluster-head">
+    <div class="cluster-num">iii</div>
+    <div>
+      <div class="cluster-tagline">Cluster #3</div>
+      <h3 class="cluster-title">Talent</h3>
+    </div>
+  </div>
+  <p>Without a critical mass of devs and serial founders, no unicorn. XRPL has a "community" (288 devs), not an industrial ecosystem (8,500 on Ethereum).</p>
+  <ul>
+    <li>288 monthly active devs XRPL vs 1,500 Solana vs 8,500 Ethereum</li>
+    <li>No recognized serial founder (ex-Coinbase / ex-Stripe / ex-OpenSea) building on XRPL today</li>
+    <li>Brain drain during the SEC overhang 2020–2025: top talent migrated to Ethereum/Solana</li>
+    <li>UBRI exists but the actual founder pipeline is insufficiently documented</li>
+    <li>Unfavorable geography: Paris (XRPL Commons) + APAC (in progress), but almost nothing in NYC/SF/London/Singapore where 60+% of LPs and tier-1 VCs are</li>
+    <li>No "Solana Hacker House" equivalent that magnetizes nomadic talent</li>
+  </ul>
+</div>
+
+<div class="cluster-section">
+  <div class="cluster-head">
+    <div class="cluster-num">iv</div>
+    <div>
+      <div class="cluster-tagline">Cluster #4</div>
+      <h3 class="cluster-title">Narrative &amp; Demand</h3>
+    </div>
+  </div>
+  <p>XRPL is confined to a single story ("institutional payments"), with a holders-first community. The verticals that produce unicorns are not activated.</p>
+  <ul>
+    <li>Exclusive "cross-border payments" narrative — DeFi/NFT/gaming/social/AI builders don't identify with XRPL</li>
+    <li>"XRP Army" focused on token price and ETFs, not on building</li>
+    <li>No obvious "founder market fit": no clear archetype of a successful XRPL startup to imitate</li>
+    <li>No "memetic capital" / identifiable builder culture (vs Solana season, Devcon, ETHGlobal)</li>
+    <li>Hot verticals 2024–2026 (memecoins, AI agents, retail RWA, DePIN, restaking) virtually non-existent on XRPL</li>
+    <li>Ripple itself buys TradFi (Hidden Road, GTreasury, Rail) instead of cultivating native XRPL startups — a negative signal for founders</li>
+  </ul>
+</div>
+
+<div class="cluster-section">
+  <div class="cluster-head">
+    <div class="cluster-num">v</div>
+    <div>
+      <div class="cluster-tagline">Cluster #5 — The most actionable</div>
+      <h3 class="cluster-title">Scaling Gap</h3>
+    </div>
+  </div>
+  <p>Even when an XRPL project starts well (Aquarium, Grants), there's no infrastructure to scale from seed to Series A/B. The mortality at the "scaling gap" produces the most losses — and it's precisely the least-served segment today.</p>
+  <ul>
+    <li>The Aquarium: 9–12 weeks, ~10–12 residents per cohort, ~80–100 projects in 3 years — excellent at early-stage, undersized at growth</li>
+    <li>No post-incubation program like "Series A Bootcamp" / "Growth Lab"</li>
+    <li>No structured access to corporate LPs / family offices / sovereign funds interested in XRPL (they exist: ETF, RLUSD adoption, CBDC pilots)</li>
+    <li>No diversified M&amp;A pipeline: Ripple is the quasi-unique buyer → valuation discount</li>
+    <li>No network of institutional commercial partnerships (banks, payment processors, custodians) open to growth-stage XRPL startups</li>
+    <li>No "founder fellowship" like Pioneer / On Deck / Entrepreneur First focused on XRPL</li>
+  </ul>
+</div>
+
+<!-- 04 — JOURNEY -->
+<h2 id="journey"><span class="num">— 04 —</span>Founder Journey Map: where XRPL startups die</h2>
+
+<p>Qualitative mapping of the 6 stages of an XRPL founder, with estimated friction level. The color code shows the worsening friction from ideation to exit.</p>
+
+<div class="journey-map">
+
+  <div class="journey-stage healthy">
+    <div class="step">Stage 1</div>
+    <div class="name">Discovery</div>
+    <div class="friction">XRPL has decent notoriety (top 10 crypto). Discoverability OK via XRPL.org, conferences, Ripple events.</div>
+  </div>
+
+  <div class="journey-stage healthy">
+    <div class="step">Stage 2</div>
+    <div class="name">Ideation</div>
+    <div class="friction">Open programs (XRPL Grants, Aquarium, Hackathons). Good entry point.</div>
+  </div>
+
+  <div class="journey-stage weak">
+    <div class="step">Stage 3</div>
+    <div class="name">MVP &amp; tech</div>
+    <div class="friction">Tech friction: choose between Hooks (C, non-Turing), EVM Sidechain (very young), or native features. Immature tooling. No production-grade templates.</div>
+  </div>
+
+  <div class="journey-stage weak">
+    <div class="step">Stage 4</div>
+    <div class="name">Recruiting</div>
+    <div class="friction">Very narrow XRPL dev pool (288 monthly). Recruiting 5+ XRPL engineers is a challenge. Devs prefer Solidity/Rust for their career.</div>
+  </div>
+
+  <div class="journey-stage broken">
+    <div class="step">Stage 5</div>
+    <div class="name">Seed/A raise</div>
+    <div class="friction"><strong>BREAKDOWN.</strong> No crypto-native tier-1 VC focused on XRPL. Founders fall back on Ripple grants (non-equity, capped) or generalist VCs unfamiliar with XRPL.</div>
+  </div>
+
+  <div class="journey-stage broken">
+    <div class="step">Stage 6</div>
+    <div class="name">Scale &amp; exit</div>
+    <div class="friction"><strong>BREAKDOWN.</strong> No growth program, no institutional LP access, no diversified M&amp;A pipeline, near-unique exit = Ripple.</div>
+  </div>
+
+</div>
+
+<div class="journey-legend">
+  <span><span class="dot" style="background:var(--green-soft)"></span>Low friction</span>
+  <span><span class="dot" style="background:var(--orange-soft)"></span>Medium friction</span>
+  <span><span class="dot" style="background:var(--red-soft)"></span>Critical breakdown</span>
+</div>
+
+<p style="margin-top: 32px;">The analysis reveals two critical breakdowns: <strong>stage 5 (seed/A raise)</strong> and <strong>stage 6 (scale &amp; exit)</strong>. It's in this right half of the journey that XRPL startups die — not from lack of idea or tech, but from <em>lack of growth infrastructure</em>.</p>
+
+<p>This observation is consistent with the general Crunchbase statistic: only 46% of seed-funded crypto reach Series A even in healthy ecosystems. On XRPL, that rate is probably <strong>below 5%</strong> due to lack of fundraising environment — to be confirmed by field research.</p>
+
+<!-- 05 — BENCHMARKS -->
+<h2 id="benchmarks"><span class="num">— 05 —</span>Extended comparisons: top 6 ecosystems</h2>
+
+<p>Why some ecosystems have produced unicorns: identifying the common ingredients.</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Ecosystem</th><th>Unicorns</th><th>Main engine</th></tr>
+</thead>
+<tbody>
+<tr><td>Ethereum</td><td>~30+</td><td>First mover on smart contracts · Mature dev community · Abundant VC capital (a16z crypto, Paradigm, Polychain) · 100% independent foundation</td></tr>
+<tr><td>Solana</td><td>~6–8</td><td>Technical performance · Global Solana Hacker Houses · Colosseum (hackathons + accelerator) · Solana Ventures · "Cultural Web3" branding</td></tr>
+<tr><td>Polygon</td><td>1–2</td><td>$450M Sequoia/SoftBank/Tiger Global for ecosystem fund · Ethereum L2 position (captures ETH liquidity)</td></tr>
+<tr><td>BNB Chain</td><td>~3–4</td><td>Binance effect · Direct listing on the largest global exchange · Massive distribution</td></tr>
+<tr><td>Avalanche</td><td>2–3</td><td>Subnets for custom use cases · Institutional RWAs · BlackRock/Franklin Templeton</td></tr>
+<tr><td>Bitcoin / Lightning</td><td>A few</td><td>Bitcoin brand power · Payments utility · Lightning Labs, Strike</td></tr>
+<tr class="xrpl-row"><td><strong>XRPL</strong></td><td class="xrpl-cell"><strong>0</strong></td><td><strong>None of the 5 pillars identified below is fully operational</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pull-quote">
+  Ecosystems that produced unicorns all combined <strong>5 pillars</strong>: <em>(1)</em> a neutral foundation independent from the commercial operator · <em>(2)</em> a tier-1 crypto-native VC arm · <em>(3)</em> large-scale global hackathons · <em>(4)</em> a complete technical stack · <em>(5)</em> an open narrative allowing multiple verticals.
+  <span class="attribution">→ XRPL has none of these 5 pillars completely</span>
+</div>
+
+<!-- 06 — CIMETIÈRE -->
+<h2 id="morgue"><span class="num">— 06 —</span>The cemetery: dead ecosystems</h2>
+
+<p>Cardano, Tezos, Algorand, EOS all had more initial funding, more marketing, more ICO frenzy than XRPL — and produced no native unicorn either. Their lessons are valuable.</p>
+
+<div class="morgue-list">
+
+  <div class="tomb-row">
+    <div class="name">EOS</div>
+    <div class="epitaph">ICO $4B · 2018</div>
+    <div class="lesson">The largest ICO in history. No unicorn. <strong>Lesson:</strong> capital alone ≠ ecosystem. Without serious dev tooling or clear narrative, billions evaporate.</div>
+  </div>
+
+  <div class="tomb-row">
+    <div class="name">Tezos</div>
+    <div class="epitaph">ICO $232M · 2017</div>
+    <div class="lesson">"Academic-first" approach (formal proofs, Michelson language). No unicorn. <strong>Lesson:</strong> technical rigor without developer experience condemns you to marginality.</div>
+  </div>
+
+  <div class="tomb-row">
+    <div class="name">Cardano</div>
+    <div class="epitaph">Top 10 cap · 2017–</div>
+    <div class="lesson">Obsessive peer-review, smart contracts in 2021 (very late). No unicorn. <strong>Lesson:</strong> slow execution = death. The DeFi summer 2020 window was missed.</div>
+  </div>
+
+  <div class="tomb-row">
+    <div class="name">Algorand</div>
+    <div class="epitaph">Founded by Turing · 2019</div>
+    <div class="lesson">Maximum academic credibility (Silvio Micali, Turing Prize). No unicorn. <strong>Lesson:</strong> scientific legitimacy isn't enough if the builder community isn't activated.</div>
+  </div>
+
+</div>
+
+<p><strong>The common pattern of ecosystem failure</strong> is identifiable: a protocol with good technical properties + initial capital + marketing, but <em>without</em> the 5 pillars above, never produces native unicorns. The trajectory is always the same: initial hype → stagnation → drift to the margin. <strong>XRPL, without structuring intervention, is currently on exactly the same path.</strong></p>
+
+<p>But there's also a recent counter-example: <em>Sui</em> and <em>Aptos</em> (Move/Diem forks) raised $300M+ and $350M+ respectively from tier-1 VC funds (a16z, Multicoin) <strong>before</strong> mainnet. Their ecosystems remain young but are starting to produce serious projects. The difference? Independent VC capital from day 1.</p>
+
+<!-- 07 — GAPS -->
+<h2 id="gaps"><span class="num">— 07 —</span>Data &amp; missing voices gaps</h2>
+
+<p>What we don't know yet, and what should be the focus of the next field research phase.</p>
+
+<div class="gaps-qa">
+
+  <div class="gap-qa-row">
+    <div class="question">How many XRPL Grants / Aquarium / Accelerator projects are still active today?</div>
+    <div class="answer">Mortality funnel is essential: entrants → MVP → seed → Series A → Series B. Probably &lt;5% conversion seed→A vs 46% crypto average.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">Why do founders leave XRPL for Ethereum or Solana?</div>
+    <div class="answer">To document via 20 dropout-founder interviews. Hypotheses: lack of capital, lack of liquidity, too-narrow narrative, immature tooling.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">Why don't a16z, Paradigm, Multicoin, Variant deploy anything on XRPL?</div>
+    <div class="answer">Interview 10 tier-1 VC partners on their negative XRPL thesis. Probably: perceived centralization, no token monetization model, payments narrative seen as commodity.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">What are the most traction-friendly use cases on XRPL today?</div>
+    <div class="answer">Map the top 50 active projects by real traction (users, volume, revenue). Identify replicable archetypes.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">How many XRPL devs also have Solidity / Rust skills?</div>
+    <div class="answer">Dual-stack talent profile: would identify profiles ready to pivot from Ethereum/Solana to XRPL if the incentive is right.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">What "exit funnels" are available today for an XRPL startup?</div>
+    <div class="answer">Realistic buyers: Ripple, XRPL pilot banks, payment processors, exchanges, corporate. Map 30+ potential acquirers.</div>
+  </div>
+
+  <div class="gap-qa-row">
+    <div class="question">What builder culture can emerge on XRPL?</div>
+    <div class="answer">Without imitating Solana (degens) or Ethereum (cypherpunks), what is XRPL's native culture? "Institutional-grade builders"? "Regen finance"? To co-build.</div>
+  </div>
+
+</div>
+
+<!-- 08 — PRIORITÉS -->
+<h2 id="priorites"><span class="num">— 08 —</span>Synthesis: the 8 prioritized actions</h2>
+
+<p>For an XRPL Commons program that aims to produce the first native unicorn by 2030.</p>
+
+<div class="priority-list">
+
+  <div class="priority">
+    <div class="rank">i</div>
+    <div class="body">
+      <strong>Independent capital &amp; VC.</strong>
+      <p>Create or attract a serious crypto-native VC arm ($50–200M), ideally non-Ripple, that co-invests with traditional tier-1 funds. The most structuring lever. Without independent capital, nothing else works.</p>
+    </div>
+    <div class="impact crit">Critical</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">ii</div>
+    <div class="body">
+      <strong>Post-incubation scaling program.</strong>
+      <p>Close the scaling gap (cluster #5). Build a "Growth Lab" Series A/B with access to LPs, M&amp;A, commercial partnerships. The least-served segment today is also the most actionable.</p>
+    </div>
+    <div class="impact crit">Critical</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">iii</div>
+    <div class="body">
+      <strong>Production-grade smart contracts.</strong>
+      <p>Accelerate EVM Sidechain maturation and XLS-101 (proposed native smart contracts). Massive subsidies for bridge liquidity. Without this, no DeFi/NFT/AI vertical can take off.</p>
+    </div>
+    <div class="impact high">High</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">iv</div>
+    <div class="body">
+      <strong>Tier-1 dev tooling.</strong>
+      <p>SDKs, frameworks, indexers, oracles, dev environments comparable to Foundry/Anchor. Plus tier-1 data infrastructure (Dune/Nansen equivalent for XRPL) to make the ecosystem legible to VCs.</p>
+    </div>
+    <div class="impact high">High</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">v</div>
+    <div class="body">
+      <strong>Serial founder pipeline.</strong>
+      <p>Attract 5–10 recognized serial entrepreneurs (ex-Coinbase / ex-Stripe / ex-OpenSea / ex-Solana) with exceptional deals. A single "killer founder" can trigger the halo effect.</p>
+    </div>
+    <div class="impact high">High</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">vi</div>
+    <div class="body">
+      <strong>Large-scale hackathons.</strong>
+      <p>Move from ~80–100 projects in 3 years (Aquarium) to 1,000–5,000 participants per global hackathon. Colosseum (Solana) model: online hackathons + post-hackathon accelerator with automatic pre-seed.</p>
+    </div>
+    <div class="impact mid">Medium</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">vii</div>
+    <div class="body">
+      <strong>Open multi-vertical narrative.</strong>
+      <p>Authorize and explicitly fund non-payment verticals (pure DeFi, AI agents, gaming, social, retail RWA). Break the "XRPL = institutional payments" mold. A narrow narrative mechanically limits the pool of possible unicorns.</p>
+    </div>
+    <div class="impact mid">Medium</div>
+  </div>
+
+  <div class="priority">
+    <div class="rank">viii</div>
+    <div class="body">
+      <strong>Incentivized native liquidity.</strong>
+      <p>Aggressive incentive programs for RLUSD on-chain XRPL (vs Ethereum), AMMs, professional market makers. Liquidity calls liquidity — tipping point to reach quickly.</p>
+    </div>
+    <div class="impact mid">Medium</div>
+  </div>
+
+</div>
+
+<!-- 09 — OPPORTUNITÉS -->
+<h2 id="opportunites"><span class="num">— 09 —</span>The asymmetric opportunity: why 2026–2027 is the last window</h2>
+
+<p>An unprecedented convergence of catalysts opens an asymmetric window for XRPL — but it won't last.</p>
+
+<div class="opp-list">
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025</div>
+    <div class="body">
+      <strong>Full SEC resolution.</strong>
+      <p>Final settlement August 2025 + appeals dismissed. US regulatory risk finally lifted. US VCs can now invest without fear of "security" qualification. 5 years of freeze ended.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025</div>
+    <div class="body">
+      <strong>Spot XRP ETFs launched.</strong>
+      <p>November 2025: ~$1B AUM in 8 weeks. Unprecedented institutional legitimization. Attracts LPs who would never have looked at XRPL before.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025</div>
+    <div class="body">
+      <strong>EVM Sidechain live.</strong>
+      <p>June 2025: XRPL becomes Solidity-compatible for the first time. The #1 barrier to attracting Ethereum devs is falling. Still immature but operational.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025–2026</div>
+    <div class="body">
+      <strong>RLUSD scales.</strong>
+      <p>Ripple's in-house stablecoin passes $1B market cap end of 2025. If more RLUSD migrates on-chain XRPL (vs 88% Ethereum today), native liquidity mechanically explodes.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025</div>
+    <div class="body">
+      <strong>US regulatory framework.</strong>
+      <p>GENIUS Act (stablecoins) + FIT21 (token classification) + CLARITY Act in progress. XRPL benefits from its compliance-first positioning. Differential advantage vs Solana/Ethereum on the institutional side.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2026</div>
+    <div class="body">
+      <strong>Ripple pivots to distributed.</strong>
+      <p>Official acknowledgment (Feb 2026) of the "Ripple-centric" model as a limitation. Launch of FinTech Builder Program, XAO DAO, XRP Asia. <strong>XRPL Commons becomes a central actor</strong> of this new distributed architecture.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2025–2026</div>
+    <div class="body">
+      <strong>Institutional RWA boom.</strong>
+      <p>BlackRock BUIDL, Franklin Templeton, Hidden Road acquired by Ripple. XRPL is natively positioned on RWA tokenization — vertical where a XRPL unicorn is statistically more probable.</p>
+    </div>
+  </div>
+
+  <div class="opp-row">
+    <div class="when">Catalyst · 2026+</div>
+    <div class="body">
+      <strong>Reverse brain drain possible.</strong>
+      <p>If Solidity/Rust fatigue + Ethereum/Solana saturation set in, XRPL can capture talent seeking the "next chain". Narrow window: 12-24 months max.</p>
+    </div>
+  </div>
+
+  <div class="opp-row risk">
+    <div class="when">Risk · 2027+</div>
+    <div class="body">
+      <strong>After? The window closes.</strong>
+      <p>Sui, Aptos, Monad, MegaETH, Hyperliquid are taking the "next institutional L1" slot. Without structuring intervention <strong>in 2026–2027</strong>, the gap with these new entrants becomes uncatchable and XRPL joins Cardano/Algorand in the cemetery of unicorn-orphaned ecosystems.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="pull-quote">
+  Paradoxically, the total absence of XRPL unicorns today is also <em>the strongest opportunity</em> for a well-designed program. The 2026–2027 timing is not one opportunity among others: it's <strong>the</strong> window. SEC resolution, ETFs, RLUSD, EVM Sidechain, Ripple's distributed pivot, the RWA boom — all converge now.
+  <span class="attribution">Final note · v2.0</span>
+</div>
+
+<p>Next step: turn this analysis into a structured XRPL Commons program that specifically addresses the 5 causal clusters and 8 priorities, with particular attention to the scaling gap (priority ii) and independent capital (priority i). Cluster #5 and priority #1 are the two most actionable for XRPL Commons in 2026.</p>
+
+</main>
+
+<footer class="footer">
+  <div class="ornament">❦</div>
+  <div>VERSION 2.0 · EXTENDED ANALYSIS · MAY 2026</div>
+  <div style="margin-top:8px; opacity:0.6;">Working draft — XRPL Commons</div>
+  <div class="versions">
+    <a href="/xrpl_unicorn_analysis_v1.html">→ V1.0 — Initial analysis (archived, in French)</a>
+    <span class="active">● V2.0 — Extended analysis (active)</span>
+    <span style="opacity:0.5;">○ V3.0 — With field research (coming)</span>
+  </div>
+</footer>
+
+</body>
+</html>
