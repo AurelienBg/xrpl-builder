@@ -191,6 +191,8 @@
   .card[data-type="decision"]::before { background: var(--sidechain); }
   .card[data-type="ecosystem"]::before { background: var(--chain); }
   .card[data-type="feedback"]::before { background: #2c6680; }
+  .card[data-type="diagnosis"]::before { background: var(--accent-deep, #8b2e1f); }
+  .card[data-type="diagnosis-archive"]::before { background: var(--muted); }
   .card[data-type="gaps"]::before { background: var(--wallet); }
 
   .card:hover {
@@ -227,6 +229,8 @@
   .card-eyebrow .badge.decision { background: var(--sidechain); color: var(--paper); }
   .card-eyebrow .badge.ecosystem { background: var(--chain); color: var(--paper); }
   .card-eyebrow .badge.feedback { background: #2c6680; color: var(--paper); }
+  .card-eyebrow .badge.diagnosis { background: #8b2e1f; color: var(--paper); }
+  .card-eyebrow .badge.diagnosis-archive { background: var(--muted); color: var(--paper); }
   .card-eyebrow .badge.gaps { background: var(--wallet); color: var(--ink); }
   .card-eyebrow .badge.pdf { background: var(--custody); color: var(--paper); }
 
@@ -412,7 +416,7 @@
     <span>IDÉES</span>
     <span>OUTILS</span>
     <span>PAYSAGE</span>
-    <span>PRINT</span>
+    <span>DIAGNOSIS</span>
   </div>
 
   <!-- INTRO -->
@@ -599,24 +603,39 @@
 
   </div>
 
-  <!-- ============ 05 · IMPRIMABLES ============ -->
+  <!-- ============ 05 · ECOSYSTEM DIAGNOSIS ============ -->
   <div class="section-head">
-    <h2><span class="num">05</span>Versions <em>imprimables</em></h2>
-    <span class="count">1 fichier · PDF</span>
+    <h2><span class="num">05</span>Ecosystem <em>Diagnosis</em></h2>
+    <span class="count">2 versions · recherche stratégique</span>
   </div>
-  <div class="section-summary">Pour les présentations physiques en réunion, ou pour afficher le schéma au mur. Format A3 paysage, mise en page optimisée pour l'impression.</div>
+  <div class="section-summary">Recherche stratégique XRPL Commons : <strong>pourquoi aucune licorne dans l'écosystème XRPL ?</strong> Analyse multi-couches (tech, business, regulatory, culture), comparaison étendue top 6 écosystèmes blockchain, cartographie des frictions du founder journey, et opportunités asymétriques 2026–2027.</div>
 
-  <div class="grid cols-1">
+  <div class="grid">
 
-    <a class="card" href="blockchain-xrpl-extended.pdf" data-type="pdf">
+    <a class="card" href="xrpl_unicorn_analysis_v2" data-type="diagnosis">
       <div class="card-eyebrow">
-        <span>PDF · 01</span>
-        <span class="badge pdf">A3 paysage · 2 pages</span>
+        <span>FIG · 11 · v2.0</span>
+        <span class="badge diagnosis">ACTIVE</span>
+        <span>9 sections · ~25 min</span>
       </div>
-      <h3>Anatomie complète · <em>print edition</em></h3>
-      <p>Version PDF de l'anatomie complète, optimisée pour impression A3 paysage. 2 pages : diagramme principal + extensions et matrice de décision. Fonts Fraunces / JetBrains Mono préservées.</p>
+      <h3>Pourquoi <em>aucune licorne</em> dans XRPL ?</h3>
+      <p>Analyse étendue : <strong>5 clusters causaux</strong> (Capital · Tech &amp; Tooling · Talent · Narrative &amp; Demand · Scaling Gap), founder journey map avec ruptures critiques (étapes 5-6), comparaison top 6 écosystèmes + cimetière des écosystèmes morts (Cardano, Tezos, EOS, Algorand), 8 priorités hiérarchisées, et la fenêtre asymétrique 2026–2027. Document de travail XRPL Commons.</p>
       <div class="card-foot">
-        <span class="filename">blockchain-xrpl-extended.pdf</span>
+        <span class="filename">xrpl_unicorn_analysis_v2.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="xrpl_unicorn_analysis_v1" data-type="diagnosis-archive">
+      <div class="card-eyebrow">
+        <span>FIG · 11 · v1.0</span>
+        <span class="badge diagnosis-archive">ARCHIVÉE</span>
+        <span>5 sections · ~12 min</span>
+      </div>
+      <h3>Pourquoi <em>aucune licorne</em> dans XRPL ? <em>(v1)</em></h3>
+      <p>Première version archivée. Analyse initiale en 5 sections : constat brut (TVL, devs, licornes), blockers multi-couches (techniques, business, réglementaires, culturels), comparaison écosystèmes, 8 blockers prioritaires, opportunité asymétrique. Conservée pour traçabilité. <strong>v3 avec recherche terrain à venir.</strong></p>
+      <div class="card-foot">
+        <span class="filename">xrpl_unicorn_analysis_v1.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>

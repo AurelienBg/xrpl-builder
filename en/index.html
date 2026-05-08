@@ -191,6 +191,8 @@
   .card[data-type="decision"]::before { background: var(--sidechain); }
   .card[data-type="ecosystem"]::before { background: var(--chain); }
   .card[data-type="feedback"]::before { background: #2c6680; }
+  .card[data-type="diagnosis"]::before { background: #8b2e1f; }
+  .card[data-type="diagnosis-archive"]::before { background: var(--muted); }
   .card[data-type="gaps"]::before { background: var(--wallet); }
 
   .card:hover {
@@ -227,6 +229,8 @@
   .card-eyebrow .badge.decision { background: var(--sidechain); color: var(--paper); }
   .card-eyebrow .badge.ecosystem { background: var(--chain); color: var(--paper); }
   .card-eyebrow .badge.feedback { background: #2c6680; color: var(--paper); }
+  .card-eyebrow .badge.diagnosis { background: #8b2e1f; color: var(--paper); }
+  .card-eyebrow .badge.diagnosis-archive { background: var(--muted); color: var(--paper); }
   .card-eyebrow .badge.gaps { background: var(--wallet); color: var(--ink); }
   .card-eyebrow .badge.pdf { background: var(--custody); color: var(--paper); }
 
@@ -411,7 +415,7 @@
     <span>IDEAS</span>
     <span>TOOLS</span>
     <span>LANDSCAPE</span>
-    <span>PRINT</span>
+    <span>DIAGNOSIS</span>
   </div>
 
   <!-- INTRO -->
@@ -598,24 +602,39 @@
 
   </div>
 
-  <!-- ============ 05 · PRINT ============ -->
+  <!-- ============ 05 · ECOSYSTEM DIAGNOSIS ============ -->
   <div class="section-head">
-    <h2><span class="num">05</span><em>Print</em> editions</h2>
-    <span class="count">1 file · PDF</span>
+    <h2><span class="num">05</span>Ecosystem <em>Diagnosis</em></h2>
+    <span class="count">2 versions · strategic research</span>
   </div>
-  <div class="section-summary">For physical presentations in meetings, or to display the schema on a wall. A3 landscape format, layout optimized for print.</div>
+  <div class="section-summary">XRPL Commons strategic research: <strong>why no unicorn in the XRPL ecosystem?</strong> Multi-layer analysis (tech, business, regulatory, culture), extended comparison vs top 6 blockchain ecosystems, founder journey friction map, and asymmetric opportunities 2026–2027. Note: documents are in French.</div>
 
-  <div class="grid cols-1">
+  <div class="grid">
 
-    <a class="card" href="/blockchain-xrpl-extended.pdf" data-type="pdf">
+    <a class="card" href="/xrpl_unicorn_analysis_v2" data-type="diagnosis">
       <div class="card-eyebrow">
-        <span>PDF · 01</span>
-        <span class="badge pdf">A3 landscape · 2 pages</span>
+        <span>FIG · 11 · v2.0</span>
+        <span class="badge diagnosis">ACTIVE</span>
+        <span>9 sections · ~25 min · FR</span>
       </div>
-      <h3>Complete anatomy · <em>print edition</em></h3>
-      <p>PDF version of the complete anatomy, optimized for A3 landscape print. 2 pages: main diagram + extensions and decision matrix. Fraunces / JetBrains Mono fonts preserved.</p>
+      <h3>Why <em>no unicorn</em> in XRPL?</h3>
+      <p>Extended analysis: <strong>5 causal clusters</strong> (Capital · Tech &amp; Tooling · Talent · Narrative &amp; Demand · Scaling Gap), founder journey map with critical breakdowns (steps 5-6), top 6 ecosystems comparison + cemetery of dead ecosystems (Cardano, Tezos, EOS, Algorand), 8 prioritized actions, and the asymmetric 2026–2027 window. XRPL Commons working draft.</p>
       <div class="card-foot">
-        <span class="filename">blockchain-xrpl-extended.pdf</span>
+        <span class="filename">xrpl_unicorn_analysis_v2.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="card" href="/xrpl_unicorn_analysis_v1" data-type="diagnosis-archive">
+      <div class="card-eyebrow">
+        <span>FIG · 11 · v1.0</span>
+        <span class="badge diagnosis-archive">ARCHIVED</span>
+        <span>5 sections · ~12 min · FR</span>
+      </div>
+      <h3>Why <em>no unicorn</em> in XRPL? <em>(v1)</em></h3>
+      <p>Archived first version. Initial analysis in 5 sections: raw observation (TVL, devs, unicorns), multi-layer blockers (tech, business, regulatory, cultural), ecosystem comparison, 8 priority blockers, asymmetric opportunity. Kept for traceability. <strong>v3 with field research coming.</strong></p>
+      <div class="card-foot">
+        <span class="filename">xrpl_unicorn_analysis_v1.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
