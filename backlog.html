@@ -27,6 +27,10 @@
     --status-open: #b85c38;
     --status-progress: #d4a017;
     --status-done: #2e5d4f;
+    --prio-critical: #b85c38;
+    --prio-high: #d4a017;
+    --prio-medium: #6b6358;
+    --prio-low: #a8a195;
   }
   * { box-sizing: border-box; }
   html, body {
@@ -137,83 +141,137 @@
   .strap {
     display: flex; justify-content: space-between;
     border-bottom: 1px solid var(--ink);
-    padding: 8px 0; margin-bottom: 28px;
+    padding: 8px 0; margin-bottom: 24px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.15em;
     text-transform: uppercase; color: var(--muted);
   }
 
-  /* INTRO */
+  /* INTRO (compact) */
   .intro {
     border: 2px solid var(--ink);
     background: var(--paper-2);
-    padding: 22px 28px;
-    margin-bottom: 40px;
-    font-size: 14.5px; line-height: 1.6;
+    padding: 16px 24px;
+    margin-bottom: 18px;
+    font-size: 13.5px; line-height: 1.55;
   }
-  .intro p { margin: 0 0 10px 0; }
-  .intro p:last-child { margin-bottom: 0; }
-  .intro strong { font-weight: 600; }
-  .intro em { color: var(--chain); font-style: italic; }
-  .intro .pill {
-    display: inline-block;
-    background: var(--ink); color: var(--paper);
-    padding: 2px 10px; margin-right: 6px;
+  .intro p { margin: 0; }
+  .intro strong { font-weight: 600; color: var(--chain); }
+
+  /* FILTER + CONTROL BAR */
+  .controls {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .control-row {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .control-row .label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.06em;
+    font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+    font-weight: 700; min-width: 78px;
+  }
+  .ctrl-btn {
+    padding: 5px 12px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .ctrl-btn:hover { background: var(--paper-3); }
+  .ctrl-btn.active { background: var(--sidechain); color: var(--paper); border-color: var(--sidechain); }
+  .ctrl-btn.bulk { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .ctrl-btn.bulk:hover { background: var(--chain); border-color: var(--chain); }
+  .filter-count {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--muted);
   }
 
-  /* BACKLOG ITEM */
+  /* ITEM */
   .item {
-    margin-bottom: 36px;
+    margin-bottom: 14px;
     border: 2px solid var(--ink);
     background: var(--paper);
     overflow: hidden;
+    transition: all 0.2s ease;
   }
+  .item.hidden { display: none; }
   .item-header {
     background: var(--ink); color: var(--paper);
-    padding: 16px 24px;
-    display: flex; justify-content: space-between; align-items: baseline;
-    flex-wrap: wrap; gap: 12px;
+    padding: 13px 20px;
+    display: flex; align-items: center;
+    gap: 14px; cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
   }
-  .item-header .num-and-title {
-    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-  }
+  .item-header:hover { background: #1a2030; }
   .item-header .num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 28px; font-weight: 800;
+    font-size: 22px; font-weight: 800;
     color: var(--wallet);
-    line-height: 1;
+    line-height: 1; flex-shrink: 0;
   }
   .item-header h2 {
     font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: clamp(20px, 2.4vw, 26px);
+    font-weight: 700;
+    font-size: clamp(16px, 1.8vw, 20px);
     margin: 0;
-    line-height: 1.05;
+    line-height: 1.2;
     letter-spacing: -0.01em;
+    flex: 1;
   }
   .item-header h2 em { font-style: italic; font-weight: 400; color: var(--wallet); opacity: 0.85; }
-  .status {
+
+  .badge-set { display: flex; gap: 6px; flex-shrink: 0; }
+  .badge-pill {
     display: inline-block;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.16em;
+    font-size: 9px; letter-spacing: 0.14em;
     text-transform: uppercase; font-weight: 700;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border: 1.5px solid var(--paper);
     background: transparent;
     color: var(--paper);
+    white-space: nowrap;
   }
-  .status.open { background: var(--status-open); border-color: var(--status-open); }
-  .status.progress { background: var(--status-progress); color: var(--ink); border-color: var(--status-progress); }
-  .status.done { background: var(--status-done); border-color: var(--status-done); }
+  /* Status badges */
+  .badge-pill.s-open { background: var(--status-open); border-color: var(--status-open); }
+  .badge-pill.s-progress { background: var(--status-progress); color: var(--ink); border-color: var(--status-progress); }
+  .badge-pill.s-done { background: var(--status-done); border-color: var(--status-done); }
+  /* Priority badges */
+  .badge-pill.p-critical { background: var(--prio-critical); border-color: var(--prio-critical); }
+  .badge-pill.p-high { background: var(--prio-high); color: var(--ink); border-color: var(--prio-high); }
+  .badge-pill.p-medium { background: var(--prio-medium); border-color: var(--prio-medium); }
+  .badge-pill.p-low { background: transparent; border-color: var(--paper); opacity: 0.7; }
 
-  .item-body { padding: 22px 26px; }
-
-  .block {
-    margin-bottom: 18px;
+  .chevron {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--wallet);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    width: 16px; text-align: center;
   }
+  .item.expanded .chevron { transform: rotate(90deg); }
+
+  .item-body {
+    padding: 20px 24px;
+    display: none;
+    border-top: 2px solid var(--ink);
+  }
+  .item.expanded .item-body { display: block; }
+
+  .block { margin-bottom: 16px; }
   .block:last-child { margin-bottom: 0; }
   .block-tag {
     display: inline-block;
@@ -231,32 +289,38 @@
   .block-tag.action { background: var(--wallet); border-color: var(--wallet); }
 
   .block p {
-    font-size: 14.5px; line-height: 1.6;
-    margin: 0 0 10px 0;
+    font-size: 14px; line-height: 1.6;
+    margin: 0 0 8px 0;
   }
   .block p:last-child { margin: 0; }
   .block p strong { color: var(--chain); font-weight: 600; }
   .block p em { color: var(--user); font-style: italic; }
   .block ul {
-    margin: 8px 0 0 0; padding-left: 22px;
-    font-size: 14px; line-height: 1.6;
+    margin: 6px 0 0 0; padding-left: 20px;
+    font-size: 13.5px; line-height: 1.55;
   }
-  .block ul li { margin-bottom: 8px; }
+  .block ul li { margin-bottom: 6px; }
   .block ul li strong { color: var(--chain); font-weight: 600; }
   .block ul li em { color: var(--user); font-style: italic; }
 
   /* SOURCE FOOTER */
   .sources-foot {
-    margin-top: 50px;
+    margin-top: 36px;
     border-top: 2px solid var(--ink);
-    padding-top: 20px;
+    padding-top: 18px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--muted);
     line-height: 1.7;
   }
   .sources-foot strong { color: var(--ink); font-weight: 700; }
   .sources-foot a { color: var(--ink); font-weight: 700; }
+
+  @media (max-width: 700px) {
+    .item-header { flex-wrap: wrap; }
+    .badge-set { width: 100%; margin-top: 6px; }
+    .control-row .label { min-width: auto; }
+  }
 </style>
 </head>
 <body>
@@ -289,305 +353,317 @@
 
 <header class="masthead">
   <div>
-    <div class="eyebrow">Backlog · todo / parking · v0.1 · Mai 2026</div>
+    <div class="eyebrow">Backlog · todo / parking · v0.2 · Mai 2026</div>
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
     Items : 6<br/>
-    Status : tous OPEN<br/>
-    Audience : interne<br/>
+    Mode : compact (toggle)<br/>
+    Filtres : status × priorité<br/>
     Mise à jour : Mai 2026
   </div>
 </header>
 
 <div class="strap">
   <span>Tableau de parking</span>
-  <span>Items à arbitrer / itérer</span>
-  <span>Pas une roadmap, un to-do</span>
+  <span>Click un titre pour voir le détail</span>
+  <span>Filtres status × priorité</span>
 </div>
 
 <div class="intro">
-  <p><span class="pill">USAGE</span> Cette page est un <strong>tableau de parking</strong> : une liste vivante des items qui n'ont pas encore été tranchés ou itérés. Chaque item a (a) le <em>problème</em>, (b) les <em>pistes/solutions possibles</em>, (c) l'<em>action attendue</em> pour avancer.</p>
-  <p><span class="pill">UPDATE</span> Quand un item est traité, son statut passe de <em>OPEN</em> à <em>IN PROGRESS</em> ou <em>DONE</em>. Les items DONE restent visibles avec leur résolution pour traçabilité.</p>
-  <p><span class="pill">PRIORITÉ</span> Aucune priorité fixée — au feeling. Tu peux taper sur n'importe quel item au coup par coup.</p>
+  <p>Liste vivante des items à arbitrer/itérer. Par défaut <strong>compact</strong> (juste les titres). Click sur un item pour voir le détail (problème · pistes · action attendue). Filtres ci-dessous pour cibler par <strong>status</strong> et <strong>priorité</strong>.</p>
 </div>
 
-<!-- ============================ ITEM 01 — LOGO ============================ -->
-<section class="item">
+<!-- CONTROLS: filters + bulk -->
+<div class="controls">
+  <div class="control-row">
+    <span class="label">Status</span>
+    <button class="ctrl-btn active" data-filter-type="status" data-filter="all">Tous</button>
+    <button class="ctrl-btn" data-filter-type="status" data-filter="open">Open</button>
+    <button class="ctrl-btn" data-filter-type="status" data-filter="progress">In progress</button>
+    <button class="ctrl-btn" data-filter-type="status" data-filter="done">Done</button>
+  </div>
+  <div class="control-row">
+    <span class="label">Priorité</span>
+    <button class="ctrl-btn active" data-filter-type="priority" data-filter="all">Toutes</button>
+    <button class="ctrl-btn" data-filter-type="priority" data-filter="critical">Critical</button>
+    <button class="ctrl-btn" data-filter-type="priority" data-filter="high">High</button>
+    <button class="ctrl-btn" data-filter-type="priority" data-filter="medium">Medium</button>
+    <button class="ctrl-btn" data-filter-type="priority" data-filter="low">Low</button>
+    <span class="filter-count"></span>
+  </div>
+  <div class="control-row">
+    <span class="label">Affichage</span>
+    <button class="ctrl-btn bulk" id="expand-all">▸ Expand all</button>
+    <button class="ctrl-btn bulk" id="collapse-all">▾ Collapse all</button>
+  </div>
+</div>
+
+<!-- ITEMS -->
+<section class="item" data-status="open" data-priority="medium">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">01</div>
-      <h2>Logo X<sup style="color:#d4a017;">B</sup> <em>— toujours pas conforme au vrai XRP</em></h2>
+    <span class="num">01</span>
+    <h2>Logo X<sup style="color:#d4a017;">B</sup> <em>— toujours pas conforme au vrai XRP</em></h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
       <p>Plusieurs itérations du logo X<sup>B</sup> ont été tentées (caractère typographique italique, 2 rectangles rotés ±45°, 4 wedges pointant vers le centre) — <strong>aucune ne correspond visuellement au logo officiel du token XRP</strong>. Le rendu actuel (4 wedges) ressemble plus à une étoile qu'à l'X iconique de Ripple. Le B doré en exposant top-right fonctionne, le X est le seul élément à itérer.</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
         <li><strong>Reproduire le logo XRP officiel</strong> avec un SVG path fidèle (depuis xrpl.org branding kit, Wikimedia, ou source officielle Ripple). Risque : copyright à vérifier mais le logo est largement utilisé en wallets/exchanges sans souci connu.</li>
         <li><strong>Approche curve-based</strong> — au lieu de barres droites ou triangles, deux courbes douces (style chevron / wave) qui se croisent au centre. Plus organique, plus proche du look Ripple récent.</li>
-        <li><strong>Logo lettre "X" stylisé</strong> dans une font géométrique sans-serif moderne (genre Aktiv Grotesk, Söhne) — abandonner l'idée de reproduire le logo token et faire un X typographique propre.</li>
-        <li><strong>Changer de direction</strong> — abandonner la métaphore X<sup>B</sup> "math" et trouver une autre identité visuelle (ex: Builder pictogramme, gradient, etc.).</li>
+        <li><strong>Logo lettre "X" stylisé</strong> dans une font géométrique sans-serif moderne (Aktiv Grotesk, Söhne) — abandonner l'idée de reproduire le logo token et faire un X typographique propre.</li>
+        <li><strong>Changer de direction</strong> — abandonner la métaphore X<sup>B</sup> "math" et trouver une autre identité visuelle (Builder pictogramme, gradient, etc.).</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
       <p><strong>Tu m'envoies l'image cible exacte</strong> ou un lien vers le logo XRP officiel à reproduire pixel-near. Sinon, tu choisis une direction parmi les 4 pistes ci-dessus et j'itère.</p>
     </div>
-
   </div>
 </section>
 
-<!-- ============================ ITEM 02 — CLEANUP GAPS + SOURCES ============================ -->
-<section class="item">
+<section class="item" data-status="open" data-priority="medium">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">02</div>
-      <h2>Cleanup <em>/gaps + /master-gaps + source attribution</em></h2>
+    <span class="num">02</span>
+    <h2>Cleanup <em>/gaps + /master-gaps + source attribution</em></h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
       <p>Les pages d'opportunités ont accumulé du contenu venant de <strong>sources hétérogènes</strong> (Master Atlas / PWG Paris / Atka Report / YC RFS / Ecosystem map) sans toujours <strong>tagger explicitement</strong> d'où vient chaque opportunité.</p>
-      <p>Sur <strong>/master-gaps</strong> le source-tagging est en place (tags <code>src-atlas</code>, <code>src-gaps</code>, <code>src-yc</code>, <code>src-svc</code>). Sur <strong>/gaps</strong> les cards Lens 1+2 n'ont pas le même tagging visuel — c'est moins lisible quand on veut savoir <em>« qui a dit ça »</em>.</p>
+      <p>Sur <strong>/master-gaps</strong> le source-tagging est en place. Sur <strong>/gaps</strong> les cards Lens 1+2 n'ont pas le même tagging visuel — c'est moins lisible quand on veut savoir <em>« qui a dit ça »</em>.</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Ajouter un encart "Source(s)" visible</strong> sur chaque card de <code>/gaps</code> avec :
-          <ul style="margin-top: 6px;">
-            <li>Master Atlas (M-XX) avec lien vers /analysis-3</li>
-            <li>PWG Paris avril 2026 (RWA / Stablecoins / Lending / Identity) avec lien vers /analysis-1</li>
-            <li>Atka XRPL DeFi Report (slide N) avec lien vers /analysis-1</li>
-            <li>YC RFS (Summer 2026 ou AI-native services) avec lien externe</li>
-            <li>Ecosystem map mai 2026 avec lien vers /ecosystem-map</li>
-            <li><strong>Interview iN</strong> (avec le item 03 ci-dessous)</li>
-          </ul>
-        </li>
-        <li><strong>Étendre le système de tags visuels</strong> de <code>/master-gaps</code> à <code>/gaps</code> — réutiliser les classes <code>src-atlas / src-gaps / src-yc / src-svc</code>, ajouter <code>src-pwg</code>, <code>src-atka</code>, <code>src-ecosystem</code>, <code>src-interview</code>.</li>
-        <li><strong>Pareil sur /builder-atlas</strong> (les 7 blueprints) — tagger d'où vient l'inspiration de chaque blueprint.</li>
-        <li><strong>Audit de cohérence</strong> : vérifier que chaque opportunité présente sur plusieurs pages a le <strong>même</strong> source-tagging partout (pas de divergence).</li>
+        <li><strong>Ajouter un encart "Source(s)"</strong> sur chaque card de <code>/gaps</code> avec : Master Atlas (M-XX) · PWG Paris · Atka Report · YC RFS · Ecosystem map · Interview iN.</li>
+        <li><strong>Étendre les tags visuels</strong> de <code>/master-gaps</code> à <code>/gaps</code> et <code>/builder-atlas</code> — réutiliser les classes <code>src-atlas/gaps/yc/svc</code>, ajouter <code>src-pwg / src-atka / src-ecosystem / src-interview</code>.</li>
+        <li><strong>Audit de cohérence</strong> : chaque opportunité présente sur plusieurs pages doit avoir le même source-tagging partout.</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu valides la liste des source-tags</strong> à utiliser (atlas / gaps / yc / svc / pwg / atka / ecosystem / interview / autre ?) et je propage l'attribution sur les 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) en FR + EN.</p>
+      <p><strong>Valide la liste des source-tags</strong> à utiliser et je propage l'attribution sur les 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) en FR + EN.</p>
     </div>
-
   </div>
 </section>
 
-<!-- ============================ ITEM 03 — INTERVIEWS ============================ -->
-<section class="item">
+<section class="item" data-status="open" data-priority="high">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">03</div>
-      <h2>Interview-sourced gaps <em>— ajouter i1 → iN</em></h2>
+    <span class="num">03</span>
+    <h2>Interview-sourced gaps <em>— ajouter i1 → iN</em></h2>
+    <div class="badge-set">
+      <span class="badge-pill p-high">High</span>
+      <span class="badge-pill s-open">Open</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
       <p>Les opportunités actuelles viennent de <strong>4 PWG + Atka + Ecosystem map + YC RFS</strong>. Elles manquent les <strong>signaux qualitatifs</strong> directement issus d'<em>interviews 1:1</em> avec des builders, partners, founders du réseau XRPL — où des frictions, idées et besoins concrets sont souvent verbalisés différemment qu'en working group.</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Interviewees déjà identifiés</strong> (6) :
-          <ul style="margin-top: 6px;">
-            <li>i1 — <strong>Djason</strong></li>
-            <li>i2 — <strong>Stan</strong></li>
-            <li>i3 — <strong>Kevin</strong></li>
-            <li>i4 — <strong>Adrien</strong></li>
-            <li>i5 — <strong>Denis</strong></li>
-            <li>i6 — <strong>Andy</strong></li>
-            <li><em>+ d'autres à venir selon ce qui ressort</em></li>
-          </ul>
-        </li>
-        <li><strong>Format des notes d'interview</strong> à transformer en gap cards :
-          <ul style="margin-top: 6px;">
-            <li><em>Citation key</em> : la phrase ou idée saillante</li>
-            <li><em>Interviewee</em> : nom + contexte (Aquarium alum / partner / institutional / etc.)</li>
-            <li><em>Date interview</em> : pour traçabilité</li>
-            <li><em>Gap dérivé</em> : le besoin/opportunité concret extrait de la conversation</li>
-            <li><em>Convergence</em> : si le gap recoupe un Master Atlas item ou un YC RFS thème</li>
-          </ul>
-        </li>
-        <li><strong>Display options</strong> :
-          <ul style="margin-top: 6px;">
-            <li><strong>A</strong> — Nouvelle Lens 4 sur <code>/gaps</code> dédiée "From interviews" (visible séparément)</li>
-            <li><strong>B</strong> — Fusionner dans Lens 1+2 existantes avec source-tag <code>interview</code> (couleur dédiée, ex: vert sage)</li>
-            <li><strong>C</strong> — Mix : tagger inline ET ajouter une page dédiée <code>/interviews</code> avec les notes complètes</li>
-          </ul>
-        </li>
-        <li><strong>Tag visuel</strong> : <code>src-interview</code> avec couleur distincte (proposition : sage green <code>#5d7d4a</code> ou autre).</li>
+        <li><strong>Interviewees identifiés</strong> : i1 Djason · i2 Stan · i3 Kevin · i4 Adrien · i5 Denis · i6 Andy · <em>+ d'autres à venir</em></li>
+        <li><strong>Format des notes</strong> à transformer en gap cards : <em>Citation key</em> · <em>Interviewee + contexte</em> · <em>Date</em> · <em>Gap dérivé</em> · <em>Convergence</em> avec Master Atlas / YC.</li>
+        <li><strong>Display options</strong> : <strong>A</strong> nouvelle Lens 4 sur <code>/gaps</code> dédiée "From interviews" · <strong>B</strong> fusion Lens 1+2 avec source-tag <code>interview</code> · <strong>C</strong> mix : tagger inline + page dédiée <code>/interviews</code>.</li>
+        <li><strong>Tag visuel</strong> : <code>src-interview</code> avec couleur distincte (proposition : sage green).</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu m'envoies les notes brutes d'une interview</strong> (la plus avancée — Djason ?) et on fixe ensemble le pattern. Les autres suivront le même template. Choix du display A/B/C à arbitrer.</p>
+      <p><strong>Envoie les notes brutes d'une interview</strong> (la plus avancée — Djason ?) et on fixe le pattern. Choix display A/B/C à arbitrer.</p>
     </div>
-
   </div>
 </section>
 
-<!-- ============================ ITEM 04 — WINNING CRITERIA ============================ -->
-<section class="item">
+<section class="item" data-status="open" data-priority="high">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">04</div>
-      <h2>Winning criteria <em>— à revoir (Section 07 Buildathon)</em></h2>
+    <span class="num">04</span>
+    <h2>Winning criteria <em>— à revoir (Section 07 Buildathon)</em></h2>
+    <div class="badge-set">
+      <span class="badge-pill p-high">High</span>
+      <span class="badge-pill s-open">Open</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
       <p>Les critères actuels (Section 07 de <a href="/buildathon">/buildathon</a>) ont été figés <strong>avant</strong> les changements récents :</p>
       <ul>
-        <li>Avant : format hybride 6 semaines avec Demo Day Paris en présentiel · Maintenant : <strong>30 jours full online</strong>, Demo Day livestream</li>
-        <li>Avant : pas de Users prizes · Maintenant : <strong>Users Prize $1k / Super Users $10k / Community €500</strong></li>
-        <li>Avant : team de 2-5 obligatoire · Maintenant : <strong>solo ou team OK, no min/max</strong></li>
+        <li>Avant : format hybride 6 semaines · Maintenant : <strong>30 jours full online</strong></li>
+        <li>Avant : pas de Users prizes · Maintenant : <strong>Users $1k / Super $10k / Community €500</strong></li>
+        <li>Avant : team 2-5 obligatoire · Maintenant : <strong>solo ou team OK, no min/max</strong></li>
       </ul>
-      <p>Les <strong>6 critères pondérés</strong> (Gap fit 20% / Tech 25% / Product 20% / Distribution 15% / Composability 10% / Pitch 10%) ne reflètent plus tout à fait le programme.</p>
+      <p>Les <strong>6 critères pondérés</strong> ne reflètent plus tout à fait le programme.</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Aligner avec les Users prizes</strong> — si l'onboarding réel est récompensé séparément, est-ce qu'on garde "Distribution thinking" comme critère du Tier 1/2/3 ou on le sort ?</li>
-        <li><strong>Format full online → "Demo video quality"</strong> remplace "Pitch quality" (changement de medium : ce sera majoritairement de la vidéo + livestream pas de pitch live in-person).</li>
-        <li><strong>Ajouter critère "Audience reach"</strong> — nb de signups / waitlist / followers acquis pendant le build, social engagement, traction démontrée.</li>
-        <li><strong>Simplification</strong> — passer à 3-4 critères au lieu de 6 (moins d'overhead jury, plus lisible) : par exemple <em>Tech execution / Product completeness / Traction & impact / Pitch clarity</em>.</li>
-        <li><strong>Tier-specific criteria</strong> — Tier 1 (multipliers) pondère plus l'impact systémique (composability, ecosystem unlock). Tier 3 (tactical) pondère plus l'exécution rapide. Compliqué mais juste.</li>
-        <li><strong>Bonus implicite "alumni"</strong> — actuellement les alumni bénéficient d'une priorité dans le filter applications + sont éligibles au Community Prize ; faut-il un bonus de scoring aussi ? (probablement non — risque de bias).</li>
+        <li><strong>Aligner avec Users prizes</strong> — sortir "Distribution thinking" des critères de scoring (récompense déjà séparée) ?</li>
+        <li><strong>"Demo video quality"</strong> remplace "Pitch quality" (changement de medium full online).</li>
+        <li><strong>Ajouter "Audience reach"</strong> — signups, waitlist, traction sociale pendant le build.</li>
+        <li><strong>Simplification</strong> — 3-4 critères au lieu de 6 (Tech / Product / Traction / Pitch).</li>
+        <li><strong>Tier-specific criteria</strong> — Tier 1 pondère plus l'impact systémique. Tier 3 pondère plus l'exécution rapide.</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu choisis un angle</strong> parmi : (a) ajustement minimal (juste renommer "Pitch" → "Demo video"), (b) refonte vers 3-4 critères simples, (c) tier-specific, (d) autre. Et je code.</p>
+      <p><strong>Choisis un angle</strong> : (a) ajustement minimal · (b) refonte 3-4 critères · (c) tier-specific · (d) autre. Je code.</p>
     </div>
-
   </div>
 </section>
 
-<!-- ============================ ITEM 05 — NAVBAR ============================ -->
-<section class="item">
+<section class="item" data-status="progress" data-priority="low">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">05</div>
-      <h2>Navbar <em>— à revoir</em></h2>
+    <span class="num">05</span>
+    <h2>Navbar <em>— à revoir</em></h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-progress">In progress</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
-      <p>La navbar a accumulé <strong>14 entrées</strong> en plus du logo et du toggle de langue : Anatomy · Ecosystem · Gaps · Master Gaps · Tree · Macro · Sim · Case · Atlas · Analysis 1 · Analysis 2 · Synthesis · Buildathon · Backlog. C'est <strong>trop chargé</strong> visuellement, surtout sur écrans de taille moyenne (laptop 13"), et la hiérarchie des sections (PÉDA / PAYSAGE / OUTIL / IDÉE / ANALYSE / BUILD / BACKLOG) avec ses 7 couleurs commence à brouiller plus qu'à clarifier.</p>
-      <p>Le mobile gère via <code>flex-wrap</code> mais le résultat est plusieurs lignes serrées peu lisibles.</p>
+      <p>La navbar a accumulé <strong>14 entrées</strong> en plus du logo et du toggle de langue. <em>Partial fix appliqué : Analysis 1/2 → A1/A2 (gain ~16 chars).</em> Reste à voir si on va plus loin.</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Dropdown / mega-menu par section</strong> — au lieu de 14 liens à plat, 5-6 entrées top-level avec menu déroulant au hover :
-          <ul style="margin-top: 6px;">
-            <li><em>Learn</em> ▾ : Anatomy / Ecosystem / Gaps / Master Gaps</li>
-            <li><em>Tools</em> ▾ : Tree / Macro / Sim / Case</li>
-            <li><em>Atlas</em> (direct)</li>
-            <li><em>Analysis</em> ▾ : 1 / 2 / Synthesis</li>
-            <li><em>Buildathon</em> (direct)</li>
-            <li><em>Backlog</em> (direct, optionnel — peut-être footer-only)</li>
-          </ul>
-        </li>
-        <li><strong>Grouping visuel + séparateurs</strong> — garder à plat mais avec des <em>séparateurs verticaux</em> entre sections, et réduire la taille du texte/padding pour gagner de la place. Plus simple, pas de JS dropdown.</li>
-        <li><strong>Hamburger sur tout, sauf desktop large</strong> — masquer en menu burger dès <code>&lt; 1100px</code> ; sur desktop large, garder à plat. Standard pattern, simple.</li>
-        <li><strong>Sidebar collapsible</strong> à gauche au lieu de top — gagne en hauteur, libère le top de page. Plus radical.</li>
-        <li><strong>Two-tier navbar</strong> — top-bar minimal (Home / Atlas / Buildathon / Backlog) + sub-bar contextuelle qui change selon la section où tu es (ex: sur Gaps tu vois Lens 1/2/3 ; sur Analyses tu vois 1/2/3).</li>
-        <li><strong>Retirer Backlog de la navbar</strong> — il est interne/admin, peut vivre en footer ou sur une URL discrète sans link visible.</li>
-        <li><strong>Fusionner /gaps et /master-gaps</strong> — réduit 1 entrée (déjà discuté ailleurs, lié à l'item 02).</li>
+        <li><strong>Dropdown / mega-menu par section</strong> — 5-6 entrées top-level avec menu déroulant au hover (Learn ▾ / Tools ▾ / Atlas / Analysis ▾ / Buildathon).</li>
+        <li><strong>Hamburger</strong> dès <code>&lt; 1100px</code> ; sur desktop large, garder à plat.</li>
+        <li><strong>Sidebar collapsible</strong> à gauche au lieu de top.</li>
+        <li><strong>Two-tier navbar</strong> — top-bar minimal + sub-bar contextuelle par section.</li>
+        <li><strong>Retirer Backlog</strong> de la navbar (interne, footer-only).</li>
+        <li><strong>Fusionner /gaps et /master-gaps</strong> — réduit 1 entrée (lié à item 02).</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu choisis une direction</strong> (dropdown / grouping inline / hamburger / sidebar / two-tier / autre) ou tu m'envoies un mockup. Si tu veux je peux faire un proto rapide d'une option avant qu'on tranche.</p>
+      <p><strong>Tu choisis une direction</strong> ou tu m'envoies un mockup. Je peux faire un proto rapide d'une option avant tranchage.</p>
     </div>
-
   </div>
 </section>
 
-<!-- ============================ ITEM 06 — TRADUCTION ECOSYSTEM DIAGNOSIS ============================ -->
-<section class="item">
+<section class="item" data-status="progress" data-priority="low">
   <div class="item-header">
-    <div class="num-and-title">
-      <div class="num">06</div>
-      <h2>Traduire <em>Ecosystem Diagnosis</em> (V1 + V2) en EN</h2>
+    <span class="num">06</span>
+    <h2>Traduire <em>Ecosystem Diagnosis</em> (V1 + V2) en EN</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-progress">In progress</span>
     </div>
-    <span class="status open">OPEN</span>
+    <span class="chevron">▸</span>
   </div>
   <div class="item-body">
-
     <div class="block">
       <span class="block-tag problem">Problème</span>
-      <p>Les 2 analyses <strong>« Pourquoi aucune licorne dans XRPL ? »</strong> (<a href="/xrpl_unicorn_analysis_v1">V1 archivée</a> + <a href="/xrpl_unicorn_analysis_v2">V2 active</a>) sont disponibles <strong>en français seulement</strong>. Sur la homepage EN, les cards de Section 05 mentionnent « documents in French » comme indication, mais l'audience cible (XRPL Commons international, VC tier 1, founders globaux) lira majoritairement en EN.</p>
-      <p>Pour que ces analyses servent vraiment de <em>brief stratégique</em> à une audience internationale, une version EN propre est nécessaire.</p>
+      <p>Les 2 analyses <strong>« Pourquoi aucune licorne dans XRPL ? »</strong> étaient FR-only. <em>V2 ✅ traduite (scope B adapté), accessible sur <code>/en/xrpl_unicorn_analysis_v2</code>.</em> V1 reste FR-only (archivée, optionnel).</p>
     </div>
-
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Traduction complète V2 (priorité)</strong> — la version active. ~25 min de lecture en FR, contient le contenu le plus riche (5 clusters causaux, founder journey map, comparaisons étendues, cimetière, gaps Q&amp;A, 8 priorités, opportunités 2026-2027). Output : <code>/en/xrpl_unicorn_analysis_v2.html</code>.</li>
-        <li><strong>Traduction V1</strong> — la version archivée. Plus courte (~12 min), version "executive summary" historique. Moins urgent. Output : <code>/en/xrpl_unicorn_analysis_v1.html</code>.</li>
-        <li><strong>Update internal cross-links</strong> — les bandeaux d'archives V1↔V2 doivent utiliser <code>/en/</code> dans les versions EN.</li>
-        <li><strong>Update homepage EN</strong> — les cards de Section 05 doivent pointer vers <code>/en/xrpl_unicorn_analysis_v2</code> et v1 (au lieu des paths root FR).</li>
-        <li><strong>Variants de scope</strong> :
-          <ul style="margin-top: 6px;">
-            <li><strong>A</strong> — Traduction littérale (mot-à-mot, conserve la structure exacte)</li>
-            <li><strong>B</strong> — Traduction adaptée (adapte les références culturelles FR, fluidifie les tournures, garde le sens)</li>
-            <li><strong>C</strong> — Adaptation éditoriale (traduit ET améliore — par ex. ajoute des liens vers d'autres pages /master-gaps /buildathon, raccourcit certaines parties trop FR-centrées)</li>
-          </ul>
-        </li>
-        <li><strong>Identifier les passages culturellement marqués</strong> qui nécessitent rephrasing : références à « XRP Army », expressions FR comme « font tomber », tournures éditoriales (« paradoxalement », « à noter »), unités (M$ → $M), datations (« nov. 2025 » → "Nov 2025").</li>
+        <li><strong>V1 traduction (optionnel)</strong> — la V1 est archivée, audience faible. Skip et marquer DONE, ou bien traduire pour cohérence.</li>
+        <li><strong>Lang toggle 🇫🇷/🇬🇧</strong> — actuellement les pages V1/V2 n'ont pas le toggle standard (design custom). À ajouter pour cross-language navigation propre.</li>
       </ul>
     </div>
-
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu choisis le scope</strong> (A littéral / B adapté / C éditorial) <strong>et la priorité</strong> (V2 d'abord seul, ou V1+V2 d'un coup). Je traduis et déploie. Côté technique, c'est ~30-60 min de travail pour V2 + ~15-30 min pour V1 selon le scope choisi.</p>
+      <p><strong>Décide :</strong> (a) marquer DONE (V1 reste FR, suffit) · (b) traduire V1 aussi · (c) ajouter toggle 🇫🇷/🇬🇧 sur V1+V2.</p>
     </div>
-
   </div>
 </section>
 
 <div class="sources-foot">
-  <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent en cours d'itération. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe. Le but : ne pas perdre les idées, et pouvoir y revenir au coup par coup.<br/>
+  <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe (les priorités ici aident juste à scanner).<br/>
   <br/>
-  <strong>Pages liées au backlog :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
+  <strong>Pages liées :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
   <br/>
-  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération) · DONE (résolu, conservé pour traçabilité)
+  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération) · DONE (résolu, conservé pour traçabilité)<br/>
+  <strong>Priority legend :</strong> CRITICAL (blocker) · HIGH (impactful) · MEDIUM (nice to have) · LOW (cosmétique / optionnel)
 </div>
 
 </div>
+
+<script>
+(function() {
+  const items = document.querySelectorAll('.item');
+  const filterButtons = document.querySelectorAll('.ctrl-btn[data-filter-type]');
+  const countEl = document.querySelector('.filter-count');
+  const expandAll = document.getElementById('expand-all');
+  const collapseAll = document.getElementById('collapse-all');
+  const active = { status: 'all', priority: 'all' };
+
+  function rowMatches(item) {
+    const sOk = active.status === 'all' || item.dataset.status === active.status;
+    const pOk = active.priority === 'all' || item.dataset.priority === active.priority;
+    return sOk && pOk;
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    items.forEach(item => {
+      if (rowMatches(item)) {
+        item.classList.remove('hidden');
+        visible++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+    if (countEl) countEl.textContent = visible + ' / ' + items.length + ' visible';
+  }
+
+  // Toggle individual item on header click
+  document.querySelectorAll('.item-header').forEach(header => {
+    header.addEventListener('click', () => {
+      header.parentElement.classList.toggle('expanded');
+    });
+  });
+
+  // Filter buttons
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.filterType;
+      const value = btn.dataset.filter;
+      document.querySelectorAll('.ctrl-btn[data-filter-type="' + type + '"]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      active[type] = value;
+      applyFilters();
+    });
+  });
+
+  // Bulk expand/collapse
+  expandAll.addEventListener('click', () => {
+    items.forEach(item => {
+      if (!item.classList.contains('hidden')) item.classList.add('expanded');
+    });
+  });
+  collapseAll.addEventListener('click', () => {
+    items.forEach(item => item.classList.remove('expanded'));
+  });
+
+  applyFilters();
+})();
+</script>
+
 </body>
 </html>
