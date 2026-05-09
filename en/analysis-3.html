@@ -49,66 +49,49 @@
   }
   .page { max-width: 1320px; margin: 0 auto; padding: 40px 32px 96px; }
 
-  /* SITE NAV */
-  .site-nav {
-    position: sticky; top: 0; z-index: 100;
-    background: var(--ink); color: var(--paper);
-    padding: 9px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em;
-    border-bottom: 2px solid var(--ink);
-  }
-  .site-nav .nav-home {
-    color: var(--paper); font-family: 'Fraunces', serif;
-    font-weight: 800; font-size: 15px;
-    letter-spacing: -0.01em; text-decoration: none;
-  }
-  .site-nav .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
-  .site-nav .nav-home { display: flex; align-items: center; gap: 8px; }
-  .site-nav .nav-logo { flex-shrink: 0; display: block; }
-  .site-nav .nav-links { display: flex; gap: 2px; }
-  .site-nav .nav-links a {
-    color: var(--paper); text-decoration: none;
-    padding: 5px 10px; text-transform: uppercase; font-weight: 700;
-    transition: background 0.15s ease; white-space: nowrap;
-    position: relative;
-  }
-  .site-nav .nav-links a:hover { background: rgba(244,239,230,0.15); }
-  .site-nav .nav-links a.current { background: var(--wallet); color: var(--ink); }
-  .site-nav .nav-links a::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0;
-    height: 3px; background: transparent; pointer-events: none;
-  }
-  .site-nav .nav-links a[data-section="peda"]::before { background: #5a85b8; }
-  .site-nav .nav-links a[data-section="paysage"]::before { background: var(--rwa); }
-  .site-nav .nav-links a[data-section="outil"]::before { background: var(--amm); }
-  .site-nav .nav-links a[data-section="idee"]::before { background: var(--user); }
-  .site-nav .nav-links a[data-section="analyse"]::before { background: var(--wallet); }
-  .site-nav .nav-links a[data-section="build"]::before { background: var(--sidechain); }
-  .site-nav .nav-links a[data-section="backlog"]::before { background: var(--muted); }
-  .site-nav .nav-links a.section-start { margin-left: 12px; }
-  .site-nav .lang-toggle {
-    display: flex; margin-left: 16px;
-    border: 1.5px solid var(--paper); white-space: nowrap;
-  }
-  .site-nav .lang-toggle .lang-flag {
-    padding: 0 10px; text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28px; line-height: 1;
-    display: flex; align-items: center;
-    color: var(--paper); background: transparent;
-    filter: grayscale(70%); opacity: 0.55;
-    transition: all 0.15s ease;
-  }
-  .site-nav .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
-  .site-nav .lang-toggle .lang-flag.active {
-    background: var(--wallet); filter: grayscale(0); opacity: 1;
-  }
+  /* SITE NAV */    /* === TWO-TIER NAVBAR === */
+  .nav-wrapper { position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--ink); }
+  .nav-tier1 { background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; }
+  .nav-tier1 .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .nav-tier1 .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .nav-tier1 .nav-logo { flex-shrink: 0; display: block; }
+  .nav-tier1 .top-links { display: flex; gap: 0; }
+  .nav-tier1 .top-link { color: var(--paper); text-decoration: none; padding: 6px 14px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; white-space: nowrap; position: relative; }
+  .nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
+  .nav-tier1 .top-link.active { background: rgba(244,239,230,0.18); color: var(--wallet); }
+  .nav-tier1 .top-link .caret { font-size: 8px; margin-left: 4px; opacity: 0.6; }
+  .nav-tier1 .top-link[data-section="anatomy"].active { box-shadow: inset 0 -3px 0 #5a85b8; }
+  .nav-tier1 .top-link[data-section="landscape"].active { box-shadow: inset 0 -3px 0 var(--rwa); }
+  .nav-tier1 .top-link[data-section="tools"].active { box-shadow: inset 0 -3px 0 var(--amm); }
+  .nav-tier1 .top-link[data-section="atlas"].active { box-shadow: inset 0 -3px 0 var(--user); }
+  .nav-tier1 .top-link[data-section="analysis"].active { box-shadow: inset 0 -3px 0 var(--wallet); }
+  .nav-tier1 .top-link[data-section="buildathon"].active { box-shadow: inset 0 -3px 0 var(--sidechain); }
+  .nav-tier1 .right-cluster { display: flex; align-items: center; gap: 10px; }
+  .nav-tier1 .backlog-mini { color: var(--paper); opacity: 0.55; text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid rgba(244,239,230,0.3); transition: opacity 0.15s ease; }
+  .nav-tier1 .backlog-mini:hover { opacity: 1; }
+  .nav-tier1 .backlog-mini.current { opacity: 1; background: var(--muted); border-color: var(--muted); }
+  .nav-tier1 .lang-toggle { display: flex; border: 1.5px solid var(--paper); white-space: nowrap; }
+  .nav-tier1 .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
+  .nav-tier1 .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+  .nav-tier1 .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
+  .nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
+  .nav-tier2 .section-label { color: var(--muted); text-transform: uppercase; font-weight: 700; margin-right: 12px; font-size: 9.5px; letter-spacing: 0.18em; }
+  .nav-tier2 .sub-link { color: var(--ink); text-decoration: none; padding: 4px 10px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; }
+  .nav-tier2 .sub-link:hover { background: var(--paper-2); }
+  .nav-tier2 .sub-link.current { background: var(--wallet); color: var(--ink); }
+  .nav-tier2.empty { display: none; }
+  .nav-tier2[data-section="anatomy"] { border-top-color: #5a85b8; border-top-width: 2px; }
+  .nav-tier2[data-section="landscape"] { border-top-color: var(--rwa); border-top-width: 2px; }
+  .nav-tier2[data-section="tools"] { border-top-color: var(--amm); border-top-width: 2px; }
+  .nav-tier2[data-section="atlas"] { border-top-color: var(--user); border-top-width: 2px; }
+  .nav-tier2[data-section="analysis"] { border-top-color: var(--wallet); border-top-width: 2px; }
+  .nav-tier2[data-section="buildathon"] { border-top-color: var(--sidechain); border-top-width: 2px; }
   @media (max-width: 800px) {
-    .site-nav { flex-direction: column; gap: 6px; padding: 8px 12px; }
-    .site-nav .nav-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
-    .site-nav .nav-links a { padding: 3px 6px; }
+    .nav-tier1 { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .nav-tier1 .top-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .nav-tier1 .top-link { padding: 4px 8px; }
+    .nav-tier2 { flex-wrap: wrap; padding: 6px 12px; }
+    .nav-tier1 .right-cluster { flex-wrap: wrap; justify-content: center; }
   }
 
   /* MASTHEAD */
@@ -447,30 +430,20 @@
 </head>
 <body>
 
-<nav class="site-nav">
-  <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116"><path d="M 14 22 L 24 12 L 50 50 Z"/><path d="M 76 12 L 86 22 L 50 50 Z"/><path d="M 86 78 L 76 88 L 50 50 Z"/><path d="M 24 88 L 14 78 L 50 50 Z"/></g><text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text></svg><span class="nav-home-text">XRPL <em>Builder</em></span></a>
-  <div class="nav-links">
-    <a href="/en/blockchain-framework-xrpl" data-section="peda">Anatomy</a>
-    <a href="/en/ecosystem-map" data-section="paysage" class="section-start">Ecosystem</a>
-    <a href="/en/gaps" data-section="paysage">Gaps</a>
-    <a href="/en/master-gaps" data-section="paysage">Master Gaps</a>
-    <a href="/en/decision-tree" data-section="outil" class="section-start">Tree</a>
-    <a href="/en/decision-tree-map" data-section="outil">Macro</a>
-    <a href="/en/cost-simulator" data-section="outil">Sim</a>
-    <a href="/en/business-case-builder" data-section="outil">Case</a>
-    <a href="/en/builder-atlas" data-section="idee" class="section-start">Atlas</a>
-    <a href="/en/analysis-1" data-section="analyse" class="section-start">A1</a>
-    <a href="/en/analysis-2" data-section="analyse" >A2</a>
-    <a href="/en/analysis-3" data-section="analyse" class="current">Synthesis</a>
-    <a href="/en/xrpl_unicorn_analysis_v2" data-section="analyse">Diag</a>
-    <a href="/en/buildathon" data-section="build" class="section-start">Buildathon</a>
-    <a href="/backlog" data-section="backlog" class="section-start">Backlog</a>
+<div class="nav-wrapper">
+  <div class="nav-tier1">
+    <a class="nav-home" href="/en/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116"><path d="M 14 22 L 24 12 L 50 50 Z"/><path d="M 76 12 L 86 22 L 50 50 Z"/><path d="M 86 78 L 76 88 L 50 50 Z"/><path d="M 24 88 L 14 78 L 50 50 Z"/></g><text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text></svg><span>XRPL <em>Builder</em></span></a>
+    <div class="top-links"><a class="top-link" data-section="anatomy" href="/en/blockchain-framework-xrpl">Anatomy <span class="caret">▾</span></a><a class="top-link" data-section="landscape" href="/en/ecosystem-map">Landscape <span class="caret">▾</span></a><a class="top-link" data-section="tools" href="/en/decision-tree">Tools <span class="caret">▾</span></a><a class="top-link" data-section="atlas" href="/en/builder-atlas">Atlas</a><a class="top-link active" data-section="analysis" href="/en/analysis-1">Analysis <span class="caret">▾</span></a><a class="top-link" data-section="buildathon" href="/en/buildathon">Buildathon</a></div>
+    <div class="right-cluster">
+      <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
+      <div class="lang-toggle">
+        <a class="lang-flag" href="/analysis-3">🇫🇷</a>
+        <a class="lang-flag active" href="/en/analysis-3">🇬🇧</a>
+      </div>
+    </div>
   </div>
-  <div class="lang-toggle">
-    <a class="lang-flag" href="/analysis-3">🇫🇷</a>
-    <a class="lang-flag active" href="/en/analysis-3">🇬🇧</a>
-  </div>
-</nav>
+  <nav class="nav-tier2" data-section="analysis"><span class="section-label">Analysis →</span><a class="sub-link" href="/en/analysis-1">A1</a><a class="sub-link" href="/en/analysis-2">A2</a><a class="sub-link current" href="/en/analysis-3">Synthesis</a></nav>
+</div>
 
 <div class="page">
 
