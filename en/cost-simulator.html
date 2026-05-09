@@ -504,12 +504,12 @@
   .nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
   .nav-tier1 .top-link.active { background: rgba(244,239,230,0.18); color: var(--wallet); }
   .nav-tier1 .top-link .caret { font-size: 8px; margin-left: 4px; opacity: 0.6; }
-  .nav-tier1 .top-link[data-section="anatomy"].active { box-shadow: inset 0 -3px 0 #5a85b8; }
-  .nav-tier1 .top-link[data-section="landscape"].active { box-shadow: inset 0 -3px 0 var(--rwa); }
-  .nav-tier1 .top-link[data-section="tools"].active { box-shadow: inset 0 -3px 0 var(--amm); }
-  .nav-tier1 .top-link[data-section="atlas"].active { box-shadow: inset 0 -3px 0 var(--user); }
-  .nav-tier1 .top-link[data-section="analysis"].active { box-shadow: inset 0 -3px 0 var(--wallet); }
-  .nav-tier1 .top-link[data-section="buildathon"].active { box-shadow: inset 0 -3px 0 var(--sidechain); }
+  .nav-tier1 .top-link[data-section="anatomy"] { box-shadow: inset 0 -3px 0 #5a85b8; }
+  .nav-tier1 .top-link[data-section="landscape"] { box-shadow: inset 0 -3px 0 var(--rwa); }
+  .nav-tier1 .top-link[data-section="tools"] { box-shadow: inset 0 -3px 0 var(--amm); }
+  .nav-tier1 .top-link[data-section="atlas"] { box-shadow: inset 0 -3px 0 var(--user); }
+  .nav-tier1 .top-link[data-section="analysis"] { box-shadow: inset 0 -3px 0 var(--wallet); }
+  .nav-tier1 .top-link[data-section="buildathon"] { box-shadow: inset 0 -3px 0 var(--sidechain); }
   .nav-tier1 .right-cluster { display: flex; align-items: center; gap: 10px; }
   .nav-tier1 .backlog-mini { color: var(--paper); opacity: 0.55; text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid rgba(244,239,230,0.3); transition: opacity 0.15s ease; }
   .nav-tier1 .backlog-mini:hover { opacity: 1; }
@@ -518,7 +518,7 @@
   .nav-tier1 .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
   .nav-tier1 .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
   .nav-tier1 .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
-  .nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
+  .nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
   .nav-tier2 .section-label { color: var(--muted); text-transform: uppercase; font-weight: 700; margin-right: 12px; font-size: 9.5px; letter-spacing: 0.18em; }
   .nav-tier2 .sub-link { color: var(--ink); text-decoration: none; padding: 4px 10px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; }
   .nav-tier2 .sub-link:hover { background: var(--paper-2); }
@@ -543,7 +543,7 @@
 
 <div class="nav-wrapper">
   <div class="nav-tier1">
-    <a class="nav-home" href="/en/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116"><path d="M 10 14 L 24 14 Q 32 32, 50 50 Q 22 32, 10 14 Z"/><path d="M 90 14 L 76 14 Q 68 32, 50 50 Q 78 32, 90 14 Z"/><path d="M 90 86 L 76 86 Q 68 68, 50 50 Q 78 68, 90 86 Z"/><path d="M 10 86 L 24 86 Q 32 68, 50 50 Q 22 68, 10 86 Z"/></g><text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text></svg><span>XRPL <em>Builder</em></span></a>
+    <a class="nav-home" href="/en/"><svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true"><rect width="140" height="100" fill="#f4efe6"/><rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/><g fill="#0e1116"><path d="M 15 15 L 85 15 C 75 35, 60 50, 50 50 C 40 50, 25 35, 15 15 Z"/><path d="M 15 85 L 85 85 C 75 65, 60 50, 50 50 C 40 50, 25 65, 15 85 Z"/></g><text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text></svg><span>XRPL <em>Builder</em></span></a>
     <div class="top-links"><a class="top-link" data-section="anatomy" href="/en/blockchain-framework-xrpl">Anatomy <span class="caret">▾</span></a><a class="top-link" data-section="landscape" href="/en/ecosystem-map">Landscape <span class="caret">▾</span></a><a class="top-link active" data-section="tools" href="/en/decision-tree">Tools <span class="caret">▾</span></a><a class="top-link" data-section="atlas" href="/en/builder-atlas">Atlas</a><a class="top-link" data-section="analysis" href="/en/analysis-1">Analysis <span class="caret">▾</span></a><a class="top-link" data-section="buildathon" href="/en/buildathon">Buildathon</a></div>
     <div class="right-cluster">
       <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
