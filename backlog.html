@@ -331,7 +331,7 @@
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
-    Items : 6 (4 actifs · 2 done)<br/>
+    Items : 6 (3 actifs · 3 done)<br/>
     Mode : compact (toggle)<br/>
     Filtres : status × priorité<br/>
     Mise à jour : Mai 2026
@@ -500,35 +500,35 @@
   </div>
 </section>
 
-<section class="item" data-status="progress" data-priority="low">
+<section class="item" data-status="done" data-priority="low">
   <div class="item-header">
     <span class="num">05</span>
-    <h2>Navbar <em>— à revoir</em></h2>
+    <h2>Navbar <em>— two-tier déployé ✅</em></h2>
     <div class="badge-set">
       <span class="badge-pill p-low">Low</span>
-      <span class="badge-pill s-progress">In progress</span>
+      <span class="badge-pill s-done">Done</span>
     </div>
     <span class="chevron">▸</span>
   </div>
   <div class="item-body">
     <div class="block">
-      <span class="block-tag problem">Problème</span>
-      <p>La navbar a accumulé <strong>14 entrées</strong> en plus du logo et du toggle de langue. <em>Partial fix appliqué : Analysis 1/2 → A1/A2 (gain ~16 chars).</em> Reste à voir si on va plus loin.</p>
+      <span class="block-tag problem">Résolution</span>
+      <p>Solution retenue : <strong>two-tier navbar</strong> (top-bar minimal + sub-bar contextuelle par section).</p>
+      <p>Top-bar à <strong>6 entrées</strong> (Anatomy / Landscape ▾ / Tools ▾ / Atlas / Analysis ▾ / Buildathon) au lieu de 14. Sub-bar apparaît en dessous selon la section active, avec sa couleur dédiée (paysage forest / outil mauve / analyse gold / etc.).</p>
+      <p><strong>Backlog</strong> sorti de la nav principale : accessible via lien discret « ⚙ Backlog » à droite du top-bar (avant le toggle 🇫🇷/🇬🇧).</p>
     </div>
     <div class="block">
-      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <span class="block-tag solutions">Détails déploiement</span>
       <ul>
-        <li><strong>Dropdown / mega-menu par section</strong> — 5-6 entrées top-level avec menu déroulant au hover (Learn ▾ / Tools ▾ / Atlas / Analysis ▾ / Buildathon).</li>
-        <li><strong>Hamburger</strong> dès <code>&lt; 1100px</code> ; sur desktop large, garder à plat.</li>
-        <li><strong>Sidebar collapsible</strong> à gauche au lieu de top.</li>
-        <li><strong>Two-tier navbar</strong> — top-bar minimal + sub-bar contextuelle par section.</li>
-        <li><strong>Retirer Backlog</strong> de la navbar (interne, footer-only).</li>
-        <li><strong>Fusionner /gaps et /master-gaps</strong> — réduit 1 entrée (lié à item 02).</li>
+        <li><strong>33 pages updated</strong> (FR + EN, hors pages unicorn analysis qui ont un design custom)</li>
+        <li><strong>Proto initial</strong> à <a href="/proto-nav">/proto-nav</a> conservé comme référence (peut être supprimé si tu veux nettoyer)</li>
+        <li><strong>Mapping</strong> : chaque page a son <code>data-section</code> → la sub-bar affiche les siblings</li>
+        <li><strong>Mobile</strong> : flex-wrap sur les 2 tiers, dégrade proprement</li>
       </ul>
     </div>
     <div class="block">
-      <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu choisis une direction</strong> ou tu m'envoies un mockup. Je peux faire un proto rapide d'une option avant tranchage.</p>
+      <span class="block-tag action">Statut</span>
+      <p><strong>✅ Déployé</strong>. Si itération future (ex: dropdown au hover plutôt que click, ou changer le placement du Backlog), réouvrir.</p>
     </div>
   </div>
 </section>
