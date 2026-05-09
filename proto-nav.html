@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proto navbar two-tier — XRPL Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --ink: #0e1116;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --paper-3: #e0d8c5;
+    --user: #c8553d;
+    --app: #2e5d4f;
+    --wallet: #d4a017;
+    --chain: #1e3a5f;
+    --custody: #6b4226;
+    --amm: #8b5a8c;
+    --rwa: #4a6741;
+    --sidechain: #b85c38;
+    --muted: #6b6358;
+    --grid: rgba(14,17,22,0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper); color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page { max-width: 1100px; margin: 0 auto; padding: 32px 32px 96px; }
+
+  /* === TWO-TIER NAVBAR === */
+  .nav-wrapper {
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  /* TIER 1 — Top bar (minimal, 6 entries + flags) */
+  .nav-tier1 {
+    background: var(--ink); color: var(--paper);
+    padding: 9px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+  }
+  .nav-tier1 .nav-home {
+    color: var(--paper); font-family: 'Fraunces', serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: -0.01em; text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-tier1 .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+  .nav-tier1 .nav-logo { flex-shrink: 0; display: block; }
+  .nav-tier1 .top-links { display: flex; gap: 0; }
+  .nav-tier1 .top-link {
+    color: var(--paper); text-decoration: none;
+    padding: 6px 14px;
+    text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+    border: none; background: transparent;
+    font-family: inherit; font-size: inherit; letter-spacing: inherit;
+    position: relative;
+  }
+  .nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
+  .nav-tier1 .top-link.active {
+    background: rgba(244,239,230,0.18);
+    color: var(--wallet);
+  }
+  .nav-tier1 .top-link .caret { font-size: 8px; margin-left: 4px; opacity: 0.6; }
+  .nav-tier1 .lang-toggle {
+    display: flex; margin-left: 16px;
+    border: 1.5px solid var(--paper); white-space: nowrap;
+  }
+  .nav-tier1 .lang-flag {
+    padding: 0 10px; text-decoration: none;
+    font-size: 22px; line-height: 1;
+    display: flex; align-items: center;
+    color: var(--paper); background: transparent;
+    filter: grayscale(70%); opacity: 0.55;
+  }
+  .nav-tier1 .lang-flag.active {
+    background: var(--wallet); filter: grayscale(0); opacity: 1;
+  }
+
+  /* TIER 2 — Sub bar (contextual) */
+  .nav-tier2 {
+    background: var(--paper);
+    padding: 8px 24px;
+    display: flex; align-items: center; gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    border-top: 1px solid rgba(14,17,22,0.15);
+    min-height: 32px;
+    transition: all 0.2s ease;
+  }
+  .nav-tier2 .section-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-right: 12px;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+  }
+  .nav-tier2 .sub-link {
+    color: var(--ink); text-decoration: none;
+    padding: 4px 10px;
+    text-transform: uppercase; font-weight: 700;
+    transition: background 0.15s ease;
+    border-radius: 0;
+  }
+  .nav-tier2 .sub-link:hover { background: var(--paper-2); }
+  .nav-tier2 .sub-link.current {
+    background: var(--wallet); color: var(--ink);
+  }
+  .nav-tier2.empty { display: none; }
+
+  /* Color-coded section indicator on tier 1 active */
+  .nav-tier1 .top-link[data-section="landscape"].active { box-shadow: inset 0 -3px 0 var(--rwa); }
+  .nav-tier1 .top-link[data-section="tools"].active { box-shadow: inset 0 -3px 0 var(--amm); }
+  .nav-tier1 .top-link[data-section="atlas"].active { box-shadow: inset 0 -3px 0 var(--user); }
+  .nav-tier1 .top-link[data-section="analysis"].active { box-shadow: inset 0 -3px 0 var(--wallet); }
+  .nav-tier1 .top-link[data-section="anatomy"].active { box-shadow: inset 0 -3px 0 #5a85b8; }
+  .nav-tier1 .top-link[data-section="buildathon"].active { box-shadow: inset 0 -3px 0 var(--sidechain); }
+
+  /* Match tier-2 with section color */
+  .nav-tier2[data-section="landscape"] { border-top-color: var(--rwa); border-top-width: 2px; }
+  .nav-tier2[data-section="tools"] { border-top-color: var(--amm); border-top-width: 2px; }
+  .nav-tier2[data-section="analysis"] { border-top-color: var(--wallet); border-top-width: 2px; }
+  .nav-tier2[data-section="anatomy"] { border-top-color: #5a85b8; border-top-width: 2px; }
+  .nav-tier2[data-section="atlas"] { border-top-color: var(--user); border-top-width: 2px; }
+  .nav-tier2[data-section="buildathon"] { border-top-color: var(--sidechain); border-top-width: 2px; }
+
+  @media (max-width: 800px) {
+    .nav-tier1 { flex-direction: column; gap: 6px; padding: 8px 12px; }
+    .nav-tier1 .top-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+    .nav-tier1 .top-link { padding: 4px 8px; }
+    .nav-tier2 { flex-wrap: wrap; padding: 6px 12px; }
+  }
+
+  /* === DEMO PAGE CONTENT === */
+  .demo-banner {
+    background: var(--wallet); color: var(--ink);
+    padding: 12px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 700;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 0.95; margin: 24px 0 12px 0;
+    letter-spacing: -0.02em;
+  }
+  h1 em { font-style: italic; font-weight: 400; color: var(--chain); }
+
+  .lead {
+    font-size: 16px; line-height: 1.55;
+    color: var(--muted);
+    margin: 0 0 32px 0;
+    max-width: 720px;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 26px;
+    margin: 40px 0 14px 0;
+    border-top: 1px solid var(--ink);
+    padding-top: 20px;
+  }
+
+  .info-block {
+    border: 2px solid var(--ink);
+    background: var(--paper-2);
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    font-size: 14px; line-height: 1.6;
+  }
+  .info-block .pill {
+    display: inline-block;
+    background: var(--ink); color: var(--paper);
+    padding: 2px 10px; margin-right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .info-block strong { color: var(--chain); font-weight: 600; }
+  .info-block em { color: var(--user); font-style: italic; }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .compare > div {
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    padding: 16px 20px;
+  }
+  .compare h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    font-weight: 700;
+    margin: 0 0 10px 0;
+  }
+  .compare .nav-mock {
+    background: var(--ink); color: var(--paper);
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.1em;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    word-break: break-word;
+  }
+  .compare ul { font-size: 13px; line-height: 1.55; padding-left: 20px; margin: 0; }
+  .compare ul li { margin-bottom: 4px; }
+  .compare ul li strong { color: var(--chain); }
+  @media (max-width: 700px) { .compare { grid-template-columns: 1fr; } }
+
+  .footnote {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--ink);
+    line-height: 1.7;
+  }
+  .footnote strong { color: var(--ink); font-weight: 700; }
+  .footnote a { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ========== TWO-TIER NAVBAR PROTO ========== -->
+<div class="nav-wrapper">
+
+  <!-- TIER 1: Top bar minimal -->
+  <div class="nav-tier1">
+    <a class="nav-home" href="/">
+      <svg class="nav-logo" viewBox="0 0 140 100" width="36" height="26" aria-hidden="true">
+        <rect width="140" height="100" fill="#f4efe6"/>
+        <rect x="2" y="2" width="136" height="96" fill="none" stroke="#0e1116" stroke-width="4"/>
+        <g fill="#0e1116">
+          <path d="M 14 22 L 24 12 L 50 50 Z"/>
+          <path d="M 76 12 L 86 22 L 50 50 Z"/>
+          <path d="M 86 78 L 76 88 L 50 50 Z"/>
+          <path d="M 24 88 L 14 78 L 50 50 Z"/>
+        </g>
+        <text x="100" y="44" font-family="'Fraunces', Georgia, serif" font-size="46" font-weight="800" fill="#d4a017">B</text>
+      </svg>
+      <span>XRPL <em>Builder</em></span>
+    </a>
+    <div class="top-links">
+      <button class="top-link" data-section="anatomy">Anatomy</button>
+      <button class="top-link active" data-section="landscape">Landscape <span class="caret">▾</span></button>
+      <button class="top-link" data-section="tools">Tools <span class="caret">▾</span></button>
+      <button class="top-link" data-section="atlas">Atlas</button>
+      <button class="top-link" data-section="analysis">Analysis <span class="caret">▾</span></button>
+      <button class="top-link" data-section="buildathon">Buildathon</button>
+    </div>
+    <div class="lang-toggle">
+      <a class="lang-flag active" href="#">🇫🇷</a>
+      <a class="lang-flag" href="#">🇬🇧</a>
+    </div>
+  </div>
+
+  <!-- TIER 2: Sub bar contextual -->
+  <nav class="nav-tier2" id="subnav" data-section="landscape">
+    <span class="section-label">Landscape →</span>
+    <a class="sub-link current" href="/ecosystem-map">Ecosystem</a>
+    <a class="sub-link" href="/gaps">Gaps</a>
+    <a class="sub-link" href="/master-gaps">Master Gaps</a>
+    <a class="sub-link" href="/xrpl_unicorn_analysis_v2">Diag</a>
+  </nav>
+
+</div>
+
+<div class="demo-banner">
+  ● PROTOTYPE — TWO-TIER NAVBAR · Click Anatomy / Landscape ▾ / Tools ▾ / Analysis ▾ / Buildathon to switch context
+</div>
+
+<div class="page">
+
+<h1>Two-tier <em>navbar proto</em></h1>
+<p class="lead">Click on the top-bar entries above to see how the sub-bar updates contextually. The pattern keeps the top bar minimal (6 entries + flags) while showing all section-relative options on the sub-bar — like Stripe Docs, Vercel, Linear.</p>
+
+<div class="info-block">
+  <p><span class="pill">HOW IT WORKS</span> The <strong>top bar</strong> shows 6 main sections. When you're on a page that has siblings (Landscape, Tools, Analysis), the <strong>sub-bar</strong> below shows them. When the section has no siblings (Anatomy alone, Atlas alone, Buildathon alone), the sub-bar collapses or shows just a context line.</p>
+  <p><span class="pill">COLOR LOGIC</span> The active section's color (paysage / outil / analyse / etc.) bleeds into the bottom border of the top-bar entry AND the top border of the sub-bar — visual continuity, no need to re-state colors per link.</p>
+  <p><span class="pill">MOBILE</span> Both tiers wrap with flex-wrap, the sub-bar can collapse into a horizontal scroll if too long.</p>
+</div>
+
+<h2>Mapping pages → sections</h2>
+
+<div class="info-block" style="background: var(--paper);">
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <thead>
+      <tr style="background: var(--ink); color: var(--paper);">
+        <th style="padding:8px 12px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;">Top section</th>
+        <th style="padding:8px 12px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;">Sub-bar entries</th>
+        <th style="padding:8px 12px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase;">Color</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><strong>Anatomy</strong></td><td style="padding:8px 12px;border-bottom:1px solid #ddd; font-family:monospace; font-size:11px;">framework · extended · animated</td><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><span style="color:#5a85b8;">●</span> blue (peda)</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><strong>Landscape ▾</strong></td><td style="padding:8px 12px;border-bottom:1px solid #ddd; font-family:monospace; font-size:11px;">Ecosystem · Gaps · Master Gaps · Diag</td><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><span style="color:var(--rwa);">●</span> forest (paysage)</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><strong>Tools ▾</strong></td><td style="padding:8px 12px;border-bottom:1px solid #ddd; font-family:monospace; font-size:11px;">Tree · Macro · Sim · Case</td><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><span style="color:var(--amm);">●</span> mauve (outil)</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><strong>Atlas</strong></td><td style="padding:8px 12px;border-bottom:1px solid #ddd; font-family:monospace; font-size:11px;"><em>(no sub-bar — single page)</em></td><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><span style="color:var(--user);">●</span> terracotta (idée)</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><strong>Analysis ▾</strong></td><td style="padding:8px 12px;border-bottom:1px solid #ddd; font-family:monospace; font-size:11px;">A1 · A2 · Synthesis</td><td style="padding:8px 12px;border-bottom:1px solid #ddd;"><span style="color:var(--wallet);">●</span> gold (analyse)</td></tr>
+      <tr><td style="padding:8px 12px;"><strong>Buildathon</strong></td><td style="padding:8px 12px; font-family:monospace; font-size:11px;"><em>(no sub-bar — single page)</em></td><td style="padding:8px 12px;"><span style="color:var(--sidechain);">●</span> orange (build)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p><strong>Backlog</strong> n'est plus dans la navbar — il devient accessible via une icône ⚙ discrète dans le top-bar (à droite, avant le toggle 🇫🇷/🇬🇧), ou en footer-only. Page interne, pas besoin d'avoir un slot dans la navigation principale.</p>
+
+<h2>Comparaison avec l'actuel</h2>
+
+<div class="compare">
+  <div>
+    <h3>❌ Actuel — single tier</h3>
+    <div class="nav-mock">XRPL Builder | Anatomy · Ecosystem · Gaps · Master Gaps · Tree · Macro · Sim · Case · Atlas · A1 · A2 · Synthesis · Diag · Buildathon · Backlog | 🇫🇷🇬🇧</div>
+    <ul>
+      <li><strong>14 entrées</strong> à plat, plus le toggle</li>
+      <li>Très chargé visuellement</li>
+      <li>Hiérarchie pas claire (toutes les pages au même niveau)</li>
+      <li>Wrap brutal sur mobile (3 lignes)</li>
+    </ul>
+  </div>
+  <div>
+    <h3>✅ Proposé — two tier</h3>
+    <div class="nav-mock">XRPL Builder | Anatomy · Landscape ▾ · Tools ▾ · Atlas · Analysis ▾ · Buildathon | 🇫🇷🇬🇧</div>
+    <div class="nav-mock" style="background: var(--paper); color: var(--ink); margin-top: -4px; border-top:0;">↳ Landscape · Ecosystem · Gaps · Master Gaps · Diag</div>
+    <ul>
+      <li><strong>6 entrées</strong> top-level + sub-bar contextuelle</li>
+      <li>Top-bar respire, scannable</li>
+      <li>Hiérarchie évidente : section → sous-page</li>
+      <li>Mobile : sub-bar peut wrap ou scroll</li>
+      <li>Pattern familier (Stripe, Vercel, Linear)</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Si tu valides — comment je propage</h2>
+
+<div class="info-block">
+  <p>1. <strong>Standardiser le markup</strong> en CSS template — chaque page a son <code>data-section="X"</code> au top-level pour que le sub-bar bon entries soit auto-affiché.</p>
+  <p>2. <strong>Update les 33 pages</strong> via Python script (comme on l'a fait pour les autres updates de navbar). Effort : ~1 commit, ~30 min.</p>
+  <p>3. <strong>Backlog item 05</strong> passe à 🟢 DONE.</p>
+  <p>4. <strong>Backlog</strong> reste accessible via footer + URL directe <code>/backlog</code>. Optionnel : icône ⚙ dans le top-bar à droite si tu trouves que c'est trop caché.</p>
+</div>
+
+<div class="footnote">
+  <strong>Comment tester :</strong> Click chaque bouton du top-bar pour voir la sub-bar changer.<br/>
+  <strong>Anatomy</strong> → sub-bar avec framework · extended · animated · <strong>Atlas</strong> et <strong>Buildathon</strong> → sub-bar caché (pas de siblings).<br/>
+  <br/>
+  <strong>Pages liées :</strong> <a href="/">Home</a> · <a href="/backlog">Backlog</a> · <a href="/buildathon">Buildathon</a><br/>
+  <strong>Fichier :</strong> /proto-nav.html (à supprimer une fois la décision prise)
+</div>
+
+</div>
+
+<script>
+(function() {
+  const subNavConfig = {
+    anatomy: {
+      label: 'Anatomy →',
+      links: [
+        { href: '/blockchain-framework-xrpl', label: 'Framework' },
+        { href: '/blockchain-xrpl-extended', label: 'Extended' },
+        { href: '/blockchain-xrpl-animated', label: 'Animated' }
+      ]
+    },
+    landscape: {
+      label: 'Landscape →',
+      links: [
+        { href: '/ecosystem-map', label: 'Ecosystem' },
+        { href: '/gaps', label: 'Gaps' },
+        { href: '/master-gaps', label: 'Master Gaps' },
+        { href: '/xrpl_unicorn_analysis_v2', label: 'Diag' }
+      ]
+    },
+    tools: {
+      label: 'Tools →',
+      links: [
+        { href: '/decision-tree', label: 'Tree' },
+        { href: '/decision-tree-map', label: 'Macro' },
+        { href: '/cost-simulator', label: 'Sim' },
+        { href: '/business-case-builder', label: 'Case' }
+      ]
+    },
+    atlas: { label: '', links: [] },
+    analysis: {
+      label: 'Analysis →',
+      links: [
+        { href: '/analysis-1', label: 'A1' },
+        { href: '/analysis-2', label: 'A2' },
+        { href: '/analysis-3', label: 'Synthesis' }
+      ]
+    },
+    buildathon: { label: '', links: [] }
+  };
+
+  const topLinks = document.querySelectorAll('.top-link');
+  const subnav = document.getElementById('subnav');
+
+  topLinks.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const section = btn.dataset.section;
+      // toggle active state
+      topLinks.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const config = subNavConfig[section];
+      subnav.dataset.section = section;
+
+      if (!config.links.length) {
+        subnav.classList.add('empty');
+        subnav.innerHTML = '';
+      } else {
+        subnav.classList.remove('empty');
+        let html = '<span class="section-label">' + config.label + '</span>';
+        config.links.forEach((l, i) => {
+          html += '<a class="sub-link' + (i === 0 ? ' current' : '') + '" href="' + l.href + '">' + l.label + '</a>';
+        });
+        subnav.innerHTML = html;
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
