@@ -331,7 +331,7 @@
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
-    Items : 6 (3 actifs · 3 done)<br/>
+    Items : 3<br/>
     Mode : compact (toggle)<br/>
     Filtres : status × priorité<br/>
     Mise à jour : Mai 2026
@@ -355,7 +355,7 @@
     <button class="ctrl-btn active" data-filter-type="status" data-filter="all">Tous</button>
     <button class="ctrl-btn" data-filter-type="status" data-filter="open">Open</button>
     <button class="ctrl-btn" data-filter-type="status" data-filter="progress">In progress</button>
-    <button class="ctrl-btn" data-filter-type="status" data-filter="done">Done</button>
+    
   </div>
   <div class="control-row">
     <span class="label">Priorité</span>
@@ -468,100 +468,12 @@
   </div>
 </section>
 
-<section class="item" data-status="done" data-priority="high">
-  <div class="item-header">
-    <span class="num">04</span>
-    <h2>Winning criteria <em>— refonte 4 critères simples ✅</em></h2>
-    <div class="badge-set">
-      <span class="badge-pill p-high">High</span>
-      <span class="badge-pill s-done">Done</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Résolution</span>
-      <p>Refonte appliquée à <a href="/buildathon">/buildathon</a> Section 07. <strong>6 critères → 4 critères simples</strong>, pondérés et alignés avec le format 30 jours full online + Users prizes.</p>
-    </div>
-    <div class="block">
-      <span class="block-tag solutions">Critères finaux</span>
-      <ul>
-        <li><strong>Tech (30%)</strong> — qualité code, sécurité, architecture, build fonctionnel</li>
-        <li><strong>Product (25%)</strong> — UX, complétude, docs, polish démo</li>
-        <li><strong>Traction (25%)</strong> — onboarding réel, signups, usage démontré pendant les 30 jours <em>(nouveau lever ; remplace "Distribution thinking" + "Gap fit")</em></li>
-        <li><strong>Pitch (20%)</strong> — clarté démo vidéo, narrative, why-now <em>(adapté au format full online — vidéo plutôt que pitch live)</em></li>
-      </ul>
-      <p>Total = 100%. Pas d'overlap. Simple à communiquer, facile à optimiser pour une équipe.</p>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Statut</span>
-      <p><strong>✅ Livré</strong> en FR + EN sur <code>/buildathon</code> Section 07. Si itération future nécessaire (ex: ajouter critère "Composability" pour Tier 1, ou tier-specific weights), réouvrir cet item.</p>
-    </div>
-  </div>
-</section>
-
-<section class="item" data-status="done" data-priority="low">
-  <div class="item-header">
-    <span class="num">05</span>
-    <h2>Navbar <em>— two-tier déployé ✅</em></h2>
-    <div class="badge-set">
-      <span class="badge-pill p-low">Low</span>
-      <span class="badge-pill s-done">Done</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Résolution</span>
-      <p>Solution retenue : <strong>two-tier navbar</strong> (top-bar minimal + sub-bar contextuelle par section).</p>
-      <p>Top-bar à <strong>6 entrées</strong> (Anatomy / Landscape ▾ / Tools ▾ / Atlas / Analysis ▾ / Buildathon) au lieu de 14. Sub-bar apparaît en dessous selon la section active, avec sa couleur dédiée (paysage forest / outil mauve / analyse gold / etc.).</p>
-      <p><strong>Backlog</strong> sorti de la nav principale : accessible via lien discret « ⚙ Backlog » à droite du top-bar (avant le toggle 🇫🇷/🇬🇧).</p>
-    </div>
-    <div class="block">
-      <span class="block-tag solutions">Détails déploiement</span>
-      <ul>
-        <li><strong>33 pages updated</strong> (FR + EN, hors pages unicorn analysis qui ont un design custom)</li>
-        <li><strong>Proto initial</strong> à <a href="/proto-nav">/proto-nav</a> conservé comme référence (peut être supprimé si tu veux nettoyer)</li>
-        <li><strong>Mapping</strong> : chaque page a son <code>data-section</code> → la sub-bar affiche les siblings</li>
-        <li><strong>Mobile</strong> : flex-wrap sur les 2 tiers, dégrade proprement</li>
-      </ul>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Statut</span>
-      <p><strong>✅ Déployé</strong>. Si itération future (ex: dropdown au hover plutôt que click, ou changer le placement du Backlog), réouvrir.</p>
-    </div>
-  </div>
-</section>
-
-<section class="item" data-status="done" data-priority="low">
-  <div class="item-header">
-    <span class="num">06</span>
-    <h2>Traduire <em>Ecosystem Diagnosis V2 en EN ✅</em></h2>
-    <div class="badge-set">
-      <span class="badge-pill p-low">Low</span>
-      <span class="badge-pill s-done">Done</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Résolution</span>
-      <p><strong>V2 ✅ traduite</strong> (scope B adapté), accessible sur <code>/en/xrpl_unicorn_analysis_v2</code>. 9 sections complètes + tous les labels UI traduits + number formatting ajusté (notation US).</p>
-      <p><strong>V1 abandonnée</strong> (per user) — la V1 est archivée et n'a pas été retenue pour traduction. Reste accessible en FR uniquement à <code>/xrpl_unicorn_analysis_v1</code>.</p>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Statut</span>
-      <p><strong>✅ Livré</strong>. Si on veut un jour le toggle 🇫🇷/🇬🇧 sur la page V2 (cross-language switch in-page), c'est un mini follow-up à rouvrir séparément. Pour l'instant on considère cet item fermé.</p>
-    </div>
-  </div>
-</section>
-
 <div class="sources-foot">
   <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe (les priorités ici aident juste à scanner).<br/>
   <br/>
   <strong>Pages liées :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
   <br/>
-  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération) · DONE (résolu, conservé pour traçabilité)<br/>
+  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération). Les items DONE sont retirés (git history conservée).<br/>
   <strong>Priority legend :</strong> CRITICAL (blocker) · HIGH (impactful) · MEDIUM (nice to have) · LOW (cosmétique / optionnel)
 </div>
 
