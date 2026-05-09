@@ -401,33 +401,34 @@
 </div>
 
 <!-- ITEMS -->
-<section class="item" data-status="open" data-priority="medium">
+<section class="item" data-status="progress" data-priority="medium">
   <div class="item-header">
     <span class="num">01</span>
-    <h2>Logo X<sup style="color:#d4a017;">B</sup> <em>— toujours pas conforme au vrai XRP</em></h2>
+    <h2>Logo X<sup style="color:#d4a017;">B</sup> <em>— refaire avec le vrai logo XRP (2 chevrons curvés)</em></h2>
     <div class="badge-set">
       <span class="badge-pill p-medium">Medium</span>
-      <span class="badge-pill s-open">Open</span>
+      <span class="badge-pill s-progress">In progress</span>
     </div>
     <span class="chevron">▸</span>
   </div>
   <div class="item-body">
     <div class="block">
       <span class="block-tag problem">Problème</span>
-      <p>Plusieurs itérations du logo X<sup>B</sup> ont été tentées (caractère typographique italique, 2 rectangles rotés ±45°, 4 wedges pointant vers le centre) — <strong>aucune ne correspond visuellement au logo officiel du token XRP</strong>. Le rendu actuel (4 wedges) ressemble plus à une étoile qu'à l'X iconique de Ripple. Le B doré en exposant top-right fonctionne, le X est le seul élément à itérer.</p>
+      <p><strong>3 tentatives ratées</strong> : (a) caractère typo italique "X", (b) 2 rectangles rotés ±45°, (c) 4 wedges pointant vers le centre. Aucune ne ressemble au vrai logo XRP.</p>
+      <p><strong>✅ Cible identifiée — image partagée par le user :</strong> le logo XRP officiel est composé de <strong>2 chevrons curvés</strong> (pas droits, pas triangulaires). Chaque chevron a une silhouette de "wave" / "vague" : <em>un chevron en haut</em> (peak vers le centre, 2 arms curvés vers le coin haut-gauche et haut-droit) + <em>un chevron en bas</em> (mirror : peak vers le centre, arms vers les coins bas). Les 2 se rejoignent en formant un X organique.</p>
+      <p>Le <strong>B doré en exposant top-right</strong> fonctionne déjà, à conserver tel quel.</p>
     </div>
     <div class="block">
       <span class="block-tag solutions">Pistes / solutions possibles</span>
       <ul>
-        <li><strong>Reproduire le logo XRP officiel</strong> avec un SVG path fidèle (depuis xrpl.org branding kit, Wikimedia, ou source officielle Ripple). Risque : copyright à vérifier mais le logo est largement utilisé en wallets/exchanges sans souci connu.</li>
-        <li><strong>Approche curve-based</strong> — au lieu de barres droites ou triangles, deux courbes douces (style chevron / wave) qui se croisent au centre. Plus organique, plus proche du look Ripple récent.</li>
-        <li><strong>Logo lettre "X" stylisé</strong> dans une font géométrique sans-serif moderne (Aktiv Grotesk, Söhne) — abandonner l'idée de reproduire le logo token et faire un X typographique propre.</li>
-        <li><strong>Changer de direction</strong> — abandonner la métaphore X<sup>B</sup> "math" et trouver une autre identité visuelle (Builder pictogramme, gradient, etc.).</li>
+        <li><strong>Approche reco — Reproduire en SVG paths avec Bezier curves</strong> : chaque chevron = un <code>&lt;path&gt;</code> avec 2 segments cubic Bezier (un par arm). Filled shapes, couleur ink (#0e1116) pour matcher le logo officiel sur fond sombre, ou inversé sur fond paper. ViewBox 100×100 (carré pour le chevron) puis composer avec le B doré dans viewBox 140×100 wide.</li>
+        <li><strong>Alternative — SVG officiel</strong> : récupérer un <code>.svg</code> depuis xrpl.org branding kit ou Wikimedia (logos en domaine semi-public, largement utilisé), puis ajouter le B exposant en surcouche. Risque copyright à vérifier mais minimal en pratique.</li>
+        <li><strong>Pistes abandonnées</strong> : ❌ caractère typo X, ❌ rectangles rotés, ❌ 4 wedges (étoile) — toutes réfutées par l'image cible.</li>
       </ul>
     </div>
     <div class="block">
       <span class="block-tag action">Action attendue</span>
-      <p><strong>Tu m'envoies l'image cible exacte</strong> ou un lien vers le logo XRP officiel à reproduire pixel-near. Sinon, tu choisis une direction parmi les 4 pistes ci-dessus et j'itère.</p>
+      <p><strong>Quand tu dis "go" sur cet item</strong>, j'itère avec l'approche curves Bezier en m'inspirant directement de l'image partagée. Si la première itération ne matche toujours pas, on bascule sur l'approche SVG officiel (récup depuis source branding).</p>
     </div>
   </div>
 </section>
