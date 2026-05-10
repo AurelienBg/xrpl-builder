@@ -390,13 +390,12 @@
     </div>
   </header>
 
-    <div class="strap">
+      <div class="strap">
     <span>INPUTS</span>
     <span>ANALYSES</span>
-    <span>REGISTRY</span>
-    <span>COMPOSITION</span>
-    <span>DIAGNOSIS</span>
+    <span>REGISTRE</span>
     <span>TOOLS</span>
+    <span>COMPLEMENTS</span>
     <span>META</span>
   </div>
 
@@ -489,7 +488,7 @@
         <span class="badge feedback">Unified registry · 52 opportunities</span>
         <span>5 convergent sources · 5 themes · multi-axis filters</span>
       </div>
-      <h3>Opportunities · <em>le registre unifié</em></h3>
+      <h3>Opportunities · <em>the unified registry</em></h3>
       <p>The <strong>final unified registry</strong> of opportunities to build on XRPL: 52 opps consolidated from 5 sources (4 PWGs Paris + Atka + ecosystem-map + YC RFS), classified on 2 axes (Type APP/BLOCK × 5 themes: Wallets&Infra · Lending · RWA&Stables · EVM DeFi · Dev&Agents) with dynamic multi-axis filters (Type · Tier · Chain · Source · Theme). A·C+ format: compact + inline drill-down. CSV/JSON export available. <strong>Single source of truth</strong> for the Buildathon challenge register.</p>
       <div class="card-foot">
         <span class="filename">→ opportunities · 52 opps · 5 sources</span>
@@ -498,45 +497,81 @@
     </a>
   </div>
 
-  <!-- ============ 04 · COMPOSITION ============ -->
+  <!-- ============ 04 · ANATOMY + OUTILS ============ -->
   <div class="section-head">
-    <h2><span class="num">04</span>Composition · <em>applied blueprints</em></h2>
-    <span class="count">7 blueprints</span>
+    <h2><span class="num">04</span>Anatomy &amp; tools · <em>documentation and decision</em></h2>
+    <span class="count">6 files · interactive and static</span>
   </div>
-  <div class="section-summary">Seven startup blueprints that <strong>combine</strong> registry opportunities into concrete vertical products. XRPL architecture, economics, MVP, GTM, decision matrix per card.</div>
+  <div class="section-summary">XRPL technical documentation (anatomy, animated transactions) + interactive tools to turn an idea into go/no-go (decision tree, cost simulator, business case modeller).</div>
 
-  <div class="grid cols-1">
+  <div class="grid cols-3">
+    <a class="card" href="/en/blockchain-framework-xrpl" data-type="static">
+      <div class="card-eyebrow"><span>FIG · 06</span><span class="badge static">Static</span></div>
+      <h3>Base <em>anatomy</em></h3>
+      <p>The founding schema: USER → CLIENT → CUSTODY → NETWORK → LEDGER. Read/write, custody model, transaction anatomy.</p>
+      <div class="card-foot"><span class="filename">blockchain-framework-xrpl.html</span><span class="card-arrow">→</span></div>
+    </a>
+    <a class="card" href="/en/blockchain-xrpl-extended" data-type="extended">
+      <div class="card-eyebrow"><span>FIG · 07 · v1.2</span><span class="badge extended">Guided tour</span></div>
+      <h3>Complete <em>anatomy</em></h3>
+      <p>Extended version with AMM, RWA, Sidechain. 5 use case mapping. <strong>Guided tour</strong> in 9 steps + <strong>Play the 5 cases</strong> button.</p>
+      <div class="card-foot"><span class="filename">blockchain-xrpl-extended.html</span><span class="card-arrow">→</span></div>
+    </a>
+    <a class="card" href="/en/blockchain-xrpl-animated" data-type="animated">
+      <div class="card-eyebrow"><span>FIG · 08</span><span class="badge animated">Animated</span></div>
+      <h3>A <em>transaction's</em> journey</h3>
+      <p>End-to-end flow animation. 3 scenarios: Payment, AMM Swap, Read query. Particles, network log, account state.</p>
+      <div class="card-foot"><span class="filename">blockchain-xrpl-animated.html</span><span class="card-arrow">→</span></div>
+    </a>
+    <a class="card" href="/en/decision-tree" data-type="decision">
+      <div class="card-eyebrow"><span>FIG · 09</span><span class="badge decision">4–6 questions</span></div>
+      <h3>Decision <em>Tree</em></h3>
+      <p>Technical decision tree in <strong>4 to 6 questions</strong>. Output: recommended XRPL stack + TypeScript boilerplate + Atlas blueprint link. ~2 minutes.</p>
+      <div class="card-foot"><span class="filename">decision-tree.html</span><span class="card-arrow">→</span></div>
+    </a>
+    <a class="card" href="/en/cost-simulator" data-type="simulator">
+      <div class="card-eyebrow"><span>FIG · 10</span><span class="badge simulator">Comparator</span></div>
+      <h3>Cost <em>Simulator</em></h3>
+      <p>Live comparator <strong>XRPL vs Stellar / Solana / Ethereum</strong> on 4 use cases. Volume/users/amount sliders. Dynamic viability verdict.</p>
+      <div class="card-foot"><span class="filename">cost-simulator.html</span><span class="card-arrow">→</span></div>
+    </a>
+    <a class="card" href="/en/business-case-builder" data-type="business">
+      <div class="card-eyebrow"><span>FIG · 11</span><span class="badge business">24-month model</span></div>
+      <h3>Business Case <em>Builder</em></h3>
+      <p>24-month modeling · capex + opex + revenue. 12 sliders. 6 Atlas-calibrated presets. Outputs: runway, break-even, LTV/CAC.</p>
+      <div class="card-foot"><span class="filename">business-case-builder.html</span><span class="card-arrow">→</span></div>
+    </a>
+  </div>
+
+  <!-- ============ 05 · COMPLÉMENTS ============ -->
+  <div class="section-head">
+    <h2><span class="num">05</span>Complements · <em>further reading</em></h2>
+    <span class="count">2 editorial readings</span>
+  </div>
+  <div class="section-summary">Two readings that complement the main journey. <strong>Builder Atlas</strong> illustrates how to compose registry opportunities into concrete startups (7 blueprints). <strong>Diagnosis</strong> takes strategic perspective: why no unicorn in XRPL?</div>
+
+  <div class="grid">
     <a class="card" href="/en/builder-atlas" data-type="atlas">
       <div class="card-eyebrow">
-        <span>FIG · 06</span>
+        <span>FIG · 12</span>
         <span class="badge atlas">7 blueprints</span>
-        <span>Payments · DeFi · RWA · Commerce · Real estate · Payroll · Agentic</span>
+        <span>Applied composition</span>
       </div>
       <h3>Builder <em>Atlas</em> · 7 startup blueprints</h3>
-      <p>Seven in-depth startup factsheets : <strong>RemitFlow</strong> (PH↔US remittances), <strong>VaultDAO</strong> (épargne USD LATAM), <strong>BondBloc</strong> (RWA Europe), <strong>MerchantPay</strong> (POS Afrique), <strong>PropTok</strong> (immo MENA/SEA), <strong>PayrollXRP</strong> (streaming global), <strong>AgentPay</strong> (x402 facilitator pour agents IA). Each blueprint details problem/market, exact XRPL architecture, technical stack + MVP, economics + GTM. Final decision matrix by builder profile.</p>
+      <p>Seven in-depth startup factsheets: <strong>RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP, AgentPay</strong>. Each blueprint details problem/market, exact XRPL architecture, technical stack + MVP, economics + GTM. Final decision matrix by builder profile.</p>
       <div class="card-foot">
         <span class="filename">builder-atlas.html</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
-  </div>
-
-  <!-- ============ 05 · DIAGNOSIS ============ -->
-  <div class="section-head">
-    <h2><span class="num">05</span>Diagnosis · <em>why no unicorn?</em></h2>
-    <span class="count">1 file · strategic meta-analysis</span>
-  </div>
-  <div class="section-summary">Strategic meta-analysis: <strong>5 causal clusters</strong>, top 6 blockchain ecosystem comparison + dead ecosystems graveyard, founder journey map with critical ruptures, asymmetric 2026–2027 window.</div>
-
-  <div class="grid cols-1">
     <a class="card" href="/en/xrpl_unicorn_analysis_v2" data-type="diagnosis">
       <div class="card-eyebrow">
-        <span>FIG · 07 · v2.0</span>
+        <span>FIG · 13 · v2.0</span>
         <span class="badge diagnosis">ACTIVE</span>
         <span>9 sections · ~25 min</span>
       </div>
       <h3>Why <em>no unicorn</em> in XRPL?</h3>
-      <p>Extended analysis: <strong>5 causal clusters</strong> (Capital · Tech &amp; Tooling · Talent · Narrative &amp; Demand · Scaling Gap), founder journey map with critical ruptures (steps 5-6), top 6 ecosystem comparison + dead ecosystems graveyard (Cardano, Tezos, EOS, Algorand), 8 hierarchized priorities, and the asymmetric 2026–2027 window. XRPL Commons working doc. <strong>v3 with field research upcoming.</strong></p>
+      <p>Strategic meta-analysis: <strong>5 causal clusters</strong> (Capital · Tech · Talent · Narrative · Scaling Gap), founder journey map with critical ruptures, top 6 ecosystem comparison + dead ecosystems graveyard, 8 hierarchized priorities, asymmetric 2026–2027 window. XRPL Commons working doc.</p>
       <div class="card-foot">
         <span class="filename">xrpl_unicorn_analysis_v2.html</span>
         <span class="card-arrow">→</span>
@@ -544,55 +579,9 @@
     </a>
   </div>
 
-  <!-- ============ 06 · ANATOMY + OUTILS ============ -->
+  <!-- ============ 06 · MÉTA ============ -->
   <div class="section-head">
-    <h2><span class="num">06</span>Anatomy &amp; tools · <em>documentation and decision</em></h2>
-    <span class="count">6 files · interactive and static</span>
-  </div>
-  <div class="section-summary">XRPL technical documentation (anatomy, animated transactions) + interactive tools to turn an idea into go/no-go (decision tree, cost simulator, business case modeller).</div>
-
-  <div class="grid cols-3">
-    <a class="card" href="/en/blockchain-framework-xrpl" data-type="static">
-      <div class="card-eyebrow"><span>FIG · 08</span><span class="badge static">Static</span></div>
-      <h3>Base <em>anatomy</em></h3>
-      <p>The founding schema: USER → CLIENT → CUSTODY → NETWORK → LEDGER. Read/write, custody model, transaction anatomy.</p>
-      <div class="card-foot"><span class="filename">blockchain-framework-xrpl.html</span><span class="card-arrow">→</span></div>
-    </a>
-    <a class="card" href="/en/blockchain-xrpl-extended" data-type="extended">
-      <div class="card-eyebrow"><span>FIG · 09 · v1.2</span><span class="badge extended">Guided tour</span></div>
-      <h3>Complete <em>anatomy</em></h3>
-      <p>Extended version with AMM, RWA, Sidechain. 5 use case mapping. <strong>Guided tour</strong> in 9 steps + <strong>Play the 5 cases</strong> button.</p>
-      <div class="card-foot"><span class="filename">blockchain-xrpl-extended.html</span><span class="card-arrow">→</span></div>
-    </a>
-    <a class="card" href="/en/blockchain-xrpl-animated" data-type="animated">
-      <div class="card-eyebrow"><span>FIG · 10</span><span class="badge animated">Animated</span></div>
-      <h3>A <em>transaction's</em> journey</h3>
-      <p>End-to-end flow animation. 3 scenarios: Payment, AMM Swap, Read query. Particles, network log, account state.</p>
-      <div class="card-foot"><span class="filename">blockchain-xrpl-animated.html</span><span class="card-arrow">→</span></div>
-    </a>
-    <a class="card" href="/en/decision-tree" data-type="decision">
-      <div class="card-eyebrow"><span>FIG · 11</span><span class="badge decision">4–6 questions</span></div>
-      <h3>Decision <em>Tree</em></h3>
-      <p>Technical decision tree in <strong>4 to 6 questions</strong>. Output: recommended XRPL stack + TypeScript boilerplate + Atlas blueprint link. ~2 minutes.</p>
-      <div class="card-foot"><span class="filename">decision-tree.html</span><span class="card-arrow">→</span></div>
-    </a>
-    <a class="card" href="/en/cost-simulator" data-type="simulator">
-      <div class="card-eyebrow"><span>FIG · 12</span><span class="badge simulator">Comparator</span></div>
-      <h3>Cost <em>Simulator</em></h3>
-      <p>Live comparator <strong>XRPL vs Stellar / Solana / Ethereum</strong> on 4 use cases. Volume/users/amount sliders. Dynamic viability verdict.</p>
-      <div class="card-foot"><span class="filename">cost-simulator.html</span><span class="card-arrow">→</span></div>
-    </a>
-    <a class="card" href="/en/business-case-builder" data-type="business">
-      <div class="card-eyebrow"><span>FIG · 13</span><span class="badge business">24-month model</span></div>
-      <h3>Business Case <em>Builder</em></h3>
-      <p>24-month modeling · capex + opex + revenue. 12 sliders. 6 Atlas-calibrated presets. Outputs: runway, break-even, LTV/CAC.</p>
-      <div class="card-foot"><span class="filename">business-case-builder.html</span><span class="card-arrow">→</span></div>
-    </a>
-  </div>
-
-  <!-- ============ 07 · MÉTA ============ -->
-  <div class="section-head">
-    <h2><span class="num">07</span>Meta · <em>about, tracker, search</em></h2>
+    <h2><span class="num">06</span>Meta · <em>about, tracker, search</em></h2>
     <span class="count">3 utilities</span>
   </div>
   <div class="section-summary">Project documentation (methodology + glossary), phase tracker for the cleanup sprint, and global search across 52 opportunities + 17 pages.</div>
