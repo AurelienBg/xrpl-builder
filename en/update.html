@@ -29,7 +29,6 @@ html, body { margin: 0; padding: 0; }
 body { font-family: 'Fraunces', Georgia, serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.5; }
 .page { max-width: 1100px; margin: 0 auto; padding: 24px 28px 80px; }
 
-/* === NAVBAR === */
 .nav-wrapper { position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--ink); }
 .nav-tier1 { background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; }
 .nav-tier1 .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
@@ -63,28 +62,23 @@ body { font-family: 'Fraunces', Georgia, serif; background: var(--paper); color:
   .nav-tier1 .right-cluster { flex-wrap: wrap; justify-content: center; }
 }
 
-/* === MASTHEAD === */
 .masthead { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 24px; }
 .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
 h1 { font-family: 'Fraunces', serif; font-weight: 800; font-size: 42px; line-height: 1.05; margin: 0; }
 h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
 .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; letter-spacing: 0.06em; line-height: 1.7; }
 
-/* === PROGRESS BAR === */
-.progress-bar {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0;
-  border: 2px solid var(--ink);
-  margin-bottom: 28px;
-  background: var(--paper);
-}
-.progress-step {
-  padding: 14px 10px;
-  text-align: center;
-  border-right: 1px solid rgba(14,17,22,0.15);
-  position: relative;
-}
+.quick-summary { background: var(--ink); color: var(--paper); padding: 18px 22px; margin-bottom: 28px; border: 2px solid var(--ink); }
+.quick-summary h3 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--wallet); font-weight: 700; margin: 0 0 10px; }
+.quick-summary ul { list-style: none; margin: 0; padding: 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.85; }
+.quick-summary li { white-space: nowrap; overflow-x: auto; }
+.quick-summary .phase-emoji { display: inline-block; min-width: 28px; }
+.quick-summary a { color: var(--wallet); text-decoration: underline; font-weight: 700; transition: color 0.15s ease; }
+.quick-summary a:hover { color: var(--paper); }
+@media (max-width: 600px) { .quick-summary ul { font-size: 12px; } .quick-summary li { white-space: normal; } }
+
+.progress-bar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 2px solid var(--ink); margin-bottom: 28px; background: var(--paper); }
+.progress-step { padding: 14px 10px; text-align: center; border-right: 1px solid rgba(14,17,22,0.15); position: relative; }
 .progress-step:last-child { border-right: none; }
 .progress-step.done { background: var(--added); color: var(--paper); }
 .progress-step.live { background: var(--wallet); color: var(--ink); }
@@ -93,42 +87,17 @@ h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
 .progress-name { font-family: 'Fraunces', serif; font-weight: 700; font-size: 13.5px; line-height: 1.2; }
 .progress-status { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 6px; opacity: 0.85; }
 
-/* === INTRO === */
-.intro {
-  background: var(--paper-2);
-  border: 2px solid var(--ink);
-  padding: 18px 22px;
-  margin-bottom: 28px;
-  font-size: 14px;
-  line-height: 1.6;
-}
+.intro { background: var(--paper-2); border: 2px solid var(--ink); padding: 18px 22px; margin-bottom: 28px; font-size: 14px; line-height: 1.6; }
 .intro p { margin: 0 0 8px; }
 .intro p:last-child { margin-bottom: 0; }
 .intro a { color: var(--ink); font-weight: 600; }
 .intro code { background: var(--ink); color: var(--paper); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
 
-/* === PHASE CARDS === */
-.phase-card {
-  border: 2px solid var(--ink);
-  background: var(--paper);
-  margin-bottom: 18px;
-  display: grid;
-  grid-template-columns: 80px 1fr auto;
-  align-items: stretch;
-}
+.phase-card { border: 2px solid var(--ink); background: var(--paper); margin-bottom: 18px; display: grid; grid-template-columns: 80px 1fr auto; align-items: stretch; }
 .phase-card.done { border-left-width: 6px; border-left-color: var(--added); }
 .phase-card.live { border-left-width: 6px; border-left-color: var(--wallet); background: rgba(212,160,23,0.06); }
 .phase-card.pending { border-left-width: 6px; border-left-color: var(--muted); opacity: 0.85; }
-.phase-num-block {
-  background: var(--ink);
-  color: var(--paper);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 18px 10px;
-  text-align: center;
-}
+.phase-num-block { background: var(--ink); color: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 10px; text-align: center; }
 .phase-card.live .phase-num-block { background: var(--wallet); color: var(--ink); }
 .phase-card.done .phase-num-block { background: var(--added); color: var(--paper); }
 .phase-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; font-weight: 700; opacity: 0.85; }
@@ -137,86 +106,28 @@ h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
 .phase-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
 .phase-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; margin: 0; }
 .phase-title em { color: var(--wallet); font-style: italic; font-weight: 400; }
-.phase-status-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 3px 9px;
-}
+.phase-status-pill { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; padding: 3px 9px; }
 .phase-status-pill.done { background: var(--added); color: var(--paper); }
 .phase-status-pill.live { background: var(--wallet); color: var(--ink); }
 .phase-status-pill.pending { background: var(--paper-2); color: var(--muted); border: 1px solid var(--muted); }
 .phase-desc { font-size: 13.5px; color: var(--muted); margin: 0 0 10px; line-height: 1.55; }
-.phase-deliverables {
-  font-size: 12.5px;
-  color: var(--ink);
-  background: var(--paper-2);
-  padding: 10px 14px;
-  border-left: 3px solid var(--ink);
-  margin: 8px 0 0;
-}
+.phase-deliverables { font-size: 12.5px; color: var(--ink); background: var(--paper-2); padding: 10px 14px; border-left: 3px solid var(--ink); margin: 8px 0 0; }
 .phase-deliverables strong { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; font-weight: 700; }
 .phase-deliverables ul { margin: 0; padding-left: 18px; }
 .phase-deliverables li { margin-bottom: 2px; }
 .phase-deliverables code { background: var(--ink); color: var(--paper); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 .phase-card.live .phase-deliverables { background: var(--paper); border-left-color: var(--wallet); }
-.phase-actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 14px 20px;
-  border-left: 1px solid rgba(14,17,22,0.15);
-  gap: 8px;
-  background: var(--paper-2);
-}
+.phase-actions { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 14px 20px; border-left: 1px solid rgba(14,17,22,0.15); gap: 8px; background: var(--paper-2); }
 .phase-card.live .phase-actions { background: rgba(212,160,23,0.12); }
-.phase-link {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 8px 14px;
-  background: var(--ink);
-  color: var(--paper);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s ease;
-  text-align: center;
-  min-width: 130px;
-}
+.phase-link { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 8px 14px; background: var(--ink); color: var(--paper); text-decoration: none; white-space: nowrap; transition: background 0.15s ease; text-align: center; min-width: 130px; }
 .phase-link:hover { background: var(--wallet); color: var(--ink); }
 .phase-link.featured { background: var(--wallet); color: var(--ink); border: 2px solid var(--ink); }
 .phase-link.featured:hover { background: var(--ink); color: var(--wallet); }
-.phase-link.disabled {
-  background: var(--paper-2);
-  color: var(--muted);
-  border: 1px dashed var(--muted);
-  cursor: not-allowed;
-  font-style: italic;
-}
+.phase-link.disabled { background: var(--paper-2); color: var(--muted); border: 1px dashed var(--muted); cursor: not-allowed; font-style: italic; }
 .phase-link.disabled:hover { background: var(--paper-2); color: var(--muted); }
-.phase-link-note {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  letter-spacing: 0.08em;
-  text-align: center;
-}
+.phase-link-note { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.08em; text-align: center; }
 
-/* === FOOTER === */
-.footer-meta {
-  background: var(--paper-2);
-  border: 2px solid var(--ink);
-  padding: 14px 20px;
-  margin-top: 32px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--muted);
-}
+.footer-meta { background: var(--paper-2); border: 2px solid var(--ink); padding: 14px 20px; margin-top: 32px; font-size: 13px; line-height: 1.55; color: var(--muted); }
 .footer-meta strong { color: var(--ink); }
 .footer-meta a { color: var(--ink); font-weight: 600; }
 footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
@@ -227,40 +138,6 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   .progress-bar { grid-template-columns: repeat(2, 1fr); }
   .progress-step { border-bottom: 1px solid rgba(14,17,22,0.15); }
 }
-
-.quick-summary {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 18px 22px;
-  margin-bottom: 28px;
-  border: 2px solid var(--ink);
-}
-.quick-summary h3 {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--wallet);
-  font-weight: 700;
-  margin: 0 0 10px;
-}
-.quick-summary ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  line-height: 1.85;
-}
-.quick-summary li { white-space: nowrap; overflow-x: auto; }
-.quick-summary .phase-emoji { display: inline-block; min-width: 28px; }
-.quick-summary a { color: var(--wallet); text-decoration: underline; font-weight: 700; transition: color 0.15s ease; }
-.quick-summary a:hover { color: var(--paper); }
-@media (max-width: 600px) {
-  .quick-summary ul { font-size: 12px; }
-  .quick-summary li { white-space: normal; }
-}
-
 </style>
 </head>
 <body>
@@ -270,7 +147,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><g transform="translate(60, 220) scale(0.38461538461538464)"><g transform="translate(0, 615) scale(0.1, -0.1)" fill="currentColor" stroke="none"><path d="M343 5844 c-43 -19 -16 -53 201 -255 37 -35 76 -72 85 -81 9 -10 69 -71 135 -135 65 -65 137 -137 160 -160 22 -23 94 -95 160 -160 65 -65 203 -202 306 -305 104 -104 193 -188 199 -188 6 0 11 -5 11 -11 0 -5 41 -49 92 -97 50 -48 98 -96 107 -106 9 -10 36 -37 60 -60 88 -83 338 -332 342 -341 2 -6 22 -25 44 -44 22 -18 76 -68 121 -110 101 -95 186 -162 244 -191 25 -13 71 -40 102 -61 31 -22 66 -39 76 -39 11 0 31 -9 45 -20 14 -11 28 -20 33 -20 4 0 30 -11 58 -24 85 -41 219 -79 376 -106 30 -6 84 -16 120 -22 83 -16 355 -16 440 -1 36 7 90 17 120 22 104 19 225 49 262 65 21 9 44 16 53 16 20 0 142 56 149 69 4 5 20 13 38 16 17 4 61 26 97 50 36 23 83 50 104 60 20 9 37 21 37 25 0 5 19 19 42 33 24 14 86 65 138 114 52 48 110 102 128 119 19 18 38 36 43 40 4 5 77 78 161 162 84 84 203 203 265 265 62 61 116 115 120 119 23 21 595 585 738 729 22 22 96 96 165 163 69 68 130 129 135 135 6 6 26 25 45 42 156 139 260 251 250 269 -6 11 -18 20 -28 20 -9 1 -218 1 -464 1 l-447 0 -40 -26 c-22 -13 -47 -38 -56 -55 -9 -16 -19 -30 -23 -30 -6 0 -128 -117 -187 -179 -5 -6 -76 -76 -157 -155 -82 -80 -148 -150 -148 -155 0 -6 -9 -15 -21 -21 -30 -17 -309 -294 -309 -308 0 -7 -6 -12 -14 -12 -7 0 -26 -12 -43 -27 -114 -107 -144 -136 -194 -190 -31 -33 -62 -70 -68 -82 -7 -11 -17 -21 -23 -21 -7 0 -24 -12 -38 -26 -117 -121 -337 -328 -359 -337 -14 -7 -38 -20 -51 -30 -77 -55 -139 -89 -184 -103 -28 -9 -74 -24 -103 -35 -302 -108 -732 -48 -993 138 -13 10 -35 23 -47 28 -22 10 -110 82 -142 117 -23 26 -190 192 -228 228 -18 16 -37 30 -43 30 -5 0 -10 5 -10 11 0 17 -153 173 -259 265 -18 16 -40 37 -50 46 -17 19 -48 48 -206 203 -126 122 -101 97 -280 277 -82 82 -153 153 -157 156 -4 4 -29 30 -55 57 -27 28 -72 71 -100 96 -29 26 -58 58 -64 73 -7 14 -15 26 -19 26 -4 0 -24 12 -45 26 -21 14 -44 23 -51 20 -7 -3 -163 -5 -346 -4 -307 0 -358 0 -450 -3 -18 0 -46 2 -63 5 -16 3 -36 3 -42 0z"/><path d="M3460 2854 c-83 -9 -278 -47 -307 -60 -17 -8 -38 -14 -48 -14 -9 0 -28 -6 -43 -14 -15 -8 -46 -17 -67 -21 -22 -4 -55 -16 -73 -26 -18 -10 -39 -19 -46 -19 -7 0 -21 -9 -30 -19 -10 -10 -32 -22 -51 -25 -18 -4 -38 -13 -45 -21 -7 -8 -18 -15 -25 -15 -17 0 -252 -158 -291 -195 -17 -17 -88 -84 -157 -150 -70 -66 -304 -295 -520 -510 -791 -784 -1363 -1345 -1410 -1381 -57 -45 -57 -48 -7 -68 35 -14 100 -16 489 -16 l449 0 413 407 c227 225 528 523 670 663 343 340 509 499 559 535 23 17 58 44 78 61 20 17 67 46 103 63 37 18 70 35 73 39 4 4 31 12 59 18 29 7 72 19 97 27 133 44 419 63 479 32 17 -8 45 -15 64 -15 18 0 67 -11 107 -25 40 -14 84 -25 96 -25 13 0 25 -4 28 -9 3 -5 36 -23 73 -41 38 -18 85 -47 105 -64 20 -17 55 -44 78 -61 58 -42 200 -178 525 -500 539 -534 972 -960 1008 -992 21 -18 41 -43 46 -56 21 -55 40 -57 520 -57 547 0 576 5 468 89 -30 22 -90 78 -134 123 -44 46 -264 263 -488 483 -224 220 -413 406 -419 413 -6 7 -47 48 -90 90 -43 42 -124 122 -180 177 -56 55 -126 123 -156 151 -30 29 -117 114 -192 190 -115 116 -297 292 -419 405 -15 14 -52 43 -81 63 -29 20 -79 54 -111 76 -68 47 -166 100 -184 100 -7 0 -22 9 -33 20 -11 11 -30 20 -42 20 -12 0 -29 6 -37 14 -9 8 -41 21 -71 29 -30 8 -86 26 -125 40 -157 56 -518 92 -705 71z"/></g></g><text x="345" y="280" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="700" fill="#d4a017" font-size="180">B</text></svg><span>XRPL <em>Builder</em></span></a>
     <div class="top-links"><a class="top-link" data-section="anatomy" href="/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="atlas" href="/builder-atlas">Atlas</a><a class="top-link" data-section="analysis" href="/analysis-1">Analysis <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/buildathon">Buildathon</a></div>
     <div class="right-cluster">
-      <a class="current-update" href="/update" style="background: var(--ink); color: var(--wallet); border-color: var(--wallet);">● Update</a>
+      <a class="current-update" href="/update" style="background: var(--ink); color: var(--wallet); border-color: var(--wallet);">● Current update</a>
       <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
       <div class="lang-toggle">
         <a class="lang-flag" href="/update">🇫🇷</a>
@@ -286,13 +163,13 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 <header class="masthead">
   <div>
     <div class="eyebrow">Update tracker · Cleanup item 01 · May 2026</div>
-    <h1><em>Phase</em> synthesis</h1>
+    <h1><em>Phase</em> tracker</h1>
   </div>
   <div class="meta">
     Backlog item: 01<br/>
-    Phases 0-4: ✓ Done<br/>
-    Phase 5: ⏸ Pending<br/>
-    Click a link to navigate
+    Plan: 6 phases (0 → 5)<br/>
+    Status: Phases 0-4 delivered<br/>
+    Next: Phase 5
   </div>
 </header>
 
@@ -308,13 +185,129 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </ul>
 </div>
 
+<div class="progress-bar">
+  <div class="progress-step done"><div class="progress-num">PHASE 0</div><div class="progress-name">Taxonomy</div><div class="progress-status">✓ Done</div></div>
+  <div class="progress-step done"><div class="progress-num">PHASE 1</div><div class="progress-name">Inventory</div><div class="progress-status">✓ Done</div></div>
+  <div class="progress-step done"><div class="progress-num">PHASE 2</div><div class="progress-name">Card format</div><div class="progress-status">✓ Done</div></div>
+  <div class="progress-step done"><div class="progress-num">PHASE 3</div><div class="progress-name">Migration</div><div class="progress-status">✓ Done</div></div>
+  <div class="progress-step done"><div class="progress-num">PHASE 4</div><div class="progress-name">Analyses</div><div class="progress-status">✓ Done</div></div>
+  <div class="progress-step pending"><div class="progress-num">PHASE 5</div><div class="progress-name">Interviews</div><div class="progress-status">⏸ Pending</div></div>
+</div>
+
+<div class="intro">
+  <p>This page tracks progress on <strong>cleanup item 01</strong> of the <a href="/en/backlog">backlog</a>: refactoring the <code>/gaps</code> + <code>/master-gaps</code> architecture + source attribution.</p>
+  <p>Each phase has its own deliverable (CSV, audit page, or final page). Click a button to open the relevant phase page. <strong>Phase 3 = <a href="/en/opportunities">/opportunities</a></strong> — the final unified registry (52 opps).</p>
+</div>
+
+<div class="phase-card done">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">0</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title"><em>Taxonomy</em> decisions</h2><span class="phase-status-pill done">✓ Done</span></div>
+    <p class="phase-desc">Single taxonomy validated: 1 word for the object ("Opportunity") × 2 axes (Type APP/BLOCK × 5 consolidated themes) + final list of 10 source-tags (PWG-1/2/3/4 · ATKA · ECO · YC · INT-{6}).</p>
+    <div class="phase-deliverables">
+      <strong>Deliverable</strong>
+      <ul>
+        <li>Validated taxonomy memo (in conversation memory)</li>
+        <li>Frictions / tensions = separate analytical layer (stay in /analysis-*)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions">
+    <span class="phase-link disabled">No page</span>
+    <span class="phase-link-note">discussion only</span>
+  </div>
+</div>
+
+<div class="phase-card done">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">1</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title"><em>Full</em> inventory</h2><span class="phase-status-pill done">✓ Done</span></div>
+    <p class="phase-desc">Full audit of existing opportunities (master-gaps, gaps, builder-atlas) → consolidated into 1 master CSV. 13 candidates arbitrated (10 added to registry, 3 illustrations kept in /builder-atlas). Final total: 52 confirmed opportunities.</p>
+    <div class="phase-deliverables">
+      <strong>Deliverables</strong>
+      <ul>
+        <li><code>opportunities-master.csv</code> at repo root (52 opps)</li>
+        <li><code>/audit-phase1</code> — decision trail + stats + observations</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions"><a class="phase-link" href="/en/audit-phase1">→ Audit Phase 1</a><span class="phase-link-note">5 decisions arbitrated</span></div>
+</div>
+
+<div class="phase-card done">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">2</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title">Target <em>card format</em></h2><span class="phase-status-pill done">✓ Done</span></div>
+    <p class="phase-desc">Iteration on 3 variants (A compact · B card box · C hybrid) using 5 representative opps, then merged into Variant A·C+: A's density (Type+Tier+Chain+sources visible) + C+'s theme grouping + C's inline drill-down.</p>
+    <div class="phase-deliverables">
+      <strong>Deliverable</strong>
+      <ul>
+        <li><code>/audit-phase2</code> — 3 variants side by side + chosen variant A·C+</li>
+        <li>Decision: A·C+ grouped by theme for the final registry</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions"><a class="phase-link" href="/en/audit-phase2">→ Audit Phase 2</a><span class="phase-link-note">A·C+ chosen</span></div>
+</div>
+
+<div class="phase-card done">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">3</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title"><em>Migration</em> to /opportunities</h2><span class="phase-status-pill done">✓ Done</span></div>
+    <p class="phase-desc">Created unified registry <code>/opportunities</code> with the 52 opps in A·C+ format, functional multi-axis filters (Type × Tier × Chain × Source × Theme), theme grouping, per-card drill-down.</p>
+    <div class="phase-deliverables">
+      <strong>Main deliverable</strong>
+      <ul>
+        <li><code>/opportunities</code> (FR + EN) — single source of truth, 52 opps</li>
+        <li>Navbar button "● Current update" → this page</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions"><a class="phase-link featured" href="/en/opportunities">★ Open registry</a><span class="phase-link-note">52 opportunities</span></div>
+</div>
+
+<div class="phase-card done">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">4</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title"><em>Analyses clarification</em> + cleanup</h2><span class="phase-status-pill done">✓ Done</span></div>
+    <p class="phase-desc">"Methodology trail" banner added on <code>/analysis-1/2/3</code> intro (FR + EN) with link to <code>/opportunities</code>. <code>/master-gaps</code> and <code>/gaps</code> deleted (FR + EN). Landscape sub-bar simplified. Homepage cards merged (1 single card → /opportunities).</p>
+    <div class="phase-deliverables">
+      <strong>Deliverables</strong>
+      <ul>
+        <li>"📖 Methodology trail" banner on <code>/analysis-1/2/3</code></li>
+        <li><code>/master-gaps</code> and <code>/gaps</code> deleted (4 files)</li>
+        <li>Landscape sub-bar: Gaps + Master Gaps → Opportunities</li>
+        <li>Homepage: 2 cards merged into 1 (Opportunities)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions"><a class="phase-link" href="/en/analysis-3">→ View Analyses</a><span class="phase-link-note">methodology trail</span></div>
+</div>
+
+<div class="phase-card pending">
+  <div class="phase-num-block"><div class="phase-num">PHASE</div><div class="phase-num-big">5</div></div>
+  <div class="phase-body">
+    <div class="phase-title-row"><h2 class="phase-title"><em>Founder</em> interviews</h2><span class="phase-status-pill pending">⏸ Pending</span></div>
+    <p class="phase-desc">Conduct 6 1:1 interviews (Djason, Stan, Kevin, Adrien, Denis, Andy) → extract surfaced opportunities/frictions → add to registry with source-tag <code>INT-{name}</code>. Existing opportunities receive an additional tag (multi-source).</p>
+    <div class="phase-deliverables">
+      <strong>Planned deliverables</strong>
+      <ul>
+        <li>Structured interview notes (1 per interviewee)</li>
+        <li>Update master CSV + <code>/opportunities</code></li>
+        <li>Backlog item 02 → Done</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-actions"><span class="phase-link disabled">Upcoming</span><span class="phase-link-note">post-cleanup</span></div>
+</div>
+
 <div class="footer-meta">
-  <strong>Note —</strong> This page lists the phases of <a href="/en/backlog">backlog item 01</a> (cleanup /gaps + /master-gaps + source attribution). Click a yellow link to go to the relevant phase page. The <strong>operational source of truth</strong> is <a href="/en/opportunities">/opportunities</a> (52 opportunities).
+  <strong>Note —</strong> The tracker is updated at each phase delivery. Phases 0-4 are closed (audit pages kept as decision trail). Phase 5 (founder interviews) starts when you launch the note collection.
 </div>
 
 <footer>
-  <span>UPDATE TRACKER · v2.0</span>
-  <span>SYNTHESIS · MAY 2026</span>
+  <span>UPDATE TRACKER · v1.0</span>
+  <span>CLEANUP ITEM 01 · MAY 2026</span>
 </footer>
 
 </div>
