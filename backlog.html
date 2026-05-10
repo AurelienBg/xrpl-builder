@@ -334,7 +334,7 @@
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
-    Items : 2<br/>
+    Items : 1<br/>
     Mode : compact (toggle)<br/>
     Filtres : status × priorité<br/>
     Mise à jour : Mai 2026
@@ -377,40 +377,9 @@
 </div>
 
 <!-- ITEMS -->
-<section class="item" data-status="open" data-priority="medium">
-  <div class="item-header">
-    <span class="num">01</span>
-    <h2>Cleanup <em>/gaps + /master-gaps + source attribution</em></h2>
-    <div class="badge-set">
-      <span class="badge-pill p-medium">Medium</span>
-      <span class="badge-pill s-open">Open</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Problème</span>
-      <p>Les pages d'opportunités ont accumulé du contenu venant de <strong>sources hétérogènes</strong> (Master Atlas / PWG Paris / Atka Report / YC RFS / Ecosystem map) sans toujours <strong>tagger explicitement</strong> d'où vient chaque opportunité.</p>
-      <p>Sur <strong>/master-gaps</strong> le source-tagging est en place. Sur <strong>/gaps</strong> les cards Lens 1+2 n'ont pas le même tagging visuel — c'est moins lisible quand on veut savoir <em>« qui a dit ça »</em>.</p>
-    </div>
-    <div class="block">
-      <span class="block-tag solutions">Pistes / solutions possibles</span>
-      <ul>
-        <li><strong>Ajouter un encart "Source(s)"</strong> sur chaque card de <code>/gaps</code> avec : Master Atlas (M-XX) · PWG Paris · Atka Report · YC RFS · Ecosystem map · Interview iN.</li>
-        <li><strong>Étendre les tags visuels</strong> de <code>/master-gaps</code> à <code>/gaps</code> et <code>/builder-atlas</code> — réutiliser les classes <code>src-atlas/gaps/yc/svc</code>, ajouter <code>src-pwg / src-atka / src-ecosystem / src-interview</code>.</li>
-        <li><strong>Audit de cohérence</strong> : chaque opportunité présente sur plusieurs pages doit avoir le même source-tagging partout.</li>
-      </ul>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Action attendue</span>
-      <p><strong>Valide la liste des source-tags</strong> à utiliser et je propage l'attribution sur les 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) en FR + EN.</p>
-    </div>
-  </div>
-</section>
-
 <section class="item" data-status="open" data-priority="high">
   <div class="item-header">
-    <span class="num">02</span>
+    <span class="num">01</span>
     <h2>Interview-sourced gaps <em>— ajouter i1 → iN</em></h2>
     <div class="badge-set">
       <span class="badge-pill p-high">High</span>
@@ -442,7 +411,7 @@
 <div class="sources-foot">
   <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe (les priorités ici aident juste à scanner).<br/>
   <br/>
-  <strong>Pages liées :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
+  <strong>Pages liées :</strong> <a href="/opportunities">Opportunities</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
   <br/>
   <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération). Les items DONE sont retirés (git history conservée).<br/>
   <strong>Priority legend :</strong> CRITICAL (blocker) · HIGH (impactful) · MEDIUM (nice to have) · LOW (cosmétique / optionnel)
