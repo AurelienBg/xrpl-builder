@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Audit Phase 1 — Inventaire opportunités | XRPL Builder</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f4efe6;
+  --paper-2: #ece6d9;
+  --ink: #0e1116;
+  --muted: #58605a;
+  --wallet: #d4a017;
+  --orange: #e87722;
+  --added: #2e5d4f;
+  --candidate: #b8860b;
+  --warning: #c0392b;
+  --app: #5a85b8;
+  --block: #8b5a8c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Fraunces', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.page { max-width: 1400px; margin: 0 auto; padding: 24px 28px 80px; }
+
+/* Masthead */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 38px;
+  line-height: 1.05;
+  margin: 0;
+}
+h1 em { color: var(--candidate); font-style: italic; font-weight: 400; }
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+
+/* Banner warning */
+.banner {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border-left: 6px solid var(--candidate);
+}
+.banner strong { color: var(--candidate); }
+
+/* Stats strip */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-2);
+  margin-bottom: 24px;
+}
+.stat-cell {
+  padding: 16px 14px;
+  border-right: 1px solid rgba(14,17,22,0.15);
+  text-align: center;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num { font-family: 'Fraunces', serif; font-weight: 700; font-size: 30px; line-height: 1; margin-bottom: 4px; }
+.stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+/* Sections */
+.section { margin-bottom: 36px; }
+.section-head {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 24px; margin: 0; }
+h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; margin: 18px 0 8px; }
+
+/* Filters */
+.filters {
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.filter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-right: 4px;
+}
+.filter-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-btn:hover { background: var(--ink); color: var(--paper); }
+.filter-btn.active { background: var(--ink); color: var(--paper); }
+.filter-count {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  font-size: 12.5px;
+}
+th {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 9px 8px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(14,17,22,0.12);
+  vertical-align: top;
+}
+tr.row-hidden { display: none; }
+tr.candidate { background: rgba(184,134,11,0.08); }
+tr.candidate td:first-child { border-left: 3px solid var(--candidate); }
+tr.missing { background: rgba(192,57,43,0.06); }
+tr.missing td:first-child { border-left: 3px solid var(--warning); }
+
+.id-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.legacy-id {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+.title-cell { font-weight: 600; min-width: 220px; }
+.title-cell .desc { display: block; font-weight: 400; font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+
+.type-pill, .theme-pill, .tier-pill, .chain-pill, .src-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+.type-pill.app { background: var(--app); color: var(--paper); }
+.type-pill.block { background: var(--block); color: var(--paper); }
+
+.theme-pill { background: var(--paper-2); color: var(--ink); border: 1px solid var(--ink); }
+
+.tier-pill.mult { background: var(--orange); color: var(--paper); }
+.tier-pill.high { background: var(--wallet); color: var(--ink); }
+.tier-pill.med { background: var(--paper-2); color: var(--ink); border: 1px solid var(--muted); }
+
+.chain-pill.xrpl { background: var(--ink); color: var(--paper); }
+.chain-pill.evm { background: #5a85b8; color: var(--paper); }
+.chain-pill.both { background: var(--paper-2); color: var(--ink); border: 1px solid var(--ink); }
+
+.src-tags { display: flex; gap: 3px; flex-wrap: wrap; }
+.src-tag {
+  background: var(--ink);
+  color: var(--paper);
+}
+.src-tag.eco { background: #4a7c59; }
+.src-tag.atka { background: #8b5a8c; }
+.src-tag.yc { background: var(--orange); }
+.src-tag.pwg { background: #2e5d4f; }
+.src-tag.int { background: var(--wallet); color: var(--ink); }
+
+.note-cell { font-size: 11px; color: var(--muted); font-style: italic; max-width: 280px; line-height: 1.4; }
+
+/* Observations */
+.obs-block {
+  background: var(--paper-2);
+  border-left: 4px solid var(--ink);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+.obs-block.warning { border-left-color: var(--warning); }
+.obs-block.candidate { border-left-color: var(--candidate); }
+.obs-block.added { border-left-color: var(--added); }
+.obs-block h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: var(--muted);
+}
+.obs-block ul { margin: 6px 0 0; padding-left: 22px; }
+.obs-block li { margin-bottom: 4px; font-size: 13.5px; }
+.obs-block li code {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1px 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+footer {
+  margin-top: 60px;
+  padding-top: 18px;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Phase 1 · Inventaire complet · v0.1 · brouillon</div>
+    <h1>Audit <em>Phase 1</em><br/>— inventaire opportunités</h1>
+  </div>
+  <div class="meta">
+    Source : opportunities-master.csv<br/>
+    Total : 55 lignes (42 actuels + 13 candidats)<br/>
+    Statut : à valider avec Aurélien<br/>
+    Sources tags : 10 (PWG-1/2/3/4 · ATKA · ECO · YC · INT-{6})
+  </div>
+</header>
+
+<div class="banner">
+  <strong>⚠ PAGE TEMPORAIRE — non liée dans la nav.</strong> Cet audit présente l'inventaire avant migration. À relire ensemble pour valider Type (APP/BLOCK), Thème (5), Sources, et statuer sur les 13 candidats marqués. Une fois validé → Phase 2 (refonte format card) puis Phase 3 (migration).
+</div>
+
+<!-- STATS -->
+<div class="stat-strip">
+  <div class="stat-cell"><div class="stat-num" id="stat-total">55</div><div class="stat-lbl">Total opps</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-app">—</div><div class="stat-lbl">APP (user)</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-block">—</div><div class="stat-lbl">BLOCK (builder)</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-confirmed">42</div><div class="stat-lbl">Confirmés</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-candidate">13</div><div class="stat-lbl">Candidats à valider</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-themes">5</div><div class="stat-lbl">Thèmes</div></div>
+</div>
+
+<!-- OBSERVATIONS -->
+<section class="section">
+  <div class="section-head">
+    <h2>Observations clés <em style="color:var(--candidate);">— à arbitrer</em></h2>
+  </div>
+
+  <div class="obs-block warning">
+    <h4>⚠ Items potentiellement perdus dans /master-gaps actuel</h4>
+    <ul>
+      <li><code>service-04</code> RWA structuring firm — distinct de M-16b (studio = produit) car c'est un service AI-native</li>
+      <li><code>service-06</code> Audit & continuous monitoring — distinct de G-02 (tooling B2B) car service AI-native</li>
+      <li><code>service-08</code> DeFi underwriting / insurance — distinct de M-20 (protocole d'assurance) car service AI</li>
+    </ul>
+    <p style="margin: 10px 0 0; font-size: 13.5px;"><strong>Verdict proposé :</strong> ajouter les 3 services à /master-gaps avec tag source <code>YC</code> (cohérent avec S-03/05/07 déjà présents).</p>
+  </div>
+
+  <div class="obs-block candidate">
+    <h4>? Cards Lens 1 de /gaps absentes de /master-gaps</h4>
+    <ul>
+      <li><code>gap-01</code> Treasury wallet B2B XRPL-native — possible merge avec M-02 mais workflows différents (multisig vs treasury). À garder distinct ?</li>
+      <li><code>gap-04</code> KYC reusable cross-app — possible merge avec M-07 mais APP user-facing vs BLOCK lib. À garder distinct ?</li>
+      <li><code>gap-06</code> Mid-market corporate bonds — non couvert ailleurs. <strong>À ajouter</strong> (matche aussi BondBloc blueprint)</li>
+      <li><code>gap-09</code> Agent treasury + wallet pour IA — overlap partiel avec M-26 AgentPay. À fusionner ou garder distinct ?</li>
+      <li><code>gap-10</code> On-chain accounting + reporting — M-06 est étroit (export stablecoin) ; gap-10 est plus large. Élargir M-06 ou ajouter gap-10 ?</li>
+      <li><code>gap-12</code> Data marketplace · oracle aggregator — distinct de M-23 (vendor-neutral adapters) ? À ajouter ?</li>
+    </ul>
+    <p style="margin: 10px 0 0; font-size: 13.5px;"><strong>Décision attendue :</strong> pour chaque gap-XX, on garde séparé, on fusionne, ou on supprime ?</p>
+  </div>
+
+  <div class="obs-block candidate">
+    <h4>? Blueprints /builder-atlas non présents dans /master-gaps</h4>
+    <ul>
+      <li><code>RemitFlow</code> — corridor remittance Philippines↔US. Vertical applicatif spécifique. Garder ?</li>
+      <li><code>VaultDAO</code> — épargne USD LATAM. Lié à M-14 (yield-bearing) + G-03 (aggregator) mais vertical distinct.</li>
+      <li><code>BondBloc</code> — = gap-06 (Mid-market corporate bonds)</li>
+      <li><code>MerchantPay</code> — = G-05 (POS regional) ✓ déjà présent</li>
+      <li><code>PropTok</code> — fractionalisation immobilière. Distinct de M-13 (binding pattern). Garder ?</li>
+      <li><code>PayrollXRP</code> — paie streaming pour DAOs. Concept nouveau, pas couvert ailleurs. <strong>À ajouter</strong> ?</li>
+      <li><code>AgentPay</code> — = M-26 ✓ déjà présent</li>
+    </ul>
+    <p style="margin: 10px 0 0; font-size: 13.5px;"><strong>Décision attendue :</strong> les 5 blueprints "verticaux" (RemitFlow, VaultDAO, PropTok, PayrollXRP) sont-ils des opportunités du registre, ou juste des illustrations dans /builder-atlas ?</p>
+  </div>
+
+  <div class="obs-block">
+    <h4>📋 Affectations de Type (APP/BLOCK) à challenger</h4>
+    <ul>
+      <li><code>OPP-002</code> M-02 Multisig Wallet (Full UI) → APP (UI consumer-facing) — mais c'est aussi une infra que d'autres apps réutilisent. <strong>APP ou BLOCK ?</strong></li>
+      <li><code>OPP-028</code> M-26 AgentPay — facilitator x402 — j'ai mis BLOCK (infra pour agents) mais on peut imaginer une UI user-facing. Confirmer ?</li>
+      <li><code>OPP-033</code> G-02 Monitoring B2B — j'ai mis BLOCK (sert les builders/devs) — pourrait être APP (B2B alerting product). Confirmer ?</li>
+      <li><code>OPP-046</code> gap-09 Agent treasury — j'ai mis BLOCK (infra agent) mais peut-être plutôt une APP user-facing. Confirmer ?</li>
+    </ul>
+  </div>
+
+  <div class="obs-block">
+    <h4>📋 Sources tags — incertitudes (à valider après lecture analysis-1/2)</h4>
+    <ul>
+      <li>Pour les opps M-01 à M-25 (préfixe FA-XX dans analysis-3), j'ai déduit le PWG d'origine selon le thème (Lending → PWG-1, RWA → PWG-2, Stablecoins → PWG-3, Identity/Wallets → PWG-4). À vérifier en lisant analysis-1 si on veut être précis.</li>
+      <li>Tag <code>ATKA</code> ajouté quasi-systématiquement car le rapport Atka couvre l'ensemble DeFi XRPL — mais sans doute pas pertinent pour TOUS les items. À filtrer plus finement ?</li>
+      <li>Tag <code>ECO</code> appliqué aux 12 cards Lens 1 de /gaps (audit ecosystem-map). Cohérent.</li>
+      <li>Tag <code>YC</code> regroupe YC RFS 2025 + Summer 2026 (validé en Phase 0).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TABLE -->
+<section class="section">
+  <div class="section-head">
+    <h2>Table complète <em>— filtrable</em></h2>
+    <p style="margin: 6px 0 0; font-size: 13px; color: var(--muted);">55 opportunités · cliquer sur les filtres pour restreindre · les lignes <span style="background:rgba(184,134,11,0.15); padding:1px 4px;">jaunes</span> = candidates à arbitrer · les lignes <span style="background:rgba(192,57,43,0.10); padding:1px 4px;">rouges</span> = items potentiellement perdus à réintégrer.</p>
+  </div>
+
+  <div class="filters">
+    <div class="filter-row">
+      <span class="filter-label">Type</span>
+      <button class="filter-btn active" data-type="type" data-val="all">Tous</button>
+      <button class="filter-btn" data-type="type" data-val="APP">APP</button>
+      <button class="filter-btn" data-type="type" data-val="BLOCK">BLOCK</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Thème</span>
+      <button class="filter-btn active" data-type="theme" data-val="all">Tous</button>
+      <button class="filter-btn" data-type="theme" data-val="wallets-infra">Wallets&Infra</button>
+      <button class="filter-btn" data-type="theme" data-val="lending">Lending</button>
+      <button class="filter-btn" data-type="theme" data-val="rwa-stable">RWA&Stables</button>
+      <button class="filter-btn" data-type="theme" data-val="evm-defi">EVM DeFi</button>
+      <button class="filter-btn" data-type="theme" data-val="dev-agents">Dev&Agents</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Statut</span>
+      <button class="filter-btn active" data-type="status" data-val="all">Tous</button>
+      <button class="filter-btn" data-type="status" data-val="confirmed">Confirmés</button>
+      <button class="filter-btn" data-type="status" data-val="candidate">Candidats</button>
+    </div>
+    <span class="filter-count" id="visible-count"></span>
+  </div>
+
+  <div style="overflow-x: auto;">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title / Description</th>
+        <th>Type</th>
+        <th>Theme</th>
+        <th>Sources</th>
+        <th>Tier</th>
+        <th>Chain</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="opp-table">
+      <!-- rows injected by JS from CSV -->
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section class="section">
+  <div class="section-head">
+    <h2>Prochaines étapes</h2>
+  </div>
+  <div class="obs-block added">
+    <h4>✓ Phase 1 (en cours) — livrable de cette page</h4>
+    <ul>
+      <li>CSV master à la racine : <code>opportunities-master.csv</code></li>
+      <li>Cette page d'audit : <code>/audit-phase1</code> (temporaire)</li>
+      <li>55 opportunités cataloguées (42 confirmés + 13 candidats)</li>
+    </ul>
+  </div>
+  <div class="obs-block">
+    <h4>→ Décisions attendues d'Aurélien (avant Phase 2)</h4>
+    <ol style="margin: 6px 0 0; padding-left: 22px;">
+      <li><strong>Candidats Lens 1</strong> (gap-01, 04, 06, 09, 10, 12) : garder, fusionner, ou supprimer ?</li>
+      <li><strong>Services manquants</strong> (S-04, S-06, S-08) : ajouter au registre ? (recommandé)</li>
+      <li><strong>Blueprints atlas</strong> (RemitFlow, VaultDAO, PropTok, PayrollXRP) : opps du registre ou juste illustrations ?</li>
+      <li><strong>Type ambigu</strong> (M-02, M-26, G-02, gap-09) : APP ou BLOCK ?</li>
+      <li><strong>Source PWG</strong> : on lit /analysis-1 en détail pour tagger précisément, ou on garde l'approximation par thème ?</li>
+    </ol>
+  </div>
+  <div class="obs-block">
+    <h4>→ Phase 2 (après validation)</h4>
+    <ul>
+      <li>Choisir 5 opps représentatives (1 APP, 1 BLOCK, 1 multi-source, 1 borderline, 1 service)</li>
+      <li>Designer la card-type cible (visuel + layout) — itération sur HTML</li>
+      <li>Validation du format avant migration en masse</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span>AUDIT PHASE 1 · v0.1</span>
+  <span>BROUILLON · MAI 2026</span>
+</footer>
+
+</div>
+
+<script>
+// Embedded CSV data (parsed inline to avoid CORS issues with file://)
+const CSV_DATA = `id,legacy_id,title,description,type,theme,sources,tier,chain,current_pages,notes
+OPP-001|M-01|Cross-Device Session Continuity Library|Library to seamlessly continue wallet sessions across devices (top non-trading product unlock)|BLOCK|wallets-infra|PWG-4,ATKA|MULT|both|master-gaps#M-01 / analysis-3#FA-01|
+OPP-002|M-02|Institutional Multisig Wallet (Full UI)|Safe-equivalent for XRPL — full UI for institutional multisig|APP|wallets-infra|PWG-4,ATKA|HIGH|xrpl|master-gaps#M-02 / analysis-3#FA-02|Possible merge with gap-01 (Treasury wallet B2B) — distinct: multisig vs treasury workflow
+OPP-003|M-03|Smart Contract Wallet on EVM Sidechain|ERC-4337 wallet — table-stakes vs Base/Arbitrum|APP|wallets-infra|PWG-4|HIGH|evm|master-gaps#M-03 / analysis-3#FA-03|
+OPP-004|M-04|Unified Cross-Chain Wallet SDK|Single SDK supporting both XRPL native + EVM Sidechain|BLOCK|wallets-infra|PWG-4,ATKA|MED|both|master-gaps#M-04 / analysis-3#FA-04|
+OPP-005|M-05|Institutional Data Emission Adapter Library|ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage|BLOCK|wallets-infra|PWG-2,PWG-3,ATKA|MULT|xrpl|master-gaps#M-05 / analysis-3#FA-05|
+OPP-006|M-06|Stablecoin Accounting & Reconciliation Export|QuickBooks/Xero/IFRS-compatible export — merchant adoption unlock|BLOCK|wallets-infra|PWG-3,ATKA|HIGH|xrpl|master-gaps#M-06 / analysis-3#FA-06|Possible merge with gap-10 (broader accounting)
+OPP-007|M-07|Multi-Flow Institutional Access Control Library|Permissioned Domains × Credentials for institutional flows|BLOCK|wallets-infra|PWG-4,ATKA|HIGH|xrpl|master-gaps#M-07 / analysis-3#FA-07|Possible merge with gap-04 (KYC reusable) — distinct: lib vs user-app
+OPP-008|M-08|Pluggable Proof Primitives Library|Hash/signature/ZK/BYO-scheme — composable primitives|BLOCK|wallets-infra|PWG-4,ATKA|MED|xrpl|master-gaps#M-08 / analysis-3#FA-08|
+OPP-009|M-09|Vault Wrapper Pattern Library (XLS-65)|Timing arbitrage on XLS-65 amendment|BLOCK|lending|PWG-1,ATKA|MULT|xrpl|master-gaps#M-09 / analysis-3#FA-09|
+OPP-010|M-10|Risk-Signal Aggregation from MPT Trading|Kennedy Reassurance — XRPL-native novel pattern|BLOCK|lending|PWG-1,ATKA|MED|xrpl|master-gaps#M-10 / analysis-3#FA-10|
+OPP-011|M-11|Lending Protocol on EVM Sidechain (Morpho-style)|Morpho-style lending — top community survey need|APP|lending|PWG-1,ATKA|MULT|evm|master-gaps#M-11 / analysis-3#FA-11|
+OPP-012|M-12|Uncollateralized Lending Interface (XLS-66)|UI for XLS-66 unsecured lending — Evernorth intent|APP|lending|PWG-1,ATKA|HIGH|xrpl|master-gaps#M-12 / analysis-3#FA-12 / gaps#gap-08|Merged with gap-08 (Lending senior tranches XLS-66)
+OPP-013|M-12b|Compliant Credit Vault (institutional service)|Agent-curator with attestations — A1 Tier 1 #1|APP|lending|PWG-1,ATKA|HIGH|xrpl|master-gaps#M-12b / analysis-1|
+OPP-014|M-13|Physical-to-Digital Binding (EU DPP)|Regulatory deadline — 12-month EU DPP window|BLOCK|rwa-stable|PWG-2,ATKA|HIGH|xrpl|master-gaps#M-13 / analysis-3#FA-13|
+OPP-015|M-14|Yield-Bearing Stablecoin (T-bill backed)|USDe parallel — top community demand|APP|rwa-stable|PWG-3,ATKA,YC|MULT|both|master-gaps#M-14 / analysis-3#FA-14 / gaps#gap-13|
+OPP-016|M-15|Non-USD Stablecoin DeFi Rails|EUR/BRL/SGD/AUD rails|BLOCK|rwa-stable|PWG-3,ATKA|MED|both|master-gaps#M-15 / analysis-3#FA-15|
+OPP-017|M-16|Chunked Data + On-Chain Anchoring Pattern|IPFS/S3/self-hosted with on-chain anchoring|BLOCK|rwa-stable|PWG-2,ATKA|MED|xrpl|master-gaps#M-16 / analysis-3#FA-16|
+OPP-018|M-16b|RWA Issuance Studio EU/MiCA|MPT + DID + cap table — A1 Tier 1 #2|APP|rwa-stable|PWG-2,ATKA|HIGH|xrpl|master-gaps#M-16b / analysis-1|
+OPP-019|M-17|Restaking Protocol for XRP (Babylon-fork)|$110B+ XRP cap underutilized|APP|evm-defi|PWG-1,ATKA|MULT|evm|master-gaps#M-17 / analysis-3#FA-17|
+OPP-020|M-18|Synthetic Assets / CDP Protocol (× Axiom)|Gold/stocks/forex synthetic assets|APP|evm-defi|PWG-1,ATKA|HIGH|evm|master-gaps#M-18 / analysis-3#FA-18|
+OPP-021|M-19|Perpetual DEX (vAMM or order book)|Derivatives = highest volume DeFi — XRPL at zero|APP|evm-defi|PWG-1,ATKA|HIGH|evm|master-gaps#M-19 / analysis-3#FA-19|
+OPP-022|M-20|Decentralized Insurance Protocol|Maturity signal for institutional adoption|APP|evm-defi|PWG-1,ATKA|HIGH|evm|master-gaps#M-20 / analysis-3#FA-20|Relation to service-08 (AI underwriting service) — distinct
+OPP-023|M-21|Pre-Deployed Testnet Infrastructure|Multiplier across everything — sandbox|BLOCK|dev-agents|PWG-1,PWG-2,PWG-3,PWG-4,ATKA|MULT|both|master-gaps#M-21 / analysis-3#FA-21|
+OPP-024|M-22|XRPL Capabilities Registry|Auto-update XLS feed — solves awareness gap|BLOCK|dev-agents|PWG-1,PWG-2,PWG-3,PWG-4,ATKA|HIGH|both|master-gaps#M-22 / analysis-3#FA-22|
+OPP-025|M-23|Vendor-Neutral Oracle / Bridge / Ramp Adapters|Zero-code-change provider swap|BLOCK|dev-agents|PWG-1,PWG-2,ATKA|MED|both|master-gaps#M-23 / analysis-3#FA-23|Relation with gap-12 (data marketplace)
+OPP-026|M-24|CeDeFi Yield Integration SDK (CEX channel)|60%+ XRP on CEX — #1 distribution play|BLOCK|dev-agents|PWG-1,PWG-3,ATKA|HIGH|both|master-gaps#M-24 / analysis-3#FA-24|
+OPP-027|M-25|P-256 / secp256r1 Signing (XLS proposal)|Cross-cutting — Apple Secure Enclave + WebAuthn + HSM|BLOCK|dev-agents|PWG-4,ATKA|HIGH|xrpl|master-gaps#M-25 / analysis-3|
+OPP-028|M-26|AgentPay — x402 + XRPL settlement|AI agent payments — A1 blueprint|BLOCK|dev-agents|PWG-4,ATKA|HIGH|both|master-gaps#M-26 / builder-atlas / gaps#gap-07|Merged with gap-07 + AgentPay blueprint
+OPP-029|M-27|AI-Native Compliance Ops (service company)|YC RFS lens — also Service-01|APP|dev-agents|PWG-4,ATKA,YC|HIGH|xrpl|master-gaps#M-27 / gaps#service-01|Merged with service-01
+OPP-030|M-28|AI-Native Treasury Ops (RLUSD automation)|A1 service-thesis — also Service-02 Treasury-aaS|APP|dev-agents|PWG-3,ATKA,YC|MED|both|master-gaps#M-28 / gaps#service-02|Merged with service-02
+OPP-031|M-29|AI-Native Restaking Manager (yield optimizer)|A1 service-thesis · auto-rebalance|APP|dev-agents|PWG-1,ATKA|MED|evm|master-gaps#M-29 / analysis-3|
+OPP-032|M-30|Onchain Reputation for AI Agents (KYA)|A1 service-thesis · agent identity layer|BLOCK|dev-agents|PWG-4,ATKA|MED|xrpl|master-gaps#M-30 / analysis-3|
+OPP-033|G-02|Monitoring & B2B alerting|XRPL's Tenderly/Forta — cross-cutting infra|BLOCK|dev-agents|ECO|HIGH|both|master-gaps#G-02 / gaps#gap-02|Relation to service-06 (AI audit service) — distinct
+OPP-034|G-03|Native yield aggregator (Yearn-XRPL)|Cross-protocol yield routing for XRPL natively|APP|lending|ECO|HIGH|both|master-gaps#G-03 / gaps#gap-03|
+OPP-035|G-05|Regional POS / merchant tooling|Retail merchants in emerging markets + EU/MiCA|APP|rwa-stable|ECO|HIGH|both|master-gaps#G-05 / gaps#gap-05 / builder-atlas#MerchantPay|Merged with MerchantPay blueprint
+OPP-036|G-11|Gaming utility-NFT framework|Play-to-earn + asset interop — XRPL NFT primitives|BLOCK|rwa-stable|ECO|MED|xrpl|master-gaps#G-11 / gaps#gap-11|
+OPP-037|S-03|Market-making-as-a-Service|AI agent provides liquidity · 70-90% margin|APP|dev-agents|YC|HIGH|both|master-gaps#S-03 / gaps#service-03|
+OPP-038|S-05|Community-ops-as-a-Service|AI agent runs Discord + Twitter + grants ops|APP|dev-agents|YC|HIGH|both|master-gaps#S-05 / gaps#service-05|
+OPP-039|S-07|Dispute resolution & recovery|AI agent handles claims · refunds · recovery|APP|dev-agents|YC|MED|both|master-gaps#S-07 / gaps#service-07|
+OPP-040|Y-14|Prediction markets infrastructure|Engine layer · Polymarket equivalent|BLOCK|evm-defi|YC|HIGH|both|master-gaps#Y-14 / gaps#gap-14|
+OPP-041|Y-15|Prediction markets dApps (consumer)|Polymarket-style for politics/sports/crypto|APP|evm-defi|YC|HIGH|both|master-gaps#Y-15 / gaps#gap-15|
+OPP-042|Y-16|AI trading agents (DCA · momentum · alpha)|Quant agents on XRPL · alpha generation|APP|dev-agents|YC|HIGH|both|master-gaps#Y-16 / gaps#gap-16|
+OPP-043|gap-01|Treasury wallet B2B XRPL-native|Coinshift/Utopia Labs equivalent — B2B treasury management|APP|wallets-infra|ECO|HIGH|xrpl|gaps#gap-01|CANDIDATE: not in master-gaps. Distinct from M-02 (multisig UI). ADD?
+OPP-044|gap-04|KYC reusable cross-app|Reusable KYC credential across XRPL apps (consumer-facing)|APP|wallets-infra|ECO|HIGH|xrpl|gaps#gap-04|CANDIDATE: not in master-gaps. Possibly absorbed by M-07 (lib) but distinct user-product. ADD?
+OPP-045|gap-06|Mid-market corporate bonds|On-chain mid-market corporate bond marketplace (BondBloc)|APP|rwa-stable|ECO|HIGH|xrpl|gaps#gap-06 / builder-atlas#BondBloc|CANDIDATE: matches BondBloc. ADD definitely.
+OPP-046|gap-09|Agent treasury + wallet pour IA|Wallet/treasury infrastructure for AI agents|BLOCK|dev-agents|ECO|MED|both|gaps#gap-09|CANDIDATE: partial overlap with M-26 / M-30. Distinct? ADD?
+OPP-047|gap-10|On-chain accounting + reporting|Broader accounting/reporting platform (vs M-06 narrow stablecoin-export)|APP|wallets-infra|ECO|HIGH|both|gaps#gap-10|CANDIDATE: M-06 is narrow. ADD broader version?
+OPP-048|gap-12|Data marketplace · oracle aggregator|Multi-source oracle aggregator + data marketplace|BLOCK|dev-agents|ECO|MED|both|gaps#gap-12|CANDIDATE: distinct from M-23 (vendor-neutral adapters). ADD?
+OPP-049|service-04|RWA structuring firm (AI service)|AI agent + lawyer-on-tap for RWA tokenization|APP|rwa-stable|YC|HIGH|both|gaps#service-04|MISSING. Distinct from M-16b (product) — AI-native service.
+OPP-050|service-06|Audit & continuous monitoring (AI service)|AI service for continuous on-chain audit|APP|dev-agents|YC|MED|both|gaps#service-06|MISSING. Distinct from G-02 (B2B tooling) — AI service.
+OPP-051|service-08|DeFi underwriting / insurance (AI service)|AI agent prices DeFi risk and underwrites|APP|evm-defi|YC|MED|both|gaps#service-08|MISSING. Distinct from M-20 (protocol) — AI service.
+OPP-052|BA-RemitFlow|Remittance corridor (RemitFlow blueprint)|Cross-border remittance — Philippines ↔ US prototype|APP|rwa-stable|ATKA|HIGH|xrpl|builder-atlas#RemitFlow|CANDIDATE: vertical-specific app. ADD?
+OPP-053|BA-VaultDAO|USD savings vault (VaultDAO blueprint)|USD savings for LATAM middle class — yield product|APP|rwa-stable|ATKA|HIGH|both|builder-atlas#VaultDAO|CANDIDATE: related M-14 / G-03 but distinct LATAM vertical. ADD?
+OPP-054|BA-PropTok|Real estate fractionalization (PropTok blueprint)|Premium real estate tokenization platform|APP|rwa-stable|ATKA|MED|xrpl|builder-atlas#PropTok|CANDIDATE: distinct from M-13/M-16b — real-estate vertical. ADD?
+OPP-055|BA-PayrollXRP|Streaming payroll (PayrollXRP blueprint)|Streaming payroll for DAOs and global freelancers|APP|wallets-infra|ATKA|MED|xrpl|builder-atlas#PayrollXRP|CANDIDATE: new concept — streaming payroll. ADD?`;
+
+// Parse CSV
+function parseCSV(csv) {
+  const lines = csv.split('\n').filter(l => l.trim());
+  const headers = lines[0].split(',');
+  return lines.slice(1).map(line => {
+    const cells = line.split('|');
+    const row = {};
+    headers.forEach((h, i) => row[h.trim()] = (cells[i] || '').trim());
+    return row;
+  });
+}
+
+const opps = parseCSV(CSV_DATA);
+
+// Render rows
+function renderTable() {
+  const tbody = document.getElementById('opp-table');
+  tbody.innerHTML = opps.map(o => {
+    const isCandidate = o.notes.startsWith('CANDIDATE');
+    const isMissing = o.notes.startsWith('MISSING');
+    const cls = isMissing ? 'missing' : (isCandidate ? 'candidate' : '');
+    const status = (isCandidate || isMissing) ? 'candidate' : 'confirmed';
+    const sources = o.sources.split(',').map(s => {
+      const t = s.trim();
+      const lc = t.toLowerCase().split('-')[0];
+      return `<span class="src-tag ${lc}">${t}</span>`;
+    }).join('');
+    return `<tr class="${cls}" data-type="${o.type}" data-theme="${o.theme}" data-status="${status}">
+      <td class="id-cell">${o.id}<span class="legacy-id">${o.legacy_id}</span></td>
+      <td class="title-cell">${o.title}<span class="desc">${o.description}</span></td>
+      <td><span class="type-pill ${o.type.toLowerCase()}">${o.type}</span></td>
+      <td><span class="theme-pill">${o.theme}</span></td>
+      <td><div class="src-tags">${sources}</div></td>
+      <td><span class="tier-pill ${o.tier.toLowerCase()}">${o.tier}</span></td>
+      <td><span class="chain-pill ${o.chain.toLowerCase()}">${o.chain}</span></td>
+      <td class="note-cell">${o.notes}</td>
+    </tr>`;
+  }).join('');
+
+  // Update stat cells
+  document.getElementById('stat-app').textContent = opps.filter(o => o.type === 'APP').length;
+  document.getElementById('stat-block').textContent = opps.filter(o => o.type === 'BLOCK').length;
+  document.getElementById('stat-confirmed').textContent = opps.filter(o => !o.notes.startsWith('CANDIDATE') && !o.notes.startsWith('MISSING')).length;
+  document.getElementById('stat-candidate').textContent = opps.filter(o => o.notes.startsWith('CANDIDATE') || o.notes.startsWith('MISSING')).length;
+
+  updateCount();
+}
+
+// Filters
+const active = { type: 'all', theme: 'all', status: 'all' };
+
+function updateRows() {
+  const rows = document.querySelectorAll('#opp-table tr');
+  let visible = 0;
+  rows.forEach(row => {
+    const ok =
+      (active.type === 'all' || row.dataset.type === active.type) &&
+      (active.theme === 'all' || row.dataset.theme === active.theme) &&
+      (active.status === 'all' || row.dataset.status === active.status);
+    row.classList.toggle('row-hidden', !ok);
+    if (ok) visible++;
+  });
+  document.getElementById('visible-count').textContent = `${visible} / ${opps.length} visibles`;
+}
+
+function updateCount() { updateRows(); }
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    const val = btn.dataset.val;
+    document.querySelectorAll(`.filter-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    active[type] = val;
+    updateRows();
+  });
+});
+
+renderTable();
+</script>
+
+</body>
+</html>
