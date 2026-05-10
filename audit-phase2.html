@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Audit Phase 2 — Format de card | XRPL Builder</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f4efe6;
+  --paper-2: #ece6d9;
+  --ink: #0e1116;
+  --muted: #58605a;
+  --wallet: #d4a017;
+  --orange: #e87722;
+  --added: #2e5d4f;
+  --candidate: #b8860b;
+  --warning: #c0392b;
+  --app: #5a85b8;
+  --block: #8b5a8c;
+  --rwa: #4a6741;
+  --amm: #8b5a8c;
+  --user: #c8553d;
+  --sidechain: #b85c38;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Fraunces', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.page { max-width: 1400px; margin: 0 auto; padding: 24px 28px 80px; }
+
+/* === NAVBAR === */
+.nav-wrapper { position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--ink); }
+.nav-tier1 { background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; }
+.nav-tier1 .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.nav-tier1 .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+.nav-tier1 .nav-logo { flex-shrink: 0; display: block; }
+.nav-tier1 .top-links { display: flex; gap: 0; }
+.nav-tier1 .top-link { color: var(--paper); text-decoration: none; padding: 6px 14px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; white-space: nowrap; position: relative; }
+.nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
+.nav-tier1 .top-link .caret { font-size: 11px; margin-left: 5px; opacity: 0.9; display: inline-block; transform: translateY(-1px); }
+.nav-tier1 .top-link[data-section="anatomy"] { box-shadow: inset 0 -3px 0 #5a85b8; }
+.nav-tier1 .top-link[data-section="landscape"] { box-shadow: inset 0 -3px 0 var(--rwa); }
+.nav-tier1 .top-link[data-section="tools"] { box-shadow: inset 0 -3px 0 var(--amm); }
+.nav-tier1 .top-link[data-section="atlas"] { box-shadow: inset 0 -3px 0 var(--user); }
+.nav-tier1 .top-link[data-section="analysis"] { box-shadow: inset 0 -3px 0 var(--wallet); }
+.nav-tier1 .top-link[data-section="buildathon"] { box-shadow: inset 0 -3px 0 var(--sidechain); }
+.nav-tier1 .right-cluster { display: flex; align-items: center; gap: 10px; }
+.nav-tier1 .backlog-mini { color: var(--paper); opacity: 0.55; text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid rgba(244,239,230,0.3); transition: opacity 0.15s ease; }
+.nav-tier1 .backlog-mini:hover { opacity: 1; }
+.nav-tier1 .current-update { color: var(--ink); background: var(--wallet); text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--wallet); font-weight: 700; transition: opacity 0.15s ease; white-space: nowrap; }
+.nav-tier1 .current-update:hover { opacity: 0.85; }
+.nav-tier1 .lang-toggle { display: flex; border: 1.5px solid var(--paper); white-space: nowrap; }
+.nav-tier1 .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
+.nav-tier1 .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+.nav-tier1 .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
+.nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
+.nav-tier2.empty { display: none; }
+@media (max-width: 800px) {
+  .nav-tier1 { flex-direction: column; gap: 6px; padding: 8px 12px; }
+  .nav-tier1 .top-links { flex-wrap: wrap; justify-content: center; font-size: 9px; }
+  .nav-tier1 .top-link { padding: 4px 8px; }
+  .nav-tier1 .right-cluster { flex-wrap: wrap; justify-content: center; }
+}
+
+/* === MASTHEAD === */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 38px;
+  line-height: 1.05;
+  margin: 0;
+}
+h1 em { color: var(--candidate); font-style: italic; font-weight: 400; }
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+
+/* === BANNER === */
+.banner {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border-left: 6px solid var(--candidate);
+}
+.banner strong { color: var(--candidate); }
+
+/* === REFERENCE OPPS === */
+.ref-opps {
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+.ref-opps h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+.ref-opps ul { margin: 0; padding-left: 22px; font-size: 13px; }
+.ref-opps li { margin-bottom: 4px; }
+.ref-opps code {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1px 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+/* === VARIANT SECTIONS === */
+.variant {
+  margin-bottom: 60px;
+  border: 3px solid var(--ink);
+  padding: 0;
+  background: var(--paper);
+}
+.variant-head {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.variant-head h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 26px;
+  margin: 0;
+  color: var(--paper);
+}
+.variant-head h2 em {
+  color: var(--wallet);
+  font-style: italic;
+  font-weight: 400;
+}
+.variant-letter {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--wallet);
+  margin: 0;
+}
+.variant-pros-cons {
+  background: var(--paper-2);
+  padding: 14px 22px;
+  border-bottom: 2px solid var(--ink);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  font-size: 13px;
+}
+.variant-pros-cons .pros, .variant-pros-cons .cons {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.55;
+}
+.variant-pros-cons .label {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+  margin-bottom: 4px;
+  display: block;
+}
+.variant-pros-cons .pros .label { color: var(--added); }
+.variant-pros-cons .cons .label { color: var(--warning); }
+.variant-body {
+  padding: 22px;
+  background: var(--paper);
+}
+
+/* === COMMON BADGES (used in all variants) === */
+.type-pill, .theme-pill, .tier-pill, .chain-pill, .src-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+.type-pill.app { background: var(--app); color: var(--paper); }
+.type-pill.block { background: var(--block); color: var(--paper); }
+.theme-pill { background: var(--paper-2); color: var(--ink); border: 1px solid var(--ink); }
+.tier-pill.mult { background: var(--orange); color: var(--paper); }
+.tier-pill.high { background: var(--wallet); color: var(--ink); }
+.tier-pill.med { background: var(--paper-2); color: var(--ink); border: 1px solid var(--muted); }
+.chain-pill.xrpl { background: var(--ink); color: var(--paper); }
+.chain-pill.evm { background: #5a85b8; color: var(--paper); }
+.chain-pill.both { background: var(--paper-2); color: var(--ink); border: 1px solid var(--ink); }
+.src-tag.eco { background: #4a7c59; color: var(--paper); }
+.src-tag.atka { background: #8b5a8c; color: var(--paper); }
+.src-tag.yc { background: var(--orange); color: var(--paper); }
+.src-tag.pwg { background: #2e5d4f; color: var(--paper); }
+.src-tag.int { background: var(--wallet); color: var(--ink); }
+
+/* ============================== */
+/* VARIANT A — COMPACT HORIZONTAL */
+/* ============================== */
+.va-row {
+  display: grid;
+  grid-template-columns: 80px 70px 60px 80px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(14,17,22,0.15);
+  font-size: 12.5px;
+}
+.va-row:hover { background: var(--paper-2); }
+.va-row:last-child { border-bottom: none; }
+.va-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.va-id .legacy {
+  display: block;
+  font-size: 8.5px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 1px;
+}
+.va-row .type-pill { padding: 3px 7px; font-size: 9px; }
+.va-row .tier-pill { padding: 3px 7px; font-size: 9px; }
+.va-row .chain-pill { padding: 3px 7px; font-size: 9px; }
+.va-row .src-tag { padding: 2px 6px; font-size: 8.5px; margin-right: 2px; }
+.va-title { font-weight: 600; font-size: 13.5px; }
+.va-title small {
+  display: block;
+  font-weight: 400;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.va-srcs { display: flex; gap: 2px; flex-wrap: wrap; max-width: 200px; }
+.va-theme {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ============================== */
+/* VARIANT B — CARD BOX           */
+/* ============================== */
+.vb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 18px;
+}
+.vb-card {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.vb-card-head {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 9px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.vb-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.vb-id .legacy {
+  display: inline;
+  margin-left: 6px;
+  font-size: 9px;
+  opacity: 0.65;
+  font-weight: 400;
+}
+.vb-pills-head { display: flex; gap: 4px; }
+.vb-pills-head .type-pill,
+.vb-pills-head .tier-pill { padding: 2px 7px; font-size: 9px; }
+.vb-card-body { padding: 14px 16px; flex: 1; }
+.vb-card-body h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25;
+  margin: 0 0 6px;
+}
+.vb-card-body h3 em {
+  color: var(--orange);
+  font-style: italic;
+  font-weight: 400;
+}
+.vb-card-body p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+.vb-card-foot {
+  background: var(--paper-2);
+  padding: 10px 14px;
+  border-top: 1px solid rgba(14,17,22,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.vb-foot-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11px;
+}
+.vb-foot-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  min-width: 50px;
+}
+.vb-card .src-tag { padding: 2px 6px; font-size: 8.5px; }
+.vb-card .chain-pill,
+.vb-card .theme-pill { padding: 2px 7px; font-size: 9px; }
+
+/* ============================== */
+/* VARIANT C — HYBRID EXPANDABLE  */
+/* ============================== */
+.vc-row {
+  border-bottom: 1px solid rgba(14,17,22,0.15);
+  background: var(--paper);
+}
+.vc-row:last-child { border-bottom: none; }
+.vc-row[open] { background: var(--paper-2); }
+.vc-summary {
+  display: grid;
+  grid-template-columns: 80px 70px 60px 1fr auto 24px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12.5px;
+}
+.vc-summary::-webkit-details-marker { display: none; }
+.vc-summary:hover { background: var(--paper-2); }
+.vc-row[open] .vc-summary { background: var(--ink); color: var(--paper); }
+.vc-row[open] .vc-summary .legacy { color: rgba(244,239,230,0.7); }
+.vc-row[open] .vc-summary .va-theme { color: rgba(244,239,230,0.7); }
+.vc-row .type-pill,
+.vc-row .tier-pill,
+.vc-row .chain-pill { padding: 3px 7px; font-size: 9px; }
+.vc-chevron {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+.vc-row[open] .vc-chevron { transform: rotate(90deg); color: var(--wallet); }
+.vc-detail {
+  padding: 16px 22px 22px;
+  background: var(--paper);
+  border-top: 1px solid rgba(14,17,22,0.15);
+}
+.vc-detail h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.vc-detail h4 em { color: var(--orange); font-style: italic; font-weight: 400; }
+.vc-detail p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin: 0 0 14px;
+  line-height: 1.55;
+}
+.vc-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(14,17,22,0.2);
+}
+.vc-detail-block { font-size: 12px; }
+.vc-detail-block .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+}
+.vc-detail-block .pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.vc-detail-block .src-tag { padding: 2px 6px; font-size: 9px; }
+.vc-detail-block .theme-pill,
+.vc-detail-block .chain-pill { padding: 2px 7px; font-size: 9px; }
+
+/* === DECISION SECTION === */
+.decision {
+  margin-top: 60px;
+  background: var(--paper-2);
+  border: 3px solid var(--ink);
+  padding: 28px;
+}
+.decision h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 28px;
+  margin: 0 0 12px;
+}
+.decision h2 em { color: var(--candidate); font-style: italic; font-weight: 400; }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: 13px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+}
+.compare-table th, .compare-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(14,17,22,0.15);
+}
+.compare-table th {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.compare-table td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+footer {
+  margin-top: 60px;
+  padding-top: 18px;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="nav-wrapper">
+  <div class="nav-tier1">
+    <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><g transform="translate(60, 220) scale(0.38461538461538464)"><g transform="translate(0, 615) scale(0.1, -0.1)" fill="currentColor" stroke="none"><path d="M343 5844 c-43 -19 -16 -53 201 -255 37 -35 76 -72 85 -81 9 -10 69 -71 135 -135 65 -65 137 -137 160 -160 22 -23 94 -95 160 -160 65 -65 203 -202 306 -305 104 -104 193 -188 199 -188 6 0 11 -5 11 -11 0 -5 41 -49 92 -97 50 -48 98 -96 107 -106 9 -10 36 -37 60 -60 88 -83 338 -332 342 -341 2 -6 22 -25 44 -44 22 -18 76 -68 121 -110 101 -95 186 -162 244 -191 25 -13 71 -40 102 -61 31 -22 66 -39 76 -39 11 0 31 -9 45 -20 14 -11 28 -20 33 -20 4 0 30 -11 58 -24 85 -41 219 -79 376 -106 30 -6 84 -16 120 -22 83 -16 355 -16 440 -1 36 7 90 17 120 22 104 19 225 49 262 65 21 9 44 16 53 16 20 0 142 56 149 69 4 5 20 13 38 16 17 4 61 26 97 50 36 23 83 50 104 60 20 9 37 21 37 25 0 5 19 19 42 33 24 14 86 65 138 114 52 48 110 102 128 119 19 18 38 36 43 40 4 5 77 78 161 162 84 84 203 203 265 265 62 61 116 115 120 119 23 21 595 585 738 729 22 22 96 96 165 163 69 68 130 129 135 135 6 6 26 25 45 42 156 139 260 251 250 269 -6 11 -18 20 -28 20 -9 1 -218 1 -464 1 l-447 0 -40 -26 c-22 -13 -47 -38 -56 -55 -9 -16 -19 -30 -23 -30 -6 0 -128 -117 -187 -179 -5 -6 -76 -76 -157 -155 -82 -80 -148 -150 -148 -155 0 -6 -9 -15 -21 -21 -30 -17 -309 -294 -309 -308 0 -7 -6 -12 -14 -12 -7 0 -26 -12 -43 -27 -114 -107 -144 -136 -194 -190 -31 -33 -62 -70 -68 -82 -7 -11 -17 -21 -23 -21 -7 0 -24 -12 -38 -26 -117 -121 -337 -328 -359 -337 -14 -7 -38 -20 -51 -30 -77 -55 -139 -89 -184 -103 -28 -9 -74 -24 -103 -35 -302 -108 -732 -48 -993 138 -13 10 -35 23 -47 28 -22 10 -110 82 -142 117 -23 26 -190 192 -228 228 -18 16 -37 30 -43 30 -5 0 -10 5 -10 11 0 17 -153 173 -259 265 -18 16 -40 37 -50 46 -17 19 -48 48 -206 203 -126 122 -101 97 -280 277 -82 82 -153 153 -157 156 -4 4 -29 30 -55 57 -27 28 -72 71 -100 96 -29 26 -58 58 -64 73 -7 14 -15 26 -19 26 -4 0 -24 12 -45 26 -21 14 -44 23 -51 20 -7 -3 -163 -5 -346 -4 -307 0 -358 0 -450 -3 -18 0 -46 2 -63 5 -16 3 -36 3 -42 0z"/><path d="M3460 2854 c-83 -9 -278 -47 -307 -60 -17 -8 -38 -14 -48 -14 -9 0 -28 -6 -43 -14 -15 -8 -46 -17 -67 -21 -22 -4 -55 -16 -73 -26 -18 -10 -39 -19 -46 -19 -7 0 -21 -9 -30 -19 -10 -10 -32 -22 -51 -25 -18 -4 -38 -13 -45 -21 -7 -8 -18 -15 -25 -15 -17 0 -252 -158 -291 -195 -17 -17 -88 -84 -157 -150 -70 -66 -304 -295 -520 -510 -791 -784 -1363 -1345 -1410 -1381 -57 -45 -57 -48 -7 -68 35 -14 100 -16 489 -16 l449 0 413 407 c227 225 528 523 670 663 343 340 509 499 559 535 23 17 58 44 78 61 20 17 67 46 103 63 37 18 70 35 73 39 4 4 31 12 59 18 29 7 72 19 97 27 133 44 419 63 479 32 17 -8 45 -15 64 -15 18 0 67 -11 107 -25 40 -14 84 -25 96 -25 13 0 25 -4 28 -9 3 -5 36 -23 73 -41 38 -18 85 -47 105 -64 20 -17 55 -44 78 -61 58 -42 200 -178 525 -500 539 -534 972 -960 1008 -992 21 -18 41 -43 46 -56 21 -55 40 -57 520 -57 547 0 576 5 468 89 -30 22 -90 78 -134 123 -44 46 -264 263 -488 483 -224 220 -413 406 -419 413 -6 7 -47 48 -90 90 -43 42 -124 122 -180 177 -56 55 -126 123 -156 151 -30 29 -117 114 -192 190 -115 116 -297 292 -419 405 -15 14 -52 43 -81 63 -29 20 -79 54 -111 76 -68 47 -166 100 -184 100 -7 0 -22 9 -33 20 -11 11 -30 20 -42 20 -12 0 -29 6 -37 14 -9 8 -41 21 -71 29 -30 8 -86 26 -125 40 -157 56 -518 92 -705 71z"/></g></g><text x="345" y="280" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="700" fill="#d4a017" font-size="180">B</text></svg><span>XRPL <em>Builder</em></span></a>
+    <div class="top-links"><a class="top-link" data-section="anatomy" href="/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="atlas" href="/builder-atlas">Atlas</a><a class="top-link" data-section="analysis" href="/analysis-1">Analysis <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/buildathon">Buildathon</a></div>
+    <div class="right-cluster">
+      <a class="current-update" href="/audit-phase2" style="background: var(--ink); color: var(--wallet); border-color: var(--wallet);">● Current update</a>
+      <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
+      <div class="lang-toggle">
+        <a class="lang-flag active" href="/audit-phase2">🇫🇷</a>
+        <a class="lang-flag" href="/en/audit-phase2">🇬🇧</a>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-tier2 empty"></nav>
+</div>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Phase 2 · Format de card · v0.1 · brouillon</div>
+    <h1>Audit <em>Phase 2</em><br/>— 3 variantes au choix</h1>
+  </div>
+  <div class="meta">
+    Source : opportunities-master.csv<br/>
+    Échantillon : 5 opportunités représentatives<br/>
+    Statut : à choisir entre A / B / C<br/>
+    Suivant : Phase 3 (migration)
+  </div>
+</header>
+
+<div class="banner">
+  <strong>⚠ PAGE TEMPORAIRE — non liée dans la nav.</strong> 3 variantes de format de card côte à côte sur les <strong>5 mêmes opportunités</strong>. Choisis ta préférée → on l'applique aux 52 opps en Phase 3.
+</div>
+
+<div class="ref-opps">
+  <h3>Les 5 opportunités témoins (mêmes 5 dans chaque variante)</h3>
+  <ul>
+    <li><code>OPP-001</code> M-01 · Cross-Device Session Continuity Library · BLOCK · MULT · 2 sources <em>(extrême BLOCK technique)</em></li>
+    <li><code>OPP-029</code> M-27 · AI-Native Compliance Ops · APP service · 3 sources <em>(extrême APP service AI multi-source)</em></li>
+    <li><code>OPP-015</code> M-14 · Yield-Bearing Stablecoin (T-bill) · APP · MULT · 3 sources <em>(top demand multi-source)</em></li>
+    <li><code>OPP-046</code> gap-09 · Agent treasury + wallet IA · BLOCK · single source ECO <em>(borderline ajouté Phase 1)</em></li>
+    <li><code>OPP-052</code> BA-PayrollXRP · APP · single source ATKA <em>(nouveau concept, ex-blueprint)</em></li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- VARIANT A — COMPACT HORIZONTAL                               -->
+<!-- ============================================================ -->
+<section class="variant">
+  <div class="variant-head">
+    <h2>Variante <em>A</em> — Compact horizontal</h2>
+    <span class="variant-letter">A</span>
+  </div>
+  <div class="variant-pros-cons">
+    <div class="pros">
+      <span class="label">✓ Avantages</span>
+      Densité maximale · 52 opps lisibles d'un coup · scan rapide<br/>
+      Idéal pour comparer/filtrer · spreadsheet feel · navigation au clavier facile
+    </div>
+    <div class="cons">
+      <span class="label">✗ Inconvénients</span>
+      Pas de description visible · contexte limité · froid<br/>
+      Mobile : sera étroit ou cassera en multi-lignes
+    </div>
+  </div>
+  <div class="variant-body" style="padding: 0;">
+
+    <div class="va-row">
+      <div class="va-id">OPP-001<span class="legacy">M-01</span></div>
+      <span class="type-pill block">BLOCK</span>
+      <span class="tier-pill mult">MULT</span>
+      <span class="chain-pill both">Both</span>
+      <div class="va-title">Cross-Device Session Continuity Library<small>Library to seamlessly continue wallet sessions across devices</small></div>
+      <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
+      <span class="va-theme">Wallets &amp; Infra</span>
+    </div>
+
+    <div class="va-row">
+      <div class="va-id">OPP-029<span class="legacy">M-27</span></div>
+      <span class="type-pill app">APP</span>
+      <span class="tier-pill high">HIGH</span>
+      <span class="chain-pill xrpl">XRPL</span>
+      <div class="va-title">AI-Native Compliance Ops (service company)<small>YC RFS lens — also Service-01 — service business with AI agent + lawyer</small></div>
+      <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+      <span class="va-theme">Dev &amp; Agents</span>
+    </div>
+
+    <div class="va-row">
+      <div class="va-id">OPP-015<span class="legacy">M-14</span></div>
+      <span class="type-pill app">APP</span>
+      <span class="tier-pill mult">MULT</span>
+      <span class="chain-pill both">Both</span>
+      <div class="va-title">Yield-Bearing Stablecoin (T-bill backed)<small>USDe parallel — top community demand</small></div>
+      <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+      <span class="va-theme">RWA &amp; Stables</span>
+    </div>
+
+    <div class="va-row">
+      <div class="va-id">OPP-046<span class="legacy">gap-09</span></div>
+      <span class="type-pill block">BLOCK</span>
+      <span class="tier-pill med">MED</span>
+      <span class="chain-pill both">Both</span>
+      <div class="va-title">Agent treasury + wallet for AI<small>Wallet/treasury infra for AI agents — 3rd layer of agent stack</small></div>
+      <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+      <span class="va-theme">Dev &amp; Agents</span>
+    </div>
+
+    <div class="va-row">
+      <div class="va-id">OPP-052<span class="legacy">BA-PayrollXRP</span></div>
+      <span class="type-pill app">APP</span>
+      <span class="tier-pill med">MED</span>
+      <span class="chain-pill xrpl">XRPL</span>
+      <div class="va-title">Streaming payroll for DAOs and freelancers<small>Streaming payroll on XRPL — new concept</small></div>
+      <div class="va-srcs"><span class="src-tag atka">ATKA</span></div>
+      <span class="va-theme">Wallets &amp; Infra</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VARIANT B — CARD BOX                                         -->
+<!-- ============================================================ -->
+<section class="variant">
+  <div class="variant-head">
+    <h2>Variante <em>B</em> — Card box</h2>
+    <span class="variant-letter">B</span>
+  </div>
+  <div class="variant-pros-cons">
+    <div class="pros">
+      <span class="label">✓ Avantages</span>
+      Riche, contextuel · descriptif visible · respire bien<br/>
+      Mobile-friendly (1 col) · esthétique éditoriale (Fraunces) · sources/tier/chain en footer = clean
+    </div>
+    <div class="cons">
+      <span class="label">✗ Inconvénients</span>
+      Prend de la place · 52 cards = beaucoup de scroll<br/>
+      Compare entre opps moins direct · moins data-dense
+    </div>
+  </div>
+  <div class="variant-body">
+    <div class="vb-grid">
+
+      <div class="vb-card">
+        <div class="vb-card-head">
+          <div class="vb-id">OPP-001<span class="legacy">M-01</span></div>
+          <div class="vb-pills-head">
+            <span class="type-pill block">BLOCK</span>
+            <span class="tier-pill mult">MULT</span>
+          </div>
+        </div>
+        <div class="vb-card-body">
+          <h3>Cross-Device Session <em>Continuity Library</em></h3>
+          <p>Library to seamlessly continue wallet sessions across devices. Top non-trading product unlock identified by Atka and PWG Identity — XRPL has primitives but no clean integration story yet.</p>
+        </div>
+        <div class="vb-card-foot">
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Sources</span>
+            <span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span>
+          </div>
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Theme</span><span class="theme-pill">Wallets &amp; Infra</span>
+            <span class="vb-foot-label" style="margin-left:8px;">Chain</span><span class="chain-pill both">Both</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vb-card">
+        <div class="vb-card-head">
+          <div class="vb-id">OPP-029<span class="legacy">M-27</span></div>
+          <div class="vb-pills-head">
+            <span class="type-pill app">APP</span>
+            <span class="tier-pill high">HIGH</span>
+          </div>
+        </div>
+        <div class="vb-card-body">
+          <h3>AI-Native <em>Compliance Ops</em></h3>
+          <p>Service company that delivers compliance operations as an AI-augmented service. YC RFS lens : the AI agent does what compliance officers do, lawyer-on-tap for edge cases. Also tagged as Service-01.</p>
+        </div>
+        <div class="vb-card-foot">
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Sources</span>
+            <span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span>
+          </div>
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Theme</span><span class="theme-pill">Dev &amp; Agents</span>
+            <span class="vb-foot-label" style="margin-left:8px;">Chain</span><span class="chain-pill xrpl">XRPL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vb-card">
+        <div class="vb-card-head">
+          <div class="vb-id">OPP-015<span class="legacy">M-14</span></div>
+          <div class="vb-pills-head">
+            <span class="type-pill app">APP</span>
+            <span class="tier-pill mult">MULT</span>
+          </div>
+        </div>
+        <div class="vb-card-body">
+          <h3>Yield-Bearing <em>Stablecoin (T-bill backed)</em></h3>
+          <p>USDe parallel for XRPL — T-bill collateralized stablecoin generating native yield. Top community demand surfaced by PWG Stablecoins, Atka report and YC RFS. Distribution play : works on both XRPL native and EVM Sidechain.</p>
+        </div>
+        <div class="vb-card-foot">
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Sources</span>
+            <span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span>
+          </div>
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Theme</span><span class="theme-pill">RWA &amp; Stables</span>
+            <span class="vb-foot-label" style="margin-left:8px;">Chain</span><span class="chain-pill both">Both</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vb-card">
+        <div class="vb-card-head">
+          <div class="vb-id">OPP-046<span class="legacy">gap-09</span></div>
+          <div class="vb-pills-head">
+            <span class="type-pill block">BLOCK</span>
+            <span class="tier-pill med">MED</span>
+          </div>
+        </div>
+        <div class="vb-card-body">
+          <h3>Agent treasury <em>+ wallet for AI</em></h3>
+          <p>Wallet/treasury infrastructure dedicated to AI agents — the 3rd layer of the AI agent stack alongside M-26 (payments via x402) and M-30 (identity/reputation KYA). Programmatic-first (agents control programmatically).</p>
+        </div>
+        <div class="vb-card-foot">
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Sources</span>
+            <span class="src-tag eco">ECO</span>
+          </div>
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Theme</span><span class="theme-pill">Dev &amp; Agents</span>
+            <span class="vb-foot-label" style="margin-left:8px;">Chain</span><span class="chain-pill both">Both</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vb-card">
+        <div class="vb-card-head">
+          <div class="vb-id">OPP-052<span class="legacy">BA-PayrollXRP</span></div>
+          <div class="vb-pills-head">
+            <span class="type-pill app">APP</span>
+            <span class="tier-pill med">MED</span>
+          </div>
+        </div>
+        <div class="vb-card-body">
+          <h3>Streaming <em>payroll</em></h3>
+          <p>Streaming payroll on XRPL for DAOs and global freelancers. Continuous payment flow rather than monthly batch — new concept enabled by XRPL near-zero fees and fast finality. Source : Atka strategic blueprint.</p>
+        </div>
+        <div class="vb-card-foot">
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Sources</span>
+            <span class="src-tag atka">ATKA</span>
+          </div>
+          <div class="vb-foot-row">
+            <span class="vb-foot-label">Theme</span><span class="theme-pill">Wallets &amp; Infra</span>
+            <span class="vb-foot-label" style="margin-left:8px;">Chain</span><span class="chain-pill xrpl">XRPL</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VARIANT C — HYBRID EXPANDABLE                                -->
+<!-- ============================================================ -->
+<section class="variant">
+  <div class="variant-head">
+    <h2>Variante <em>C</em> — Hybride dépliable</h2>
+    <span class="variant-letter">C</span>
+  </div>
+  <div class="variant-pros-cons">
+    <div class="pros">
+      <span class="label">✓ Avantages</span>
+      Compact par défaut (= Variante A) · expand au click pour détails (= Variante B)<br/>
+      Best of both · 52 opps scannables · drill-down quand on veut · natif HTML &lt;details&gt;
+    </div>
+    <div class="cons">
+      <span class="label">✗ Inconvénients</span>
+      Ajoute un click pour voir le contexte<br/>
+      Si 52 opps tous expandés = pareil que Variante B (mais avec le toggle UX en plus)
+    </div>
+  </div>
+  <div class="variant-body" style="padding: 0;">
+
+    <details class="vc-row">
+      <summary class="vc-summary">
+        <div class="va-id">OPP-001<span class="legacy">M-01</span></div>
+        <span class="type-pill block">BLOCK</span>
+        <span class="tier-pill mult">MULT</span>
+        <div class="va-title">Cross-Device Session Continuity Library</div>
+        <span class="va-theme">Wallets &amp; Infra</span>
+        <span class="vc-chevron">▸</span>
+      </summary>
+      <div class="vc-detail">
+        <h4>Cross-Device Session <em>Continuity Library</em></h4>
+        <p>Library to seamlessly continue wallet sessions across devices. Top non-trading product unlock identified by Atka and PWG Identity — XRPL has primitives but no clean integration story yet.</p>
+        <div class="vc-detail-grid">
+          <div class="vc-detail-block">
+            <span class="label">Sources</span>
+            <div class="pills"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
+          </div>
+          <div class="vc-detail-block">
+            <span class="label">Chain · Pages</span>
+            <div class="pills"><span class="chain-pill both">Both</span></div>
+            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-01 · analysis-3#FA-01</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="vc-row">
+      <summary class="vc-summary">
+        <div class="va-id">OPP-029<span class="legacy">M-27</span></div>
+        <span class="type-pill app">APP</span>
+        <span class="tier-pill high">HIGH</span>
+        <div class="va-title">AI-Native Compliance Ops</div>
+        <span class="va-theme">Dev &amp; Agents</span>
+        <span class="vc-chevron">▸</span>
+      </summary>
+      <div class="vc-detail">
+        <h4>AI-Native <em>Compliance Ops</em></h4>
+        <p>Service company that delivers compliance operations as an AI-augmented service. YC RFS lens : the AI agent does what compliance officers do, lawyer-on-tap for edge cases. Also tagged as Service-01.</p>
+        <div class="vc-detail-grid">
+          <div class="vc-detail-block">
+            <span class="label">Sources</span>
+            <div class="pills"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+          </div>
+          <div class="vc-detail-block">
+            <span class="label">Chain · Pages</span>
+            <div class="pills"><span class="chain-pill xrpl">XRPL</span></div>
+            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-27 · gaps#service-01</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="vc-row">
+      <summary class="vc-summary">
+        <div class="va-id">OPP-015<span class="legacy">M-14</span></div>
+        <span class="type-pill app">APP</span>
+        <span class="tier-pill mult">MULT</span>
+        <div class="va-title">Yield-Bearing Stablecoin (T-bill backed)</div>
+        <span class="va-theme">RWA &amp; Stables</span>
+        <span class="vc-chevron">▸</span>
+      </summary>
+      <div class="vc-detail">
+        <h4>Yield-Bearing <em>Stablecoin (T-bill backed)</em></h4>
+        <p>USDe parallel for XRPL — T-bill collateralized stablecoin generating native yield. Top community demand surfaced by PWG Stablecoins, Atka report and YC RFS. Distribution play : works on both XRPL native and EVM Sidechain.</p>
+        <div class="vc-detail-grid">
+          <div class="vc-detail-block">
+            <span class="label">Sources</span>
+            <div class="pills"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+          </div>
+          <div class="vc-detail-block">
+            <span class="label">Chain · Pages</span>
+            <div class="pills"><span class="chain-pill both">Both</span></div>
+            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-14 · analysis-3#FA-14 · gaps#gap-13</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="vc-row">
+      <summary class="vc-summary">
+        <div class="va-id">OPP-046<span class="legacy">gap-09</span></div>
+        <span class="type-pill block">BLOCK</span>
+        <span class="tier-pill med">MED</span>
+        <div class="va-title">Agent treasury + wallet for AI</div>
+        <span class="va-theme">Dev &amp; Agents</span>
+        <span class="vc-chevron">▸</span>
+      </summary>
+      <div class="vc-detail">
+        <h4>Agent treasury <em>+ wallet for AI</em></h4>
+        <p>Wallet/treasury infrastructure dedicated to AI agents — the 3rd layer of the AI agent stack alongside M-26 (payments via x402) and M-30 (identity/reputation KYA). Programmatic-first (agents control programmatically).</p>
+        <div class="vc-detail-grid">
+          <div class="vc-detail-block">
+            <span class="label">Sources</span>
+            <div class="pills"><span class="src-tag eco">ECO</span></div>
+          </div>
+          <div class="vc-detail-block">
+            <span class="label">Chain · Pages</span>
+            <div class="pills"><span class="chain-pill both">Both</span></div>
+            <div style="margin-top:6px; font-size:11px; color:var(--muted);">gaps#gap-09 (added Phase 1)</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="vc-row">
+      <summary class="vc-summary">
+        <div class="va-id">OPP-052<span class="legacy">BA-PayrollXRP</span></div>
+        <span class="type-pill app">APP</span>
+        <span class="tier-pill med">MED</span>
+        <div class="va-title">Streaming payroll for DAOs and freelancers</div>
+        <span class="va-theme">Wallets &amp; Infra</span>
+        <span class="vc-chevron">▸</span>
+      </summary>
+      <div class="vc-detail">
+        <h4>Streaming <em>payroll</em></h4>
+        <p>Streaming payroll on XRPL for DAOs and global freelancers. Continuous payment flow rather than monthly batch — new concept enabled by XRPL near-zero fees and fast finality. Source : Atka strategic blueprint.</p>
+        <div class="vc-detail-grid">
+          <div class="vc-detail-block">
+            <span class="label">Sources</span>
+            <div class="pills"><span class="src-tag atka">ATKA</span></div>
+          </div>
+          <div class="vc-detail-block">
+            <span class="label">Chain · Pages</span>
+            <div class="pills"><span class="chain-pill xrpl">XRPL</span></div>
+            <div style="margin-top:6px; font-size:11px; color:var(--muted);">builder-atlas#PayrollXRP (added Phase 1)</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- DECISION                                                     -->
+<!-- ============================================================ -->
+<section class="decision">
+  <h2>Quel format <em>tu choisis</em> ?</h2>
+  <p style="margin: 0 0 8px;">Tableau de comparaison rapide. Quand tu m'as donné ta préférence (A / B / C ou variante mix), je propage à `/master-gaps` (52 cards) en Phase 3.</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Critère</th>
+        <th>Variante A — Compact</th>
+        <th>Variante B — Card box</th>
+        <th>Variante C — Hybride</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Densité (52 visibles d'un coup)</td><td>★★★★★</td><td>★★</td><td>★★★★★</td></tr>
+      <tr><td>Description / contexte visible</td><td>★★ (1 ligne tronquée)</td><td>★★★★★</td><td>★★★ (au click)</td></tr>
+      <tr><td>Esthétique éditoriale</td><td>★★ (spreadsheet)</td><td>★★★★★ (Fraunces)</td><td>★★★★ (mix)</td></tr>
+      <tr><td>Mobile-friendly</td><td>★★ (étroit)</td><td>★★★★★ (1 col)</td><td>★★★★</td></tr>
+      <tr><td>Comparer 2 opps entre elles</td><td>★★★★★</td><td>★★★</td><td>★★★★ (close puis open)</td></tr>
+      <tr><td>Effort de lecture initial</td><td>Faible</td><td>Moyen (scroll)</td><td>Faible (compact par défaut)</td></tr>
+      <tr><td>Cas d'usage idéal</td><td>Tableau de bord exécutif (master-gaps)</td><td>Page narrative riche (gaps)</td><td>Registre filtrable (master-gaps évolué)</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 18px; padding: 16px 20px; background: var(--ink); color: var(--paper); font-size: 13.5px;">
+    <strong style="color: var(--wallet);">Ma recommandation perso :</strong> Variante C (hybride) pour <code style="background: var(--paper); color: var(--ink); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">/master-gaps</code> (registre principal) + Variante B pour <code style="background: var(--paper); color: var(--ink); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">/gaps</code> (page narrative). Mais c'est ton appel.
+  </div>
+</section>
+
+<footer>
+  <span>AUDIT PHASE 2 · v0.1</span>
+  <span>BROUILLON · MAI 2026</span>
+</footer>
+
+</div>
+
+</body>
+</html>
