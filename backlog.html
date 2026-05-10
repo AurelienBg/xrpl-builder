@@ -342,7 +342,7 @@
     <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
   </div>
   <div class="meta">
-    Items : 1<br/>
+    Items : 5<br/>
     Mode : compact (toggle)<br/>
     Filtres : status × priorité<br/>
     Mise à jour : Mai 2026
@@ -412,6 +412,126 @@
     <div class="block">
       <span class="block-tag action">Action attendue</span>
       <p><strong>Envoie les notes brutes d'une interview</strong> (la plus avancée — Djason ?) et on fixe le pattern. Choix display A/B/C à arbitrer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="medium">
+  <div class="item-header">
+    <span class="num">02</span>
+    <h2>Builder Atlas <em>↔</em> Opportunities cross-link</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Les 7 blueprints de <code>/builder-atlas</code> (RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP, AgentPay) <strong>composent</strong> des opportunités du registre, mais le lien n'est pas explicite. Un lecteur sur AgentPay ne voit pas direct quelles opps il combine (M-26 + gap-09 par ex.).</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Pistes</span>
+      <ul>
+        <li>Ajouter un bloc « Composé de » dans chaque card du Builder Atlas, listant les opp IDs combinées</li>
+        <li>Réciproquement, dans <code>/opportunities</code> drill-down de chaque opp : section « Blueprints qui l'utilisent »</li>
+        <li>Bidirectional links rendent l'usage du registre concret</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Action</span>
+      <p>Mapper les 7 blueprints aux IDs OPP-XXX. ~30 min de mapping puis update HTML.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="low">
+  <div class="item-header">
+    <span class="num">03</span>
+    <h2>Export <em>CSV / JSON</em> depuis /opportunities</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Le CSV master est à la racine du repo (<code>/opportunities-master.csv</code>) mais peu visible. Un user qui veut l'import dans son tableur n'a pas de bouton clair.</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Pistes</span>
+      <ul>
+        <li>Bouton « Download CSV » en haut de <code>/opportunities</code></li>
+        <li>Bouton « Download JSON » (au cas où usage programmatique)</li>
+        <li>Les filtres actifs s'appliquent à l'export (download = subset filtré)</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Action</span>
+      <p>Ajouter 2 buttons dans la barre de filtres + JS qui sérialise les rows visibles.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="medium">
+  <div class="item-header">
+    <span class="num">04</span>
+    <h2>Second batch <em>interviews</em> — corporates &amp; VCs</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Item 01 prévoit 6 interviews founders. Pour avoir une vue 360° il manque les <strong>corporates Ripple, XRPL Foundation, VCs tier 1</strong> qui ont une vue marché différente (deal flow, regulatory, capital allocation).</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Pistes</span>
+      <ul>
+        <li>5 corporates Ripple/XRPL Commons (Sergio, Lisa, etc.)</li>
+        <li>10 VCs tier 1 (a16z crypto, Pantera, Multicoin, Polychain, Variant)</li>
+        <li>Tag source <code>INT-CORP-{nom}</code> et <code>INT-VC-{nom}</code> pour distinguer</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Action</span>
+      <p>À démarrer après item 01 (interviews founders). Outreach via XRPL Commons network.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="low">
+  <div class="item-header">
+    <span class="num">05</span>
+    <h2>Periodic <em>ecosystem-map</em> refresh</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problème</span>
+      <p>Le snapshot <code>/ecosystem-map</code> est daté (mai 2026). L'écosystème XRPL bouge vite — projets qui passent Live, nouveaux partners, etc. Sans refresh régulier, le tag « audit ECO » du registre devient obsolète.</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Pistes</span>
+      <ul>
+        <li>Trimestriel : revue manuelle de chaque catégorie (delete morts, ajouter nouveaux)</li>
+        <li>Set up un tracker GitHub Issue tous les 3 mois</li>
+        <li>Versioning : ecosystem-map devient « v1.0 mai 2026 », « v1.1 sept 2026 », etc.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Action</span>
+      <p>Pas urgent. Reminder à mettre dans calendar pour août 2026.</p>
     </div>
   </div>
 </section>

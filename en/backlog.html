@@ -342,7 +342,7 @@
     <h1>Backlog<br/>— what's <em>left</em> to do</h1>
   </div>
   <div class="meta">
-    Items: 1<br/>
+    Items: 5<br/>
     Mode: compact (toggle)<br/>
     Filters: status × priority<br/>
     Updated: May 2026
@@ -412,6 +412,126 @@
     <div class="block">
       <span class="block-tag action">Expected action</span>
       <p><strong>Send the raw notes of one interview</strong> (the most advanced — Djason?) and we lock the pattern. Display choice A/B/C to arbitrate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="medium">
+  <div class="item-header">
+    <span class="num">02</span>
+    <h2>Builder Atlas <em>↔</em> Opportunities cross-link</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problem</span>
+      <p>The 7 blueprints in <code>/builder-atlas</code> (RemitFlow, VaultDAO, BondBloc, MerchantPay, PropTok, PayrollXRP, AgentPay) <strong>compose</strong> registry opportunities, but the link is not explicit. A reader on AgentPay can't directly see which opps it combines (e.g. M-26 + gap-09).</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Possible paths</span>
+      <ul>
+        <li>Add a "Composed of" block in each Builder Atlas card listing the combined opp IDs</li>
+        <li>Reciprocally, in <code>/opportunities</code> drill-down for each opp: section "Blueprints using it"</li>
+        <li>Bidirectional links make the registry's usage concrete</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Expected action</span>
+      <p>Map the 7 blueprints to OPP-XXX IDs. ~30 min mapping then HTML update.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="low">
+  <div class="item-header">
+    <span class="num">03</span>
+    <h2>Export <em>CSV / JSON</em> from /opportunities</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problem</span>
+      <p>The master CSV lives at repo root (<code>/opportunities-master.csv</code>) but is barely visible. A user wanting to import it into their spreadsheet has no clear button.</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Possible paths</span>
+      <ul>
+        <li>"Download CSV" button at the top of <code>/opportunities</code></li>
+        <li>"Download JSON" button (for programmatic use)</li>
+        <li>Active filters apply to the export (download = filtered subset)</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Expected action</span>
+      <p>Add 2 buttons in the filter bar + JS that serializes the visible rows.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="medium">
+  <div class="item-header">
+    <span class="num">04</span>
+    <h2>Second <em>interview</em> batch — corporates &amp; VCs</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-medium">Medium</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problem</span>
+      <p>Item 01 plans 6 founder interviews. For a 360° view we miss <strong>Ripple corporates, XRPL Foundation, tier 1 VCs</strong> who have a different market view (deal flow, regulatory, capital allocation).</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Possible paths</span>
+      <ul>
+        <li>5 Ripple/XRPL Commons corporates (Sergio, Lisa, etc.)</li>
+        <li>10 tier 1 VCs (a16z crypto, Pantera, Multicoin, Polychain, Variant)</li>
+        <li>Source tag <code>INT-CORP-{name}</code> and <code>INT-VC-{name}</code> to distinguish</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Expected action</span>
+      <p>Start after item 01 (founder interviews). Outreach via XRPL Commons network.</p>
+    </div>
+  </div>
+</section>
+
+<section class="item" data-status="open" data-priority="low">
+  <div class="item-header">
+    <span class="num">05</span>
+    <h2>Periodic <em>ecosystem-map</em> refresh</h2>
+    <div class="badge-set">
+      <span class="badge-pill p-low">Low</span>
+      <span class="badge-pill s-open">Open</span>
+    </div>
+    <span class="chevron">▸</span>
+  </div>
+  <div class="item-body">
+    <div class="block">
+      <span class="block-tag problem">Problem</span>
+      <p>The <code>/ecosystem-map</code> snapshot is dated (May 2026). The XRPL ecosystem moves fast — projects going Live, new partners, etc. Without regular refresh, the registry's "ECO audit" tag becomes stale.</p>
+    </div>
+    <div class="block">
+      <span class="block-tag solutions">Possible paths</span>
+      <ul>
+        <li>Quarterly: manual review of each category (delete dead, add new)</li>
+        <li>Set up a GitHub Issue tracker every 3 months</li>
+        <li>Versioning: ecosystem-map becomes "v1.0 May 2026", "v1.1 Sept 2026", etc.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <span class="block-tag action">Expected action</span>
+      <p>Not urgent. Reminder to set in calendar for August 2026.</p>
     </div>
   </div>
 </section>
