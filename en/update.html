@@ -286,223 +286,35 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 <header class="masthead">
   <div>
     <div class="eyebrow">Update tracker · Cleanup item 01 · May 2026</div>
-    <h1><em>Phase</em> tracker</h1>
+    <h1><em>Phase</em> synthesis</h1>
   </div>
   <div class="meta">
     Backlog item: 01<br/>
-    Plan: 6 phases (0 → 5)<br/>
-    Status: Phase 4 delivered<br/>
-    Next: Phase 5
+    Phases 0-4: ✓ Done<br/>
+    Phase 5: ⏸ Pending<br/>
+    Click a link to navigate
   </div>
 </header>
 
-<!-- PROGRESS BAR -->
-<div class="progress-bar">
-  <div class="progress-step done">
-    <div class="progress-num">PHASE 0</div>
-    <div class="progress-name">Taxonomy</div>
-    <div class="progress-status">✓ Done</div>
-  </div>
-  <div class="progress-step done">
-    <div class="progress-num">PHASE 1</div>
-    <div class="progress-name">Inventory</div>
-    <div class="progress-status">✓ Done</div>
-  </div>
-  <div class="progress-step done">
-    <div class="progress-num">PHASE 2</div>
-    <div class="progress-name">Card format</div>
-    <div class="progress-status">✓ Done</div>
-  </div>
-  <div class="progress-step live">
-    <div class="progress-num">PHASE 3</div>
-    <div class="progress-name">Migration</div>
-    <div class="progress-status">★ Live</div>
-  </div>
-  <div class="progress-step done">
-    <div class="progress-num">PHASE 4</div>
-    <div class="progress-name">Analyses</div>
-    <div class="progress-status">✓ Done</div>
-  </div>
-  <div class="progress-step pending">
-    <div class="progress-num">PHASE 5</div>
-    <div class="progress-name">Interviews</div>
-    <div class="progress-status">⏸ Pending</div>
-  </div>
-</div>
-
-<!-- INTRO -->
-<div class="intro">
-  <p>This page tracks progress on <strong>cleanup item 01</strong> of the <a href="/en/backlog">backlog</a>: refactoring the <code>/gaps</code> + <code>/master-gaps</code> architecture + source attribution.</p>
-  <p>Each phase has its own deliverable (CSV, audit page, or final page). Click a button to open the relevant phase page. <strong>Phase 3 (★ Live) = <a href="/en/opportunities">/opportunities</a></strong> — this is the final unified registry.</p>
-</div>
-
-<!-- PHASE 0 -->
-<div class="phase-card done">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">0</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title"><em>Taxonomy</em> decisions</h2>
-      <span class="phase-status-pill done">✓ Done</span>
-    </div>
-    <p class="phase-desc">Single taxonomy validated: 1 word for the object ("Opportunity") × 2 axes (Type APP/BLOCK × 5 consolidated themes) + final list of 10 source-tags (PWG-1/2/3/4 · ATKA · ECO · YC · INT-{6}).</p>
-    <div class="phase-deliverables">
-      <strong>Deliverable</strong>
-      <ul>
-        <li>Validated taxonomy memo (in conversation memory)</li>
-        <li>Frictions / tensions = separate analytical layer (stay in /analysis-*)</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <span class="phase-link disabled">No page</span>
-    <span class="phase-link-note">discussion only</span>
-  </div>
-</div>
-
-<!-- PHASE 1 -->
-<div class="phase-card done">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">1</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title"><em>Full</em> inventory</h2>
-      <span class="phase-status-pill done">✓ Done</span>
-    </div>
-    <p class="phase-desc">Full audit of existing opportunities (master-gaps, gaps, builder-atlas) → consolidated into 1 master CSV. 13 candidates arbitrated (10 added to registry, 3 illustrations kept in /builder-atlas). Final total: 52 confirmed opportunities.</p>
-    <div class="phase-deliverables">
-      <strong>Deliverables</strong>
-      <ul>
-        <li><code>opportunities-master.csv</code> at repo root (52 opps)</li>
-        <li><code>/audit-phase1</code> — decision trail + stats + observations</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <a class="phase-link" href="/en/audit-phase1">→ Audit Phase 1</a>
-    <span class="phase-link-note">5 decisions arbitrated</span>
-  </div>
-</div>
-
-<!-- PHASE 2 -->
-<div class="phase-card done">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">2</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title">Target <em>card format</em></h2>
-      <span class="phase-status-pill done">✓ Done</span>
-    </div>
-    <p class="phase-desc">Iteration on 3 variants (A compact · B card box · C hybrid) using 5 representative opps, then merged into Variant A·C+: A's density (Type+Tier+Chain+sources visible) + C+'s theme grouping + C's inline drill-down.</p>
-    <div class="phase-deliverables">
-      <strong>Deliverable</strong>
-      <ul>
-        <li><code>/audit-phase2</code> — 3 variants side by side + chosen variant A·C+</li>
-        <li>Decision: A·C+ grouped by theme for the final registry</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <a class="phase-link" href="/en/audit-phase2">→ Audit Phase 2</a>
-    <span class="phase-link-note">A·C+ chosen</span>
-  </div>
-</div>
-
-<!-- PHASE 3 -->
-<div class="phase-card live">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">3</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title"><em>Migration</em> to /opportunities</h2>
-      <span class="phase-status-pill live">★ Live</span>
-    </div>
-    <p class="phase-desc">Created unified registry <code>/opportunities</code> with the 52 opps in A·C+ format, functional multi-axis filters (Type × Tier × Chain × Source), theme grouping, per-card drill-down. Redirect banner added on <code>/master-gaps</code> and <code>/gaps</code> (kept live during transition).</p>
-    <div class="phase-deliverables">
-      <strong>Main deliverable</strong>
-      <ul>
-        <li><code>/opportunities</code> (FR + EN) — single source of truth, 52 opps</li>
-        <li>Redirect banner on <code>/master-gaps</code> and <code>/gaps</code></li>
-        <li>Navbar button "● Update" → this page</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <a class="phase-link featured" href="/en/opportunities">★ Open registry</a>
-    <span class="phase-link-note">52 opportunities</span>
-  </div>
-</div>
-
-<!-- PHASE 4 -->
-<div class="phase-card done">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">4</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title"><em>Analyses clarification</em> + cleanup</h2>
-      <span class="phase-status-pill done">✓ Done</span>
-    </div>
-    <p class="phase-desc">"Methodology trail" banner added on <code>/analysis-1/2/3</code> (FR + EN) intro with link to <code>/opportunities</code>. <code>/master-gaps</code> and <code>/gaps</code> deleted (FR + EN). Landscape sub-bar simplified (Ecosystem · Opportunities · Diag). Homepage cards merged into 1 (→ /opportunities). Internal links updated everywhere.</p>
-    <div class="phase-deliverables">
-      <strong>Deliverables</strong>
-      <ul>
-        <li>"📖 Methodology trail" banner on <code>/analysis-1/2/3</code> (FR + EN)</li>
-        <li><code>/master-gaps</code> and <code>/gaps</code> deleted (4 files)</li>
-        <li>Landscape sub-bar: Gaps + Master Gaps → Opportunities</li>
-        <li>Homepage: 2 cards merged into 1 (Opportunities)</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <a class="phase-link" href="/en/analysis-3">→ View Analyses</a>
-    <span class="phase-link-note">methodology trail</span>
-  </div>
-</div>
-
-<!-- PHASE 5 -->
-<div class="phase-card pending">
-  <div class="phase-num-block">
-    <div class="phase-num">PHASE</div>
-    <div class="phase-num-big">5</div>
-  </div>
-  <div class="phase-body">
-    <div class="phase-title-row">
-      <h2 class="phase-title"><em>Founder</em> interviews</h2>
-      <span class="phase-status-pill pending">⏸ Pending</span>
-    </div>
-    <p class="phase-desc">Conduct 6 1:1 interviews (Djason, Stan, Kevin, Adrien, Denis, Andy) → extract surfaced opportunities/frictions → add to registry with source-tag <code>INT-{name}</code>. Existing opportunities receive an additional tag (multi-source).</p>
-    <div class="phase-deliverables">
-      <strong>Planned deliverables</strong>
-      <ul>
-        <li>Structured interview notes (1 per interviewee)</li>
-        <li>Update master CSV + <code>/opportunities</code></li>
-        <li>Backlog item 02 → Done</li>
-      </ul>
-    </div>
-  </div>
-  <div class="phase-actions">
-    <span class="phase-link disabled">Upcoming</span>
-    <span class="phase-link-note">post-cleanup</span>
-  </div>
+<div class="quick-summary">
+  <h3>📋 Quick summary — phase status</h3>
+  <ul>
+    <li><span class="phase-emoji">✅</span> Phase 0 — Taxonomy</li>
+    <li><span class="phase-emoji">✅</span> Phase 1 — Inventory (<a href="/en/audit-phase1">audit-phase1</a>)</li>
+    <li><span class="phase-emoji">✅</span> Phase 2 — Card format (<a href="/en/audit-phase2">audit-phase2</a>)</li>
+    <li><span class="phase-emoji">✅</span> Phase 3 — Migration → <a href="/en/opportunities">/opportunities</a></li>
+    <li><span class="phase-emoji">✅</span> Phase 4 — Analyses clarification + cleanup → <a href="/en/opportunities">/opportunities</a></li>
+    <li><span class="phase-emoji">⏸️</span> Phase 5 — Founder interviews (needs field notes)</li>
+  </ul>
 </div>
 
 <div class="footer-meta">
-  <strong>Note —</strong> The tracker is updated at each phase delivery. Phases 0-4 are closed (audit pages kept as decision trail). Phase 5 (founder interviews) starts when you launch the note collection.
+  <strong>Note —</strong> This page lists the phases of <a href="/en/backlog">backlog item 01</a> (cleanup /gaps + /master-gaps + source attribution). Click a yellow link to go to the relevant phase page. The <strong>operational source of truth</strong> is <a href="/en/opportunities">/opportunities</a> (52 opportunities).
 </div>
 
 <footer>
-  <span>UPDATE TRACKER · v1.0</span>
-  <span>CLEANUP ITEM 01 · MAY 2026</span>
+  <span>UPDATE TRACKER · v2.0</span>
+  <span>SYNTHESIS · MAY 2026</span>
 </footer>
 
 </div>
