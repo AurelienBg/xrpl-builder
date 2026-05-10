@@ -101,6 +101,8 @@ h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
 .filter-count { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--wallet); font-weight: 700; letter-spacing: 0.06em; }
 .filter-reset { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 4px 10px; background: var(--warning); color: var(--paper); border: 1px solid var(--warning); cursor: pointer; }
 .filter-reset:hover { opacity: 0.85; }
+.filter-export { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 4px 10px; background: var(--paper); color: var(--ink); border: 1px solid var(--paper); cursor: pointer; transition: all 0.15s ease; margin-left: 4px; }
+.filter-export:hover { background: var(--wallet); border-color: var(--wallet); color: var(--ink); }
 
 /* === BADGES === */
 .type-pill, .tier-pill, .chain-pill, .src-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 0; }
@@ -255,6 +257,8 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
         <button class="filter-btn" data-axis="source" data-val="ECO">ECO <span style="opacity:0.7;">(10)</span></button>
         <button class="filter-btn" data-axis="source" data-val="YC">YC <span style="opacity:0.7;">(12)</span></button>
     <button class="filter-reset" id="filter-reset">Reset</button>
+    <button class="filter-export" id="export-csv">⬇ CSV</button>
+    <button class="filter-export" id="export-json">⬇ JSON</button>
     <span class="filter-count" id="visible-count"></span>
   </div>
 </div>
@@ -1300,6 +1304,60 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     document.querySelectorAll('.filter-btn.active').forEach(b => b.classList.remove('active'));
     applyFilters();
   });
+
+
+  function exportVisible(format) {
+    const visibleRows = Array.from(document.querySelectorAll('.vc-row:not(.row-hidden)'));
+    const data = visibleRows.map(row => {
+      const idEl = row.querySelector('.va-id');
+      const legacyEl = row.querySelector('.va-id .legacy');
+      const titleEl = row.querySelector('.va-title');
+      const descEl = row.querySelector('.va-title small');
+      // First text node of va-id is the OPP-XXX id
+      let id = '';
+      for (const node of idEl.childNodes) { if (node.nodeType === Node.TEXT_NODE) { id = node.textContent.trim(); break; } }
+      let title = '';
+      for (const node of titleEl.childNodes) { if (node.nodeType === Node.TEXT_NODE) { title = node.textContent.trim(); break; } }
+      return {
+        id: id,
+        legacy_id: legacyEl ? legacyEl.textContent.trim() : '',
+        title: title,
+        description: descEl ? descEl.textContent.trim() : '',
+        type: row.dataset.type,
+        tier: row.dataset.tier,
+        chain: row.dataset.chain,
+        sources: row.dataset.sources,
+        theme: row.dataset.theme,
+      };
+    });
+    const ts = new Date().toISOString().slice(0, 10);
+    let blob, filename;
+    if (format === 'json') {
+      blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      filename = 'opportunities-' + data.length + '-' + ts + '.json';
+    } else {
+      const headers = ['id', 'legacy_id', 'title', 'description', 'type', 'theme', 'sources', 'tier', 'chain'];
+      const escape = v => {
+        const s = (v == null ? '' : String(v));
+        if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+        return s;
+      };
+      const lines = [headers.join(',')];
+      data.forEach(r => lines.push(headers.map(h => escape(r[h])).join(',')));
+      blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+      filename = 'opportunities-' + data.length + '-' + ts + '.csv';
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  document.getElementById('export-csv').addEventListener('click', () => exportVisible('csv'));
+  document.getElementById('export-json').addEventListener('click', () => exportVisible('json'));
 
   applyFilters();
 })();

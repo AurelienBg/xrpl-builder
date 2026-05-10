@@ -342,7 +342,7 @@
     <h1>Backlog<br/>— what's <em>left</em> to do</h1>
   </div>
   <div class="meta">
-    Items: 5<br/>
+    Items: 3<br/>
     Mode: compact (toggle)<br/>
     Filters: status × priority<br/>
     Updated: May 2026
@@ -386,9 +386,9 @@
 
 <!-- ITEMS -->
 <section class="item" data-status="open" data-priority="high">
-  <div class="item-header">
+    <div class="item-header">
     <span class="num">01</span>
-    <h2>Interview-sourced gaps <em>— add i1 → iN</em></h2>
+    <h2>Interviews <em>founders + corporates + VCs</em></h2>
     <div class="badge-set">
       <span class="badge-pill p-high">High</span>
       <span class="badge-pill s-open">Open</span>
@@ -398,23 +398,22 @@
   <div class="item-body">
     <div class="block">
       <span class="block-tag problem">Problem</span>
-      <p>Current opportunities come from <strong>4 PWGs + Atka + Ecosystem map + YC RFS</strong>. They miss the <strong>qualitative signals</strong> directly drawn from <em>1:1 interviews</em> with XRPL builders, partners, founders — where frictions, ideas and concrete needs are often verbalized differently than in working groups.</p>
+      <p>Current opportunities come from <strong>4 PWGs + Atka + Ecosystem map + YC RFS</strong>. They miss the <strong>ground-truth qualitative signals</strong> directly drawn from <em>1:1 interviews</em> with the live actors of the ecosystem — where frictions, ideas and concrete needs are verbalized differently than in working groups.</p>
     </div>
     <div class="block">
-      <span class="block-tag solutions">Possible paths / solutions</span>
+      <span class="block-tag solutions">Possible paths / 2 batches</span>
       <ul>
-        <li><strong>Identified interviewees</strong>: i1 Djason · i2 Stan · i3 Kevin · i4 Adrien · i5 Denis · i6 Andy · <em>+ more to come</em></li>
-        <li><strong>Note format</strong> to transform into gap cards: <em>Citation key</em> · <em>Interviewee + context</em> · <em>Date</em> · <em>Derived gap</em> · <em>Convergence</em> with Master Atlas / YC.</li>
-        <li><strong>Display options</strong>: <strong>A</strong> new Lens 4 on <code>/gaps</code> dedicated to "From interviews" · <strong>B</strong> merge Lens 1+2 with <code>interview</code> source-tag · <strong>C</strong> mix: tag inline + dedicated page <code>/interviews</code>.</li>
-        <li><strong>Visual tag</strong>: <code>src-interview</code> with distinct color (proposal: sage green).</li>
+        <li><strong>Batch 1 — XRPL founders (priority)</strong>: i1 Djason · i2 Stan · i3 Kevin · i4 Adrien · i5 Denis · i6 Andy · <em>+ more to come</em>. Source tag <code>INT-{name}</code></li>
+        <li><strong>Batch 2 — Corporates &amp; VCs (post batch 1)</strong>: 5 Ripple/XRPL Foundation/XRPL Commons corporates (Sergio, Lisa, etc.) · 10 tier 1 VCs (a16z crypto, Pantera, Multicoin, Polychain, Variant). Tags <code>INT-CORP-{name}</code> and <code>INT-VC-{name}</code></li>
+        <li><strong>Note format</strong> to transform into registry opportunities: <em>Citation key</em> · <em>Interviewee + context</em> · <em>Date</em> · <em>Derived opp</em> · <em>Convergence</em> with existing sources</li>
+        <li><strong>Display options</strong>: direct integration into <code>/opportunities</code> with source-tags (no dedicated page) · existing opportunities receiving an INT-tag become multi-sourced (strong signal)</li>
       </ul>
     </div>
     <div class="block">
       <span class="block-tag action">Expected action</span>
-      <p><strong>Send the raw notes of one interview</strong> (the most advanced — Djason?) and we lock the pattern. Display choice A/B/C to arbitrate.</p>
+      <p><strong>Start batch 1</strong> (founders): send the raw notes of one interview (Djason?) → we lock the pattern → extract opps → update the registry. Batch 2 (corporates/VCs) starts after batch 1 via XRPL Commons network outreach.</p>
     </div>
-  </div>
-</section>
+  </div></section>
 
 <section class="item" data-status="open" data-priority="medium">
   <div class="item-header">
@@ -449,66 +448,6 @@
 <section class="item" data-status="open" data-priority="low">
   <div class="item-header">
     <span class="num">03</span>
-    <h2>Export <em>CSV / JSON</em> from /opportunities</h2>
-    <div class="badge-set">
-      <span class="badge-pill p-low">Low</span>
-      <span class="badge-pill s-open">Open</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Problem</span>
-      <p>The master CSV lives at repo root (<code>/opportunities-master.csv</code>) but is barely visible. A user wanting to import it into their spreadsheet has no clear button.</p>
-    </div>
-    <div class="block">
-      <span class="block-tag solutions">Possible paths</span>
-      <ul>
-        <li>"Download CSV" button at the top of <code>/opportunities</code></li>
-        <li>"Download JSON" button (for programmatic use)</li>
-        <li>Active filters apply to the export (download = filtered subset)</li>
-      </ul>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Expected action</span>
-      <p>Add 2 buttons in the filter bar + JS that serializes the visible rows.</p>
-    </div>
-  </div>
-</section>
-
-<section class="item" data-status="open" data-priority="medium">
-  <div class="item-header">
-    <span class="num">04</span>
-    <h2>Second <em>interview</em> batch — corporates &amp; VCs</h2>
-    <div class="badge-set">
-      <span class="badge-pill p-medium">Medium</span>
-      <span class="badge-pill s-open">Open</span>
-    </div>
-    <span class="chevron">▸</span>
-  </div>
-  <div class="item-body">
-    <div class="block">
-      <span class="block-tag problem">Problem</span>
-      <p>Item 01 plans 6 founder interviews. For a 360° view we miss <strong>Ripple corporates, XRPL Foundation, tier 1 VCs</strong> who have a different market view (deal flow, regulatory, capital allocation).</p>
-    </div>
-    <div class="block">
-      <span class="block-tag solutions">Possible paths</span>
-      <ul>
-        <li>5 Ripple/XRPL Commons corporates (Sergio, Lisa, etc.)</li>
-        <li>10 tier 1 VCs (a16z crypto, Pantera, Multicoin, Polychain, Variant)</li>
-        <li>Source tag <code>INT-CORP-{name}</code> and <code>INT-VC-{name}</code> to distinguish</li>
-      </ul>
-    </div>
-    <div class="block">
-      <span class="block-tag action">Expected action</span>
-      <p>Start after item 01 (founder interviews). Outreach via XRPL Commons network.</p>
-    </div>
-  </div>
-</section>
-
-<section class="item" data-status="open" data-priority="low">
-  <div class="item-header">
-    <span class="num">05</span>
     <h2>Periodic <em>ecosystem-map</em> refresh</h2>
     <div class="badge-set">
       <span class="badge-pill p-low">Low</span>
