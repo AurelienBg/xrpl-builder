@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Search — XRPL Builder</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f4efe6;
+  --paper-2: #ece6d9;
+  --ink: #0e1116;
+  --muted: #58605a;
+  --wallet: #d4a017;
+  --orange: #e87722;
+  --added: #2e5d4f;
+  --warning: #c0392b;
+  --rwa: #4a6741;
+  --amm: #8b5a8c;
+  --user: #c8553d;
+  --sidechain: #b85c38;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: 'Fraunces', Georgia, serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.5; }
+.page { max-width: 1100px; margin: 0 auto; padding: 24px 28px 80px; }
+
+.nav-wrapper { position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--ink); }
+.nav-tier1 { background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; }
+.nav-tier1 .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.nav-tier1 .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+.nav-tier1 .nav-logo { flex-shrink: 0; display: block; }
+.nav-tier1 .top-links { display: flex; gap: 0; }
+.nav-tier1 .top-link { color: var(--paper); text-decoration: none; padding: 6px 14px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; white-space: nowrap; position: relative; }
+.nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
+.nav-tier1 .top-link .caret { font-size: 11px; margin-left: 5px; opacity: 0.9; display: inline-block; transform: translateY(-1px); }
+.nav-tier1 .top-link[data-section="anatomy"] { box-shadow: inset 0 -3px 0 #5a85b8; }
+.nav-tier1 .top-link[data-section="landscape"] { box-shadow: inset 0 -3px 0 var(--rwa); }
+.nav-tier1 .top-link[data-section="tools"] { box-shadow: inset 0 -3px 0 var(--amm); }
+.nav-tier1 .top-link[data-section="atlas"] { box-shadow: inset 0 -3px 0 var(--user); }
+.nav-tier1 .top-link[data-section="analysis"] { box-shadow: inset 0 -3px 0 var(--wallet); }
+.nav-tier1 .top-link[data-section="buildathon"] { box-shadow: inset 0 -3px 0 var(--sidechain); }
+.nav-tier1 .right-cluster { display: flex; align-items: center; gap: 10px; }
+.nav-tier1 .backlog-mini { color: var(--paper); opacity: 0.55; text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid rgba(244,239,230,0.3); transition: opacity 0.15s ease; }
+.nav-tier1 .backlog-mini:hover { opacity: 1; }
+.nav-tier1 .current-update { color: var(--ink); background: var(--wallet); text-decoration: none; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--wallet); font-weight: 700; transition: opacity 0.15s ease; white-space: nowrap; }
+.nav-tier1 .current-update:hover { opacity: 0.85; }
+.nav-tier1 .opp-cta { color: var(--ink); background: var(--paper); text-decoration: none; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--paper); font-weight: 700; transition: all 0.15s ease; white-space: nowrap; }
+.nav-tier1 .opp-cta:hover { background: var(--wallet); color: var(--ink); border-color: var(--wallet); }
+.nav-tier1 .opp-cta.current { background: var(--wallet); color: var(--ink); border-color: var(--wallet); }
+.nav-tier1 .nav-search { background: var(--paper); color: var(--ink); padding: 4px 10px; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; border: 1px solid var(--paper); text-decoration: none; transition: all 0.15s ease; }
+.nav-tier1 .nav-search:hover { background: var(--wallet); border-color: var(--wallet); }
+.nav-tier1 .nav-search.current { background: var(--wallet); border-color: var(--wallet); }
+.nav-tier1 .lang-toggle { display: flex; border: 1.5px solid var(--paper); white-space: nowrap; }
+.nav-tier1 .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
+.nav-tier1 .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+.nav-tier1 .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
+.nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
+.nav-tier2.empty { display: none; }
+@media (max-width: 800px) { .nav-tier1 { flex-direction: column; gap: 6px; padding: 8px 12px; } .nav-tier1 .top-links { flex-wrap: wrap; justify-content: center; font-size: 9px; } .nav-tier1 .top-link { padding: 4px 8px; } .nav-tier1 .right-cluster { flex-wrap: wrap; justify-content: center; } }
+
+.masthead { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 24px; }
+.eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+h1 { font-family: 'Fraunces', serif; font-weight: 800; font-size: 42px; line-height: 1.05; margin: 0; }
+h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
+.meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; letter-spacing: 0.06em; line-height: 1.7; }
+
+.search-box { margin-bottom: 28px; border: 3px solid var(--ink); background: var(--paper); padding: 4px; }
+.search-input { width: 100%; border: none; padding: 18px 22px; font-family: 'Fraunces', serif; font-size: 22px; background: transparent; color: var(--ink); outline: none; }
+.search-input::placeholder { color: var(--muted); font-style: italic; }
+
+.search-status { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 16px; }
+.search-status .count-num { color: var(--wallet); font-weight: 700; }
+.search-try { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.search-try code { background: var(--ink); color: var(--wallet); padding: 2px 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer; }
+.search-try code:hover { background: var(--wallet); color: var(--ink); }
+
+.results-group { margin-bottom: 28px; border: 2px solid var(--ink); }
+.results-group-head { background: var(--ink); color: var(--paper); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; }
+.results-group-head .group-count { color: var(--wallet); }
+.result-row { display: block; padding: 12px 16px; border-bottom: 1px solid rgba(14,17,22,0.12); text-decoration: none; color: var(--ink); transition: background 0.15s ease; }
+.result-row:last-child { border-bottom: none; }
+.result-row:hover { background: var(--paper-2); }
+.result-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.result-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.result-desc mark { background: var(--wallet); color: var(--ink); padding: 0 2px; font-weight: 700; }
+.result-title mark { background: var(--wallet); color: var(--ink); padding: 0 2px; }
+
+.no-results { background: var(--paper-2); border: 2px dashed var(--ink); padding: 30px; text-align: center; font-size: 16px; color: var(--muted); }
+.no-results strong { color: var(--ink); font-weight: 700; }
+
+footer { margin-top: 60px; padding-top: 18px; border-top: 2px solid var(--ink); display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="nav-wrapper">
+  <div class="nav-tier1">
+    <a class="nav-home" href="/"><svg class="nav-logo" viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><g transform="translate(60, 220) scale(0.38461538461538464)"><g transform="translate(0, 615) scale(0.1, -0.1)" fill="currentColor" stroke="none"><path d="M343 5844 c-43 -19 -16 -53 201 -255 37 -35 76 -72 85 -81 9 -10 69 -71 135 -135 65 -65 137 -137 160 -160 22 -23 94 -95 160 -160 65 -65 203 -202 306 -305 104 -104 193 -188 199 -188 6 0 11 -5 11 -11 0 -5 41 -49 92 -97 50 -48 98 -96 107 -106 9 -10 36 -37 60 -60 88 -83 338 -332 342 -341 2 -6 22 -25 44 -44 22 -18 76 -68 121 -110 101 -95 186 -162 244 -191 25 -13 71 -40 102 -61 31 -22 66 -39 76 -39 11 0 31 -9 45 -20 14 -11 28 -20 33 -20 4 0 30 -11 58 -24 85 -41 219 -79 376 -106 30 -6 84 -16 120 -22 83 -16 355 -16 440 -1 36 7 90 17 120 22 104 19 225 49 262 65 21 9 44 16 53 16 20 0 142 56 149 69 4 5 20 13 38 16 17 4 61 26 97 50 36 23 83 50 104 60 20 9 37 21 37 25 0 5 19 19 42 33 24 14 86 65 138 114 52 48 110 102 128 119 19 18 38 36 43 40 4 5 77 78 161 162 84 84 203 203 265 265 62 61 116 115 120 119 23 21 595 585 738 729 22 22 96 96 165 163 69 68 130 129 135 135 6 6 26 25 45 42 156 139 260 251 250 269 -6 11 -18 20 -28 20 -9 1 -218 1 -464 1 l-447 0 -40 -26 c-22 -13 -47 -38 -56 -55 -9 -16 -19 -30 -23 -30 -6 0 -128 -117 -187 -179 -5 -6 -76 -76 -157 -155 -82 -80 -148 -150 -148 -155 0 -6 -9 -15 -21 -21 -30 -17 -309 -294 -309 -308 0 -7 -6 -12 -14 -12 -7 0 -26 -12 -43 -27 -114 -107 -144 -136 -194 -190 -31 -33 -62 -70 -68 -82 -7 -11 -17 -21 -23 -21 -7 0 -24 -12 -38 -26 -117 -121 -337 -328 -359 -337 -14 -7 -38 -20 -51 -30 -77 -55 -139 -89 -184 -103 -28 -9 -74 -24 -103 -35 -302 -108 -732 -48 -993 138 -13 10 -35 23 -47 28 -22 10 -110 82 -142 117 -23 26 -190 192 -228 228 -18 16 -37 30 -43 30 -5 0 -10 5 -10 11 0 17 -153 173 -259 265 -18 16 -40 37 -50 46 -17 19 -48 48 -206 203 -126 122 -101 97 -280 277 -82 82 -153 153 -157 156 -4 4 -29 30 -55 57 -27 28 -72 71 -100 96 -29 26 -58 58 -64 73 -7 14 -15 26 -19 26 -4 0 -24 12 -45 26 -21 14 -44 23 -51 20 -7 -3 -163 -5 -346 -4 -307 0 -358 0 -450 -3 -18 0 -46 2 -63 5 -16 3 -36 3 -42 0z"/><path d="M3460 2854 c-83 -9 -278 -47 -307 -60 -17 -8 -38 -14 -48 -14 -9 0 -28 -6 -43 -14 -15 -8 -46 -17 -67 -21 -22 -4 -55 -16 -73 -26 -18 -10 -39 -19 -46 -19 -7 0 -21 -9 -30 -19 -10 -10 -32 -22 -51 -25 -18 -4 -38 -13 -45 -21 -7 -8 -18 -15 -25 -15 -17 0 -252 -158 -291 -195 -17 -17 -88 -84 -157 -150 -70 -66 -304 -295 -520 -510 -791 -784 -1363 -1345 -1410 -1381 -57 -45 -57 -48 -7 -68 35 -14 100 -16 489 -16 l449 0 413 407 c227 225 528 523 670 663 343 340 509 499 559 535 23 17 58 44 78 61 20 17 67 46 103 63 37 18 70 35 73 39 4 4 31 12 59 18 29 7 72 19 97 27 133 44 419 63 479 32 17 -8 45 -15 64 -15 18 0 67 -11 107 -25 40 -14 84 -25 96 -25 13 0 25 -4 28 -9 3 -5 36 -23 73 -41 38 -18 85 -47 105 -64 20 -17 55 -44 78 -61 58 -42 200 -178 525 -500 539 -534 972 -960 1008 -992 21 -18 41 -43 46 -56 21 -55 40 -57 520 -57 547 0 576 5 468 89 -30 22 -90 78 -134 123 -44 46 -264 263 -488 483 -224 220 -413 406 -419 413 -6 7 -47 48 -90 90 -43 42 -124 122 -180 177 -56 55 -126 123 -156 151 -30 29 -117 114 -192 190 -115 116 -297 292 -419 405 -15 14 -52 43 -81 63 -29 20 -79 54 -111 76 -68 47 -166 100 -184 100 -7 0 -22 9 -33 20 -11 11 -30 20 -42 20 -12 0 -29 6 -37 14 -9 8 -41 21 -71 29 -30 8 -86 26 -125 40 -157 56 -518 92 -705 71z"/></g></g><text x="345" y="280" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="700" fill="#d4a017" font-size="180">B</text></svg><span>XRPL <em>Builder</em></span></a>
+    <div class="top-links"><a class="top-link" data-section="anatomy" href="/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="atlas" href="/builder-atlas">Atlas</a><a class="top-link" data-section="analysis" href="/analysis-1">Analysis <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/buildathon">Buildathon</a></div>
+    <div class="right-cluster">
+      <a class="nav-search current" href="/en/search">🔍 Search</a>
+      <a class="opp-cta" href="/en/opportunities">★ Opportunities</a>
+      <a class="current-update" href="/update">● Current update</a>
+      <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
+      <div class="lang-toggle">
+        <a class="lang-flag " href="/search">🇫🇷</a>
+        <a class="lang-flag active" href="/en/search">🇬🇧</a>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-tier2 empty"></nav>
+</div>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Search · global search · v1.0</div>
+    <h1><em>Global</em> search</h1>
+  </div>
+  <div class="meta">
+    52 opportunities + 17 pages<br/>
+    Match in title, description, type, tier, sources<br/>
+    English
+  </div>
+</header>
+
+<div class="search-box">
+  <input type="search" id="search-input" class="search-input" placeholder="Type your query... (e.g. lending, PWG-1, AI agents)" autofocus />
+</div>
+
+<div class="search-status" id="search-status">—</div>
+
+<p class="search-try">Try: <code>wallet</code> · <code>YC</code> · <code>RWA</code> · <code>treasury</code></p>
+
+<div id="results-container"></div>
+
+<footer>
+  <span>SEARCH · v1.0</span>
+  <span>XRPL BUILDER</span>
+</footer>
+
+</div>
+
+<script>
+const INDEX = [{"title":"OPP-001 · Cross-Device Session Continuity Library","desc":"[BLOCK] [MULT] [wallets-infra] · sources: PWG-4,ATKA · Library to seamlessly continue wallet sessions across devices (top non-trading product unlock)","url":"/en/opportunities","category":"opportunity","_id":"OPP-001","_legacy":"M-01"},{"title":"OPP-002 · Institutional Multisig Wallet (Full UI)","desc":"[APP] [HIGH] [wallets-infra] · sources: PWG-4,ATKA · Safe-equivalent for XRPL — full UI for institutional multisig","url":"/en/opportunities","category":"opportunity","_id":"OPP-002","_legacy":"M-02"},{"title":"OPP-003 · Smart Contract Wallet on EVM Sidechain","desc":"[APP] [HIGH] [wallets-infra] · sources: PWG-4 · ERC-4337 wallet — table-stakes vs Base/Arbitrum","url":"/en/opportunities","category":"opportunity","_id":"OPP-003","_legacy":"M-03"},{"title":"OPP-004 · Unified Cross-Chain Wallet SDK","desc":"[BLOCK] [MED] [wallets-infra] · sources: PWG-4,ATKA · Single SDK supporting both XRPL native + EVM Sidechain","url":"/en/opportunities","category":"opportunity","_id":"OPP-004","_legacy":"M-04"},{"title":"OPP-005 · Institutional Data Emission Adapter Library","desc":"[BLOCK] [MULT] [wallets-infra] · sources: PWG-2,PWG-3,ATKA · ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage","url":"/en/opportunities","category":"opportunity","_id":"OPP-005","_legacy":"M-05"},{"title":"OPP-006 · Stablecoin Accounting & Reconciliation Export","desc":"[BLOCK] [HIGH] [wallets-infra] · sources: PWG-3,ATKA · QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)","url":"/en/opportunities","category":"opportunity","_id":"OPP-006","_legacy":"M-06"},{"title":"OPP-007 · Multi-Flow Institutional Access Control Library","desc":"[BLOCK] [HIGH] [wallets-infra] · sources: PWG-4,ATKA · Permissioned Domains × Credentials for institutional flows","url":"/en/opportunities","category":"opportunity","_id":"OPP-007","_legacy":"M-07"},{"title":"OPP-008 · Pluggable Proof Primitives Library","desc":"[BLOCK] [MED] [wallets-infra] · sources: PWG-4,ATKA · Hash/signature/ZK/BYO-scheme — composable primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-008","_legacy":"M-08"},{"title":"OPP-009 · Vault Wrapper Pattern Library (XLS-65)","desc":"[BLOCK] [MULT] [lending] · sources: PWG-1,ATKA · Timing arbitrage on XLS-65 amendment","url":"/en/opportunities","category":"opportunity","_id":"OPP-009","_legacy":"M-09"},{"title":"OPP-010 · Risk-Signal Aggregation from MPT Trading","desc":"[BLOCK] [MED] [lending] · sources: PWG-1,ATKA · Kennedy Reassurance — XRPL-native novel pattern","url":"/en/opportunities","category":"opportunity","_id":"OPP-010","_legacy":"M-10"},{"title":"OPP-011 · Lending Protocol on EVM Sidechain (Morpho-style)","desc":"[APP] [MULT] [lending] · sources: PWG-1,ATKA · Morpho-style lending — top community survey need","url":"/en/opportunities","category":"opportunity","_id":"OPP-011","_legacy":"M-11"},{"title":"OPP-012 · Uncollateralized Lending Interface (XLS-66)","desc":"[APP] [HIGH] [lending] · sources: PWG-1,ATKA · UI for XLS-66 unsecured lending — Evernorth intent","url":"/en/opportunities","category":"opportunity","_id":"OPP-012","_legacy":"M-12"},{"title":"OPP-013 · Compliant Credit Vault (institutional service)","desc":"[APP] [HIGH] [lending] · sources: PWG-1,ATKA · Agent-curator with attestations — A1 Tier 1 #1","url":"/en/opportunities","category":"opportunity","_id":"OPP-013","_legacy":"M-12b"},{"title":"OPP-014 · Physical-to-Digital Binding (EU DPP)","desc":"[BLOCK] [HIGH] [rwa-stable] · sources: PWG-2,ATKA · Regulatory deadline — 12-month EU DPP window","url":"/en/opportunities","category":"opportunity","_id":"OPP-014","_legacy":"M-13"},{"title":"OPP-015 · Yield-Bearing Stablecoin (T-bill backed)","desc":"[APP] [MULT] [rwa-stable] · sources: PWG-3,ATKA,YC · USDe parallel — top community demand","url":"/en/opportunities","category":"opportunity","_id":"OPP-015","_legacy":"M-14"},{"title":"OPP-016 · Non-USD Stablecoin DeFi Rails","desc":"[BLOCK] [MED] [rwa-stable] · sources: PWG-3,ATKA · EUR/BRL/SGD/AUD rails","url":"/en/opportunities","category":"opportunity","_id":"OPP-016","_legacy":"M-15"},{"title":"OPP-017 · Chunked Data + On-Chain Anchoring Pattern","desc":"[BLOCK] [MED] [rwa-stable] · sources: PWG-2,ATKA · IPFS/S3/self-hosted with on-chain anchoring","url":"/en/opportunities","category":"opportunity","_id":"OPP-017","_legacy":"M-16"},{"title":"OPP-018 · RWA Issuance Studio EU/MiCA","desc":"[APP] [HIGH] [rwa-stable] · sources: PWG-2,ATKA · MPT + DID + cap table — A1 Tier 1 #2","url":"/en/opportunities","category":"opportunity","_id":"OPP-018","_legacy":"M-16b"},{"title":"OPP-019 · Restaking Protocol for XRP (Babylon-fork)","desc":"[APP] [MULT] [evm-defi] · sources: PWG-1,ATKA · $110B+ XRP cap underutilized","url":"/en/opportunities","category":"opportunity","_id":"OPP-019","_legacy":"M-17"},{"title":"OPP-020 · Synthetic Assets / CDP Protocol (× Axiom)","desc":"[APP] [HIGH] [evm-defi] · sources: PWG-1,ATKA · Gold/stocks/forex synthetic assets","url":"/en/opportunities","category":"opportunity","_id":"OPP-020","_legacy":"M-18"},{"title":"OPP-021 · Perpetual DEX (vAMM or order book)","desc":"[APP] [HIGH] [evm-defi] · sources: PWG-1,ATKA · Derivatives = highest volume DeFi — XRPL at zero","url":"/en/opportunities","category":"opportunity","_id":"OPP-021","_legacy":"M-19"},{"title":"OPP-022 · Decentralized Insurance Protocol","desc":"[APP] [HIGH] [evm-defi] · sources: PWG-1,ATKA · Maturity signal for institutional adoption","url":"/en/opportunities","category":"opportunity","_id":"OPP-022","_legacy":"M-20"},{"title":"OPP-023 · Pre-Deployed Testnet Infrastructure","desc":"[BLOCK] [MULT] [dev-agents] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Multiplier across everything — sandbox","url":"/en/opportunities","category":"opportunity","_id":"OPP-023","_legacy":"M-21"},{"title":"OPP-024 · XRPL Capabilities Registry","desc":"[BLOCK] [HIGH] [dev-agents] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Auto-update XLS feed — solves awareness gap","url":"/en/opportunities","category":"opportunity","_id":"OPP-024","_legacy":"M-22"},{"title":"OPP-025 · Vendor-Neutral Oracle / Bridge / Ramp Adapters","desc":"[BLOCK] [MED] [dev-agents] · sources: PWG-1,PWG-2,ATKA · Zero-code-change provider swap (lib for app builders)","url":"/en/opportunities","category":"opportunity","_id":"OPP-025","_legacy":"M-23"},{"title":"OPP-026 · CeDeFi Yield Integration SDK (CEX channel)","desc":"[BLOCK] [HIGH] [dev-agents] · sources: PWG-1,PWG-3,ATKA · 60%+ XRP on CEX — #1 distribution play","url":"/en/opportunities","category":"opportunity","_id":"OPP-026","_legacy":"M-24"},{"title":"OPP-027 · P-256 / secp256r1 Signing (XLS proposal)","desc":"[BLOCK] [HIGH] [dev-agents] · sources: PWG-4,ATKA · Cross-cutting — Apple Secure Enclave + WebAuthn + HSM","url":"/en/opportunities","category":"opportunity","_id":"OPP-027","_legacy":"M-25"},{"title":"OPP-028 · AgentPay — x402 + XRPL settlement","desc":"[BLOCK] [HIGH] [dev-agents] · sources: PWG-4,ATKA · AI agent payments facilitator — programmatic infra","url":"/en/opportunities","category":"opportunity","_id":"OPP-028","_legacy":"M-26"},{"title":"OPP-029 · AI-Native Compliance Ops (service company)","desc":"[APP] [HIGH] [dev-agents] · sources: PWG-4,ATKA,YC · YC RFS lens — also Service-01","url":"/en/opportunities","category":"opportunity","_id":"OPP-029","_legacy":"M-27"},{"title":"OPP-030 · AI-Native Treasury Ops (RLUSD automation)","desc":"[APP] [MED] [dev-agents] · sources: PWG-3,ATKA,YC · A1 service-thesis — also Service-02 Treasury-aaS","url":"/en/opportunities","category":"opportunity","_id":"OPP-030","_legacy":"M-28"},{"title":"OPP-031 · AI-Native Restaking Manager (yield optimizer)","desc":"[APP] [MED] [dev-agents] · sources: PWG-1,ATKA · A1 service-thesis · auto-rebalance","url":"/en/opportunities","category":"opportunity","_id":"OPP-031","_legacy":"M-29"},{"title":"OPP-032 · Onchain Reputation for AI Agents (KYA)","desc":"[BLOCK] [MED] [dev-agents] · sources: PWG-4,ATKA · A1 service-thesis · agent identity layer","url":"/en/opportunities","category":"opportunity","_id":"OPP-032","_legacy":"M-30"},{"title":"OPP-033 · Monitoring & B2B alerting","desc":"[APP] [HIGH] [dev-agents] · sources: ECO · XRPL's Tenderly — B2B alerting product with UI","url":"/en/opportunities","category":"opportunity","_id":"OPP-033","_legacy":"G-02"},{"title":"OPP-034 · Native yield aggregator (Yearn-XRPL)","desc":"[APP] [HIGH] [lending] · sources: ECO · Cross-protocol yield routing for XRPL natively","url":"/en/opportunities","category":"opportunity","_id":"OPP-034","_legacy":"G-03"},{"title":"OPP-035 · Regional POS / merchant tooling","desc":"[APP] [HIGH] [rwa-stable] · sources: ECO · Retail merchants in emerging markets + EU/MiCA","url":"/en/opportunities","category":"opportunity","_id":"OPP-035","_legacy":"G-05"},{"title":"OPP-036 · Gaming utility-NFT framework","desc":"[BLOCK] [MED] [rwa-stable] · sources: ECO · Play-to-earn + asset interop — XRPL NFT primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-036","_legacy":"G-11"},{"title":"OPP-037 · Market-making-as-a-Service","desc":"[APP] [HIGH] [dev-agents] · sources: YC · AI agent provides liquidity · 70-90% margin","url":"/en/opportunities","category":"opportunity","_id":"OPP-037","_legacy":"S-03"},{"title":"OPP-038 · Community-ops-as-a-Service","desc":"[APP] [HIGH] [dev-agents] · sources: YC · AI agent runs Discord + Twitter + grants ops","url":"/en/opportunities","category":"opportunity","_id":"OPP-038","_legacy":"S-05"},{"title":"OPP-039 · Dispute resolution & recovery","desc":"[APP] [MED] [dev-agents] · sources: YC · AI agent handles claims · refunds · recovery","url":"/en/opportunities","category":"opportunity","_id":"OPP-039","_legacy":"S-07"},{"title":"OPP-040 · Prediction markets infrastructure","desc":"[BLOCK] [HIGH] [evm-defi] · sources: YC · Engine layer · Polymarket equivalent","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"Y-14"},{"title":"OPP-041 · Prediction markets dApps (consumer)","desc":"[APP] [HIGH] [evm-defi] · sources: YC · Polymarket-style for politics/sports/crypto","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"Y-15"},{"title":"OPP-042 · AI trading agents (DCA · momentum · alpha)","desc":"[APP] [HIGH] [dev-agents] · sources: YC · Quant agents on XRPL · alpha generation","url":"/en/opportunities","category":"opportunity","_id":"OPP-042","_legacy":"Y-16"},{"title":"OPP-043 · Treasury wallet B2B XRPL-native","desc":"[APP] [HIGH] [wallets-infra] · sources: ECO · Coinshift/Utopia Labs equivalent — B2B treasury platform (uses M-02 multisig as primitive)","url":"/en/opportunities","category":"opportunity","_id":"OPP-043","_legacy":"gap-01"},{"title":"OPP-044 · KYC reusable cross-app","desc":"[APP] [HIGH] [wallets-infra] · sources: ECO · User-facing identity passport — manage and reuse KYC credentials across XRPL apps","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"gap-04"},{"title":"OPP-045 · Mid-market corporate bonds","desc":"[APP] [HIGH] [rwa-stable] · sources: ECO,ATKA · On-chain mid-market corporate bond marketplace (BondBloc blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-045","_legacy":"gap-06"},{"title":"OPP-046 · Agent treasury + wallet for AI","desc":"[BLOCK] [MED] [dev-agents] · sources: ECO · Wallet/treasury infrastructure for AI agents — 3rd layer of agent stack (with M-26 payments + M-30 identity)","url":"/en/opportunities","category":"opportunity","_id":"OPP-046","_legacy":"gap-09"},{"title":"OPP-047 · On-chain accounting + reporting","desc":"[APP] [HIGH] [wallets-infra] · sources: ECO · Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"gap-10"},{"title":"OPP-048 · Data marketplace · oracle aggregator","desc":"[BLOCK] [MED] [dev-agents] · sources: ECO · Multi-source oracle aggregator + data marketplace for data buyers","url":"/en/opportunities","category":"opportunity","_id":"OPP-048","_legacy":"gap-12"},{"title":"OPP-049 · RWA structuring firm (AI service)","desc":"[APP] [HIGH] [rwa-stable] · sources: YC · AI agent + lawyer-on-tap that structures RWA tokenization for clients","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"S-04"},{"title":"OPP-050 · Audit & continuous monitoring (AI service)","desc":"[APP] [MED] [dev-agents] · sources: YC · AI service that continuously audits client protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-050","_legacy":"S-06"},{"title":"OPP-051 · DeFi underwriting / insurance (AI service)","desc":"[APP] [MED] [evm-defi] · sources: YC · AI agent prices DeFi risk and underwrites for insurance protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"S-08"},{"title":"OPP-052 · Streaming payroll for DAOs and freelancers","desc":"[APP] [MED] [wallets-infra] · sources: ATKA · Streaming payroll on XRPL — new concept (PayrollXRP blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"BA-PayrollXRP"},{"title":"Decision Tree (guided)","desc":"Guided tool to choose your XRPL stack · 4-6 steps · output stack + boilerplate","url":"/en/decision-tree","category":"tool"},{"title":"Decision Tree Map","desc":"Macro SVG view of the decision tree · 20 final outcomes","url":"/en/decision-tree-map","category":"tool"},{"title":"Cost Simulator","desc":"Per-tx cost simulator · 4 chains compared · May 2026 data","url":"/en/cost-simulator","category":"tool"},{"title":"Business Case Builder","desc":"SaaS+tx model · 24-month horizon · monthly granularity","url":"/en/business-case-builder","category":"tool"},{"title":"Blockchain Framework XRPL","desc":"XRPL technical doc · RPCA/UNL consensus · 3-5 sec finality","url":"/en/blockchain-framework-xrpl","category":"anatomy"},{"title":"XRPL Extended Framework","desc":"Extended anatomy · native primitives · XLS amendments","url":"/en/blockchain-xrpl-extended","category":"anatomy"},{"title":"XRPL Animated Framework","desc":"Animated framework visualization","url":"/en/blockchain-xrpl-animated","category":"anatomy"},{"title":"Ecosystem Map","desc":"XRPL landscape snapshot May 2026 · 50+ projects · 8 categories","url":"/en/ecosystem-map","category":"landscape"},{"title":"Opportunities (unified registry)","desc":"52 opportunities to build · 5 themes · multi-axis filters · single source of truth","url":"/en/opportunities","category":"landscape"},{"title":"Builder Atlas","desc":"7 startup blueprints · technical format · product depth","url":"/en/builder-atlas","category":"landscape"},{"title":"XRPL Unicorn Diagnosis (V2)","desc":"Why no XRPL unicorn · 6-ecosystem benchmark · strategic diagnosis","url":"/en/xrpl_unicorn_analysis_v2","category":"landscape"},{"title":"Analysis 1 — Internal lens","desc":"Internal reading of 4 PWGs Paris + Atka · 4 frictions + 5 themes","url":"/en/analysis-1","category":"analysis"},{"title":"Analysis 2 — Challenger lens","desc":"Cornell PE challenger lens · 24 Focus Areas / 6 themes","url":"/en/analysis-2","category":"analysis"},{"title":"Analysis 3 — Master Atlas synthesis","desc":"A1+A2 synthesis · 30 source-tagged opps · methodology trail","url":"/en/analysis-3","category":"analysis"},{"title":"Buildathon","desc":"Working draft · ideation board · 30 days online · June-July 2026","url":"/en/buildathon","category":"buildathon"},{"title":"Update tracker","desc":"Cleanup item 01 phase tracker · 6 phases · decision trail","url":"/en/update","category":"meta"},{"title":"Backlog","desc":"Items to handle · status × priority · todo / parking","url":"/en/backlog","category":"meta"}];
+const CAT_LABELS = {"opportunity": "Opportunities", "tool": "Tools", "anatomy": "Anatomy", "landscape": "Landscape", "analysis": "Analyses", "buildathon": "Buildathon", "meta": "Meta"};
+const CAT_ORDER = ['opportunity', 'landscape', 'analysis', 'tool', 'anatomy', 'buildathon', 'meta'];
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function highlight(text, query) {
+  if (!query) return escapeHtml(text);
+  const safe = escapeHtml(text);
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return safe.replace(re, '<mark>$1</mark>');
+}
+
+function search(query) {
+  query = query.trim().toLowerCase();
+  const status = document.getElementById('search-status');
+  const container = document.getElementById('results-container');
+  
+  if (!query) {
+    status.innerHTML = '— ' + INDEX.length + ' entries indexed';
+    container.innerHTML = '';
+    return;
+  }
+  
+  // Filter
+  const matches = INDEX.filter(item => {
+    const haystack = (item.title + ' ' + item.desc + ' ' + (item._id || '') + ' ' + (item._legacy || '')).toLowerCase();
+    return haystack.includes(query);
+  });
+  
+  status.innerHTML = '<span class="count-num">' + matches.length + '</span> results — "<strong>' + escapeHtml(query) + '</strong>"';
+  
+  if (matches.length === 0) {
+    container.innerHTML = '<div class="no-results"><strong>No results for</strong> "' + escapeHtml(query) + '"</div>';
+    return;
+  }
+  
+  // Group by category
+  const groups = {};
+  matches.forEach(m => {
+    if (!groups[m.category]) groups[m.category] = [];
+    groups[m.category].push(m);
+  });
+  
+  // Render groups in order
+  let html = '';
+  CAT_ORDER.forEach(cat => {
+    if (!groups[cat]) return;
+    const items = groups[cat];
+    html += '<div class="results-group">';
+    html += '<div class="results-group-head"><span>' + (CAT_LABELS[cat] || cat) + '</span><span class="group-count">' + items.length + '</span></div>';
+    items.forEach(it => {
+      html += '<a class="result-row" href="' + it.url + '">';
+      html += '<div class="result-title">' + highlight(it.title, query) + '</div>';
+      html += '<div class="result-desc">' + highlight(it.desc, query) + '</div>';
+      html += '</a>';
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+const input = document.getElementById('search-input');
+input.addEventListener('input', e => search(e.target.value));
+
+// Read q from URL
+const params = new URLSearchParams(window.location.search);
+const initialQ = params.get('q') || '';
+if (initialQ) {
+  input.value = initialQ;
+}
+search(input.value);
+
+// Clickable suggestions
+document.querySelectorAll('.search-try code').forEach(c => {
+  c.addEventListener('click', () => {
+    input.value = c.textContent;
+    search(c.textContent);
+    input.focus();
+  });
+});
+</script>
+
+</body>
+</html>
