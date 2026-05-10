@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Backlog — XRPL Builder</title>
+<title>Backlog — Open items | XRPL Builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -318,8 +318,8 @@
       <a class="current-update" href="/audit-phase1">● Current update</a>
       <a class="backlog-mini current" href="/backlog">⚙ Backlog</a>
       <div class="lang-toggle">
-        <a class="lang-flag active" href="/backlog">🇫🇷</a>
-        <a class="lang-flag" href="/en/backlog">🇬🇧</a>
+        <a class="lang-flag" href="/backlog">🇫🇷</a>
+        <a class="lang-flag active" href="/en/backlog">🇬🇧</a>
       </div>
     </div>
   </div>
@@ -330,39 +330,39 @@
 
 <header class="masthead">
   <div>
-    <div class="eyebrow">Backlog · todo / parking · v0.2 · Mai 2026</div>
-    <h1>Backlog<br/>— ce qu'<em>il reste</em> à faire</h1>
+    <div class="eyebrow">Backlog · todo / parking · v0.2 · May 2026</div>
+    <h1>Backlog<br/>— what's <em>left</em> to do</h1>
   </div>
   <div class="meta">
-    Items : 2<br/>
-    Mode : compact (toggle)<br/>
-    Filtres : status × priorité<br/>
-    Mise à jour : Mai 2026
+    Items: 2<br/>
+    Mode: compact (toggle)<br/>
+    Filters: status × priority<br/>
+    Updated: May 2026
   </div>
 </header>
 
 <div class="strap">
-  <span>Tableau de parking</span>
-  <span>Click un titre pour voir le détail</span>
-  <span>Filtres status × priorité</span>
+  <span>Parking lot</span>
+  <span>Click a title to see details</span>
+  <span>Filters status × priority</span>
 </div>
 
 <div class="intro">
-  <p>Liste vivante des items à arbitrer/itérer. Par défaut <strong>compact</strong> (juste les titres). Click sur un item pour voir le détail (problème · pistes · action attendue). Filtres ci-dessous pour cibler par <strong>status</strong> et <strong>priorité</strong>.</p>
+  <p>Live list of items to arbitrate/iterate. Default view is <strong>compact</strong> (titles only). Click an item to see details (problem · paths · expected action). Filters below to target by <strong>status</strong> and <strong>priority</strong>.</p>
 </div>
 
 <!-- CONTROLS: filters + bulk -->
 <div class="controls">
   <div class="control-row">
     <span class="label">Status</span>
-    <button class="ctrl-btn active" data-filter-type="status" data-filter="all">Tous</button>
+    <button class="ctrl-btn active" data-filter-type="status" data-filter="all">All</button>
     <button class="ctrl-btn" data-filter-type="status" data-filter="open">Open</button>
     <button class="ctrl-btn" data-filter-type="status" data-filter="progress">In progress</button>
     
   </div>
   <div class="control-row">
-    <span class="label">Priorité</span>
-    <button class="ctrl-btn active" data-filter-type="priority" data-filter="all">Toutes</button>
+    <span class="label">Priority</span>
+    <button class="ctrl-btn active" data-filter-type="priority" data-filter="all">All</button>
     <button class="ctrl-btn" data-filter-type="priority" data-filter="critical">Critical</button>
     <button class="ctrl-btn" data-filter-type="priority" data-filter="high">High</button>
     <button class="ctrl-btn" data-filter-type="priority" data-filter="medium">Medium</button>
@@ -370,7 +370,7 @@
     <span class="filter-count"></span>
   </div>
   <div class="control-row">
-    <span class="label">Affichage</span>
+    <span class="label">Display</span>
     <button class="ctrl-btn bulk" id="expand-all">▸ Expand all</button>
     <button class="ctrl-btn bulk" id="collapse-all">▾ Collapse all</button>
   </div>
@@ -389,21 +389,21 @@
   </div>
   <div class="item-body">
     <div class="block">
-      <span class="block-tag problem">Problème</span>
-      <p>Les pages d'opportunités ont accumulé du contenu venant de <strong>sources hétérogènes</strong> (Master Atlas / PWG Paris / Atka Report / YC RFS / Ecosystem map) sans toujours <strong>tagger explicitement</strong> d'où vient chaque opportunité.</p>
-      <p>Sur <strong>/master-gaps</strong> le source-tagging est en place. Sur <strong>/gaps</strong> les cards Lens 1+2 n'ont pas le même tagging visuel — c'est moins lisible quand on veut savoir <em>« qui a dit ça »</em>.</p>
+      <span class="block-tag problem">Problem</span>
+      <p>The opportunity pages have accumulated content from <strong>heterogeneous sources</strong> (Master Atlas / PWG Paris / Atka Report / YC RFS / Ecosystem map) without always <strong>explicitly tagging</strong> where each opportunity comes from.</p>
+      <p>On <strong>/master-gaps</strong> source-tagging is in place. On <strong>/gaps</strong> the Lens 1+2 cards don't have the same visual tagging — it's less readable when one wants to know <em>'who said that'</em>.</p>
     </div>
     <div class="block">
-      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <span class="block-tag solutions">Possible paths / solutions</span>
       <ul>
-        <li><strong>Ajouter un encart "Source(s)"</strong> sur chaque card de <code>/gaps</code> avec : Master Atlas (M-XX) · PWG Paris · Atka Report · YC RFS · Ecosystem map · Interview iN.</li>
-        <li><strong>Étendre les tags visuels</strong> de <code>/master-gaps</code> à <code>/gaps</code> et <code>/builder-atlas</code> — réutiliser les classes <code>src-atlas/gaps/yc/svc</code>, ajouter <code>src-pwg / src-atka / src-ecosystem / src-interview</code>.</li>
-        <li><strong>Audit de cohérence</strong> : chaque opportunité présente sur plusieurs pages doit avoir le même source-tagging partout.</li>
+        <li><strong>Add a "Source(s)" label</strong> on each card of <code>/gaps</code> with: Master Atlas (M-XX) · PWG Paris · Atka Report · YC RFS · Ecosystem map · Interview iN.</li>
+        <li><strong>Extend visual tags</strong> from <code>/master-gaps</code> to <code>/gaps</code> and <code>/builder-atlas</code> — reuse the <code>src-atlas/gaps/yc/svc</code> classes, add <code>src-pwg / src-atka / src-ecosystem / src-interview</code>.</li>
+        <li><strong>Consistency audit</strong>: each opportunity present on multiple pages must have the same source-tagging everywhere.</li>
       </ul>
     </div>
     <div class="block">
-      <span class="block-tag action">Action attendue</span>
-      <p><strong>Valide la liste des source-tags</strong> à utiliser et je propage l'attribution sur les 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) en FR + EN.</p>
+      <span class="block-tag action">Expected action</span>
+      <p><strong>Validate the source-tags list</strong> to use and I'll propagate the attribution across the 3 pages (<code>/gaps</code>, <code>/master-gaps</code>, <code>/builder-atlas</code>) in FR + EN.</p>
     </div>
   </div>
 </section>
@@ -411,7 +411,7 @@
 <section class="item" data-status="open" data-priority="high">
   <div class="item-header">
     <span class="num">02</span>
-    <h2>Interview-sourced gaps <em>— ajouter i1 → iN</em></h2>
+    <h2>Interview-sourced gaps <em>— add i1 → iN</em></h2>
     <div class="badge-set">
       <span class="badge-pill p-high">High</span>
       <span class="badge-pill s-open">Open</span>
@@ -420,32 +420,32 @@
   </div>
   <div class="item-body">
     <div class="block">
-      <span class="block-tag problem">Problème</span>
-      <p>Les opportunités actuelles viennent de <strong>4 PWG + Atka + Ecosystem map + YC RFS</strong>. Elles manquent les <strong>signaux qualitatifs</strong> directement issus d'<em>interviews 1:1</em> avec des builders, partners, founders du réseau XRPL — où des frictions, idées et besoins concrets sont souvent verbalisés différemment qu'en working group.</p>
+      <span class="block-tag problem">Problem</span>
+      <p>Current opportunities come from <strong>4 PWGs + Atka + Ecosystem map + YC RFS</strong>. They miss the <strong>qualitative signals</strong> directly drawn from <em>1:1 interviews</em> with XRPL builders, partners, founders — where frictions, ideas and concrete needs are often verbalized differently than in working groups.</p>
     </div>
     <div class="block">
-      <span class="block-tag solutions">Pistes / solutions possibles</span>
+      <span class="block-tag solutions">Possible paths / solutions</span>
       <ul>
-        <li><strong>Interviewees identifiés</strong> : i1 Djason · i2 Stan · i3 Kevin · i4 Adrien · i5 Denis · i6 Andy · <em>+ d'autres à venir</em></li>
-        <li><strong>Format des notes</strong> à transformer en gap cards : <em>Citation key</em> · <em>Interviewee + contexte</em> · <em>Date</em> · <em>Gap dérivé</em> · <em>Convergence</em> avec Master Atlas / YC.</li>
-        <li><strong>Display options</strong> : <strong>A</strong> nouvelle Lens 4 sur <code>/gaps</code> dédiée "From interviews" · <strong>B</strong> fusion Lens 1+2 avec source-tag <code>interview</code> · <strong>C</strong> mix : tagger inline + page dédiée <code>/interviews</code>.</li>
-        <li><strong>Tag visuel</strong> : <code>src-interview</code> avec couleur distincte (proposition : sage green).</li>
+        <li><strong>Identified interviewees</strong>: i1 Djason · i2 Stan · i3 Kevin · i4 Adrien · i5 Denis · i6 Andy · <em>+ more to come</em></li>
+        <li><strong>Note format</strong> to transform into gap cards: <em>Citation key</em> · <em>Interviewee + context</em> · <em>Date</em> · <em>Derived gap</em> · <em>Convergence</em> with Master Atlas / YC.</li>
+        <li><strong>Display options</strong>: <strong>A</strong> new Lens 4 on <code>/gaps</code> dedicated to "From interviews" · <strong>B</strong> merge Lens 1+2 with <code>interview</code> source-tag · <strong>C</strong> mix: tag inline + dedicated page <code>/interviews</code>.</li>
+        <li><strong>Visual tag</strong>: <code>src-interview</code> with distinct color (proposal: sage green).</li>
       </ul>
     </div>
     <div class="block">
-      <span class="block-tag action">Action attendue</span>
-      <p><strong>Envoie les notes brutes d'une interview</strong> (la plus avancée — Djason ?) et on fixe le pattern. Choix display A/B/C à arbitrer.</p>
+      <span class="block-tag action">Expected action</span>
+      <p><strong>Send the raw notes of one interview</strong> (the most advanced — Djason?) and we lock the pattern. Display choice A/B/C to arbitrate.</p>
     </div>
   </div>
 </section>
 
 <div class="sources-foot">
-  <strong>Méthode :</strong> Backlog mis à jour quand de nouveaux items ressortent. <strong>Pas une roadmap</strong> — pas de deadlines, pas de priorité fixe (les priorités ici aident juste à scanner).<br/>
+  <strong>Method:</strong> Backlog is updated as new items emerge. <strong>Not a roadmap</strong> — no deadlines, no fixed priority (priorities here just help scanning).<br/>
   <br/>
-  <strong>Pages liées :</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
+  <strong>Related pages:</strong> <a href="/gaps">Gaps</a> · <a href="/master-gaps">Master Gaps</a> · <a href="/builder-atlas">Builder Atlas</a> · <a href="/buildathon">Buildathon</a><br/>
   <br/>
-  <strong>Status legend :</strong> OPEN (à traiter) · IN PROGRESS (en cours d'itération). Les items DONE sont retirés (git history conservée).<br/>
-  <strong>Priority legend :</strong> CRITICAL (blocker) · HIGH (impactful) · MEDIUM (nice to have) · LOW (cosmétique / optionnel)
+  <strong>Status legend:</strong> OPEN (to be addressed) · IN PROGRESS (being iterated). DONE items are removed (git history preserved).<br/>
+  <strong>Priority legend:</strong> CRITICAL (blocker) · HIGH (impactful) · MEDIUM (nice to have) · LOW (cosmetic / optional)
 </div>
 
 </div>
