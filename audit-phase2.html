@@ -497,6 +497,110 @@ footer {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* === VARIANT A·C+ (CHOSEN) === */
+.variant-chosen { border-color: var(--added); }
+.variant-chosen .variant-head { background: var(--added); }
+.variant-chosen .variant-head h2 em { color: var(--wallet); }
+.variant-chosen .variant-letter { color: var(--wallet); }
+.variant-chosen .chosen-tag {
+  display: inline-block;
+  background: var(--wallet);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  margin-left: 14px;
+  vertical-align: middle;
+}
+
+.filters-mock {
+  background: var(--paper-2);
+  padding: 12px 18px;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+.filters-mock > .filter-block {
+  display: flex; gap: 4px; align-items: center; flex-wrap: wrap;
+}
+.filters-mock .filter-block-label {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 9px;
+  margin-right: 4px;
+}
+.filter-btn-mock {
+  padding: 3px 8px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--ink);
+  cursor: default;
+  font-family: 'JetBrains Mono', monospace;
+}
+.filter-btn-mock.active { background: var(--ink); color: var(--paper); }
+
+.theme-group { border-bottom: 2px solid var(--ink); }
+.theme-group:last-child { border-bottom: none; }
+.theme-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 11px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.theme-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--wallet);
+}
+.theme-name {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+.theme-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(244,239,230,0.65);
+  letter-spacing: 0.08em;
+}
+
+/* Override vc-summary inside variant-chosen for A-style density */
+.variant-chosen .vc-summary {
+  display: grid;
+  grid-template-columns: 105px auto minmax(0, 1fr) auto 18px;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 18px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12.5px;
+}
+.variant-chosen .vc-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.variant-chosen .vc-row { background: var(--paper); }
+.variant-chosen .vc-row:hover .vc-summary { background: var(--paper-2); }
+.variant-chosen .vc-row[open] .vc-summary { background: var(--ink); color: var(--paper); }
+.variant-chosen .vc-row[open] .vc-summary .legacy { color: rgba(244,239,230,0.65); }
+.variant-chosen .vc-row[open] .vc-summary .va-title small { color: rgba(244,239,230,0.6); }
+
 </style>
 </head>
 <body>
@@ -770,156 +874,142 @@ footer {
 </section>
 
 <!-- ============================================================ -->
-<!-- VARIANT C — HYBRID EXPANDABLE                                -->
+<!-- VARIANT A·C+ — MERGED (CHOSEN)                               -->
 <!-- ============================================================ -->
-<section class="variant">
+<section class="variant variant-chosen">
   <div class="variant-head">
-    <h2>Variante <em>C</em> — Hybride dépliable</h2>
-    <span class="variant-letter">C</span>
+    <h2>Variante <em>A·C+</em> — Hybride dense, groupée par thème <span class="chosen-tag">✓ CHOISIE</span></h2>
+    <span class="variant-letter">A·C+</span>
   </div>
   <div class="variant-pros-cons">
     <div class="pros">
       <span class="label">✓ Avantages</span>
-      Compact par défaut (= Variante A) · expand au click pour détails (= Variante B)<br/>
-      Best of both · 52 opps scannables · drill-down quand on veut · natif HTML &lt;details&gt;
+      Densité d'A (Type + Tier + Chain + sources visibles dans la row) · groupée par thème (C+) · drill-down inline (C)<br/>
+      Pas de filtre nécessaire pour scanner un thème entier · scan rapide possible · contexte riche au click
     </div>
     <div class="cons">
       <span class="label">✗ Inconvénients</span>
-      Ajoute un click pour voir le contexte<br/>
-      Si 52 opps tous expandés = pareil que Variante B (mais avec le toggle UX en plus)
+      Row plus chargée que A pure · 1 click pour voir la description longue<br/>
+      <em>(Compromis assumé)</em>
     </div>
   </div>
   <div class="variant-body" style="padding: 0;">
 
-    <details class="vc-row">
-      <summary class="vc-summary">
-        <div class="va-id">OPP-001<span class="legacy">M-01</span></div>
-        <span class="type-pill block">BLOCK</span>
-        <span class="tier-pill mult">MULT</span>
-        <div class="va-title">Cross-Device Session Continuity Library</div>
-        <span class="va-theme">Wallets &amp; Infra</span>
-        <span class="vc-chevron">▸</span>
-      </summary>
-      <div class="vc-detail">
-        <h4>Cross-Device Session <em>Continuity Library</em></h4>
-        <p>Library to seamlessly continue wallet sessions across devices. Top non-trading product unlock identified by Atka and PWG Identity — XRPL has primitives but no clean integration story yet.</p>
-        <div class="vc-detail-grid">
-          <div class="vc-detail-block">
-            <span class="label">Sources</span>
-            <div class="pills"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
-          </div>
-          <div class="vc-detail-block">
-            <span class="label">Chain · Pages</span>
-            <div class="pills"><span class="chain-pill both">Both</span></div>
-            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-01 · analysis-3#FA-01</div>
-          </div>
-        </div>
-      </div>
-    </details>
+    <div class="filters-mock">
+      <div class="filter-block"><span class="filter-block-label">Type:</span><span class="filter-btn-mock active">All</span><span class="filter-btn-mock">APP</span><span class="filter-btn-mock">BLOCK</span></div>
+      <div class="filter-block"><span class="filter-block-label">Tier:</span><span class="filter-btn-mock active">All</span><span class="filter-btn-mock">MULT</span><span class="filter-btn-mock">HIGH</span><span class="filter-btn-mock">MED</span></div>
+      <div class="filter-block"><span class="filter-block-label">Chain:</span><span class="filter-btn-mock active">All</span><span class="filter-btn-mock">XRPL</span><span class="filter-btn-mock">EVM</span><span class="filter-btn-mock">Both</span></div>
+      <div class="filter-block"><span class="filter-block-label">Source:</span><span class="filter-btn-mock active">All</span><span class="filter-btn-mock">PWG-1</span><span class="filter-btn-mock">PWG-2</span><span class="filter-btn-mock">PWG-3</span><span class="filter-btn-mock">PWG-4</span><span class="filter-btn-mock">ATKA</span><span class="filter-btn-mock">ECO</span><span class="filter-btn-mock">YC</span><span class="filter-btn-mock">INT-*</span></div>
+    </div>
 
-    <details class="vc-row">
-      <summary class="vc-summary">
-        <div class="va-id">OPP-029<span class="legacy">M-27</span></div>
-        <span class="type-pill app">APP</span>
-        <span class="tier-pill high">HIGH</span>
-        <div class="va-title">AI-Native Compliance Ops</div>
-        <span class="va-theme">Dev &amp; Agents</span>
-        <span class="vc-chevron">▸</span>
-      </summary>
-      <div class="vc-detail">
-        <h4>AI-Native <em>Compliance Ops</em></h4>
-        <p>Service company that delivers compliance operations as an AI-augmented service. YC RFS lens : the AI agent does what compliance officers do, lawyer-on-tap for edge cases. Also tagged as Service-01.</p>
-        <div class="vc-detail-grid">
-          <div class="vc-detail-block">
-            <span class="label">Sources</span>
-            <div class="pills"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
-          </div>
-          <div class="vc-detail-block">
-            <span class="label">Chain · Pages</span>
-            <div class="pills"><span class="chain-pill xrpl">XRPL</span></div>
-            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-27 · gaps#service-01</div>
+    <div class="theme-group">
+      <div class="theme-header">
+        <span class="theme-num">01</span>
+        <h3 class="theme-name">Wallets &amp; Infra</h3>
+        <span class="theme-count">2 opps (échantillon) · 11 dans le registre complet</span>
+      </div>
+      <details class="vc-row">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-001<span class="legacy">M-01</span></div>
+          <div class="vc-pills"><span class="type-pill block">BLOCK</span><span class="tier-pill mult">MULT</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Cross-Device Session Continuity Library<small>Library to seamlessly continue wallet sessions across devices</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Cross-Device Session <em>Continuity Library</em></h4>
+          <p>Library to seamlessly continue wallet sessions across devices. Top non-trading product unlock identified by Atka and PWG Identity — XRPL has primitives but no clean integration story yet.</p>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Pages d'origine</span><div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace;">master-gaps#M-01 · analysis-3#FA-01</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div style="font-size:12px; color:var(--muted); font-style:italic;">Top non-trading product unlock</div></div>
           </div>
         </div>
-      </div>
-    </details>
+      </details>
+      <details class="vc-row">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-052<span class="legacy">BA-PayrollXRP</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill med">MED</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Streaming payroll for DAOs and freelancers<small>Streaming payroll on XRPL — new concept enabled by near-zero fees</small></div>
+          <div class="va-srcs"><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Streaming <em>payroll</em></h4>
+          <p>Streaming payroll on XRPL for DAOs and global freelancers. Continuous payment flow rather than monthly batch — new concept enabled by XRPL near-zero fees and fast finality. Source: Atka strategic blueprint.</p>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Pages d'origine</span><div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace;">builder-atlas#PayrollXRP</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div style="font-size:12px; color:var(--muted); font-style:italic;">Ajouté Phase 1 — concept neuf, pas couvert ailleurs</div></div>
+          </div>
+        </div>
+      </details>
+    </div>
 
-    <details class="vc-row">
-      <summary class="vc-summary">
-        <div class="va-id">OPP-015<span class="legacy">M-14</span></div>
-        <span class="type-pill app">APP</span>
-        <span class="tier-pill mult">MULT</span>
-        <div class="va-title">Yield-Bearing Stablecoin (T-bill backed)</div>
-        <span class="va-theme">RWA &amp; Stables</span>
-        <span class="vc-chevron">▸</span>
-      </summary>
-      <div class="vc-detail">
-        <h4>Yield-Bearing <em>Stablecoin (T-bill backed)</em></h4>
-        <p>USDe parallel for XRPL — T-bill collateralized stablecoin generating native yield. Top community demand surfaced by PWG Stablecoins, Atka report and YC RFS. Distribution play : works on both XRPL native and EVM Sidechain.</p>
-        <div class="vc-detail-grid">
-          <div class="vc-detail-block">
-            <span class="label">Sources</span>
-            <div class="pills"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
-          </div>
-          <div class="vc-detail-block">
-            <span class="label">Chain · Pages</span>
-            <div class="pills"><span class="chain-pill both">Both</span></div>
-            <div style="margin-top:6px; font-size:11px; color:var(--muted);">master-gaps#M-14 · analysis-3#FA-14 · gaps#gap-13</div>
+    <div class="theme-group">
+      <div class="theme-header">
+        <span class="theme-num">03</span>
+        <h3 class="theme-name">RWA &amp; Stables</h3>
+        <span class="theme-count">1 opp (échantillon) · 10 dans le registre complet</span>
+      </div>
+      <details class="vc-row">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-015<span class="legacy">M-14</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill mult">MULT</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Yield-Bearing Stablecoin (T-bill backed)<small>USDe parallel — top community demand · multi-source convergent</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Yield-Bearing <em>Stablecoin (T-bill backed)</em></h4>
+          <p>USDe parallel for XRPL — T-bill collateralized stablecoin generating native yield. Top community demand surfaced by PWG Stablecoins, Atka report and YC RFS. Distribution play : works on both XRPL native and EVM Sidechain.</p>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Pages d'origine</span><div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace;">master-gaps#M-14 · analysis-3#FA-14 · gaps#gap-13</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div style="font-size:12px; color:var(--muted); font-style:italic;">3 sources convergent → signal fort</div></div>
           </div>
         </div>
-      </div>
-    </details>
+      </details>
+    </div>
 
-    <details class="vc-row">
-      <summary class="vc-summary">
-        <div class="va-id">OPP-046<span class="legacy">gap-09</span></div>
-        <span class="type-pill block">BLOCK</span>
-        <span class="tier-pill med">MED</span>
-        <div class="va-title">Agent treasury + wallet for AI</div>
-        <span class="va-theme">Dev &amp; Agents</span>
-        <span class="vc-chevron">▸</span>
-      </summary>
-      <div class="vc-detail">
-        <h4>Agent treasury <em>+ wallet for AI</em></h4>
-        <p>Wallet/treasury infrastructure dedicated to AI agents — the 3rd layer of the AI agent stack alongside M-26 (payments via x402) and M-30 (identity/reputation KYA). Programmatic-first (agents control programmatically).</p>
-        <div class="vc-detail-grid">
-          <div class="vc-detail-block">
-            <span class="label">Sources</span>
-            <div class="pills"><span class="src-tag eco">ECO</span></div>
-          </div>
-          <div class="vc-detail-block">
-            <span class="label">Chain · Pages</span>
-            <div class="pills"><span class="chain-pill both">Both</span></div>
-            <div style="margin-top:6px; font-size:11px; color:var(--muted);">gaps#gap-09 (added Phase 1)</div>
+    <div class="theme-group">
+      <div class="theme-header">
+        <span class="theme-num">05</span>
+        <h3 class="theme-name">Dev &amp; Agents</h3>
+        <span class="theme-count">2 opps (échantillon) · 17 dans le registre complet</span>
+      </div>
+      <details class="vc-row">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-029<span class="legacy">M-27</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill high">HIGH</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">AI-Native Compliance Ops (service company)<small>YC RFS lens — also Service-01</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>AI-Native <em>Compliance Ops</em></h4>
+          <p>Service company that delivers compliance operations as an AI-augmented service. YC RFS lens : the AI agent does what compliance officers do, lawyer-on-tap for edge cases. Also tagged as Service-01.</p>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Pages d'origine</span><div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace;">master-gaps#M-27 · gaps#service-01</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div style="font-size:12px; color:var(--muted); font-style:italic;">Fusion service-01 — 3 sources convergent</div></div>
           </div>
         </div>
-      </div>
-    </details>
-
-    <details class="vc-row">
-      <summary class="vc-summary">
-        <div class="va-id">OPP-052<span class="legacy">BA-PayrollXRP</span></div>
-        <span class="type-pill app">APP</span>
-        <span class="tier-pill med">MED</span>
-        <div class="va-title">Streaming payroll for DAOs and freelancers</div>
-        <span class="va-theme">Wallets &amp; Infra</span>
-        <span class="vc-chevron">▸</span>
-      </summary>
-      <div class="vc-detail">
-        <h4>Streaming <em>payroll</em></h4>
-        <p>Streaming payroll on XRPL for DAOs and global freelancers. Continuous payment flow rather than monthly batch — new concept enabled by XRPL near-zero fees and fast finality. Source : Atka strategic blueprint.</p>
-        <div class="vc-detail-grid">
-          <div class="vc-detail-block">
-            <span class="label">Sources</span>
-            <div class="pills"><span class="src-tag atka">ATKA</span></div>
-          </div>
-          <div class="vc-detail-block">
-            <span class="label">Chain · Pages</span>
-            <div class="pills"><span class="chain-pill xrpl">XRPL</span></div>
-            <div style="margin-top:6px; font-size:11px; color:var(--muted);">builder-atlas#PayrollXRP (added Phase 1)</div>
+      </details>
+      <details class="vc-row">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-046<span class="legacy">gap-09</span></div>
+          <div class="vc-pills"><span class="type-pill block">BLOCK</span><span class="tier-pill med">MED</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Agent treasury + wallet for AI<small>Wallet/treasury infra for AI agents — 3rd layer of agent stack</small></div>
+          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Agent treasury <em>+ wallet for AI</em></h4>
+          <p>Wallet/treasury infrastructure dedicated to AI agents — the 3rd layer of the AI agent stack alongside M-26 (payments via x402) and M-30 (identity/reputation KYA). Programmatic-first (agents control programmatically).</p>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Pages d'origine</span><div style="font-size:11px; color:var(--muted); font-family:'JetBrains Mono', monospace;">gaps#gap-09 (ajouté Phase 1)</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div style="font-size:12px; color:var(--muted); font-style:italic;">Distinct de M-26 (payments) et M-30 (identity)</div></div>
           </div>
         </div>
-      </div>
-    </details>
+      </details>
+    </div>
 
   </div>
 </section>
@@ -928,32 +1018,20 @@ footer {
 <!-- DECISION                                                     -->
 <!-- ============================================================ -->
 <section class="decision">
-  <h2>Quel format <em>tu choisis</em> ?</h2>
-  <p style="margin: 0 0 8px;">Tableau de comparaison rapide. Quand tu m'as donné ta préférence (A / B / C ou variante mix), je propage à `/master-gaps` (52 cards) en Phase 3.</p>
+  <h2>✅ Variante <em>A·C+</em> validée — Phase 2 close</h2>
+  <p style="margin: 0 0 16px;">Décision prise : <strong>Variante A·C+</strong> (mix de A pour la densité de la row + C+ pour le grouping par thème + C pour le drill-down). Ce sera le format unique de <code style="background: var(--ink); color: var(--paper); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">/opportunities</code>.</p>
 
-  <table class="compare-table">
-    <thead>
-      <tr>
-        <th>Critère</th>
-        <th>Variante A — Compact</th>
-        <th>Variante B — Card box</th>
-        <th>Variante C — Hybride</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Densité (52 visibles d'un coup)</td><td>★★★★★</td><td>★★</td><td>★★★★★</td></tr>
-      <tr><td>Description / contexte visible</td><td>★★ (1 ligne tronquée)</td><td>★★★★★</td><td>★★★ (au click)</td></tr>
-      <tr><td>Esthétique éditoriale</td><td>★★ (spreadsheet)</td><td>★★★★★ (Fraunces)</td><td>★★★★ (mix)</td></tr>
-      <tr><td>Mobile-friendly</td><td>★★ (étroit)</td><td>★★★★★ (1 col)</td><td>★★★★</td></tr>
-      <tr><td>Comparer 2 opps entre elles</td><td>★★★★★</td><td>★★★</td><td>★★★★ (close puis open)</td></tr>
-      <tr><td>Effort de lecture initial</td><td>Faible</td><td>Moyen (scroll)</td><td>Faible (compact par défaut)</td></tr>
-      <tr><td>Cas d'usage idéal</td><td>Tableau de bord exécutif (master-gaps)</td><td>Page narrative riche (gaps)</td><td>Registre filtrable (master-gaps évolué)</td></tr>
-    </tbody>
-  </table>
-
-  <div style="margin-top: 18px; padding: 16px 20px; background: var(--ink); color: var(--paper); font-size: 13.5px;">
-    <strong style="color: var(--wallet);">Ma recommandation perso :</strong> Variante C (hybride) pour <code style="background: var(--paper); color: var(--ink); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">/master-gaps</code> (registre principal) + Variante B pour <code style="background: var(--paper); color: var(--ink); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">/gaps</code> (page narrative). Mais c'est ton appel.
+  <div style="background: var(--ink); color: var(--paper); padding: 18px 22px; margin-bottom: 16px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: var(--wallet); text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">Architecture cible — Phase 3</div>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7;">
+      <strong style="color: var(--wallet);">CRÉER</strong> <code style="background: var(--paper); color: var(--ink); padding: 1px 6px;">/opportunities</code> (FR + EN) · 52 opps · format A·C+<br/>
+      <strong style="color: var(--wallet);">SUPPRIMER</strong> <code style="background: var(--paper); color: var(--ink); padding: 1px 6px;">/master-gaps</code> + <code style="background: var(--paper); color: var(--ink); padding: 1px 6px;">/gaps</code> (banner redirect doux pendant transition)<br/>
+      <strong style="color: var(--wallet);">GARDER</strong> <code style="background: var(--paper); color: var(--ink); padding: 1px 6px;">/analysis-1/2/3</code> (trail méthodologique read-only)<br/>
+      <strong style="color: var(--wallet);">GARDER</strong> <code style="background: var(--paper); color: var(--ink); padding: 1px 6px;">/builder-atlas</code> (illustrations de composition)
+    </div>
   </div>
+
+  <p style="font-size: 13.5px; color: var(--muted); font-style: italic; margin: 0;">Les Variantes A et B au-dessus restent visibles à titre de référence comparative. Quand /opportunities sera live, cette page d'audit pourra être archivée.</p>
 </section>
 
 <footer>
