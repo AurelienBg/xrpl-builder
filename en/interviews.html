@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Founder interviews — XRPL Builder</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f4efe6;
+  --paper-2: #ece6d9;
+  --ink: #0e1116;
+  --muted: #58605a;
+  --wallet: #d4a017;
+  --orange: #e87722;
+  --added: #2e5d4f;
+  --candidate: #b8860b;
+  --warning: #c0392b;
+  --rwa: #4a6741;
+  --amm: #8b5a8c;
+  --user: #c8553d;
+  --sidechain: #b85c38;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: 'Fraunces', Georgia, serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; }
+.page { max-width: 1000px; margin: 0 auto; padding: 24px 28px 80px; }
+
+.nav-wrapper { position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--ink); }
+.nav-tier1 { background: var(--ink); color: var(--paper); padding: 9px 24px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; }
+.nav-tier1 .nav-home { color: var(--paper); font-family: 'Fraunces', serif; font-weight: 800; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.nav-tier1 .nav-home em { color: var(--wallet); font-style: italic; font-weight: 400; }
+.nav-tier1 .nav-logo { flex-shrink: 0; display: block; }
+.nav-tier1 .top-links { display: flex; gap: 0; }
+.nav-tier1 .top-link { color: var(--paper); text-decoration: none; padding: 6px 14px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; white-space: nowrap; position: relative; }
+.nav-tier1 .top-link:hover { background: rgba(244,239,230,0.12); }
+.nav-tier1 .top-link .caret { font-size: 11px; margin-left: 5px; opacity: 0.9; display: inline-block; transform: translateY(-1px); }
+.nav-tier1 .top-link[data-section="anatomy"] { box-shadow: inset 0 -3px 0 #5a85b8; }
+.nav-tier1 .top-link[data-section="landscape"] { box-shadow: inset 0 -3px 0 var(--rwa); }
+.nav-tier1 .top-link[data-section="tools"] { box-shadow: inset 0 -3px 0 var(--amm); }
+.nav-tier1 .top-link[data-section="atlas"] { box-shadow: inset 0 -3px 0 var(--user); }
+.nav-tier1 .top-link[data-section="analysis"] { box-shadow: inset 0 -3px 0 var(--wallet); }
+.nav-tier1 .top-link[data-section="buildathon"] { box-shadow: inset 0 -3px 0 var(--sidechain); }
+.nav-tier1 .right-cluster { display: flex; align-items: center; gap: 10px; }
+.nav-tier1 .opp-cta { color: var(--ink); background: var(--paper); text-decoration: none; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--paper); font-weight: 700; transition: all 0.15s ease; white-space: nowrap; }
+.nav-tier1 .opp-cta:hover { background: var(--wallet); color: var(--ink); border-color: var(--wallet); }
+.nav-tier1 .opp-cta.current { background: var(--wallet); color: var(--ink); border-color: var(--wallet); }
+.nav-tier1 .meta-menu { position: relative; display: inline-block; }
+.nav-tier1 .meta-trigger { color: var(--paper); background: transparent; text-decoration: none; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 8px; border: 1px solid rgba(244,239,230,0.3); font-weight: 700; cursor: pointer; transition: all 0.15s ease; white-space: nowrap; font-family: 'JetBrains Mono', monospace; display: inline-block; }
+.nav-tier1 .meta-trigger:hover { opacity: 1; border-color: var(--paper); background: rgba(244,239,230,0.1); }
+.nav-tier1 .meta-dropdown { position: absolute; top: 100%; right: 0; margin-top: 4px; min-width: 160px; background: var(--ink); border: 1px solid var(--paper); z-index: 200; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.nav-tier1 .meta-menu:hover .meta-dropdown, .nav-tier1 .meta-menu:focus-within .meta-dropdown { display: block; }
+.nav-tier1 .meta-dropdown a { display: block; padding: 8px 14px; color: var(--paper); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-bottom: 1px solid rgba(244,239,230,0.1); transition: background 0.15s ease; }
+.nav-tier1 .meta-dropdown a:last-child { border-bottom: none; }
+.nav-tier1 .meta-dropdown a:hover { background: var(--wallet); color: var(--ink); }
+.nav-tier1 .lang-toggle { display: flex; border: 1.5px solid var(--paper); white-space: nowrap; }
+.nav-tier1 .lang-toggle .lang-flag { padding: 0 10px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 22px; line-height: 1; display: flex; align-items: center; color: var(--paper); background: transparent; filter: grayscale(70%); opacity: 0.55; transition: all 0.15s ease; }
+.nav-tier1 .lang-toggle .lang-flag:hover { opacity: 1; filter: grayscale(0); }
+.nav-tier1 .lang-toggle .lang-flag.active { background: var(--wallet); filter: grayscale(0); opacity: 1; }
+.nav-tier2 { background: var(--paper); padding: 8px 24px; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; border-top: 1px solid rgba(14,17,22,0.15); min-height: 32px; }
+.nav-tier2 .section-label { color: var(--muted); text-transform: uppercase; font-weight: 700; margin-right: 12px; font-size: 9.5px; letter-spacing: 0.18em; }
+.nav-tier2 .sub-link { color: var(--ink); text-decoration: none; padding: 4px 10px; text-transform: uppercase; font-weight: 700; transition: background 0.15s ease; }
+.nav-tier2 .sub-link:hover { background: var(--paper-2); }
+.nav-tier2 .sub-link.current { background: var(--wallet); color: var(--ink); }
+.nav-tier2[data-section="analysis"] { border-top-color: var(--wallet); border-top-width: 2px; }
+@media (max-width: 800px) { .nav-tier1 { flex-direction: column; gap: 6px; padding: 8px 12px; } .nav-tier1 .top-links { flex-wrap: wrap; justify-content: center; font-size: 9px; } .nav-tier1 .top-link { padding: 4px 8px; } .nav-tier1 .right-cluster { flex-wrap: wrap; justify-content: center; } }
+
+.masthead { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 24px; }
+.eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+h1 { font-family: 'Fraunces', serif; font-weight: 800; font-size: 42px; line-height: 1.05; margin: 0; }
+h1 em { color: var(--wallet); font-style: italic; font-weight: 400; }
+.meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; letter-spacing: 0.06em; line-height: 1.7; }
+
+.intro { background: var(--paper-2); border: 2px solid var(--ink); padding: 18px 22px; margin-bottom: 32px; font-size: 14px; line-height: 1.6; }
+.intro p { margin: 0 0 8px; }
+.intro p:last-child { margin-bottom: 0; }
+.intro a { color: var(--ink); font-weight: 600; }
+.intro code { background: var(--ink); color: var(--paper); padding: 1px 5px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+.section-head-iv { border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 18px; margin-top: 36px; }
+.section-head-iv h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 26px; margin: 0; }
+
+.interview-card { display: grid; grid-template-columns: 90px 1fr; gap: 22px; padding: 24px; border: 2px solid var(--ink); margin-bottom: 22px; background: var(--paper); }
+.interview-card.pending { opacity: 0.85; }
+.interview-card.done { border-left: 6px solid var(--added); }
+.interview-num-block { background: var(--ink); color: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 6px; text-align: center; }
+.interview-card.done .interview-num-block { background: var(--added); }
+.interview-num { font-family: 'Fraunces', serif; font-weight: 800; font-size: 32px; line-height: 1; }
+.interview-date { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; letter-spacing: 0.14em; color: var(--paper); margin-top: 6px; text-align: center; opacity: 0.85; }
+.interview-body { display: flex; flex-direction: column; }
+.interview-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; flex-wrap: wrap; }
+.interview-head h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 26px; margin: 0; }
+.status-pill { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 4px 10px; white-space: nowrap; }
+.status-pill.done { background: var(--added); color: var(--paper); }
+.status-pill.pending { background: var(--paper-2); color: var(--muted); border: 1px solid var(--muted); }
+
+.context-block, .format-block, .takeaway-block { margin-bottom: 14px; font-size: 13.5px; line-height: 1.55; }
+.context-block .label, .format-block .label, .takeaway-block .label, .props-block .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 700; display: block; margin-bottom: 4px; }
+.context-block .label, .format-block .label { color: var(--muted); }
+.format-block { font-style: italic; color: var(--muted); }
+.takeaway-block { background: rgba(212,160,23,0.1); border-left: 4px solid var(--wallet); padding: 12px 16px; }
+.takeaway-block p { margin: 0; font-size: 13.5px; }
+
+.props-block { margin: 18px 0; }
+.props-block ol { list-style: none; margin: 0; padding: 0; }
+.prop-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 16px; align-items: start; padding: 12px 14px; background: var(--paper-2); border-left: 3px solid var(--wallet); margin-bottom: 8px; }
+.prop-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--ink); }
+.prop-content { font-size: 13px; }
+.prop-title { font-weight: 700; margin-bottom: 3px; }
+.prop-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+.prop-blurb { font-style: italic; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.prop-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 6px 10px; background: var(--ink); color: var(--paper); text-decoration: none; white-space: nowrap; align-self: center; }
+.prop-link:hover { background: var(--wallet); color: var(--ink); }
+
+.pending-note { font-style: italic; color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+
+.footer-method { background: var(--paper-2); border: 2px solid var(--ink); padding: 16px 20px; margin-top: 36px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.footer-method strong { color: var(--ink); }
+.footer-method a { color: var(--ink); font-weight: 600; }
+footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+@media (max-width: 700px) {
+  .interview-card { grid-template-columns: 70px 1fr; gap: 14px; padding: 16px; }
+  .prop-row { grid-template-columns: 1fr; gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav-wrapper">
+  <div class="nav-tier1">
+    <a class="nav-home" href="/en/"><svg class="nav-logo" viewBox="0 0 512 512" width="40" height="40" aria-hidden="true"><g transform="translate(60, 220) scale(0.38461538461538464)"><g transform="translate(0, 615) scale(0.1, -0.1)" fill="currentColor" stroke="none"><path d="M343 5844 c-43 -19 -16 -53 201 -255 37 -35 76 -72 85 -81 9 -10 69 -71 135 -135 65 -65 137 -137 160 -160 22 -23 94 -95 160 -160 65 -65 203 -202 306 -305 104 -104 193 -188 199 -188 6 0 11 -5 11 -11 0 -5 41 -49 92 -97 50 -48 98 -96 107 -106 9 -10 36 -37 60 -60 88 -83 338 -332 342 -341 2 -6 22 -25 44 -44 22 -18 76 -68 121 -110 101 -95 186 -162 244 -191 25 -13 71 -40 102 -61 31 -22 66 -39 76 -39 11 0 31 -9 45 -20 14 -11 28 -20 33 -20 4 0 30 -11 58 -24 85 -41 219 -79 376 -106 30 -6 84 -16 120 -22 83 -16 355 -16 440 -1 36 7 90 17 120 22 104 19 225 49 262 65 21 9 44 16 53 16 20 0 142 56 149 69 4 5 20 13 38 16 17 4 61 26 97 50 36 23 83 50 104 60 20 9 37 21 37 25 0 5 19 19 42 33 24 14 86 65 138 114 52 48 110 102 128 119 19 18 38 36 43 40 4 5 77 78 161 162 84 84 203 203 265 265 62 61 116 115 120 119 23 21 595 585 738 729 22 22 96 96 165 163 69 68 130 129 135 135 6 6 26 25 45 42 156 139 260 251 250 269 -6 11 -18 20 -28 20 -9 1 -218 1 -464 1 l-447 0 -40 -26 c-22 -13 -47 -38 -56 -55 -9 -16 -19 -30 -23 -30 -6 0 -128 -117 -187 -179 -5 -6 -76 -76 -157 -155 -82 -80 -148 -150 -148 -155 0 -6 -9 -15 -21 -21 -30 -17 -309 -294 -309 -308 0 -7 -6 -12 -14 -12 -7 0 -26 -12 -43 -27 -114 -107 -144 -136 -194 -190 -31 -33 -62 -70 -68 -82 -7 -11 -17 -21 -23 -21 -7 0 -24 -12 -38 -26 -117 -121 -337 -328 -359 -337 -14 -7 -38 -20 -51 -30 -77 -55 -139 -89 -184 -103 -28 -9 -74 -24 -103 -35 -302 -108 -732 -48 -993 138 -13 10 -35 23 -47 28 -22 10 -110 82 -142 117 -23 26 -190 192 -228 228 -18 16 -37 30 -43 30 -5 0 -10 5 -10 11 0 17 -153 173 -259 265 -18 16 -40 37 -50 46 -17 19 -48 48 -206 203 -126 122 -101 97 -280 277 -82 82 -153 153 -157 156 -4 4 -29 30 -55 57 -27 28 -72 71 -100 96 -29 26 -58 58 -64 73 -7 14 -15 26 -19 26 -4 0 -24 12 -45 26 -21 14 -44 23 -51 20 -7 -3 -163 -5 -346 -4 -307 0 -358 0 -450 -3 -18 0 -46 2 -63 5 -16 3 -36 3 -42 0z"/><path d="M3460 2854 c-83 -9 -278 -47 -307 -60 -17 -8 -38 -14 -48 -14 -9 0 -28 -6 -43 -14 -15 -8 -46 -17 -67 -21 -22 -4 -55 -16 -73 -26 -18 -10 -39 -19 -46 -19 -7 0 -21 -9 -30 -19 -10 -10 -32 -22 -51 -25 -18 -4 -38 -13 -45 -21 -7 -8 -18 -15 -25 -15 -17 0 -252 -158 -291 -195 -17 -17 -88 -84 -157 -150 -70 -66 -304 -295 -520 -510 -791 -784 -1363 -1345 -1410 -1381 -57 -45 -57 -48 -7 -68 35 -14 100 -16 489 -16 l449 0 413 407 c227 225 528 523 670 663 343 340 509 499 559 535 23 17 58 44 78 61 20 17 67 46 103 63 37 18 70 35 73 39 4 4 31 12 59 18 29 7 72 19 97 27 133 44 419 63 479 32 17 -8 45 -15 64 -15 18 0 67 -11 107 -25 40 -14 84 -25 96 -25 13 0 25 -4 28 -9 3 -5 36 -23 73 -41 38 -18 85 -47 105 -64 20 -17 55 -44 78 -61 58 -42 200 -178 525 -500 539 -534 972 -960 1008 -992 21 -18 41 -43 46 -56 21 -55 40 -57 520 -57 547 0 576 5 468 89 -30 22 -90 78 -134 123 -44 46 -264 263 -488 483 -224 220 -413 406 -419 413 -6 7 -47 48 -90 90 -43 42 -124 122 -180 177 -56 55 -126 123 -156 151 -30 29 -117 114 -192 190 -115 116 -297 292 -419 405 -15 14 -52 43 -81 63 -29 20 -79 54 -111 76 -68 47 -166 100 -184 100 -7 0 -22 9 -33 20 -11 11 -30 20 -42 20 -12 0 -29 6 -37 14 -9 8 -41 21 -71 29 -30 8 -86 26 -125 40 -157 56 -518 92 -705 71z"/></g></g><text x="345" y="280" font-family="Fraunces, Georgia, serif" font-style="italic" font-weight="700" fill="#d4a017" font-size="180">B</text></svg><span>XRPL <em>Builder</em></span></a>
+    <div class="top-links"><a class="top-link" data-section="anatomy" href="/en/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/en/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/en/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="analysis" href="/en/analysis-1">Analyses <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/en/buildathon">Buildathon</a><a class="opp-cta" href="/en/opportunities">★ Opportunities</a></div>
+    <div class="right-cluster">
+      <div class="meta-menu">
+        <button class="meta-trigger" aria-label="Meta">ⓘ ▾</button>
+        <div class="meta-dropdown">
+          <a href="/en/about">About</a>
+          <a href="/en/update">Current update</a>
+        </div>
+      </div>
+      <div class="lang-toggle">
+        <a class="lang-flag " href="/interviews">🇫🇷</a>
+        <a class="lang-flag active" href="/en/interviews">🇬🇧</a>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-tier2" data-section="analysis"><span class="section-label">Analyses →</span><a class="sub-link" href="/en/analysis-1">A1</a><a class="sub-link" href="/en/analysis-2">A2</a><a class="sub-link" href="/en/analysis-3">Synthesis</a><a class="sub-link current" href="/en/interviews">Interviews</a></nav>
+</div>
+
+<div class="page">
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Interviews · qualitative signals · v1.0</div>
+    <h1><em>Founder</em> interviews</h1>
+  </div>
+  <div class="meta">
+    1 completed · 5 propositions extracted<br/>
+    5 planned: Stan · Kevin · Adrien · Denis · Andy<br/>
+    Format: 1h video call + transcript + recap<br/>
+    Source-tag: INT-{name} in /opportunities
+  </div>
+</header>
+
+<div class="intro">
+  <p>This page lists the <strong>1:1 interviews</strong> conducted with founders, builders and actors of the XRPL ecosystem. Each interview produces a set of <strong>opportunity propositions</strong> which are then integrated into <a href="/en/opportunities">/opportunities</a> with the source-tag <code>INT-{name}</code>.</p>
+  <p>Why: internal analyses (PWGs + ATKA + ecosystem-map + YC RFS) capture structural and protocol-level frictions well, but miss the <strong>ground-truth qualitative signals</strong> — the voice of the builder who touches the code, the founder who pivots, the dev who struggles. Interviews fill this gap.</p>
+</div>
+
+<div class="section-head-iv">
+  <h2>✅ Completed interviews</h2>
+</div>
+
+<section class="interview-card done">
+  <div class="interview-num-block">
+    <div class="interview-num">01</div>
+    <div class="interview-date">May 7, 2026</div>
+  </div>
+  <div class="interview-body">
+    <div class="interview-head">
+      <h2>Djason Gadiou</h2>
+      <span class="status-pill done">✅ Done</span>
+    </div>
+    <div class="context-block"><span class="label">Context</span>XRPL builder, DeFi ecosystem contributor, present at XRPL Apex Paris. Rare profile: combines consumer product vision with deep protocol-level technical knowledge.</div>
+    <div class="format-block"><span class="label">Format</span>1h video call · transcript via Gemini · WhatsApp recap post-call</div>
+    <div class="props-block">
+      <span class="label">Extracted propositions (5)</span>
+      <ol>
+      <li class="prop-row">
+        <div class="prop-id">OPP-053</div>
+        <div class="prop-content">
+          <div class="prop-title">Hardware wallet integration for XRPL wallets</div>
+          <div class="prop-meta">BLOCK · wallets-infra · HIGH</div>
+          <div class="prop-blurb">No XRPL wallet supports Ledger/Trezor — major institutional blocker.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">see card →</a>
+      </li>
+      <li class="prop-row">
+        <div class="prop-id">OPP-054</div>
+        <div class="prop-content">
+          <div class="prop-title">DeFi-first consumer XRPL wallet</div>
+          <div class="prop-meta">APP · wallets-infra · HIGH</div>
+          <div class="prop-blurb">Xaman has broken DeFi UX (positions unfindable, consumer onboarding inadequate).</div>
+        </div>
+        <a class="prop-link" href="/opportunities">see card →</a>
+      </li>
+      <li class="prop-row">
+        <div class="prop-id">OPP-023</div>
+        <div class="prop-content">
+          <div class="prop-title">Pre-Deployed Testnet + SurfPool-equivalent (enriched)</div>
+          <div class="prop-meta">BLOCK · dev-agents · MULT</div>
+          <div class="prop-blurb">No local node for testing — Solana has SurfPool, Ethereum has Anvil. INT-djason tag added to existing opp.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">see card →</a>
+      </li>
+      <li class="prop-row">
+        <div class="prop-id">OPP-055</div>
+        <div class="prop-content">
+          <div class="prop-title">AI agent credit card with RLUSD</div>
+          <div class="prop-meta">APP · dev-agents · MED</div>
+          <div class="prop-blurb">Solana has OpenClaw for AI agents. XRPL should have the equivalent with RLUSD + native multisig.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">see card →</a>
+      </li>
+      <li class="prop-row">
+        <div class="prop-id">OPP-056</div>
+        <div class="prop-content">
+          <div class="prop-title">XRPL DeFi position aggregator (DeBank-style)</div>
+          <div class="prop-meta">APP · lending · MED</div>
+          <div class="prop-blurb">Impossible to see your DeFi positions cross-protocols. DeBank/Zapper exist on EVM, nothing on XRPL.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">see card →</a>
+      </li>
+      </ol>
+    </div>
+    <div class="takeaway-block">
+      <span class="label">Key takeaway</span>
+      <p>The interview reveals that XRPL frictions are NOT only protocol-level (which internal analyses capture well) — but also product-level (wallet UX, onboarding, dev tooling). Djason brings the voice of the builder who touches the code daily. To be multiplied across the 5 remaining interviewees.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-head-iv">
+  <h2>⏸ Planned interviews</h2>
+</div>
+
+  <section class="interview-card pending">
+    <div class="interview-num-block"><div class="interview-num">02</div></div>
+    <div class="interview-body">
+      <div class="interview-head">
+        <h2>Stan</h2>
+        <span class="status-pill pending">⏸ To schedule</span>
+      </div>
+      <p class="pending-note">Planned — propositions à extraire post-interview</p>
+    </div>
+  </section>
+
+  <section class="interview-card pending">
+    <div class="interview-num-block"><div class="interview-num">03</div></div>
+    <div class="interview-body">
+      <div class="interview-head">
+        <h2>Kevin</h2>
+        <span class="status-pill pending">⏸ To schedule</span>
+      </div>
+      <p class="pending-note">Planned — propositions à extraire post-interview</p>
+    </div>
+  </section>
+
+  <section class="interview-card pending">
+    <div class="interview-num-block"><div class="interview-num">04</div></div>
+    <div class="interview-body">
+      <div class="interview-head">
+        <h2>Adrien</h2>
+        <span class="status-pill pending">⏸ To schedule</span>
+      </div>
+      <p class="pending-note">Planned — propositions à extraire post-interview</p>
+    </div>
+  </section>
+
+  <section class="interview-card pending">
+    <div class="interview-num-block"><div class="interview-num">05</div></div>
+    <div class="interview-body">
+      <div class="interview-head">
+        <h2>Denis</h2>
+        <span class="status-pill pending">⏸ To schedule</span>
+      </div>
+      <p class="pending-note">Planned — propositions à extraire post-interview</p>
+    </div>
+  </section>
+
+  <section class="interview-card pending">
+    <div class="interview-num-block"><div class="interview-num">06</div></div>
+    <div class="interview-body">
+      <div class="interview-head">
+        <h2>Andy</h2>
+        <span class="status-pill pending">⏸ To schedule</span>
+      </div>
+      <p class="pending-note">Planned — propositions à extraire post-interview</p>
+    </div>
+  </section>
+
+<div class="footer-method">
+  <strong>Methodology —</strong> Each interview is conducted as a 1h video call with recording + transcript + WhatsApp/email recap. Propositions are triaged (NEW vs DUPLICATE of existing), validated with the interviewee if possible, then integrated into <a href="/en/opportunities">/opportunities</a>. Existing opportunities matching an interview signal receive an additional tag (multi-source = strong signal).
+</div>
+
+<footer>
+  <span>INTERVIEWS · v1.0</span>
+  <span>PHASE 5 · MAY 2026</span>
+</footer>
+
+</div>
+
+</body>
+</html>
