@@ -203,8 +203,6 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <div class="top-links"><a class="top-link" data-section="anatomy" href="/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="analysis" href="/analysis-1">Analysis <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/buildathon">Buildathon</a></div>
     <div class="right-cluster">
       <a class="opp-cta current" href="/en/opportunities">★ Opportunities</a>
-      <a class="current-update" href="/update">● Current update</a>
-      <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
       <div class="lang-toggle">
         <a class="lang-flag " href="/opportunities">🇫🇷</a>
         <a class="lang-flag active" href="/en/opportunities">🇬🇧</a>
@@ -244,6 +242,16 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   <p>This page is <strong>the unified registry</strong> of opportunities to build on XRPL — single source of truth for the buildathon. It replaces <code>/master-gaps</code> and <code>/gaps</code> (kept accessible temporarily with redirect banner).</p>
   <p>Format: <strong>5 themes × 2 types (APP/BLOCK)</strong>, each opportunity tagged with its <em>original sources</em> (PWG, ATKA, ECO, YC, INT to come). Click a row for details. Filters (Type · Tier · Chain · Source) are multi-select: OR within an axis, AND across axes.</p>
 </div>
+
+<section class="gsearch-block">
+  <h2>🔍 Global search</h2>
+  <input type="search" id="gsearch-input" class="gsearch-input" placeholder="Type your query... (e.g. lending, PWG-1, AI agents)" />
+  <div class="gsearch-meta">
+    <span class="gsearch-status" id="gsearch-status">— 69 entries indexed</span>
+    <span class="gsearch-try"><strong>Try:</strong> <code>wallet</code><code>YC</code><code>RWA</code><code>treasury</code></span>
+  </div>
+  <div id="gsearch-results" class="gsearch-results"></div>
+</section>
 
 <!-- FILTERS -->
 <div class="filters">

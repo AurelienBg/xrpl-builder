@@ -203,8 +203,6 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <div class="top-links"><a class="top-link" data-section="anatomy" href="/blockchain-framework-xrpl">Anatomy <span class="caret">▼</span></a><a class="top-link" data-section="landscape" href="/ecosystem-map">Landscape <span class="caret">▼</span></a><a class="top-link" data-section="tools" href="/decision-tree">Tools <span class="caret">▼</span></a><a class="top-link" data-section="analysis" href="/analysis-1">Analysis <span class="caret">▼</span></a><a class="top-link" data-section="buildathon" href="/buildathon">Buildathon</a></div>
     <div class="right-cluster">
       <a class="opp-cta current" href="/opportunities">★ Opportunities</a>
-      <a class="current-update" href="/update">● Current update</a>
-      <a class="backlog-mini" href="/backlog">⚙ Backlog</a>
       <div class="lang-toggle">
         <a class="lang-flag active" href="/opportunities">🇫🇷</a>
         <a class="lang-flag " href="/en/opportunities">🇬🇧</a>
@@ -244,6 +242,16 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   <p>Cette page est <strong>le registre unifié</strong> des opportunités à construire sur XRPL — single source of truth pour le buildathon. Elle remplace <code>/master-gaps</code> et <code>/gaps</code> (qui restent accessibles temporairement avec banner de redirection).</p>
   <p>Format : <strong>5 thèmes × 2 types (APP/BLOCK)</strong>, chaque opportunité tagguée avec ses <em>sources d'origine</em> (PWG, ATKA, ECO, YC, INT à venir). Cliquer sur une row pour voir les détails. Les filtres (Type · Tier · Chain · Source) sont multi-select : OR à l'intérieur d'un axe, AND entre axes.</p>
 </div>
+
+<section class="gsearch-block">
+  <h2>🔍 Recherche globale</h2>
+  <input type="search" id="gsearch-input" class="gsearch-input" placeholder="Tapez votre recherche... (ex: lending, PWG-1, AI agents)" />
+  <div class="gsearch-meta">
+    <span class="gsearch-status" id="gsearch-status">— 69 entries indexed</span>
+    <span class="gsearch-try"><strong>Essaie :</strong> <code>wallet</code><code>YC</code><code>RWA</code><code>treasury</code></span>
+  </div>
+  <div id="gsearch-results" class="gsearch-results"></div>
+</section>
 
 <!-- FILTERS -->
 <div class="filters">
