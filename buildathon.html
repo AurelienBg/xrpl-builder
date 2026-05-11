@@ -458,7 +458,7 @@
 </div>
 
 <div class="intro">
-  <p><span class="pill">CONTEXTE</span> Cette page est la <strong>feuille de route de travail</strong> pour le prochain XRPL Buildathon. Elle s'appuie sur la <a href="/analysis-3" style="color: var(--chain); font-weight: 600;">synthèse Master Atlas</a> (30 opportunités, 7 thèmes, 8 multiplicateurs) et la traduit en programme exécutable.</p>
+  <p><span class="pill">CONTEXTE</span> Cette page est la <strong>feuille de route de travail</strong> pour le prochain XRPL Buildathon. Elle s'appuie sur le <a href="/opportunities" style="color: var(--chain); font-weight: 600;">registre unifié /opportunities</a> (<strong>56 opportunités, 5 thèmes, 7 multiplicateurs</strong> · convergence PWG + ATKA + ECO + YC + interviews) et le traduit en programme exécutable. <em>Trail méthodologique en amont :</em> <a href="/analysis-1" style="color: var(--chain); font-weight: 600;">Analyse 1</a> → <a href="/analysis-2" style="color: var(--chain); font-weight: 600;">2</a> → <a href="/analysis-3" style="color: var(--chain); font-weight: 600;">3</a> + <a href="/interviews" style="color: var(--chain); font-weight: 600;">interviews</a>.</p>
   <p><span class="pill">MÉTHODE</span> Pour chacune des <strong>10 sections</strong> (nom, format, timing, registre de challenges, prix, jury, critères, équipes, office hours, questions ouvertes), cette page liste <em>ma recommandation</em> dans l'encart orange, puis <em>toutes les alternatives</em> en dessous — pour que le comité puisse scanner les options sans perdre le contexte. <strong>Rien n'est décidé.</strong></p>
   <p><span class="pill">USAGE</span> Parcourir les sections dans l'ordre. Quand le comité s'aligne sur un choix, on le verrouille en v1.0 et on livre la page publique du Buildathon (séparée de ce brouillon interne).</p>
 </div>
@@ -539,7 +539,7 @@
       <ul class="alt-list">
         <li>
           <div class="alt-name">30x30</div>
-          <div class="alt-desc"><strong>Référence au format SXSW</strong> (South by Southwest) + collage parfait avec la lecture <em>30 opportunités × 30 jours</em> du Master Atlas. Punchy, mémorable, viral. <strong>Pour :</strong> punchy, brandable, marketing gold. <strong>Contre :</strong> ne dit "XRPL" nulle part — nécessite un sous-titre type "30x30 — XRPL Buildathon".</div>
+          <div class="alt-desc"><strong>Référence au format SXSW</strong> (South by Southwest). <em>Note : le naming "30x30" était calé sur les 30 opportunités du Master Atlas v1. Le registre actuel /opportunities a 56 opps — le nom reste utilisable comme cooldown marketing mais perd la cohérence numérique.</em> <strong>Pour :</strong> punchy, brandable, marketing gold. <strong>Contre :</strong> ne dit "XRPL" nulle part — nécessite un sous-titre type "30x30 — XRPL Buildathon".</div>
         </li>
         <li>
           <div class="alt-name">Buildathon</div>
@@ -633,31 +633,46 @@
 
     <div class="reco-block">
       <span class="reco-tag">Proposition</span>
-      <h3>Master Atlas <em>— 30 opportunités, 7 thèmes</em></h3>
-      <div class="reco-sub">Mapping direct depuis Analysis 3 → Tier 1 / Tier 2 / Tier 3 du Buildathon</div>
-      <p>Le <strong>Master Atlas</strong> contient déjà la convergence des 4 PWG + Atka + external challenger. Le mapping est direct :</p>
+      <h3>Registre <em>/opportunities — 56 opportunités, 5 thèmes</em></h3>
+      <div class="reco-sub">Le challenge register du Buildathon = le registre unifié <a href="/opportunities" style="color: var(--chain); font-weight: 600;">/opportunities</a> (single source of truth · convergence PWG + ATKA + ECO + YC + interviews)</div>
+      <p>Les équipes choisissent un challenge parmi les <strong>56 opportunités</strong> du registre, classées sur 2 axes (Type APP/BLOCK × 5 thèmes : <em>Wallets &amp; Infra · Lending · RWA &amp; Stables · EVM DeFi · Dev &amp; Agents</em>). Bracket des prix mappé sur les 3 tiers du registre :</p>
       <ul>
-        <li><strong>Tier 1 — Multiplicateurs (×8 challenges) :</strong> M-01, M-05, M-09, M-11, M-14, M-17, M-21, M-22 → Bracket Grand Prix</li>
-        <li><strong>Tier 2 — High-priority (×14 challenges) :</strong> M-02, M-03, M-06, M-07, M-12, M-12b, M-13, M-16b, M-18, M-19, M-20, M-24, M-25, M-26 → Major Prize</li>
-        <li><strong>Tier 3 — Medium-priority (×8 challenges) :</strong> M-04, M-08, M-10, M-15, M-16, M-23, M-27, M-28, M-29, M-30 → Standard Prize (certaines sont des contributions A1)</li>
-        <li><strong>Catégorie Open :</strong> les équipes peuvent proposer un challenge hors-Atlas si justifié ; le jury décide de l'éligibilité</li>
+        <li><strong>Tier 1 — Multiplicateurs (×7 challenges)</strong> → Bracket Grand Prix. Les opps qui débloquent <em>plusieurs autres</em> opps :
+          <ul style="margin: 4px 0 8px 0; padding-left: 18px;">
+        <li><code>OPP-001</code> · Cross-Device Session Continuity Library <small style="color:var(--muted);">(wallets-infra)</small></li>
+        <li><code>OPP-005</code> · Institutional Data Emission Adapter Library <small style="color:var(--muted);">(wallets-infra)</small></li>
+        <li><code>OPP-009</code> · Vault Wrapper Pattern Library (XLS-65) <small style="color:var(--muted);">(lending)</small></li>
+        <li><code>OPP-011</code> · Lending Protocol on EVM Sidechain (Morpho-style) <small style="color:var(--muted);">(lending)</small></li>
+        <li><code>OPP-015</code> · Yield-Bearing Stablecoin (T-bill backed) <small style="color:var(--muted);">(rwa-stable)</small></li>
+        <li><code>OPP-019</code> · Restaking Protocol for XRP (Babylon-fork) <small style="color:var(--muted);">(evm-defi)</small></li>
+        <li><code>OPP-023</code> · Pre-Deployed Testnet Infrastructure <small style="color:var(--muted);">(dev-agents)</small></li>
+          </ul>
+        </li>
+        <li><strong>Tier 2 — High-priority (×31 challenges)</strong> → Major Prize. Opps avec demande forte et impact élevé (community survey · regulatory window · top-of-mind founders).</li>
+        <li><strong>Tier 3 — Medium-priority (×18 challenges)</strong> → Standard Prize. Opps importantes mais à priorité moindre (verticales spécifiques, services AI-native, novelties).</li>
+        <li><strong>Catégorie Open :</strong> les équipes peuvent proposer un challenge <em>hors-registre</em> si justifié ; le jury décide de l'éligibilité. Si retenu et impactant, l'opportunité sera ajoutée au registre.</li>
       </ul>
+      <p style="font-size: 13px; color: var(--muted); font-style: italic; margin-top: 10px;">→ Le registre est <strong>vivant</strong> : les interviews founders (Djason ✓ · Stan/Kevin/Adrien/Denis/Andy à venir) ajoutent des opps avec tag <code>INT-{nom}</code>. La snapshot ci-dessus correspond à mai 2026.</p>
     </div>
 
     <div class="alt-block">
       <span class="alt-tag">Alternatives</span>
       <ul class="alt-list">
         <li>
-          <div class="alt-name">Curated short-list (10 challenges)</div>
-          <div class="alt-desc">Garder seulement les 10 priorités max (les 8 multiplicateurs + 2 wildcards). <strong>Pour :</strong> plus facile à communiquer, décision plus simple pour les builders. <strong>Contre :</strong> exclut 20+ opportunités valides ; risque que des builders pivotent vers un challenge sub-optimal.</div>
+          <div class="alt-name">Curated short-list (top 10 challenges)</div>
+          <div class="alt-desc">Garder seulement les <strong>7 multiplicateurs + 3 wildcards</strong> = 10 challenges max. <strong>Pour :</strong> plus facile à communiquer, décision plus simple pour les builders, focus extrême. <strong>Contre :</strong> exclut 46+ opportunités valides ; risque que des builders pivotent vers un challenge sub-optimal ou hors-registre.</div>
         </li>
         <li>
           <div class="alt-name">Open-form (no register)</div>
-          <div class="alt-desc">Tout projet lié à XRPL bienvenu, aucune contrainte. <strong>Pour :</strong> créativité max. <strong>Contre :</strong> gâche tout le travail de curation du Master Atlas ; le jury n'a rien sur quoi s'ancrer.</div>
+          <div class="alt-desc">Tout projet lié à XRPL bienvenu, aucune contrainte. <strong>Pour :</strong> créativité max. <strong>Contre :</strong> gâche tout le travail de curation du registre /opportunities (PWG + ATKA + ECO + YC + interviews) ; le jury n'a rien sur quoi s'ancrer ; risque de projets génériques (« yet another DEX »).</div>
         </li>
         <li>
           <div class="alt-name">Sponsor-driven challenges</div>
-          <div class="alt-desc">Chaque sponsor majeur (Ripple, Mastercard, Securitize, Anodos) définit son propre challenge. <strong>Pour :</strong> garantit l'engagement des sponsors. <strong>Contre :</strong> les challenges peuvent ne pas s'aligner avec le Master Atlas ; risque "sponsored content".</div>
+          <div class="alt-desc">Chaque sponsor majeur (Ripple, Mastercard, Securitize, Anodos) définit son propre challenge — modèle ETHGlobal. <strong>Pour :</strong> garantit l'engagement des sponsors, prize pool fragmenté facile à fundraiser. <strong>Contre :</strong> les challenges peuvent ne pas s'aligner avec /opportunities ; risque "sponsored content" ; complexifie la communication aux builders.</div>
+        </li>
+        <li>
+          <div class="alt-name">Filtre par thème (5 tracks parallèles)</div>
+          <div class="alt-desc">Une compétition séparée par thème (Wallets &amp; Infra, Lending, RWA &amp; Stables, EVM DeFi, Dev &amp; Agents). Chaque thème a son propre Grand Prix + jury thématique. <strong>Pour :</strong> recrute des jurés spécialistes par thème ; lit clean pour les builders « lending only » ou « wallets only ». <strong>Contre :</strong> dilue les multiplicateurs cross-thématiques (M-21 Pre-Deployed Testnet aide tous les thèmes).</div>
         </li>
       </ul>
     </div>
