@@ -309,12 +309,8 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </div>
   <div class="filter-row">
     <span class="filter-label">Theme</span>
-    <button class="filter-btn" data-axis="theme" data-val="wallets-infra">Wallets &amp; Infra <span style="opacity:0.7;">(14)</span></button>
-    <button class="filter-btn" data-axis="theme" data-val="lending">Lending <span style="opacity:0.7;">(7)</span></button>
-    <button class="filter-btn" data-axis="theme" data-val="rwa-stable">RWA &amp; Stables <span style="opacity:0.7;">(9)</span></button>
-    <button class="filter-btn" data-axis="theme" data-val="evm-defi">EVM DeFi <span style="opacity:0.7;">(7)</span></button>
-    <button class="filter-btn" data-axis="theme" data-val="dev-tooling">Dev Tooling <span style="opacity:0.7;">(7)</span></button><button class="filter-btn" data-axis="theme" data-val="ai-agents">AI Agents <span style="opacity:0.7;">(12)</span></button>
-  </div>
+        <button class="filter-btn" data-axis="theme" data-val="wallets">Wallets <span style="opacity:0.7;">(9)</span></button><button class="filter-btn" data-axis="theme" data-val="infra">Infra <span style="opacity:0.7;">(7)</span></button><button class="filter-btn" data-axis="theme" data-val="lending">Lending <span style="opacity:0.7;">(6)</span></button><button class="filter-btn" data-axis="theme" data-val="rwa-stable">RWA &amp; Stables <span style="opacity:0.7;">(5)</span></button><button class="filter-btn" data-axis="theme" data-val="evm-defi">EVM DeFi <span style="opacity:0.7;">(8)</span></button><button class="filter-btn" data-axis="theme" data-val="dev-tooling">Dev Tooling <span style="opacity:0.7;">(9)</span></button><button class="filter-btn" data-axis="theme" data-val="ai-agents">AI Agents <span style="opacity:0.7;">(12)</span></button>
+      </div>
   <div class="filter-row">
     <span class="filter-label">Source</span>
         <button class="filter-btn" data-axis="source" data-val="PWG-1">PWG-1 <span style="opacity:0.7;">(14)</span></button>
@@ -349,13 +345,15 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 
     
 
-    <div class="theme-group" data-theme="wallets-infra">
+    
+
+    <div class="theme-group" data-theme="wallets">
       <div class="theme-header">
         <span class="theme-num">01</span>
-        <h3 class="theme-name">Wallets & Infra</h3>
-        <span class="theme-count" data-count-base="14"><span class="count-num">14</span> opportunities</span>
+        <h3 class="theme-name">Wallets</h3>
+        <span class="theme-count" data-count-base="9"><span class="count-num">9</span> opportunities</span>
       </div>
-      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="both" data-sources="PWG-4,ATKA" data-theme="wallets-infra">
+      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="both" data-sources="PWG-4,ATKA" data-theme="wallets">
         <summary class="vc-summary">
           <div class="va-id">OPP-001<span class="legacy">M-01</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill high">HIGH</span><span class="chain-pill both">Both</span></div>
@@ -373,7 +371,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="wallets-infra">
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="wallets">
         <summary class="vc-summary">
           <div class="va-id">OPP-002<span class="legacy">M-02</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
@@ -391,7 +389,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="evm" data-sources="PWG-4" data-theme="wallets-infra">
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="evm" data-sources="PWG-4" data-theme="wallets">
         <summary class="vc-summary">
           <div class="va-id">OPP-003<span class="legacy">M-03</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill evm">EVM</span></div>
@@ -409,7 +407,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="PWG-4,ATKA" data-theme="wallets-infra">
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="PWG-4,ATKA" data-theme="wallets">
         <summary class="vc-summary">
           <div class="va-id">OPP-004<span class="legacy">M-04</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
@@ -427,81 +425,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="xrpl" data-sources="PWG-2,PWG-3,ATKA" data-theme="wallets-infra">
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="ECO" data-theme="wallets">
         <summary class="vc-summary">
-          <div class="va-id">OPP-005<span class="legacy">M-05</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill high">HIGH</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Institutional Data Emission Adapter Library<small>ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Institutional Data Emission Adapter Library</h4>
-          <p>ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional systems require ISIN/CFI/LEI/FIX/IFRS data formats; XRPL emits its own format. Every institutional integration rebuilds this adapter from scratch — a massive duplicated cost across adopters.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-05 · analysis-3#FA-05</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-3,ATKA" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-006<span class="legacy">M-06</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Stablecoin Accounting & Reconciliation Export<small>QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Stablecoin Accounting & Reconciliation Export</h4>
-          <p>QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Merchants accepting RLUSD/USDC need to reconcile transactions with QuickBooks/Xero. No export tool exists today, blocking merchant adoption since accountants reject unreadable blockchain data.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-06 · analysis-3#FA-06</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Narrow lib — gap-10 is the broader APP that uses this</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-007<span class="legacy">M-07</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Multi-Flow Institutional Access Control Library<small>Permissioned Domains × Credentials for institutional flows</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Multi-Flow Institutional Access Control Library</h4>
-          <p>Permissioned Domains × Credentials for institutional flows</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional flows require complex access control combining Permissioned Domains + XLS-70 Credentials. Implementing this composition is error-prone and rebuilt per project — a library would unblock multiple downstream use cases.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-07 · analysis-3#FA-07</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Distinct from gap-04 (user-facing KYC app) — kept separate</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-008<span class="legacy">M-08</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Pluggable Proof Primitives Library<small>Hash/signature/ZK/BYO-scheme — composable primitives</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Pluggable Proof Primitives Library</h4>
-          <p>Hash/signature/ZK/BYO-scheme — composable primitives</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Different use cases need different proof schemes (hash, signature, ZK). No XRPL library provides a pluggable framework, forcing each project to pick one and reimplement from scratch.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-08 · analysis-3#FA-08</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="ECO" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-009<span class="legacy">gap-01</span></div>
+          <div class="va-id">OPP-005<span class="legacy">gap-01</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">Treasury wallet B2B XRPL-native<small>Coinshift/Utopia Labs equivalent — B2B treasury platform (uses M-02 multisig as primitive)</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
@@ -517,9 +443,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="ECO" data-theme="wallets-infra">
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="ECO" data-theme="wallets">
         <summary class="vc-summary">
-          <div class="va-id">OPP-010<span class="legacy">gap-04</span></div>
+          <div class="va-id">OPP-006<span class="legacy">gap-04</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">KYC reusable cross-app<small>User-facing identity passport — manage and reuse KYC credentials across XRPL apps</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
@@ -535,45 +461,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="wallets-infra">
+      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="INT-djason,ECO" data-theme="wallets">
         <summary class="vc-summary">
-          <div class="va-id">OPP-011<span class="legacy">gap-10</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
-          <div class="va-title">On-chain accounting + reporting<small>Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)</small></div>
-          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>On-chain accounting + reporting</h4>
-          <p>Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Beyond stablecoin export, companies need full accounting + reporting on-chain (P&L, balance sheet, audit trails, multi-currency). A platform consolidating XRPL on-chain activity into standard accounting reports.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">gaps#gap-10</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Added Phase 1 — APP layer above M-06 narrow export lib</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="xrpl" data-sources="ATKA" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-012<span class="legacy">BA-PayrollXRP</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Streaming payroll for DAOs and freelancers<small>Streaming payroll on XRPL — new concept (PayrollXRP blueprint)</small></div>
-          <div class="va-srcs"><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Streaming payroll for DAOs and freelancers</h4>
-          <p>Streaming payroll on XRPL — new concept (PayrollXRP blueprint)</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Monthly batch payroll doesn't fit modern work (DAOs, gig workers, global freelancers). Continuous stream payments make sense but no XRPL service exists. XRPL near-zero fees + fast finality = perfect substrate.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">builder-atlas#PayrollXRP</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Added Phase 1 — new concept not covered elsewhere</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="INT-djason,ECO" data-theme="wallets-infra">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-013<span class="legacy">INT-djason-01</span></div>
+          <div class="va-id">OPP-007<span class="legacy">INT-djason-01</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">Hardware wallet integration for XRPL wallets<small>SDK/library enabling Ledger/Trezor hardware signing across XRPL wallets — currently zero support</small></div>
           <div class="va-srcs"><span class="src-tag int">INT-djason</span><span class="src-tag eco">ECO</span></div>
@@ -589,9 +479,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="INT-djason" data-theme="wallets-infra">
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="INT-djason" data-theme="wallets">
         <summary class="vc-summary">
-          <div class="va-id">OPP-014<span class="legacy">INT-djason-02</span></div>
+          <div class="va-id">OPP-008<span class="legacy">INT-djason-02</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">DeFi-first consumer XRPL wallet<small>Consumer wallet with first-class DeFi UX (2-click yield access, visible positions, smooth onboarding) — Xaman-replacement</small></div>
           <div class="va-srcs"><span class="src-tag int">INT-djason</span></div>
@@ -607,125 +497,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-    </div>
-
-    <div class="theme-group" data-theme="lending">
-      <div class="theme-header">
-        <span class="theme-num">02</span>
-        <h3 class="theme-name">Lending</h3>
-        <span class="theme-count" data-count-base="7"><span class="count-num">7</span> opportunities</span>
-      </div>
-      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
+      <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="both" data-sources="INT-djason" data-theme="wallets">
         <summary class="vc-summary">
-          <div class="va-id">OPP-015<span class="legacy">M-09</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill high">HIGH</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Vault Wrapper Pattern Library (XLS-65)<small>Timing arbitrage on XLS-65 amendment</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Vault Wrapper Pattern Library (XLS-65)</h4>
-          <p>Timing arbitrage on XLS-65 amendment</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XLS-65 (Single-Asset Vault) is fresh from XRPL amendment process. Building on it requires understanding low-level vault mechanics. A wrapper library would let any builder ship vault products in days, not months.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-09 · analysis-3#FA-09</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-016<span class="legacy">M-10</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Risk-Signal Aggregation from MPT Trading<small>Kennedy Reassurance — XRPL-native novel pattern</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Risk-Signal Aggregation from MPT Trading</h4>
-          <p>Kennedy Reassurance — XRPL-native novel pattern</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">MPT trading data contains valuable risk signals (Kennedy reassurance pattern, position dynamics). No aggregator extracts these signals, leaving them invisible to risk managers and lending protocols.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-10 · analysis-3#FA-10</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="HIGH" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-017<span class="legacy">M-11</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill high">HIGH</span><span class="chain-pill evm">EVM</span></div>
-          <div class="va-title">Lending Protocol on EVM Sidechain (Morpho-style)<small>Morpho-style lending — top community survey need</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Lending Protocol on EVM Sidechain (Morpho-style)</h4>
-          <p>Morpho-style lending — top community survey need</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Community survey ranks lending as #1 demanded primitive. EVM Sidechain has no Morpho/Aave-class lending. Without it, sophisticated DeFi capital can't flow into XRPL.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-11 · analysis-3#FA-11</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-018<span class="legacy">M-12</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Uncollateralized Lending Interface (XLS-66)<small>UI for XLS-66 unsecured lending — Evernorth intent</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Uncollateralized Lending Interface (XLS-66)</h4>
-          <p>UI for XLS-66 unsecured lending — Evernorth intent</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XLS-66 enables uncollateralized credit on XRPL. Evernorth announced intent but no interface exists. Borrowers and lenders have no way to interact without raw transaction crafting.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-12 · analysis-3#FA-12 · gaps#gap-08</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Merged with gap-08 (Lending senior tranches XLS-66)</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-019<span class="legacy">M-12b</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Compliant Credit Vault (institutional service)<small>Agent-curator with attestations — A1 Tier 1 #1</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Compliant Credit Vault (institutional service)</h4>
-          <p>Agent-curator with attestations — A1 Tier 1 #1</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional lenders need credit vaults with attestation-based curation (KYC'd borrowers, jurisdiction checks). No XRPL product offers this — institutional capital sits idle.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-12b · analysis-1</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-020<span class="legacy">G-03</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
-          <div class="va-title">Native yield aggregator (Yearn-XRPL)<small>Cross-protocol yield routing for XRPL natively</small></div>
-          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Native yield aggregator (Yearn-XRPL)</h4>
-          <p>Cross-protocol yield routing for XRPL natively</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XRPL yield is fragmented across AMM, lending, vaults. Users juggle multiple protocols to find best yield. A Yearn-equivalent aggregator would auto-route capital, improving UX and yields.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-03 · gaps#gap-03</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="both" data-sources="INT-djason" data-theme="lending">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-021<span class="legacy">INT-djason-04</span></div>
+          <div class="va-id">OPP-009<span class="legacy">INT-djason-04</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">XRPL DeFi position aggregator (DeBank-equivalent)<small>Cross-protocol dashboard aggregating user DeFi positions across AMM, lending, vaults on XRPL + EVM Sidechain</small></div>
           <div class="va-srcs"><span class="src-tag int">INT-djason</span></div>
@@ -743,15 +517,265 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
     </div>
 
-    <div class="theme-group" data-theme="rwa-stable">
+    <div class="theme-group" data-theme="infra">
+      <div class="theme-header">
+        <span class="theme-num">02</span>
+        <h3 class="theme-name">Infra</h3>
+        <span class="theme-count" data-count-base="7"><span class="count-num">7</span> opportunities</span>
+      </div>
+      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="xrpl" data-sources="PWG-2,PWG-3,ATKA" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-010<span class="legacy">M-05</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill high">HIGH</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Institutional Data Emission Adapter Library<small>ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Institutional Data Emission Adapter Library</h4>
+          <p>ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional systems require ISIN/CFI/LEI/FIX/IFRS data formats; XRPL emits its own format. Every institutional integration rebuilds this adapter from scratch — a massive duplicated cost across adopters.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-05 · analysis-3#FA-05</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-3,ATKA" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-011<span class="legacy">M-06</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Stablecoin Accounting & Reconciliation Export<small>QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Stablecoin Accounting & Reconciliation Export</h4>
+          <p>QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Merchants accepting RLUSD/USDC need to reconcile transactions with QuickBooks/Xero. No export tool exists today, blocking merchant adoption since accountants reject unreadable blockchain data.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-06 · analysis-3#FA-06</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Narrow lib — gap-10 is the broader APP that uses this</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-012<span class="legacy">M-07</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Multi-Flow Institutional Access Control Library<small>Permissioned Domains × Credentials for institutional flows</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Multi-Flow Institutional Access Control Library</h4>
+          <p>Permissioned Domains × Credentials for institutional flows</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional flows require complex access control combining Permissioned Domains + XLS-70 Credentials. Implementing this composition is error-prone and rebuilt per project — a library would unblock multiple downstream use cases.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-07 · analysis-3#FA-07</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Distinct from gap-04 (user-facing KYC app) — kept separate</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-013<span class="legacy">M-08</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Pluggable Proof Primitives Library<small>Hash/signature/ZK/BYO-scheme — composable primitives</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Pluggable Proof Primitives Library</h4>
+          <p>Hash/signature/ZK/BYO-scheme — composable primitives</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Different use cases need different proof schemes (hash, signature, ZK). No XRPL library provides a pluggable framework, forcing each project to pick one and reimplement from scratch.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-08 · analysis-3#FA-08</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-014<span class="legacy">gap-10</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">On-chain accounting + reporting<small>Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)</small></div>
+          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>On-chain accounting + reporting</h4>
+          <p>Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Beyond stablecoin export, companies need full accounting + reporting on-chain (P&L, balance sheet, audit trails, multi-currency). A platform consolidating XRPL on-chain activity into standard accounting reports.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">gaps#gap-10</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Added Phase 1 — APP layer above M-06 narrow export lib</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="xrpl" data-sources="ATKA" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-015<span class="legacy">BA-PayrollXRP</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Streaming payroll for DAOs and freelancers<small>Streaming payroll on XRPL — new concept (PayrollXRP blueprint)</small></div>
+          <div class="va-srcs"><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Streaming payroll for DAOs and freelancers</h4>
+          <p>Streaming payroll on XRPL — new concept (PayrollXRP blueprint)</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Monthly batch payroll doesn't fit modern work (DAOs, gig workers, global freelancers). Continuous stream payments make sense but no XRPL service exists. XRPL near-zero fees + fast finality = perfect substrate.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">builder-atlas#PayrollXRP</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Added Phase 1 — new concept not covered elsewhere</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="infra">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-016<span class="legacy">G-05</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Regional POS / merchant tooling<small>Retail merchants in emerging markets + EU/MiCA</small></div>
+          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Regional POS / merchant tooling</h4>
+          <p>Retail merchants in emerging markets + EU/MiCA</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Emerging markets merchants (Africa, LATAM) want crypto payment terminals. Existing solutions don't support XRPL. Regional POS with EU/MiCA compliance opens 100M+ underbanked users.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-05 · gaps#gap-05 · builder-atlas#MerchantPay</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Vertical illustration: MerchantPay blueprint</div></div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="theme-group" data-theme="lending">
       <div class="theme-header">
         <span class="theme-num">03</span>
+        <h3 class="theme-name">Lending</h3>
+        <span class="theme-count" data-count-base="6"><span class="count-num">6</span> opportunities</span>
+      </div>
+      <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-017<span class="legacy">M-09</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill high">HIGH</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Vault Wrapper Pattern Library (XLS-65)<small>Timing arbitrage on XLS-65 amendment</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Vault Wrapper Pattern Library (XLS-65)</h4>
+          <p>Timing arbitrage on XLS-65 amendment</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XLS-65 (Single-Asset Vault) is fresh from XRPL amendment process. Building on it requires understanding low-level vault mechanics. A wrapper library would let any builder ship vault products in days, not months.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-09 · analysis-3#FA-09</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-018<span class="legacy">M-10</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Risk-Signal Aggregation from MPT Trading<small>Kennedy Reassurance — XRPL-native novel pattern</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Risk-Signal Aggregation from MPT Trading</h4>
+          <p>Kennedy Reassurance — XRPL-native novel pattern</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">MPT trading data contains valuable risk signals (Kennedy reassurance pattern, position dynamics). No aggregator extracts these signals, leaving them invisible to risk managers and lending protocols.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-10 · analysis-3#FA-10</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="HIGH" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-019<span class="legacy">M-11</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill high">HIGH</span><span class="chain-pill evm">EVM</span></div>
+          <div class="va-title">Lending Protocol on EVM Sidechain (Morpho-style)<small>Morpho-style lending — top community survey need</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Lending Protocol on EVM Sidechain (Morpho-style)</h4>
+          <p>Morpho-style lending — top community survey need</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Community survey ranks lending as #1 demanded primitive. EVM Sidechain has no Morpho/Aave-class lending. Without it, sophisticated DeFi capital can't flow into XRPL.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-11 · analysis-3#FA-11</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-020<span class="legacy">M-12</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Uncollateralized Lending Interface (XLS-66)<small>UI for XLS-66 unsecured lending — Evernorth intent</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Uncollateralized Lending Interface (XLS-66)</h4>
+          <p>UI for XLS-66 unsecured lending — Evernorth intent</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XLS-66 enables uncollateralized credit on XRPL. Evernorth announced intent but no interface exists. Borrowers and lenders have no way to interact without raw transaction crafting.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-12 · analysis-3#FA-12 · gaps#gap-08</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Merged with gap-08 (Lending senior tranches XLS-66)</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-1,ATKA" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-021<span class="legacy">M-12b</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Compliant Credit Vault (institutional service)<small>Agent-curator with attestations — A1 Tier 1 #1</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Compliant Credit Vault (institutional service)</h4>
+          <p>Agent-curator with attestations — A1 Tier 1 #1</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Institutional lenders need credit vaults with attestation-based curation (KYC'd borrowers, jurisdiction checks). No XRPL product offers this — institutional capital sits idle.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-12b · analysis-1</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="lending">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-022<span class="legacy">G-03</span></div>
+          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Native yield aggregator (Yearn-XRPL)<small>Cross-protocol yield routing for XRPL natively</small></div>
+          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Native yield aggregator (Yearn-XRPL)</h4>
+          <p>Cross-protocol yield routing for XRPL natively</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">XRPL yield is fragmented across AMM, lending, vaults. Users juggle multiple protocols to find best yield. A Yearn-equivalent aggregator would auto-route capital, improving UX and yields.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-03 · gaps#gap-03</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="theme-group" data-theme="rwa-stable">
+      <div class="theme-header">
+        <span class="theme-num">04</span>
         <h3 class="theme-name">RWA & Stables</h3>
-        <span class="theme-count" data-count-base="9"><span class="count-num">9</span> opportunities</span>
+        <span class="theme-count" data-count-base="5"><span class="count-num">5</span> opportunities</span>
       </div>
       <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-2,ATKA" data-theme="rwa-stable">
         <summary class="vc-summary">
-          <div class="va-id">OPP-022<span class="legacy">M-13</span></div>
+          <div class="va-id">OPP-023<span class="legacy">M-13</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">Physical-to-Digital Binding (EU DPP)<small>Regulatory deadline — 12-month EU DPP window</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag atka">ATKA</span></div>
@@ -769,7 +793,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="HIGH" data-chain="both" data-sources="PWG-3,ATKA,YC" data-theme="rwa-stable">
         <summary class="vc-summary">
-          <div class="va-id">OPP-023<span class="legacy">M-14</span></div>
+          <div class="va-id">OPP-024<span class="legacy">M-14</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill high">HIGH</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Yield-Bearing Stablecoin (T-bill backed)<small>USDe parallel — top community demand</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
@@ -785,45 +809,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="PWG-3,ATKA" data-theme="rwa-stable">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-024<span class="legacy">M-15</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
-          <div class="va-title">Non-USD Stablecoin DeFi Rails<small>EUR/BRL/SGD/AUD rails</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Non-USD Stablecoin DeFi Rails</h4>
-          <p>EUR/BRL/SGD/AUD rails</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Most XRPL DeFi assumes USD. EUR/BRL/SGD/AUD stablecoins exist but lack rails to integrate into lending, AMMs, vaults — locking out non-US users from native-currency DeFi.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-15 · analysis-3#FA-15</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-2,ATKA" data-theme="rwa-stable">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-025<span class="legacy">M-16</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Chunked Data + On-Chain Anchoring Pattern<small>IPFS/S3/self-hosted with on-chain anchoring</small></div>
-          <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag atka">ATKA</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Chunked Data + On-Chain Anchoring Pattern</h4>
-          <p>IPFS/S3/self-hosted with on-chain anchoring</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Large data (legal docs, media files) can't fit on XRPL. Builders piecemeal-solve with IPFS/S3 + manual anchoring. A standard pattern would unify the approach and unlock data-heavy use cases.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-16 · analysis-3#FA-16</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-2,ATKA" data-theme="rwa-stable">
         <summary class="vc-summary">
-          <div class="va-id">OPP-026<span class="legacy">M-16b</span></div>
+          <div class="va-id">OPP-025<span class="legacy">M-16b</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">RWA Issuance Studio EU/MiCA<small>MPT + DID + cap table — A1 Tier 1 #2</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag atka">ATKA</span></div>
@@ -839,45 +827,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
           </div>
         </div>
       </details>
-      <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="rwa-stable">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-027<span class="legacy">G-05</span></div>
-          <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
-          <div class="va-title">Regional POS / merchant tooling<small>Retail merchants in emerging markets + EU/MiCA</small></div>
-          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Regional POS / merchant tooling</h4>
-          <p>Retail merchants in emerging markets + EU/MiCA</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Emerging markets merchants (Africa, LATAM) want crypto payment terminals. Existing solutions don't support XRPL. Regional POS with EU/MiCA compliance opens 100M+ underbanked users.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-05 · gaps#gap-05 · builder-atlas#MerchantPay</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">Vertical illustration: MerchantPay blueprint</div></div>
-          </div>
-        </div>
-      </details>
-      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="ECO" data-theme="rwa-stable">
-        <summary class="vc-summary">
-          <div class="va-id">OPP-028<span class="legacy">G-11</span></div>
-          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
-          <div class="va-title">Gaming utility-NFT framework<small>Play-to-earn + asset interop — XRPL NFT primitives</small></div>
-          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
-          <span class="vc-chevron">▸</span>
-        </summary>
-        <div class="vc-detail">
-          <h4>Gaming utility-NFT framework</h4>
-          <p>Play-to-earn + asset interop — XRPL NFT primitives</p>
-            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Game devs need NFT primitives for play-to-earn (items, achievements, cross-game assets). XRPL has NFT support but no game-specific framework — devs build from scratch every time.</div></div>
-          <div class="vc-detail-grid">
-            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-11 · gaps#gap-11</div></div>
-            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
-          </div>
-        </div>
-      </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="ECO,ATKA" data-theme="rwa-stable">
         <summary class="vc-summary">
-          <div class="va-id">OPP-029<span class="legacy">gap-06</span></div>
+          <div class="va-id">OPP-026<span class="legacy">gap-06</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">Mid-market corporate bonds<small>On-chain mid-market corporate bond marketplace (BondBloc blueprint)</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span><span class="src-tag atka">ATKA</span></div>
@@ -895,7 +847,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="rwa-stable">
         <summary class="vc-summary">
-          <div class="va-id">OPP-030<span class="legacy">S-04</span></div>
+          <div class="va-id">OPP-027<span class="legacy">S-04</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">RWA structuring firm (AI service)<small>AI agent + lawyer-on-tap that structures RWA tokenization for clients</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -915,13 +867,31 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 
     <div class="theme-group" data-theme="evm-defi">
       <div class="theme-header">
-        <span class="theme-num">04</span>
+        <span class="theme-num">05</span>
         <h3 class="theme-name">EVM DeFi</h3>
-        <span class="theme-count" data-count-base="7"><span class="count-num">7</span> opportunities</span>
+        <span class="theme-count" data-count-base="8"><span class="count-num">8</span> opportunities</span>
       </div>
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="PWG-3,ATKA" data-theme="evm-defi">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-028<span class="legacy">M-15</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
+          <div class="va-title">Non-USD Stablecoin DeFi Rails<small>EUR/BRL/SGD/AUD rails</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Non-USD Stablecoin DeFi Rails</h4>
+          <p>EUR/BRL/SGD/AUD rails</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Most XRPL DeFi assumes USD. EUR/BRL/SGD/AUD stablecoins exist but lack rails to integrate into lending, AMMs, vaults — locking out non-US users from native-currency DeFi.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-15 · analysis-3#FA-15</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
       <details class="vc-row" data-type="APP" data-tier="HIGH" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-031<span class="legacy">M-17</span></div>
+          <div class="va-id">OPP-029<span class="legacy">M-17</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill high">HIGH</span><span class="chain-pill evm">EVM</span></div>
           <div class="va-title">Restaking Protocol for XRP (Babylon-fork)<small>$110B+ XRP cap underutilized</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
@@ -939,7 +909,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-032<span class="legacy">M-18</span></div>
+          <div class="va-id">OPP-030<span class="legacy">M-18</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill evm">EVM</span></div>
           <div class="va-title">Synthetic Assets / CDP Protocol (× Axiom)<small>Gold/stocks/forex synthetic assets</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
@@ -957,7 +927,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-033<span class="legacy">M-19</span></div>
+          <div class="va-id">OPP-031<span class="legacy">M-19</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill evm">EVM</span></div>
           <div class="va-title">Perpetual DEX (vAMM or order book)<small>Derivatives = highest volume DeFi — XRPL at zero</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
@@ -975,7 +945,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-034<span class="legacy">M-20</span></div>
+          <div class="va-id">OPP-032<span class="legacy">M-20</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill evm">EVM</span></div>
           <div class="va-title">Decentralized Insurance Protocol<small>Maturity signal for institutional adoption</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
@@ -993,7 +963,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-035<span class="legacy">Y-14</span></div>
+          <div class="va-id">OPP-033<span class="legacy">Y-14</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Prediction markets infrastructure<small>Engine layer · Polymarket equivalent</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1011,7 +981,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-036<span class="legacy">Y-15</span></div>
+          <div class="va-id">OPP-034<span class="legacy">Y-15</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Prediction markets dApps (consumer)<small>Polymarket-style for politics/sports/crypto</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1029,7 +999,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="both" data-sources="YC" data-theme="evm-defi">
         <summary class="vc-summary">
-          <div class="va-id">OPP-037<span class="legacy">S-08</span></div>
+          <div class="va-id">OPP-035<span class="legacy">S-08</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">DeFi underwriting / insurance (AI service)<small>AI agent prices DeFi risk and underwrites for insurance protocols</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1049,10 +1019,46 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 
     <div class="theme-group" data-theme="dev-tooling">
       <div class="theme-header">
-        <span class="theme-num">05</span>
+        <span class="theme-num">06</span>
         <h3 class="theme-name">Dev Tooling</h3>
-        <span class="theme-count" data-count-base="7"><span class="count-num">7</span> opportunities</span>
+        <span class="theme-count" data-count-base="9"><span class="count-num">9</span> opportunities</span>
       </div>
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-2,ATKA" data-theme="dev-tooling">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-036<span class="legacy">M-16</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Chunked Data + On-Chain Anchoring Pattern<small>IPFS/S3/self-hosted with on-chain anchoring</small></div>
+          <div class="va-srcs"><span class="src-tag pwg">PWG-2</span><span class="src-tag atka">ATKA</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Chunked Data + On-Chain Anchoring Pattern</h4>
+          <p>IPFS/S3/self-hosted with on-chain anchoring</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Large data (legal docs, media files) can't fit on XRPL. Builders piecemeal-solve with IPFS/S3 + manual anchoring. A standard pattern would unify the approach and unlock data-heavy use cases.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#M-16 · analysis-3#FA-16</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
+      <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="ECO" data-theme="dev-tooling">
+        <summary class="vc-summary">
+          <div class="va-id">OPP-037<span class="legacy">G-11</span></div>
+          <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
+          <div class="va-title">Gaming utility-NFT framework<small>Play-to-earn + asset interop — XRPL NFT primitives</small></div>
+          <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
+          <span class="vc-chevron">▸</span>
+        </summary>
+        <div class="vc-detail">
+          <h4>Gaming utility-NFT framework</h4>
+          <p>Play-to-earn + asset interop — XRPL NFT primitives</p>
+            <div class="vc-detail-block vc-detail-problem"><span class="label">Problem</span><div class="problem-info">Game devs need NFT primitives for play-to-earn (items, achievements, cross-game assets). XRPL has NFT support but no game-specific framework — devs build from scratch every time.</div></div>
+          <div class="vc-detail-grid">
+            <div class="vc-detail-block"><span class="label">Origin pages</span><div class="meta-info">master-gaps#G-11 · gaps#gap-11</div></div>
+            <div class="vc-detail-block"><span class="label">Notes</span><div class="note-info">—</div></div>
+          </div>
+        </div>
+      </details>
       <details class="vc-row" data-type="TOOL" data-tier="HIGH" data-chain="both" data-sources="PWG-1,PWG-2,PWG-3,PWG-4,ATKA,INT-djason" data-theme="dev-tooling">
         <summary class="vc-summary">
           <div class="va-id">OPP-038<span class="legacy">M-21</span></div>
@@ -1145,7 +1151,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="ECO" data-theme="dev-tooling">
         <summary class="vc-summary">
-          <div class="va-id">OPP-048<span class="legacy">G-02</span></div>
+          <div class="va-id">OPP-043<span class="legacy">G-02</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Monitoring & B2B alerting<small>XRPL's Tenderly — B2B alerting product with UI</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
@@ -1163,7 +1169,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="ECO" data-theme="dev-tooling">
         <summary class="vc-summary">
-          <div class="va-id">OPP-054<span class="legacy">gap-12</span></div>
+          <div class="va-id">OPP-044<span class="legacy">gap-12</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Data marketplace · oracle aggregator<small>Multi-source oracle aggregator + data marketplace for data buyers</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
@@ -1183,13 +1189,13 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 
     <div class="theme-group" data-theme="ai-agents">
       <div class="theme-header">
-        <span class="theme-num">06</span>
+        <span class="theme-num">07</span>
         <h3 class="theme-name">AI Agents</h3>
         <span class="theme-count" data-count-base="12"><span class="count-num">12</span> opportunities</span>
       </div>
       <details class="vc-row" data-type="TOOL" data-tier="MEDIUM" data-chain="both" data-sources="PWG-4,ATKA" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-043<span class="legacy">M-26</span></div>
+          <div class="va-id">OPP-045<span class="legacy">M-26</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">AgentPay — x402 + XRPL settlement<small>AI agent payments facilitator — programmatic infra</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
@@ -1207,7 +1213,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="xrpl" data-sources="PWG-4,ATKA,YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-044<span class="legacy">M-27</span></div>
+          <div class="va-id">OPP-046<span class="legacy">M-27</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">AI-Native Compliance Ops (service company)<small>YC RFS lens — also Service-01</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
@@ -1225,7 +1231,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="both" data-sources="PWG-3,ATKA,YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-045<span class="legacy">M-28</span></div>
+          <div class="va-id">OPP-047<span class="legacy">M-28</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">AI-Native Treasury Ops (RLUSD automation)<small>A1 service-thesis — also Service-02 Treasury-aaS</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-3</span><span class="src-tag atka">ATKA</span><span class="src-tag yc">YC</span></div>
@@ -1243,7 +1249,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="evm" data-sources="PWG-1,ATKA" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-046<span class="legacy">M-29</span></div>
+          <div class="va-id">OPP-048<span class="legacy">M-29</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill evm">EVM</span></div>
           <div class="va-title">AI-Native Restaking Manager (yield optimizer)<small>A1 service-thesis · auto-rebalance</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-1</span><span class="src-tag atka">ATKA</span></div>
@@ -1261,7 +1267,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="xrpl" data-sources="PWG-4,ATKA" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-047<span class="legacy">M-30</span></div>
+          <div class="va-id">OPP-049<span class="legacy">M-30</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill xrpl">XRPL</span></div>
           <div class="va-title">Onchain Reputation for AI Agents (KYA)<small>A1 service-thesis · agent identity layer</small></div>
           <div class="va-srcs"><span class="src-tag pwg">PWG-4</span><span class="src-tag atka">ATKA</span></div>
@@ -1279,7 +1285,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-049<span class="legacy">S-03</span></div>
+          <div class="va-id">OPP-050<span class="legacy">S-03</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Market-making-as-a-Service<small>AI agent provides liquidity · 70-90% margin</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1297,7 +1303,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-050<span class="legacy">S-05</span></div>
+          <div class="va-id">OPP-051<span class="legacy">S-05</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Community-ops-as-a-Service<small>AI agent runs Discord + Twitter + grants ops</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1315,7 +1321,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="LOW" data-chain="both" data-sources="YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-051<span class="legacy">S-07</span></div>
+          <div class="va-id">OPP-052<span class="legacy">S-07</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Dispute resolution & recovery<small>AI agent handles claims · refunds · recovery</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1333,7 +1339,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="APP" data-tier="MEDIUM" data-chain="both" data-sources="YC" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-052<span class="legacy">Y-16</span></div>
+          <div class="va-id">OPP-053<span class="legacy">Y-16</span></div>
           <div class="vc-pills"><span class="type-pill app">APP</span><span class="tier-pill medium">MEDIUM</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">AI trading agents (DCA · momentum · alpha)<small>Quant agents on XRPL · alpha generation</small></div>
           <div class="va-srcs"><span class="src-tag yc">YC</span></div>
@@ -1351,7 +1357,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
       </details>
       <details class="vc-row" data-type="TOOL" data-tier="LOW" data-chain="both" data-sources="ECO" data-theme="ai-agents">
         <summary class="vc-summary">
-          <div class="va-id">OPP-053<span class="legacy">gap-09</span></div>
+          <div class="va-id">OPP-054<span class="legacy">gap-09</span></div>
           <div class="vc-pills"><span class="type-pill tool">TOOL</span><span class="tier-pill low">LOW</span><span class="chain-pill both">Both</span></div>
           <div class="va-title">Agent treasury + wallet for AI<small>Wallet/treasury infrastructure for AI agents — 3rd layer of agent stack (with M-26 payments + M-30 identity)</small></div>
           <div class="va-srcs"><span class="src-tag eco">ECO</span></div>
@@ -1404,6 +1410,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
         </div>
       </details>
     </div>
+
 
 
 
@@ -1582,7 +1589,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 })();
 
 (function() {
-  const GSEARCH_INDEX = [{"title":"OPP-001 · Cross-Device Session Continuity Library","desc":"[TOOL] [HIGH] [wallets-infra] · sources: PWG-4,ATKA · Library to seamlessly continue wallet sessions across devices (top non-trading product unlock)","url":"/en/opportunities","category":"opportunity","_id":"OPP-001","_legacy":"M-01"},{"title":"OPP-002 · Institutional Multisig Wallet (Full UI)","desc":"[APP] [MEDIUM] [wallets-infra] · sources: PWG-4,ATKA · Safe-equivalent for XRPL — full UI for institutional multisig","url":"/en/opportunities","category":"opportunity","_id":"OPP-002","_legacy":"M-02"},{"title":"OPP-003 · Smart Contract Wallet on EVM Sidechain","desc":"[APP] [MEDIUM] [wallets-infra] · sources: PWG-4 · ERC-4337 wallet — table-stakes vs Base/Arbitrum","url":"/en/opportunities","category":"opportunity","_id":"OPP-003","_legacy":"M-03"},{"title":"OPP-004 · Unified Cross-Chain Wallet SDK","desc":"[TOOL] [LOW] [wallets-infra] · sources: PWG-4,ATKA · Single SDK supporting both XRPL native + EVM Sidechain","url":"/en/opportunities","category":"opportunity","_id":"OPP-004","_legacy":"M-04"},{"title":"OPP-005 · Institutional Data Emission Adapter Library","desc":"[TOOL] [HIGH] [wallets-infra] · sources: PWG-2,PWG-3,ATKA · ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage","url":"/en/opportunities","category":"opportunity","_id":"OPP-005","_legacy":"M-05"},{"title":"OPP-006 · Stablecoin Accounting & Reconciliation Export","desc":"[TOOL] [MEDIUM] [wallets-infra] · sources: PWG-3,ATKA · QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)","url":"/en/opportunities","category":"opportunity","_id":"OPP-006","_legacy":"M-06"},{"title":"OPP-007 · Multi-Flow Institutional Access Control Library","desc":"[TOOL] [MEDIUM] [wallets-infra] · sources: PWG-4,ATKA · Permissioned Domains × Credentials for institutional flows","url":"/en/opportunities","category":"opportunity","_id":"OPP-007","_legacy":"M-07"},{"title":"OPP-008 · Pluggable Proof Primitives Library","desc":"[TOOL] [LOW] [wallets-infra] · sources: PWG-4,ATKA · Hash/signature/ZK/BYO-scheme — composable primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-008","_legacy":"M-08"},{"title":"OPP-056 · Vault Wrapper Pattern Library (XLS-65)","desc":"[TOOL] [HIGH] [lending] · sources: PWG-1,ATKA · Timing arbitrage on XLS-65 amendment","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-09"},{"title":"OPP-051 · Risk-Signal Aggregation from MPT Trading","desc":"[TOOL] [LOW] [lending] · sources: PWG-1,ATKA · Kennedy Reassurance — XRPL-native novel pattern","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"M-10"},{"title":"OPP-040 · Lending Protocol on EVM Sidechain (Morpho-style)","desc":"[APP] [HIGH] [lending] · sources: PWG-1,ATKA · Morpho-style lending — top community survey need","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-11"},{"title":"OPP-041 · Uncollateralized Lending Interface (XLS-66)","desc":"[APP] [MEDIUM] [lending] · sources: PWG-1,ATKA · UI for XLS-66 unsecured lending — Evernorth intent","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-12"},{"title":"OPP-053 · Compliant Credit Vault (institutional service)","desc":"[APP] [MEDIUM] [lending] · sources: PWG-1,ATKA · Agent-curator with attestations — A1 Tier 1 #1","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"M-12b"},{"title":"OPP-034 · Physical-to-Digital Binding (EU DPP)","desc":"[TOOL] [MEDIUM] [rwa-stable] · sources: PWG-2,ATKA · Regulatory deadline — 12-month EU DPP window","url":"/en/opportunities","category":"opportunity","_id":"OPP-034","_legacy":"M-13"},{"title":"OPP-056 · Yield-Bearing Stablecoin (T-bill backed)","desc":"[APP] [HIGH] [rwa-stable] · sources: PWG-3,ATKA,YC · USDe parallel — top community demand","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-14"},{"title":"OPP-051 · Non-USD Stablecoin DeFi Rails","desc":"[TOOL] [LOW] [rwa-stable] · sources: PWG-3,ATKA · EUR/BRL/SGD/AUD rails","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"M-15"},{"title":"OPP-040 · Chunked Data + On-Chain Anchoring Pattern","desc":"[TOOL] [LOW] [rwa-stable] · sources: PWG-2,ATKA · IPFS/S3/self-hosted with on-chain anchoring","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-16"},{"title":"OPP-041 · RWA Issuance Studio EU/MiCA","desc":"[APP] [MEDIUM] [rwa-stable] · sources: PWG-2,ATKA · MPT + DID + cap table — A1 Tier 1 #2","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-16b"},{"title":"OPP-053 · Restaking Protocol for XRP (Babylon-fork)","desc":"[APP] [HIGH] [evm-defi] · sources: PWG-1,ATKA · $110B+ XRP cap underutilized","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"M-17"},{"title":"OPP-047 · Synthetic Assets / CDP Protocol (× Axiom)","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Gold/stocks/forex synthetic assets","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"M-18"},{"title":"OPP-054 · Perpetual DEX (vAMM or order book)","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Derivatives = highest volume DeFi — XRPL at zero","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"M-19"},{"title":"OPP-034 · Decentralized Insurance Protocol","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Maturity signal for institutional adoption","url":"/en/opportunities","category":"opportunity","_id":"OPP-034","_legacy":"M-20"},{"title":"OPP-056 · Pre-Deployed Testnet Infrastructure","desc":"[TOOL] [HIGH] [dev-tooling/ai-agents] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Multiplier across everything — sandbox","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-21"},{"title":"OPP-051 · XRPL Capabilities Registry","desc":"[TOOL] [MEDIUM] [dev-tooling/ai-agents] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Auto-update XLS feed — solves awareness gap","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"M-22"},{"title":"OPP-040 · Vendor-Neutral Oracle / Bridge / Ramp Adapters","desc":"[TOOL] [LOW] [dev-tooling/ai-agents] · sources: PWG-1,PWG-2,ATKA · Zero-code-change provider swap (lib for app builders)","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-23"},{"title":"OPP-041 · CeDeFi Yield Integration SDK (CEX channel)","desc":"[TOOL] [MEDIUM] [dev-tooling/ai-agents] · sources: PWG-1,PWG-3,ATKA · 60%+ XRP on CEX — #1 distribution play","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-24"},{"title":"OPP-052 · P-256 / secp256r1 Signing (XLS proposal)","desc":"[TOOL] [MEDIUM] [dev-tooling/ai-agents] · sources: PWG-4,ATKA · Cross-cutting — Apple Secure Enclave + WebAuthn + HSM","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"M-25"},{"title":"OPP-043 · AgentPay — x402 + XRPL settlement","desc":"[TOOL] [MEDIUM] [dev-tooling/ai-agents] · sources: PWG-4,ATKA · AI agent payments facilitator — programmatic infra","url":"/en/opportunities","category":"opportunity","_id":"OPP-043","_legacy":"M-26"},{"title":"OPP-044 · AI-Native Compliance Ops (service company)","desc":"[APP] [MEDIUM] [dev-tooling/ai-agents] · sources: PWG-4,ATKA,YC · YC RFS lens — also Service-01","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"M-27"},{"title":"OPP-045 · AI-Native Treasury Ops (RLUSD automation)","desc":"[APP] [LOW] [dev-tooling/ai-agents] · sources: PWG-3,ATKA,YC · A1 service-thesis — also Service-02 Treasury-aaS","url":"/en/opportunities","category":"opportunity","_id":"OPP-045","_legacy":"M-28"},{"title":"OPP-053 · AI-Native Restaking Manager (yield optimizer)","desc":"[APP] [LOW] [dev-tooling/ai-agents] · sources: PWG-1,ATKA · A1 service-thesis · auto-rebalance","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"M-29"},{"title":"OPP-047 · Onchain Reputation for AI Agents (KYA)","desc":"[TOOL] [LOW] [dev-tooling/ai-agents] · sources: PWG-4,ATKA · A1 service-thesis · agent identity layer","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"M-30"},{"title":"OPP-054 · Monitoring & B2B alerting","desc":"[APP] [MEDIUM] [dev-tooling/ai-agents] · sources: ECO · XRPL's Tenderly — B2B alerting product with UI","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"G-02"},{"title":"OPP-047 · Native yield aggregator (Yearn-XRPL)","desc":"[APP] [MEDIUM] [lending] · sources: ECO · Cross-protocol yield routing for XRPL natively","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"G-03"},{"title":"OPP-052 · Regional POS / merchant tooling","desc":"[APP] [MEDIUM] [rwa-stable] · sources: ECO · Retail merchants in emerging markets + EU/MiCA","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"G-05"},{"title":"OPP-043 · Gaming utility-NFT framework","desc":"[TOOL] [LOW] [rwa-stable] · sources: ECO · Play-to-earn + asset interop — XRPL NFT primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-043","_legacy":"G-11"},{"title":"OPP-049 · Market-making-as-a-Service","desc":"[APP] [MEDIUM] [dev-tooling/ai-agents] · sources: YC · AI agent provides liquidity · 70-90% margin","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"S-03"},{"title":"OPP-056 · Community-ops-as-a-Service","desc":"[APP] [MEDIUM] [dev-tooling/ai-agents] · sources: YC · AI agent runs Discord + Twitter + grants ops","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"S-05"},{"title":"OPP-051 · Dispute resolution & recovery","desc":"[APP] [LOW] [dev-tooling/ai-agents] · sources: YC · AI agent handles claims · refunds · recovery","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"S-07"},{"title":"OPP-035 · Prediction markets infrastructure","desc":"[TOOL] [MEDIUM] [evm-defi] · sources: YC · Engine layer · Polymarket equivalent","url":"/en/opportunities","category":"opportunity","_id":"OPP-035","_legacy":"Y-14"},{"title":"OPP-036 · Prediction markets dApps (consumer)","desc":"[APP] [MEDIUM] [evm-defi] · sources: YC · Polymarket-style for politics/sports/crypto","url":"/en/opportunities","category":"opportunity","_id":"OPP-036","_legacy":"Y-15"},{"title":"OPP-052 · AI trading agents (DCA · momentum · alpha)","desc":"[APP] [MEDIUM] [dev-tooling/ai-agents] · sources: YC · Quant agents on XRPL · alpha generation","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"Y-16"},{"title":"OPP-056 · Treasury wallet B2B XRPL-native","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · Coinshift/Utopia Labs equivalent — B2B treasury platform (uses M-02 multisig as primitive)","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"gap-01"},{"title":"OPP-051 · KYC reusable cross-app","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · User-facing identity passport — manage and reuse KYC credentials across XRPL apps","url":"/en/opportunities","category":"opportunity","_id":"OPP-051","_legacy":"gap-04"},{"title":"OPP-044 · Mid-market corporate bonds","desc":"[APP] [MEDIUM] [rwa-stable] · sources: ECO,ATKA · On-chain mid-market corporate bond marketplace (BondBloc blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"gap-06"},{"title":"OPP-053 · Agent treasury + wallet for AI","desc":"[TOOL] [LOW] [dev-tooling/ai-agents] · sources: ECO · Wallet/treasury infrastructure for AI agents — 3rd layer of agent stack (with M-26 payments + M-30 identity)","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"gap-09"},{"title":"OPP-040 · On-chain accounting + reporting","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"gap-10"},{"title":"OPP-054 · Data marketplace · oracle aggregator","desc":"[TOOL] [LOW] [dev-tooling/ai-agents] · sources: ECO · Multi-source oracle aggregator + data marketplace for data buyers","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"gap-12"},{"title":"OPP-045 · RWA structuring firm (AI service)","desc":"[APP] [MEDIUM] [rwa-stable] · sources: YC · AI agent + lawyer-on-tap that structures RWA tokenization for clients","url":"/en/opportunities","category":"opportunity","_id":"OPP-045","_legacy":"S-04"},{"title":"OPP-056 · Audit & continuous monitoring (AI service)","desc":"[APP] [LOW] [dev-tooling/ai-agents] · sources: YC · AI service that continuously audits client protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"S-06"},{"title":"OPP-049 · DeFi underwriting / insurance (AI service)","desc":"[APP] [LOW] [evm-defi] · sources: YC · AI agent prices DeFi risk and underwrites for insurance protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"S-08"},{"title":"OPP-041 · Streaming payroll for DAOs and freelancers","desc":"[APP] [LOW] [wallets-infra] · sources: ATKA · Streaming payroll on XRPL — new concept (PayrollXRP blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"BA-PayrollXRP"},{"title":"Decision Tree (guided)","desc":"Outil guidé pour choisir ta stack XRPL · 4-6 étapes · output stack + boilerplate","url":"/en/decision-tree","category":"tool"},{"title":"Decision Tree Map","desc":"Vue SVG macro de l'arbre de décision · 20 résultats finaux","url":"/en/decision-tree-map","category":"tool"},{"title":"Cost Simulator","desc":"Simulateur de coûts par tx · 4 chaînes comparées · données mai 2026","url":"/en/cost-simulator","category":"tool"},{"title":"Business Case Builder","desc":"Modèle SaaS+tx · horizon 24 mois · granularité mensuelle","url":"/en/business-case-builder","category":"tool"},{"title":"Blockchain Framework XRPL","desc":"Doc technique XRPL · consensus RPCA/UNL · finalité 3-5 sec","url":"/en/blockchain-framework-xrpl","category":"anatomy"},{"title":"XRPL Extended Framework","desc":"Anatomie étendue · primitives natives · XLS amendments","url":"/en/blockchain-xrpl-extended","category":"anatomy"},{"title":"XRPL Animated Framework","desc":"Visualisation animée du framework","url":"/en/blockchain-xrpl-animated","category":"anatomy"},{"title":"Ecosystem Map","desc":"Snapshot landscape XRPL mai 2026 · 50+ projets · 8 catégories","url":"/en/ecosystem-map","category":"landscape"},{"title":"Opportunities (registre unifié)","desc":"56 opportunités à construire · 5 thèmes · multi-axis filters · single source of truth","url":"/en/opportunities","category":"landscape"},{"title":"Builder Atlas","desc":"7 startup blueprints · format technique · profondeur produit","url":"/en/builder-atlas","category":"landscape"},{"title":"XRPL Unicorn Diagnosis (V2)","desc":"Pourquoi pas de licorne XRPL · benchmark 6 écosystèmes · diagnostic stratégique","url":"/en/xrpl_unicorn_analysis_v2","category":"landscape"},{"title":"Analysis 1 — Internal lens","desc":"Lecture interne 4 PWG Paris + Atka · 4 frictions + 5 thèmes","url":"/en/analysis-1","category":"analysis"},{"title":"Analysis 2 — Challenger lens","desc":"Challenger lens Cornell PE · 24 Focus Areas / 6 thèmes","url":"/en/analysis-2","category":"analysis"},{"title":"Analysis 3 — Master Atlas synthesis","desc":"Synthèse A1+A2 · 30 opps source-tagged · trail méthodologique","url":"/en/analysis-3","category":"analysis"},{"title":"Buildathon","desc":"Brouillon de travail · ideation board · 30 days online · juin-juillet 2026","url":"/en/buildathon","category":"buildathon"},{"title":"Update tracker","desc":"Suivi des phases du cleanup item 01 · 6 phases · trail décisionnel","url":"/en/update","category":"meta"},{"title":"Backlog","desc":"Items à traiter · status × priorité · todo / parking","url":"/en/backlog","category":"meta"}];
+  const GSEARCH_INDEX = [{"title":"OPP-001 · Cross-Device Session Continuity Library","desc":"[TOOL] [HIGH] [wallets-infra] · sources: PWG-4,ATKA · Library to seamlessly continue wallet sessions across devices (top non-trading product unlock)","url":"/en/opportunities","category":"opportunity","_id":"OPP-001","_legacy":"M-01"},{"title":"OPP-002 · Institutional Multisig Wallet (Full UI)","desc":"[APP] [MEDIUM] [wallets-infra] · sources: PWG-4,ATKA · Safe-equivalent for XRPL — full UI for institutional multisig","url":"/en/opportunities","category":"opportunity","_id":"OPP-002","_legacy":"M-02"},{"title":"OPP-003 · Smart Contract Wallet on EVM Sidechain","desc":"[APP] [MEDIUM] [wallets-infra] · sources: PWG-4 · ERC-4337 wallet — table-stakes vs Base/Arbitrum","url":"/en/opportunities","category":"opportunity","_id":"OPP-003","_legacy":"M-03"},{"title":"OPP-004 · Unified Cross-Chain Wallet SDK","desc":"[TOOL] [LOW] [wallets-infra] · sources: PWG-4,ATKA · Single SDK supporting both XRPL native + EVM Sidechain","url":"/en/opportunities","category":"opportunity","_id":"OPP-004","_legacy":"M-04"},{"title":"OPP-010 · Institutional Data Emission Adapter Library","desc":"[TOOL] [HIGH] [wallets-infra] · sources: PWG-2,PWG-3,ATKA · ISIN/CFI/LEI/FIX/IFRS adapters — highest leverage","url":"/en/opportunities","category":"opportunity","_id":"OPP-010","_legacy":"M-05"},{"title":"OPP-011 · Stablecoin Accounting & Reconciliation Export","desc":"[TOOL] [MEDIUM] [wallets-infra] · sources: PWG-3,ATKA · QuickBooks/Xero/IFRS-compatible export library — narrow scope (kept as BLOCK)","url":"/en/opportunities","category":"opportunity","_id":"OPP-011","_legacy":"M-06"},{"title":"OPP-012 · Multi-Flow Institutional Access Control Library","desc":"[TOOL] [MEDIUM] [wallets-infra] · sources: PWG-4,ATKA · Permissioned Domains × Credentials for institutional flows","url":"/en/opportunities","category":"opportunity","_id":"OPP-012","_legacy":"M-07"},{"title":"OPP-013 · Pluggable Proof Primitives Library","desc":"[TOOL] [LOW] [wallets-infra] · sources: PWG-4,ATKA · Hash/signature/ZK/BYO-scheme — composable primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-013","_legacy":"M-08"},{"title":"OPP-056 · Vault Wrapper Pattern Library (XLS-65)","desc":"[TOOL] [HIGH] [lending] · sources: PWG-1,ATKA · Timing arbitrage on XLS-65 amendment","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-09"},{"title":"OPP-052 · Risk-Signal Aggregation from MPT Trading","desc":"[TOOL] [LOW] [lending] · sources: PWG-1,ATKA · Kennedy Reassurance — XRPL-native novel pattern","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"M-10"},{"title":"OPP-040 · Lending Protocol on EVM Sidechain (Morpho-style)","desc":"[APP] [HIGH] [lending] · sources: PWG-1,ATKA · Morpho-style lending — top community survey need","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-11"},{"title":"OPP-041 · Uncollateralized Lending Interface (XLS-66)","desc":"[APP] [MEDIUM] [lending] · sources: PWG-1,ATKA · UI for XLS-66 unsecured lending — Evernorth intent","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-12"},{"title":"OPP-054 · Compliant Credit Vault (institutional service)","desc":"[APP] [MEDIUM] [lending] · sources: PWG-1,ATKA · Agent-curator with attestations — A1 Tier 1 #1","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"M-12b"},{"title":"OPP-032 · Physical-to-Digital Binding (EU DPP)","desc":"[TOOL] [MEDIUM] [rwa-stable] · sources: PWG-2,ATKA · Regulatory deadline — 12-month EU DPP window","url":"/en/opportunities","category":"opportunity","_id":"OPP-032","_legacy":"M-13"},{"title":"OPP-056 · Yield-Bearing Stablecoin (T-bill backed)","desc":"[APP] [HIGH] [rwa-stable] · sources: PWG-3,ATKA,YC · USDe parallel — top community demand","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-14"},{"title":"OPP-052 · Non-USD Stablecoin DeFi Rails","desc":"[TOOL] [LOW] [rwa-stable] · sources: PWG-3,ATKA · EUR/BRL/SGD/AUD rails","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"M-15"},{"title":"OPP-040 · Chunked Data + On-Chain Anchoring Pattern","desc":"[TOOL] [LOW] [rwa-stable] · sources: PWG-2,ATKA · IPFS/S3/self-hosted with on-chain anchoring","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-16"},{"title":"OPP-041 · RWA Issuance Studio EU/MiCA","desc":"[APP] [MEDIUM] [rwa-stable] · sources: PWG-2,ATKA · MPT + DID + cap table — A1 Tier 1 #2","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-16b"},{"title":"OPP-054 · Restaking Protocol for XRP (Babylon-fork)","desc":"[APP] [HIGH] [evm-defi] · sources: PWG-1,ATKA · $110B+ XRP cap underutilized","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"M-17"},{"title":"OPP-049 · Synthetic Assets / CDP Protocol (× Axiom)","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Gold/stocks/forex synthetic assets","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"M-18"},{"title":"OPP-044 · Perpetual DEX (vAMM or order book)","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Derivatives = highest volume DeFi — XRPL at zero","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"M-19"},{"title":"OPP-032 · Decentralized Insurance Protocol","desc":"[APP] [MEDIUM] [evm-defi] · sources: PWG-1,ATKA · Maturity signal for institutional adoption","url":"/en/opportunities","category":"opportunity","_id":"OPP-032","_legacy":"M-20"},{"title":"OPP-056 · Pre-Deployed Testnet Infrastructure","desc":"[TOOL] [HIGH] [dev-tooling] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Multiplier across everything — sandbox","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"M-21"},{"title":"OPP-052 · XRPL Capabilities Registry","desc":"[TOOL] [MEDIUM] [dev-tooling] · sources: PWG-1,PWG-2,PWG-3,PWG-4,ATKA · Auto-update XLS feed — solves awareness gap","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"M-22"},{"title":"OPP-040 · Vendor-Neutral Oracle / Bridge / Ramp Adapters","desc":"[TOOL] [LOW] [dev-tooling] · sources: PWG-1,PWG-2,ATKA · Zero-code-change provider swap (lib for app builders)","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"M-23"},{"title":"OPP-041 · CeDeFi Yield Integration SDK (CEX channel)","desc":"[TOOL] [MEDIUM] [dev-tooling] · sources: PWG-1,PWG-3,ATKA · 60%+ XRP on CEX — #1 distribution play","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"M-24"},{"title":"OPP-053 · P-256 / secp256r1 Signing (XLS proposal)","desc":"[TOOL] [MEDIUM] [dev-tooling] · sources: PWG-4,ATKA · Cross-cutting — Apple Secure Enclave + WebAuthn + HSM","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"M-25"},{"title":"OPP-045 · AgentPay — x402 + XRPL settlement","desc":"[TOOL] [MEDIUM] [dev-tooling] · sources: PWG-4,ATKA · AI agent payments facilitator — programmatic infra","url":"/en/opportunities","category":"opportunity","_id":"OPP-045","_legacy":"M-26"},{"title":"OPP-046 · AI-Native Compliance Ops (service company)","desc":"[APP] [MEDIUM] [dev-tooling] · sources: PWG-4,ATKA,YC · YC RFS lens — also Service-01","url":"/en/opportunities","category":"opportunity","_id":"OPP-046","_legacy":"M-27"},{"title":"OPP-047 · AI-Native Treasury Ops (RLUSD automation)","desc":"[APP] [LOW] [dev-tooling] · sources: PWG-3,ATKA,YC · A1 service-thesis — also Service-02 Treasury-aaS","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"M-28"},{"title":"OPP-054 · AI-Native Restaking Manager (yield optimizer)","desc":"[APP] [LOW] [dev-tooling] · sources: PWG-1,ATKA · A1 service-thesis · auto-rebalance","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"M-29"},{"title":"OPP-049 · Onchain Reputation for AI Agents (KYA)","desc":"[TOOL] [LOW] [dev-tooling] · sources: PWG-4,ATKA · A1 service-thesis · agent identity layer","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"M-30"},{"title":"OPP-044 · Monitoring & B2B alerting","desc":"[APP] [MEDIUM] [dev-tooling] · sources: ECO · XRPL's Tenderly — B2B alerting product with UI","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"G-02"},{"title":"OPP-049 · Native yield aggregator (Yearn-XRPL)","desc":"[APP] [MEDIUM] [lending] · sources: ECO · Cross-protocol yield routing for XRPL natively","url":"/en/opportunities","category":"opportunity","_id":"OPP-049","_legacy":"G-03"},{"title":"OPP-053 · Regional POS / merchant tooling","desc":"[APP] [MEDIUM] [rwa-stable] · sources: ECO · Retail merchants in emerging markets + EU/MiCA","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"G-05"},{"title":"OPP-045 · Gaming utility-NFT framework","desc":"[TOOL] [LOW] [rwa-stable] · sources: ECO · Play-to-earn + asset interop — XRPL NFT primitives","url":"/en/opportunities","category":"opportunity","_id":"OPP-045","_legacy":"G-11"},{"title":"OPP-050 · Market-making-as-a-Service","desc":"[APP] [MEDIUM] [dev-tooling] · sources: YC · AI agent provides liquidity · 70-90% margin","url":"/en/opportunities","category":"opportunity","_id":"OPP-050","_legacy":"S-03"},{"title":"OPP-056 · Community-ops-as-a-Service","desc":"[APP] [MEDIUM] [dev-tooling] · sources: YC · AI agent runs Discord + Twitter + grants ops","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"S-05"},{"title":"OPP-052 · Dispute resolution & recovery","desc":"[APP] [LOW] [dev-tooling] · sources: YC · AI agent handles claims · refunds · recovery","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"S-07"},{"title":"OPP-033 · Prediction markets infrastructure","desc":"[TOOL] [MEDIUM] [evm-defi] · sources: YC · Engine layer · Polymarket equivalent","url":"/en/opportunities","category":"opportunity","_id":"OPP-033","_legacy":"Y-14"},{"title":"OPP-034 · Prediction markets dApps (consumer)","desc":"[APP] [MEDIUM] [evm-defi] · sources: YC · Polymarket-style for politics/sports/crypto","url":"/en/opportunities","category":"opportunity","_id":"OPP-034","_legacy":"Y-15"},{"title":"OPP-053 · AI trading agents (DCA · momentum · alpha)","desc":"[APP] [MEDIUM] [dev-tooling] · sources: YC · Quant agents on XRPL · alpha generation","url":"/en/opportunities","category":"opportunity","_id":"OPP-053","_legacy":"Y-16"},{"title":"OPP-056 · Treasury wallet B2B XRPL-native","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · Coinshift/Utopia Labs equivalent — B2B treasury platform (uses M-02 multisig as primitive)","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"gap-01"},{"title":"OPP-052 · KYC reusable cross-app","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · User-facing identity passport — manage and reuse KYC credentials across XRPL apps","url":"/en/opportunities","category":"opportunity","_id":"OPP-052","_legacy":"gap-04"},{"title":"OPP-046 · Mid-market corporate bonds","desc":"[APP] [MEDIUM] [rwa-stable] · sources: ECO,ATKA · On-chain mid-market corporate bond marketplace (BondBloc blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-046","_legacy":"gap-06"},{"title":"OPP-054 · Agent treasury + wallet for AI","desc":"[TOOL] [LOW] [dev-tooling] · sources: ECO · Wallet/treasury infrastructure for AI agents — 3rd layer of agent stack (with M-26 payments + M-30 identity)","url":"/en/opportunities","category":"opportunity","_id":"OPP-054","_legacy":"gap-09"},{"title":"OPP-040 · On-chain accounting + reporting","desc":"[APP] [MEDIUM] [wallets-infra] · sources: ECO · Broader accounting/reporting platform (uses M-06 export lib + adds reporting/multi-currency)","url":"/en/opportunities","category":"opportunity","_id":"OPP-040","_legacy":"gap-10"},{"title":"OPP-044 · Data marketplace · oracle aggregator","desc":"[TOOL] [LOW] [dev-tooling] · sources: ECO · Multi-source oracle aggregator + data marketplace for data buyers","url":"/en/opportunities","category":"opportunity","_id":"OPP-044","_legacy":"gap-12"},{"title":"OPP-047 · RWA structuring firm (AI service)","desc":"[APP] [MEDIUM] [rwa-stable] · sources: YC · AI agent + lawyer-on-tap that structures RWA tokenization for clients","url":"/en/opportunities","category":"opportunity","_id":"OPP-047","_legacy":"S-04"},{"title":"OPP-056 · Audit & continuous monitoring (AI service)","desc":"[APP] [LOW] [dev-tooling] · sources: YC · AI service that continuously audits client protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-056","_legacy":"S-06"},{"title":"OPP-050 · DeFi underwriting / insurance (AI service)","desc":"[APP] [LOW] [evm-defi] · sources: YC · AI agent prices DeFi risk and underwrites for insurance protocols","url":"/en/opportunities","category":"opportunity","_id":"OPP-050","_legacy":"S-08"},{"title":"OPP-041 · Streaming payroll for DAOs and freelancers","desc":"[APP] [LOW] [wallets-infra] · sources: ATKA · Streaming payroll on XRPL — new concept (PayrollXRP blueprint)","url":"/en/opportunities","category":"opportunity","_id":"OPP-041","_legacy":"BA-PayrollXRP"},{"title":"Decision Tree (guided)","desc":"Outil guidé pour choisir ta stack XRPL · 4-6 étapes · output stack + boilerplate","url":"/en/decision-tree","category":"tool"},{"title":"Decision Tree Map","desc":"Vue SVG macro de l'arbre de décision · 20 résultats finaux","url":"/en/decision-tree-map","category":"tool"},{"title":"Cost Simulator","desc":"Simulateur de coûts par tx · 4 chaînes comparées · données mai 2026","url":"/en/cost-simulator","category":"tool"},{"title":"Business Case Builder","desc":"Modèle SaaS+tx · horizon 24 mois · granularité mensuelle","url":"/en/business-case-builder","category":"tool"},{"title":"Blockchain Framework XRPL","desc":"Doc technique XRPL · consensus RPCA/UNL · finalité 3-5 sec","url":"/en/blockchain-framework-xrpl","category":"anatomy"},{"title":"XRPL Extended Framework","desc":"Anatomie étendue · primitives natives · XLS amendments","url":"/en/blockchain-xrpl-extended","category":"anatomy"},{"title":"XRPL Animated Framework","desc":"Visualisation animée du framework","url":"/en/blockchain-xrpl-animated","category":"anatomy"},{"title":"Ecosystem Map","desc":"Snapshot landscape XRPL mai 2026 · 50+ projets · 8 catégories","url":"/en/ecosystem-map","category":"landscape"},{"title":"Opportunities (registre unifié)","desc":"56 opportunités à construire · 5 thèmes · multi-axis filters · single source of truth","url":"/en/opportunities","category":"landscape"},{"title":"Builder Atlas","desc":"7 startup blueprints · format technique · profondeur produit","url":"/en/builder-atlas","category":"landscape"},{"title":"XRPL Unicorn Diagnosis (V2)","desc":"Pourquoi pas de licorne XRPL · benchmark 6 écosystèmes · diagnostic stratégique","url":"/en/xrpl_unicorn_analysis_v2","category":"landscape"},{"title":"Analysis 1 — Internal lens","desc":"Lecture interne 4 PWG Paris + Atka · 4 frictions + 5 thèmes","url":"/en/analysis-1","category":"analysis"},{"title":"Analysis 2 — Challenger lens","desc":"Challenger lens Cornell PE · 24 Focus Areas / 6 thèmes","url":"/en/analysis-2","category":"analysis"},{"title":"Analysis 3 — Master Atlas synthesis","desc":"Synthèse A1+A2 · 30 opps source-tagged · trail méthodologique","url":"/en/analysis-3","category":"analysis"},{"title":"Buildathon","desc":"Brouillon de travail · ideation board · 30 days online · juin-juillet 2026","url":"/en/buildathon","category":"buildathon"},{"title":"Update tracker","desc":"Suivi des phases du cleanup item 01 · 6 phases · trail décisionnel","url":"/en/update","category":"meta"},{"title":"Backlog","desc":"Items à traiter · status × priorité · todo / parking","url":"/en/backlog","category":"meta"}];
   const GSEARCH_CATS = {"opportunity": "Opportunities", "tool": "Tools", "anatomy": "Anatomy", "landscape": "Landscape", "analysis": "Analyses", "buildathon": "Buildathon", "meta": "Meta"};
   const GSEARCH_CAT_ORDER = ['opportunity', 'landscape', 'analysis', 'tool', 'anatomy', 'buildathon', 'meta'];
   const GSEARCH_TOTAL = GSEARCH_INDEX.length;
