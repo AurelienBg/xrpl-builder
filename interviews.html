@@ -159,8 +159,8 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <h1>Interviews <em>founders</em></h1>
   </div>
   <div class="meta">
-    4 réalisées · 13 propositions extraites<br/>
-    9 prévues : Stan · Kevin · Adrien · Denis · Thomas · Romain · Andy · Guillaume · Odelia<br/>
+    5 réalisées · 15 propositions extraites<br/>
+    8 prévues : Stan · Kevin · Adrien · Denis · Thomas · Romain · Andy · Odelia<br/>
     Format : visio 1h + transcript + recap<br/>
     Source-tag : INT-{nom} dans /opportunities
   </div>
@@ -436,6 +436,78 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 </section>
 
 
+<section class="interview-card done">
+  <div class="interview-num-block">
+    <div class="interview-num">05</div>
+    <div class="interview-date">13 mai 2026</div>
+  </div>
+  <div class="interview-body">
+    <div class="interview-head">
+      <h2>Guillaume</h2>
+      <span class="status-pill done">✅ Done</span>
+    </div>
+    <div class="context-block"><span class="label">Contexte</span>Builder Gen3Games (gen3games.com) — profil Solana-natif (6 wallets actifs, lending pour airdrops). Vision honnête d'un outsider XRPL : ce qui marche ailleurs, ce qui manque ici.</div>
+    <div class="format-block"><span class="label">Format</span>Visio · transcript via Gemini · notes manuelles fin de call (partie non enregistrée)</div>
+
+    <div class="props-block">
+      <span class="label">Propositions nouvelles (2)</span>
+      <ol>
+      <li class="prop-row">
+        <div class="prop-id">OPP-064</div>
+        <div class="prop-content">
+          <div class="prop-title">XRPL Transaction Indexer (TheGraph-equivalent)</div>
+          <div class="prop-meta">TOOL · dev-tooling · MEDIUM</div>
+          <div class="prop-blurb">Backend infra layer pour analytics/dashboards/dApps data. Distinct de OPP-048 (Xavier analytics front-end). Chaque builder reconstruit son indexer aujourd'hui.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">voir card →</a>
+      </li>
+      <li class="prop-row">
+        <div class="prop-id">OPP-065</div>
+        <div class="prop-content">
+          <div class="prop-title">Socials Onboarding for XRPL wallets (Google/Twitter/Apple login)</div>
+          <div class="prop-meta">TOOL · wallets · MEDIUM</div>
+          <div class="prop-blurb">Privy/Magic.link equivalent — kills the seed-phrase friction. Aucun wallet XRPL n'a ça, blocage retail mass-market.</div>
+        </div>
+        <a class="prop-link" href="/opportunities">voir card →</a>
+      </li>
+      </ol>
+    </div>
+
+    <div class="props-block">
+      <span class="label">Refonte taxonomie (impact structurel)</span>
+      <ul style="margin: 6px 0 0 18px; font-size: 13.5px; line-height: 1.55;">
+        <li><strong>Renommer "Infra" → "B2B"</strong> — les opps de ce thème ciblent toutes des businesses/institutions. Nom plus clair.</li>
+        <li><strong>Merger "Lending" + "EVM DeFi" → "DeFi"</strong> — le lending EST de la DeFi, simpler pour les builders qui choisissent un challenge. 6 thèmes au lieu de 7.</li>
+      </ul>
+      <p style="font-size: 12.5px; margin: 8px 0 0; color: var(--muted); font-style: italic;">→ Appliqué le 13 mai 2026 dans le registre /opportunities (cf. <a href="/opportunities" style="color: var(--ink); font-weight: 600;">snapshot live</a>).</p>
+    </div>
+
+    <div class="props-block">
+      <span class="label">Enrichissements buildathon (Section 09 Office Hours + Section 04 + Section 11)</span>
+      <ul style="margin: 6px 0 0 18px; font-size: 13.5px; line-height: 1.55;">
+        <li><strong>🚢 Weekly Ship Cadence</strong> — chaque équipe livre toutes les semaines : video + deck + feedback users (X socials)</li>
+        <li><strong>📣 Commons amplification</strong> — push hebdo du top 5/10 + lien public pour tout voir</li>
+        <li><strong>🎁 Merch reward</strong> pour best feedback (verif wallet connecté + XRP profile)</li>
+        <li><strong>👨‍🏫 Sessions Mentor 1:1</strong> en plus des office hours collectifs</li>
+        <li><strong>🤝 Mise en relation founders</strong> communauté XRPL Commons (intros qualifiées)</li>
+        <li><strong>♻️ Projet déjà commencé OK</strong> — pas besoin de partir de zéro Day 0 si le projet livre un nouveau jalon mainnet pendant les 30 jours</li>
+        <li><strong>💰 Inspiration Colosseum</strong> — modèle $100k SAFE pour 8% equity (au lieu de cash) à considérer pour le pool</li>
+      </ul>
+      <p style="font-size: 12.5px; margin: 8px 0 0; color: var(--muted); font-style: italic;">→ Tous appliqués dans <a href="/buildathon" style="color: var(--ink); font-weight: 600;">/buildathon</a>.</p>
+    </div>
+
+    <div class="props-block">
+      <span class="label">Task en cours (côté Aurelien/Claude)</span>
+      <p style="font-size: 13.5px; margin: 6px 0 0; line-height: 1.55;">📋 <strong>Identifier les patterns "CeDeFi Yield for the community"</strong> dans d'autres écosystèmes (Andre Cronje, Pendle, Ethena, Hyperliquid Earn, etc.) pour potentielle adaptation XRPL. Recherche async, résultats à compiler.</p>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">Takeaway clé</span>
+      <p>Guillaume apporte (1) un <strong>regard outsider Solana-natif</strong> qui valide les frictions XRPL identifiées par Djason/Florian (wallets pourris, manque d'incentives, dev funding insuffisant), (2) <strong>2 primitives manquantes critiques</strong> (Indexer + Socials Onboarding), (3) une <strong>refonte structurelle de la taxonomie</strong> qui simplifie la lecture pour les builders, et (4) <strong>5 mécaniques d'engagement hebdo</strong> qui musclent la Section 09 du Buildathon au-delà des seuls office hours. Diagnostic central : <em>« les users crypto ne font jamais rien gratuitement, et XRPL manque cruellement d'incentives type airdrop vs Solana »</em>. Le buildathon doit gamifier l'engagement sans dépendre uniquement du volume on-chain.</p>
+    </div>
+  </div>
+</section>
+
 <div class="section-head-iv">
   <h2>📡 Signaux externes <em style="font-size: 14px; color: var(--muted); font-style: italic; font-weight: 400;">— intel publique, pas une interview 1:1</em></h2>
 </div>
@@ -481,7 +553,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 </div>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">05</div></div>
+    <div class="interview-num-block"><div class="interview-num">06</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Stan</h2>
@@ -492,7 +564,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">06</div></div>
+    <div class="interview-num-block"><div class="interview-num">07</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Kevin</h2>
@@ -503,7 +575,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">07</div></div>
+    <div class="interview-num-block"><div class="interview-num">08</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Adrien</h2>
@@ -514,7 +586,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">08</div></div>
+    <div class="interview-num-block"><div class="interview-num">09</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Denis</h2>
@@ -525,7 +597,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
 <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">09</div></div>
+    <div class="interview-num-block"><div class="interview-num">10</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Thomas</h2>
@@ -536,7 +608,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">10</div></div>
+    <div class="interview-num-block"><div class="interview-num">11</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Romain</h2>
@@ -548,21 +620,10 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">11</div></div>
-    <div class="interview-body">
-      <div class="interview-head">
-        <h2>Andy</h2>
-        <span class="status-pill pending">⏸ À programmer</span>
-      </div>
-      <p class="pending-note">Programmé — propositions à extraire post-interview</p>
-    </div>
-  </section>
-
-  <section class="interview-card pending">
     <div class="interview-num-block"><div class="interview-num">12</div></div>
     <div class="interview-body">
       <div class="interview-head">
-        <h2>Guillaume</h2>
+        <h2>Andy</h2>
         <span class="status-pill pending">⏸ À programmer</span>
       </div>
       <p class="pending-note">Programmé — propositions à extraire post-interview</p>
