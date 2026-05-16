@@ -910,21 +910,79 @@
   <div class="section-body">
 
     <div class="reco-block">
-      <span class="reco-tag">Proposal</span>
-      <h3>4 criteria <em>— simple &amp; weighted</em></h3>
-      <div class="reco-sub">Total = 100%, published to candidates upfront</div>
-      <table class="crit-table">
+      <span class="reco-tag">Proposal · aligned with committee May 13, 2026</span>
+      <h3>2-step judging <em>— Binary gate, then bracket-specific scoring</em></h3>
+      <div class="reco-sub">Criteria apply <strong>differently</strong> depending on the prize bracket (small prizes vs major milestone-grants). All published to candidates upfront.</div>
+
+      <h4 style="margin: 18px 0 6px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700;">⛔ Step 1 — Live-traction gate <em>(binary · mandatory for any prize)</em></h4>
+      <p style="margin: 0 0 8px; font-size: 13.5px; line-height: 1.55;"><strong>All-or-nothing</strong> criteria by Day 30. Without these 2 conditions, no prize is awarded (cf. <a href="#prizes" style="color: var(--ink); font-weight: 600;">Section 05</a>):</p>
+      <ul style="margin: 0 0 14px 18px; font-size: 13.5px; line-height: 1.55;">
+        <li><strong>Mainnet deployment</strong> — project deployed and accessible on XRPL mainnet, source code published (or justified if proprietary)</li>
+        <li><strong>Measurable on-chain activity via SourceTag</strong> — at least 1 real transaction attributable to the project via SourceTag, verifiable by the jury on XRPL explorer</li>
+      </ul>
+
+      <h4 style="margin: 18px 0 6px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700;">🎟 Step 2a — Small prizes €500 <em>(simple gate-based scoring)</em></h4>
+      <p style="margin: 0 0 14px; font-size: 13.5px; line-height: 1.55;">Any project that passes the gate <strong>automatically receives</strong> the €500 small prize — no secondary scoring (unless the pool saturates). If more than 100 projects qualify, jury arbitrates on engagement metrics (descending order):</p>
+      <ol style="margin: 0 0 14px 18px; font-size: 13.5px; line-height: 1.55;">
+        <li><strong>Cumulative on-chain volume</strong> (USD-equivalent) over the 30 days</li>
+        <li><strong>Unique addresses</strong> having interacted with the project</li>
+        <li><strong>Transaction count</strong> attributable</li>
+      </ol>
+
+      <h4 style="margin: 18px 0 6px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700;">🥇 Step 2b — Major prizes $10k milestone-grants <em>(multi-criteria scoring)</em></h4>
+      <p style="margin: 0 0 8px; font-size: 13.5px; line-height: 1.55;">5 major prizes awarded based on weighted scoring <strong>among projects that passed the gate</strong>. Total = 100%.</p>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 12px; border: 1px solid rgba(14,17,22,0.15);">
         <thead>
-          <tr><th>Criterion</th><th>What it measures</th><th class="weight">Weight</th></tr>
+          <tr style="background: var(--paper-2);">
+            <th style="padding: 8px 12px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">Criterion</th>
+            <th style="padding: 8px 12px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">What it measures</th>
+            <th style="padding: 8px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;">Weight</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td><strong>Tech</strong></td><td>Code quality, security, architecture, working build</td><td class="weight">30%</td></tr>
-          <tr><td><strong>Product</strong></td><td>UX, completeness, docs, demo polish</td><td class="weight">25%</td></tr>
-          <tr><td><strong>Traction</strong></td><td>Real onboarding, signups, usage demonstrated during the 30 days</td><td class="weight">25%</td></tr>
-          <tr><td><strong>Pitch</strong></td><td>Demo video clarity, narrative, why-now</td><td class="weight">20%</td></tr>
+          <tr style="border-top: 1px solid rgba(14,17,22,0.12);">
+            <td style="padding: 8px 12px; font-weight: 600;">🚀 On-chain traction</td>
+            <td style="padding: 8px 12px;">Cumulative volume (USD-eq) · unique addresses · transaction count · <strong>retention</strong> (return-users) — objective metrics via SourceTag</td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">40%</td>
+          </tr>
+          <tr style="border-top: 1px solid rgba(14,17,22,0.12);">
+            <td style="padding: 8px 12px; font-weight: 600;">💎 Product quality</td>
+            <td style="padding: 8px 12px;">Smooth UX/UI, feature completeness, docs, accessibility (mobile/desktop), overall polish</td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">20%</td>
+          </tr>
+          <tr style="border-top: 1px solid rgba(14,17,22,0.12);">
+            <td style="padding: 8px 12px; font-weight: 600;">⚙️ Tech execution</td>
+            <td style="padding: 8px 12px;">Code quality, security, architecture, audit-readiness (smart contracts if applicable), open-source preferred</td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">15%</td>
+          </tr>
+          <tr style="border-top: 1px solid rgba(14,17,22,0.12);">
+            <td style="padding: 8px 12px; font-weight: 600;">🌱 Long-term commit</td>
+            <td style="padding: 8px 12px;">Clear post-Day 30 roadmap, capacity to execute milestones M1/M2 over 6 months, legal structure underway or ready</td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">15%</td>
+          </tr>
+          <tr style="border-top: 1px solid rgba(14,17,22,0.12);">
+            <td style="padding: 8px 12px; font-weight: 600;">📣 Pitch &amp; narrative</td>
+            <td style="padding: 8px 12px;">Video demo clarity (60-120s), one-pager deck, why-now, story-telling</td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">10%</td>
+          </tr>
+          <tr style="border-top: 2px solid var(--ink); background: var(--paper-2);">
+            <td style="padding: 8px 12px; font-weight: 700;">Total</td>
+            <td style="padding: 8px 12px;"></td>
+            <td style="padding: 8px 12px; text-align: right; font-weight: 700;">100%</td>
+          </tr>
         </tbody>
       </table>
-      <p>Simple to communicate, easy to optimize as a team, no overlap. <strong>Traction is the new lever</strong> (replacing "Distribution thinking" + "Gap fit" combined): in a 30-day full-online format, real signups and demonstrated usage are the most reliable signal of fit.</p>
+
+      <h4 style="margin: 18px 0 6px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700;">🏆 Aquarium Access <em>· top 1 only</em></h4>
+      <p style="margin: 0 0 14px; font-size: 13.5px; line-height: 1.55;">The <strong>project ranked #1</strong> (highest weighted score across the 5 criteria) wins, in addition to the milestone-grant, the direct Aquarium entry (cf. <a href="#prizes" style="color: var(--ink); font-weight: 600;">Section 05</a>).</p>
+
+      <h4 style="margin: 18px 0 6px; font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700;">🔄 Milestones M1/M2 post-Day 30 <em>(unlock criteria for $3k + $4k payments)</em></h4>
+      <p style="margin: 0 0 8px; font-size: 13.5px; line-height: 1.55;">The 5 major prizes get $3k upfront at Day 30, then $3k at M1 and $4k at M2 under conditions. Criteria <strong>co-built with each team</strong> in the 2 weeks post-Day 30 — aligned with their own roadmap. Standard frames:</p>
+      <ul style="margin: 0 0 14px 18px; font-size: 13.5px; line-height: 1.55;">
+        <li><strong>M1 (3 months)</strong> — typically: traction doubled (users / volume), N+1 feature roadmap shipped, first partnership / integration signed, legal structure finalized</li>
+        <li><strong>M2 (6 months)</strong> — typically: clear business threshold reached (e.g., annualized revenue, # tx/month, 30-day retention), first PMF signal (4-week cohort retention &gt; X%), Aquarium application/integration if not already secured</li>
+      </ul>
+      <p style="margin: 0; font-size: 12.5px; color: var(--muted); font-style: italic;">Milestones are <strong>objective measurable</strong>, not vague. XRPL Commons validates completion before payment unlock.</p>
     </div>
 
   </div>
