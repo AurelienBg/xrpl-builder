@@ -160,8 +160,8 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <h1><em>Founder</em> interviews</h1>
   </div>
   <div class="meta">
-    6 completed · 17 propositions extracted · 6 strategic insights (Adrien)<br/>
-    9 planned: Stan · Kevin · Denis · Thomas · Romain · Andy · Odelia · Divgun · Maxime<br/>
+    7 completed · 17 propositions extracted · 6 insights (Adrien) · 4 OPP candidates + 4 infra gaps (Kevin)<br/>
+    8 planned: Stan · Denis · Thomas · Romain · Andy · Odelia · Divgun · Maxime<br/>
     Format: 1h video call + transcript + recap<br/>
     Source-tag: INT-{name} in /opportunities
   </div>
@@ -621,6 +621,85 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 </section>
 
 
+
+<section class="interview-card done">
+  <div class="interview-num-block">
+    <div class="interview-num">07</div>
+    <div class="interview-date">May 19, 2026</div>
+  </div>
+  <div class="interview-body">
+    <div class="interview-head">
+      <h2>Kevin Serou</h2>
+      <span class="status-pill done">✅ Done</span>
+    </div>
+    <div class="context-block"><span class="label">Context</span>XRPL ecosystem builder/founder, operational perspective: on-ramps, wallets, payment infrastructure. Focus product-market fit on distribution and acquisition side.</div>
+    <div class="format-block"><span class="label">Format</span>~50min video call · Gemini transcript · 4 OPP candidates + 4 infra gaps identified</div>
+
+    <div class="props-block">
+      <span class="label">OPP candidates extracted (4) <em style="color: var(--muted); font-weight: 400; font-size: 12px;">— to validate before adding to /opportunities</em></span>
+      <ol>
+        <li class="prop-row">
+          <div class="prop-id">K-5</div>
+          <div class="prop-content">
+            <div class="prop-title">Account Abstraction layer for XRPL (Web3Auth hybrid)</div>
+            <div class="prop-meta">TOOL · wallets · MEDIUM</div>
+            <div class="prop-blurb">AA solution to ease XRPL wallet creation via third-party auth (Google/Apple/email) + custodial back-end. "Joy" model — combines social auth with programmatic wallet creation. Reduces consumer XRPL onboarding barrier.</div>
+          </div>
+          <a class="prop-link" href="/en/opportunities">candidate →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">K-6</div>
+          <div class="prop-content">
+            <div class="prop-title">XRPL "Jupiter-style" super-app</div>
+            <div class="prop-meta">APP · wallets · MEDIUM</div>
+            <div class="prop-blurb">Unified interface combining swap + lending + portfolio + predictions, modeled on Jupiter on Solana. Tool centralization for end users. Reduces UX fragmentation that hinders adoption.</div>
+          </div>
+          <a class="prop-link" href="/en/opportunities">candidate →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">K-7</div>
+          <div class="prop-content">
+            <div class="prop-title">XRPL card issuance frontend</div>
+            <div class="prop-meta">APP · b2b · HIGH</div>
+            <div class="prop-blurb">Dev-friendly wrapper around a card-issuance API, plugged into XRPL. Allows XRPL apps to offer a card to their users (equivalent to Solana capabilities). Strong competitive disadvantage if absent.</div>
+          </div>
+          <a class="prop-link" href="/en/opportunities">candidate →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">K-8</div>
+          <div class="prop-content">
+            <div class="prop-title">XRPL stablecoin on-ramp aggregator</div>
+            <div class="prop-meta">APP · b2b · HIGH</div>
+            <div class="prop-blurb">UI to buy USDC / RLUSD directly on XRPL via fiat — placeholder paving the way for future Moonpay/Transak partnerships. Today XRP-only, user acquisition blocker.</div>
+          </div>
+          <a class="prop-link" href="/en/opportunities">candidate →</a>
+        </li>
+      </ol>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">🔥 Structural infra gaps identified (4) <em style="color: var(--muted); font-weight: 400; font-size: 12px;">— out of Buildathon scope, to be driven by Foundation/Ripple in parallel</em></span>
+      <ol style="margin: 8px 0 0 18px; font-size: 13.5px; line-height: 1.6;">
+        <li><strong>K-1 · Wallet activation cost</strong> — major dev blocker (vs other chains). Kevin's proposal: <em>credit line or XRP Foundation fund</em> covering wallet activation per project (devs don't bear the initial cost).</li>
+        <li><strong>K-2 · Stablecoin on-ramp absence</strong> — USDC / RLUSD not available via Moonpay/Transak on XRPL (XRP-only). Blocks consumer user acquisition. Ripple must drive the partnerships.</li>
+        <li><strong>K-3 · Virtual IBAN accounts</strong> — reduce onboarding fees from <strong>4.5% (card) to ~0.75% (transfer)</strong>. Ripple should align with Moonpay, Meld, Bridge to integrate XRPL.</li>
+        <li><strong>K-4 · Native XRPL card issuance API</strong> — natively available on Solana (Pyth, Bonfida, etc.), absent on XRPL. Major competitive disadvantage. Strategy: "Stripe-like" alignment (M&amp;A or partnerships) rather than rebuilding everything.</li>
+      </ol>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">✓ Validations</span>
+      <p><strong>(1) RWA / Ondo Finance</strong> validated as promising direction — reinforces the <strong>RWAT</strong> theme of the registry. <strong>(2) "Stripe-like" model</strong> (align with payment infra leaders via partnerships or M&amp;A, rather than building from scratch) — feeds XRPL Commons partnership strategy.</p>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">Key takeaway</span>
+      <p>Kevin brings an <strong>infra/distribution diagnosis</strong> that complements Djason/Xavier's product insights: XRPL friction is not only protocol-level or product-level, it's also <strong>distribution-level</strong> (on-ramps missing, IBAN missing, cards inaccessible, expensive wallet activation). Central thesis: <em>"XRPL cannot catch up with Solana without aligning with existing payment infra leaders — partnerships must be driven, not everything rebuilt"</em>. The 4 OPP candidates (K-5 to K-8) are buildable in the Buildathon; the 4 infra gaps (K-1 to K-4) are out of scope but should be piloted in parallel by the Foundation and Ripple.</p>
+    </div>
+  </div>
+</section>
+
+
 <div class="section-head-iv">
   <h2>📡 External signals <em style="font-size: 14px; color: var(--muted); font-style: italic; font-weight: 400;">— public intel, not a 1:1 interview</em></h2>
 </div>
@@ -666,21 +745,10 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 </div>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">07</div></div>
-    <div class="interview-body">
-      <div class="interview-head">
-        <h2>Stan</h2>
-        <span class="status-pill pending">⏸ To schedule</span>
-      </div>
-      <p class="pending-note">Planned — propositions à extraire post-interview</p>
-    </div>
-  </section>
-
-  <section class="interview-card pending">
     <div class="interview-num-block"><div class="interview-num">08</div></div>
     <div class="interview-body">
       <div class="interview-head">
-        <h2>Kevin</h2>
+        <h2>Stan</h2>
         <span class="status-pill pending">⏸ To schedule</span>
       </div>
       <p class="pending-note">Planned — propositions à extraire post-interview</p>
