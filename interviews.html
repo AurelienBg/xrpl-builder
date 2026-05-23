@@ -160,8 +160,8 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
     <h1>Interviews <em>founders</em></h1>
   </div>
   <div class="meta">
-    7 réalisées · 17 propositions extraites · 6 insights (Adrien) · 4 OPP candidates + 4 infra gaps (Kevin)<br/>
-    8 prévues : Stan · Denis · Thomas · Romain · Andy · Odelia · Divgun · Maxime<br/>
+    8 réalisées · 17 propositions · 6 insights (Adrien) · 4 OPP cands + 4 infra gaps (Kevin) · 4 validations + 3 niche cands (Thomas)<br/>
+    7 prévues : Stan · Denis · Romain · Andy · Odelia · Divgun · Maxime<br/>
     Format : visio 1h + transcript + recap<br/>
     Source-tag : INT-{nom} dans /opportunities
   </div>
@@ -696,6 +696,110 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </div>
 </section>
 
+<section class="interview-card done">
+  <div class="interview-num-block">
+    <div class="interview-num">08</div>
+    <div class="interview-date">19 mai 2026</div>
+  </div>
+  <div class="interview-body">
+    <div class="interview-head">
+      <h2>Thomas</h2>
+      <span class="status-pill done">✅ Done</span>
+    </div>
+    <div class="context-block"><span class="label">Contexte</span>Dev-tooling lead XRPL Commons, travaille avec Romain (boats/Cathon) et Darius (déploiement scaffolding). Regard tech-infra : scaffolding, wallets, documentation, B2B tooling.</div>
+    <div class="format-block"><span class="label">Format</span>Visio ~25min · transcript via Gemini · 4 validations OPPs existants + 3 candidates niches + 3 validations infra-status</div>
+
+    <div class="props-block">
+      <span class="label">✓ Validations d'OPPs existants (4) <em style="color: var(--muted); font-weight: 400; font-size: 12px;">— tags <code>INT-thomas</code> ajoutés au registre</em></span>
+      <ol>
+        <li class="prop-row">
+          <div class="prop-id">OPP-001</div>
+          <div class="prop-content">
+            <div class="prop-title">Cross-Device Session Continuity Library</div>
+            <div class="prop-meta">TOOL · wallets · HIGH</div>
+            <div class="prop-blurb">Validé par Thomas comme besoin dev majeur — Florian + Thomas convergent. Restera Tier HIGH (#1 du registre).</div>
+          </div>
+          <a class="prop-link" href="/opportunities">voir card →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">OPP-018</div>
+          <div class="prop-content">
+            <div class="prop-title">Monitoring &amp; B2B alerting</div>
+            <div class="prop-meta">APP · b2b · <strong>MEDIUM</strong> <em style="color: var(--added); font-weight: 600;">(upgraded LOW→MEDIUM)</em></div>
+            <div class="prop-blurb">Thomas : <em>« il manque des services d'alerting, de notification, de network supervising — quand ça merde sur la blockchain et c'est une partie de ton service »</em>. Convergence Florian + Thomas + Kevin (K-4 card issuance gap b2b) → tier upgrade.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">voir card →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">OPP-012</div>
+          <div class="prop-content">
+            <div class="prop-title">Stablecoin Accounting &amp; Reconciliation Export</div>
+            <div class="prop-meta">TOOL · b2b · MEDIUM</div>
+            <div class="prop-blurb">Thomas : <em>« transaction export, les exports pour les comptables qui veulent faire les exports d'une boîte »</em>. Convergence Florian + Thomas.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">voir card →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">OPP-014</div>
+          <div class="prop-content">
+            <div class="prop-title">On-chain accounting + reporting</div>
+            <div class="prop-meta">APP · b2b · MEDIUM</div>
+            <div class="prop-blurb">Pendant APP de OPP-012 (export lib narrow). Validé comme besoin entreprise pour P&amp;L, bilan, audit trail.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">voir card →</a>
+        </li>
+      </ol>
+    </div>
+
+    <div class="props-block">
+      <span class="label">🆕 Candidates "vraies nouveautés" (3) <em style="color: var(--muted); font-weight: 400; font-size: 12px;">— niche, à valider avant intégration registre</em></span>
+      <ol>
+        <li class="prop-row">
+          <div class="prop-id">T-1</div>
+          <div class="prop-content">
+            <div class="prop-title">Scaffolding extension XRPL (toolkit out-of-box + plugins)</div>
+            <div class="prop-meta">TOOL · dev-tooling · MEDIUM</div>
+            <div class="prop-blurb">Extension du scaffolder existant avec système de plugins (ex: scaffold app + framework RWA intégré direct). Adjacent à OPP-047 (Pre-Deployed Testnet) mais angle différent — productivité dev. <em>« quelqu'un qui fait un scafolder ça pourrait rentrer dans le buildathon »</em>.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">candidate →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">T-2</div>
+          <div class="prop-content">
+            <div class="prop-title">Builder Blocks Catalog (capability index)</div>
+            <div class="prop-meta">TOOL · dev-tooling · LOW</div>
+            <div class="prop-blurb">Catalogue clair "what's available now vs coming soon" pour devs XRPL. Permet de naviguer parmi les API, wallets, ramps, et savoir quels services sont opérationnels vs en cours de déploiement. Évite de baser un projet sur des solutions non-disponibles. Meta-doc.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">candidate →</a>
+        </li>
+        <li class="prop-row">
+          <div class="prop-id">T-6</div>
+          <div class="prop-content">
+            <div class="prop-title">Dev utilities pack (airdrop · signing wrapper · glacier API)</div>
+            <div class="prop-meta">TOOL · dev-tooling · LOW</div>
+            <div class="prop-blurb">Petits utilities devs : airdrop tool, signing wrapper, glacier API (cold-storage). Buildable comme paquet d'outils ou opps individuelles. Niche mais utile.</div>
+          </div>
+          <a class="prop-link" href="/opportunities">candidate →</a>
+        </li>
+      </ol>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">✓ Signaux infra-status (3) <em style="color: var(--muted); font-weight: 400; font-size: 12px;">— état des intégrations existantes / à venir</em></span>
+      <ol style="margin: 8px 0 0 18px; font-size: 13.5px; line-height: 1.6;">
+        <li><strong>XRP Connect</strong> — solution wallet unifiée (1 API au lieu de N intégrations par wallet : Xaman, Joy, GemWallet). À <strong>promouvoir activement</strong> dans le Buildathon.</li>
+        <li><strong>Privy + Ripple intégration</strong> — wallet abstraction (login email + wallet sponsored fees). <strong>En cours côté Ripple</strong>, synergie avec K-5 (Adrien Account Abstraction). Maxime travaille dessus — contact à prendre.</li>
+        <li><strong>Squid Router</strong> comme on-ramp moderne (XRP/RLUSD direct, meilleure liquidité, fees plus bas). Aligné avec K-8 (Kevin stablecoin on-ramp aggregator) — confirme que la solution arrive.</li>
+      </ol>
+    </div>
+
+    <div class="takeaway-block">
+      <span class="label">Takeaway clé</span>
+      <p>Thomas confirme la <strong>robustesse du registre</strong> /opportunities (4 OPPs existants validés sans nouvelle proposition majeure) et apporte un <strong>regard infra-status</strong> qui complète Kevin (K-1..K-4) : les solutions arrivent côté Ripple (XRP Connect prêt, Privy en cours, Squid Router en cours). Sa contribution pratique = <strong>tier upgrade OPP-018 (Monitoring) de LOW → MEDIUM</strong> sur convergence Florian + Thomas + Kevin. Les 3 candidates niche (T-1/T-2/T-6) restent à arbitrer.</p>
+    </div>
+  </div>
+</section>
+
 
 <div class="section-head-iv">
   <h2>📡 Signaux externes <em style="font-size: 14px; color: var(--muted); font-style: italic; font-weight: 400;">— intel publique, pas une interview 1:1</em></h2>
@@ -742,7 +846,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
 </div>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">08</div></div>
+    <div class="interview-num-block"><div class="interview-num">09</div></div>
     <div class="interview-body">
       <div class="interview-head">
         <h2>Stan</h2>
@@ -753,21 +857,10 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 2px solid var(--ink); 
   </section>
 
   <section class="interview-card pending">
-    <div class="interview-num-block"><div class="interview-num">09</div></div>
-    <div class="interview-body">
-      <div class="interview-head">
-        <h2>Denis</h2>
-        <span class="status-pill pending">⏸ À programmer</span>
-      </div>
-      <p class="pending-note">Programmé — propositions à extraire post-interview</p>
-    </div>
-  </section>
-
-<section class="interview-card pending">
     <div class="interview-num-block"><div class="interview-num">10</div></div>
     <div class="interview-body">
       <div class="interview-head">
-        <h2>Thomas</h2>
+        <h2>Denis</h2>
         <span class="status-pill pending">⏸ À programmer</span>
       </div>
       <p class="pending-note">Programmé — propositions à extraire post-interview</p>
