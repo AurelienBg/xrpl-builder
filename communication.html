@@ -543,7 +543,7 @@
       <div class="reco-sub">Day 0 kickoff → 28 jours de build → Day 29 freeze → Day 30 Demo Day. Remote-first · 1 jour IRL/semaine optionnel à la Commons House Paris (cf. Section 09).</div>
       <p>Sprint compact de 30 jours, entièrement online. Pas de logistique présentielle — chaque équipe joue à armes égales mondialement. Assez long pour un MVP crédible + démo fonctionnelle (4 semaines de build), assez court pour maintenir l'urgence. <strong>Lancement aligné sur le Research Summit</strong> (Day 0). Format <strong>annuel d'abord</strong> — extension possible vers un <strong>mode continu (3 cohortes/an)</strong> dans une édition ultérieure (projet distinct, pas pour 2026).</p>
       <ul>
-        <li><strong>Day 0 :</strong> Kickoff online, presentation and Q&amp;A session</li>
+        <li><strong>Day 0 :</strong> Kickoff online, presentation and Q&amp;A session. <em style="color: var(--muted);">→ Enrollment ouvert Day 0 → Day 14 (cutoff). Les équipes peuvent rejoindre en cours, mais doivent toutes hit le gate Day 30.</em></li>
         <li><strong>Day 1 → Day 28 :</strong> Phase de build — 2 office hours/semaine (30min chacune) + 1 jour IRL/semaine optionnel à la Commons House (cf. <a href="#office-hours" style="color: var(--ink); font-weight: 600;">Section 09</a>)</li>
         <li><strong>Day 29 :</strong> <strong>Pitch deck freeze</strong> + <strong>Demo freeze</strong> — code, deck, vidéo démo tous verrouillés</li>
         <li><strong>Day 30 :</strong> Demo Day online (livestream) — <strong>investor-oriented</strong> (pas un "fun demo" : pitch fund-raising-ready). <strong>Gate obligatoire</strong> : projet déployé sur XRPL mainnet avec activité on-chain mesurable via SourceTag (volume, transactions, adresses). Revue jury · annonce des prix.</li>
@@ -611,9 +611,15 @@
           <li><strong>Repo de code public</strong> (ou justifié si propriétaire) — déclaré à l'inscription</li>
           <li><strong>Liste des contributeurs identifiés</strong> — KYC light requis pour versement des prix</li>
           <li><strong>SourceTag actif day 1</strong> — intégré au repo dès le démarrage, auto-monitoring on-chain via la plateforme HACK</li>
+          <li><strong>Enrollment flexible</strong> — ouvert <strong>Day 0 → Day 14</strong> (cutoff). Les équipes peuvent rejoindre en cours, mais le gate Day 30 reste fixe (≥16 jours de build minimum).</li>
+          <li><strong>Vidéo hebdomadaire obligatoire</strong> — 60-120s de progrès chaque semaine (cf. <a href="#office-hours" style="color: var(--ink); font-weight: 600;">Section 09 Team Support</a>). Sert à la visibilité ET au monitoring d'avancement.</li>
         </ul>
         <p style="margin: 8px 0 0; font-size: 12px; color: var(--muted); font-style: italic;">Le SourceTag génère automatiquement une <strong>fiche d'identité par projet</strong> (repo + contributeurs + tag) qui alimente le leaderboard et le tracking jusqu'au Day 30.</p>
-      </div>
+
+        <div style="margin-top: 12px; padding: 10px 14px; background: rgba(192,57,43,0.06); border-left: 3px solid var(--warning);">
+          <strong style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warning); display: block; margin-bottom: 4px;">⚠️ Mécanisme d'exclusion (jury, pas hebdo)</strong>
+          <p style="margin: 0; font-size: 12.5px; line-height: 1.5;">Le jury peut <strong>retirer un projet</strong> du leaderboard et du pool de prix sur signalement de : (1) <strong>scam / projet bidon</strong> détecté par mentors ou communauté · (2) <strong>2 semaines sans livraison vidéo</strong> = flag automatique → review jury · (3) <strong>aucune activité repo</strong> (commits) sur 10+ jours. Pas d'élimination hebdo automatique — décision jury communiquée à l'équipe avec droit de réponse 48h.</p>
+        </div>
 
       <div style="background: rgba(192,57,43,0.06); border-left: 4px solid var(--warning); padding: 12px 16px; margin: 14px 0;">
         <strong style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warning); display: block; margin-bottom: 6px;">⚠️ Out-of-scope · infra blockers à driver en parallèle</strong>
@@ -859,7 +865,7 @@
 
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); font-weight: 700; margin: 16px 0 6px;">🚢 Weekly Ship Cadence <em style="text-transform: none; letter-spacing: 0; font-size: 12px; color: var(--muted);">(Guillaume)</em></p>
       <ul>
-        <li><strong>Chaque équipe livre toutes les semaines</strong> : (1) video courte (60-120s) du progrès · (2) deck slide unique · (3) feedback users sur les socials (post X avec wallet connecté + XRP profile pour traçabilité)</li>
+        <li><strong>Vidéo hebdo obligatoire</strong> : (1) video courte (60-120s) du progrès · (2) deck slide unique · (3) feedback users sur les socials (post X avec wallet connecté + XRP profile pour traçabilité). <em style="color: var(--muted);">2 semaines manquées = flag review jury (cf. Section 04 mécanisme d'exclusion).</em></li>
         <li><strong>XRPL Commons amplifie</strong> : push hebdo du <strong>top 5 ou 10</strong> sur ses canaux + lien public unique permettant de voir <em>toutes</em> les soumissions</li>
         <li><strong>Merch reward</strong> pour les <strong>meilleurs commentaires / feedback</strong> reçus par chaque équipe (vérif que le feedback est qualifié : wallet connecté, XRP profile actif, pas de bot)</li>
       </ul>
@@ -885,6 +891,7 @@
         <li><strong>Canal Discord cross-équipes</strong> — partage de patterns, debug collectif, code reviews entre équipes participantes. Modéré light par XRPL Commons.</li>
         <li><strong>Open sessions équipes-équipes</strong> — 1 fois par semaine, slot ouvert où une équipe présente son blocage du moment et la cohorte aide. Pas de mentor formel, pure horizontal.</li>
         <li><strong>Insight</strong> : la vraie valeur d'un accélérateur réside dans l'<em>apprentissage par les pairs</em> plus que dans les ateliers formels — les équipes qui résolvent ensemble apprennent plus vite que celles qui écoutent un mentor.</li>
+        <li><strong>Continuité post-Buildathon</strong> : <a href="https://news.xrpl-commons.org" target="_blank" style="color: var(--ink); font-weight: 600;">news.xrpl-commons.org</a> reste l'espace d'échange communautaire entre membres après Day 30 — les builders du Buildathon y poursuivent les discussions et le partage de progrès.</li>
       </ul>
 
       <p style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); font-weight: 700; margin: 18px 0 6px;">📣 Communication &amp; GTM · push public des projets ready</p>
@@ -965,6 +972,11 @@
           <td style="padding: 10px; border-bottom: 1px solid rgba(14,17,22,0.12); line-height: 1.5;">Plateforme dédiée Buildathons (nom inventé par eux). <strong>6 mois de waves de 14 jours</strong> (10j submit + 4j vote). 1/10 du pool distribué par wave. WaveHack Global = <strong>$500k+ à 5000+ builders, 30+ projets continuellement financés</strong>. On-chain USDC/USDT (Ethereum, BNB, Base, Astar). 10% gas/contract fee.</td>
           <td style="padding: 10px; border-bottom: 1px solid rgba(14,17,22,0.12); line-height: 1.5;"><strong>Buildathon ≠ hackathon.</strong> Pas un sprint mais une plateforme long-terme avec funding distribué on-chain et milestones progressifs. XRPL pas encore supporté — opportunité d'être early.</td>
         </tr>
+        <tr style="background: var(--paper-2);">
+          <td style="padding: 10px; vertical-align: top; font-weight: 700;">Avalanche / Build Games <strong style="color:var(--wallet);">(NEW)</strong></td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(14,17,22,0.12); line-height: 1.5;">Build Games 2026 — <strong>6 semaines online global</strong>, kickoff févr. 2026, pas de tracks prédéfinis. Pipeline 3-stages : Week 1 pitch vidéo, Weeks 2-3 build/ship MVP, Weeks 4-6 refine + GTM + live showcase. Pool <strong>$1M</strong> (Grand prize $100k, runner-up $75k, 3e $50k + catégories $5k-$40k). Critères : Builder Drive, Execution, Crypto Culture, Long-Term Intent.</td>
+          <td style="padding: 10px; border-bottom: 1px solid rgba(14,17,22,0.12); line-height: 1.5;"><strong>Filtering implicite par stage.</strong> Pas d'éliminations formelles mais Stage 1 vidéo pitch filtre les idées avant le build. Pool $1M = concurrent direct le plus comparable (online global, MVP-focused, ~30j vs nos 30j). XRPL ne peut pas matcher le pool 2026 mais peut sur l'ambition format.</td>
+        </tr>
         <tr>
           <td style="padding: 10px; vertical-align: top; font-weight: 700;">Lablab.ai</td>
           <td style="padding: 10px; line-height: 1.5;">Hackathons AI continus (multi-partenaires). Examples 2025-2026 : AMD Developer ($21k), MindsDB AI Agents ($10k), SURGE × OpenClaw ($50k), <strong>RAISE your HACK 2025 ($150k+)</strong>. Format 24-72h ou 5 jours.</td>
@@ -1025,6 +1037,10 @@
       <p><strong>Pour :</strong> simple à opérer (1 ETP suffit) · pool concentré sur la traction réelle (pas la démo) · milestone-grants engagent les gagnants long-terme · Aquarium access = vraie récompense au-delà du cash · format reconductible (multi-édition possible si succès).</p>
       <p><strong>Contre :</strong> moins de moments-forts qu'un flagship Colosseum-style · pas de gros titre "$300k pool" · dépend du flux de candidats (open vs curated). Mitigé par : marketing Buildathon, Commons amplification hebdo, Académie en amont qui prépare le funnel.</p>
       <p><strong>Coût estimé :</strong> <strong>~$70-150k</strong> pour la 1<sup>re</sup> édition (pool flex 50–100k XRP + ops/tooling/marketing). Possible multi-édition l'an prochain si reconduction. Très bas overhead vs Variante 2/3.</p>
+      <div style="margin-top: 12px; padding: 10px 14px; background: rgba(46,93,79,0.06); border-left: 3px solid var(--added);">
+        <strong style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--added); display: block; margin-bottom: 4px;">🎯 Ambition 2027+ (hors-scope 2026)</strong>
+        <p style="margin: 0; font-size: 12.5px; line-height: 1.5;">Pool <strong>$1M-style</strong> (Avalanche Build Games, Solana Colosseum) = ambition crédible pour <strong>2027+ si reconduction et co-financement sponsors</strong>. Pour 2026 (1<sup>re</sup> édition), le pool flex 50-100k XRP est validé comme bon ratio "prove the format puis scale". <em>À ré-arbitrer post-Buildathon 2026 selon résultats.</em></p>
+      </div>
     </div>
 
   </div>
