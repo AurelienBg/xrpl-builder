@@ -248,7 +248,7 @@
     .eco { border-right: none; border-bottom: 1px solid var(--ink); }
   }
 
-  /* ============ MAPPING CALLOUT (use case → extension) ============ */
+  /* ============ MAPPING CALLOUT (use case → mécanisme spécialisé) ============ */
   .mapping-block {
     margin-top: 32px;
     border: 2px solid var(--ink);
@@ -921,7 +921,7 @@
         <text x="500" y="40" text-anchor="middle">CUSTODY</text>
         <text x="700" y="40" text-anchor="middle">NETWORK</text>
         <text x="920" y="40" text-anchor="middle">LEDGER (L1)</text>
-        <text x="1140" y="40" text-anchor="middle">EXTENSIONS</text>
+        <text x="1140" y="40" text-anchor="middle">MÉCANISMES SPÉCIALISÉS</text>
       </g>
       <g stroke="#0e1116" stroke-dasharray="2 4" opacity="0.2">
         <line x1="180" y1="50" x2="180" y2="840"/>
@@ -1064,7 +1064,7 @@
         <text x="12" y="186" font-family="JetBrains Mono, monospace" font-size="9" fill="#6b6358">RWA, conditional pay</text>
       </g>
 
-      <!-- AMM EXTENSION -->
+      <!-- AMM (mécanisme spécialisé) -->
       <g transform="translate(1060,100)">
         <rect x="0" y="0" width="180" height="120" fill="#8b5a8c" stroke="#0e1116" stroke-width="2"/>
         <rect x="0" y="0" width="180" height="120" fill="url(#dots)"/>
@@ -1082,7 +1082,7 @@
         </g>
       </g>
 
-      <!-- RWA EXTENSION -->
+      <!-- RWA (mécanisme spécialisé) -->
       <g transform="translate(1060,240)">
         <rect x="0" y="0" width="180" height="130" fill="#4a6741" stroke="#0e1116" stroke-width="2"/>
         <rect x="0" y="0" width="180" height="130" fill="url(#dots)"/>
@@ -1101,7 +1101,7 @@
         <text x="90" y="120" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f4efe6" opacity="0.85">Ondo · Archax · Axelar</text>
       </g>
 
-      <!-- SIDECHAIN EXTENSION -->
+      <!-- SIDECHAIN (off-L1) -->
       <g transform="translate(1060,390)">
         <rect x="0" y="0" width="180" height="160" fill="#b85c38" stroke="#0e1116" stroke-width="2"/>
         <rect x="0" y="0" width="180" height="160" fill="url(#dots)"/>
@@ -1189,7 +1189,7 @@
       <!-- ============ BOTTOM BAND: USE CASES ============ -->
       <g transform="translate(50,580)">
         <rect x="0" y="0" width="1190" height="240" fill="#ebe4d6" stroke="#0e1116" stroke-width="1.5"/>
-        <text x="20" y="22" font-family="JetBrains Mono, monospace" font-size="10" fill="#6b6358" letter-spacing="2">USE CASES — DU L1 AUX EXTENSIONS</text>
+        <text x="20" y="22" font-family="JetBrains Mono, monospace" font-size="10" fill="#6b6358" letter-spacing="2">USE CASES — L1 + MÉCANISMES SPÉCIALISÉS</text>
         <line x1="20" y1="30" x2="1170" y2="30" stroke="#0e1116" stroke-width="0.5"/>
 
         <!-- Use case 1: Payment -->
@@ -1401,12 +1401,12 @@
 
   </div>
 
-  <!-- ============ USE CASES → EXTENSIONS MAPPING ============ -->
+  <!-- ============ USE CASES → MÉCANISMES SPÉCIALISÉS MAPPING ============ -->
   <div class="mapping-block" id="mapping-block">
     <div class="mapping-header">
-      <h2>Quel <em>use case</em> · quelle extension ?</h2>
+      <h2>Which <em>use case</em> · which specialized mechanism?</h2>
       <div class="mapping-header-actions">
-        <span class="lbl">Use cases · 5 → Extensions · 3</span>
+        <span class="lbl">Use cases · 5 → Mechanisms · 3</span>
         <button class="uc-play-btn" id="uc-play-btn" aria-label="Lancer l'animation des 5 use cases">▶ Play les 5 cas</button>
         <span class="uc-step-indicator" id="uc-step-indicator">0/5</span>
       </div>
@@ -1418,7 +1418,7 @@
 
       <!-- UC 01 — Payment (L1 pur) -->
       <div class="mapping-cell" data-layer="l1" id="uc-payment">
-        <div class="uc-caption"><strong>Cas 01 / 5</strong>Une simple transaction <em>Payment</em> sur le ledger.<br/>Aucune extension.</div>
+        <div class="uc-caption"><strong>Case 01 / 5</strong>A simple <em>Payment</em> transaction on the ledger.<br/>Base ledger primitive.</div>
         <div class="uc-num">USE CASE · 01</div>
         <div class="uc-title">Payment</div>
         <div class="uc-sub">Transfert XRP / IOU</div>
@@ -1430,14 +1430,14 @@
         </div>
 
         <div class="uc-foot">
-          <strong>Aucune extension</strong>
-          La transaction <code>Payment</code> is a ledger primitive. 3–5s finality, fees in drops.
+          <strong>Base ledger primitive</strong>
+          The <code>Payment</code> transaction is a native ledger primitive, no specific amendment. 3–5s finality, fees in drops.
         </div>
       </div>
 
       <!-- UC 02 — NFT (L1 pur) -->
       <div class="mapping-cell" data-layer="xls20" id="uc-nft">
-        <div class="uc-caption"><strong>Cas 02 / 5</strong>NFT natif via XLS-20.<br/>Toujours aucune extension.</div>
+        <div class="uc-caption"><strong>Case 02 / 5</strong>Native NFT via XLS-20 amendment.<br/>Simple native primitive.</div>
         <div class="uc-num">USE CASE · 02</div>
         <div class="uc-title">NFT · XLS-20</div>
         <div class="uc-sub">Mint, transfer, sell offers</div>
@@ -1449,14 +1449,14 @@
         </div>
 
         <div class="uc-foot">
-          <strong>Aucune extension externe</strong>
-          XLS-20 est un amendement <em>natif</em> of the protocol. Marketplace, royalties, transfers integrated in the ledger.
+          <strong>Native amendment XLS-20</strong>
+          XLS-20 is an <em>activated protocol amendment</em> — a native primitive. Marketplace, royalties, transfers integrated in the ledger.
         </div>
       </div>
 
-      <!-- UC 03 — AMM Swap (extension) -->
+      <!-- UC 03 — AMM Swap (amendement natif XLS-30) -->
       <div class="mapping-cell" data-layer="amm" id="uc-amm">
-        <div class="uc-caption"><strong>Cas 03 / 5</strong>First extension: AMM XLS-30.<br/>Native liquidity pool.</div>
+        <div class="uc-caption"><strong>Case 03 / 5</strong>First specialized mechanism: AMM (XLS-30 amendment).<br/>Native liquidity pool.</div>
         <div class="uc-num">USE CASE · 03</div>
         <div class="uc-title">AMM Swap</div>
         <div class="uc-sub">Swap XRP → USD (cross-currency)</div>
@@ -1466,16 +1466,16 @@
         <div class="uc-uses">
           <span class="layer-pill l1">L1</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;margin:0 4px;color:var(--muted);">+</span>
-          <span class="layer-pill amm">EXT 01 · AMM</span>
+          <span class="layer-pill amm">XLS-30 · AMM</span>
         </div>
 
         <div class="uc-foot">
-          <strong>EXT 01 · AMM XLS-30</strong>
+          <strong>Native amendment XLS-30 · AMM</strong>
           Le <code>Payment</code> cross-currency utilise le pool AMM natif via le pathfinding.
         </div>
       </div>
 
-      <!-- UC 04 — RWA (extension) -->
+      <!-- UC 04 — RWA (amendements natifs XLS-33+XLS-70) -->
       <div class="mapping-cell" data-layer="rwa" id="uc-rwa">
         <div class="uc-caption"><strong>Cas 04 / 5</strong>Tokenization of real-world assets.<br/>Multi-Purpose Tokens + DID.</div>
         <div class="uc-num">USE CASE · 04</div>
@@ -1487,11 +1487,11 @@
         <div class="uc-uses">
           <span class="layer-pill l1">L1</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;margin:0 4px;color:var(--muted);">+</span>
-          <span class="layer-pill rwa">EXT 02 · MPT</span>
+          <span class="layer-pill rwa">XLS-33+70 · MPT/DID</span>
         </div>
 
         <div class="uc-foot">
-          <strong>EXT 02 · MPT + DID</strong>
+          <strong>Native amendments XLS-33 · MPT + XLS-70 · DID</strong>
           Multi-Purpose Tokens avec metadata, permissions issuer, hooks de compliance, KYC via credentials XLS-70.
         </div>
       </div>
@@ -1521,7 +1521,7 @@
     <div style="border-top: 1.5px solid var(--ink); padding: 12px 22px; background: var(--paper-2); display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center;">
       <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">À retenir</span>
       <span style="font-family:'Fraunces',serif;font-size:13px;line-height:1.5;font-style:italic;">
-        Sur 5 use cases : <strong style="font-style:normal;">2 sont en L1 pur</strong> (Payment, NFT) — <strong style="font-style:normal;">2 utilisent une extension integrated in the ledger</strong> (AMM Swap, RWA) — <strong style="font-style:normal;">1 sort du L1</strong> via la sidechain EVM (smart contracts).
+        On 5 use cases: <strong style="font-style:normal;">4 are native on the XRPL L1</strong> (Payment + amendments XLS-20 NFT, XLS-30 AMM, XLS-33 MPT, XLS-70 DID) — <strong style="font-style:normal;">1 leaves the L1</strong> via the EVM sidechain (smart contracts). <em style="font-style:italic;">All XLS amendments are native protocol primitives once activated — not external extensions.</em>
       </span>
     </div>
   </div>
@@ -1529,7 +1529,7 @@
   <!-- INTEGRATION TABLE -->
   <div class="integration" id="anchor-integration">
     <h2>Quand utiliser <em>quoi</em> ?</h2>
-    <div class="sub">Decision matrix · L1 vs extensions</div>
+    <div class="sub">Decision matrix · L1 vs sidechain</div>
     <table class="matrix">
       <thead>
         <tr>
@@ -1594,10 +1594,10 @@
   if (!ucPlayBtn) return;
 
   const ucCards = [
-    { id: 'uc-payment', dwell: 2400, tag: 'Case 01 · pure L1',         text: 'A simple Payment transaction on the ledger. No extension needed.' },
-    { id: 'uc-nft',     dwell: 2400, tag: 'Cas 02 · L1 pur',         text: 'NFT natif via XLS-20 — toujours aucune extension. C\'est intégré au protocole.' },
-    { id: 'uc-amm',     dwell: 2700, tag: 'Case 03 · AMM extension',  text: 'First extension: AMM XLS-30 pool. The swap hits the ledger\'s native liquidity.' },
-    { id: 'uc-rwa',     dwell: 2700, tag: 'Case 04 · RWA extension',  text: 'Tokenization of real assets via Multi-Purpose Tokens (MPT) + DID for compliance.' },
+    { id: 'uc-payment', dwell: 2400, tag: 'Case 01 · pure L1',         text: 'A simple Payment transaction on the ledger. Base ledger primitive.' },
+    { id: 'uc-nft',     dwell: 2400, tag: 'Cas 02 · L1 pur',         text: 'Native NFT via XLS-20 amendment — a native protocol primitive.' },
+    { id: 'uc-amm',     dwell: 2700, tag: 'Case 03 · AMM (XLS-30)',  text: 'First specialized mechanism: AMM pool (native amendment XLS-30). The swap hits the ledger native liquidity.' },
+    { id: 'uc-rwa',     dwell: 2700, tag: 'Case 04 · RWA (XLS-33+70)',  text: 'Tokenization of real assets via Multi-Purpose Tokens (MPT) + DID for compliance.' },
     { id: 'uc-evm',     dwell: 3000, tag: 'Case 05 · EVM Sidechain',  text: 'The only case that leaves L1 — Solidity smart contract execution on the sidechain.' },
   ];
 
@@ -1685,7 +1685,7 @@
             if (el) el.classList.remove('uc-active', 'uc-dim');
           });
           ucNarrationTag.textContent = '✓ Tour complete';
-          ucNarrationText.textContent = '2 cases on pure L1, 2 with native extension, 1 on the sidechain. That\'s how the XRPL ecosystem splits.';
+          ucNarrationText.textContent = '4 cases native on the L1 (via XLS amendments), 1 on the sidechain. That\'s how the XRPL ecosystem splits.';
           ucIndicator.textContent = '✓ 5/5';
           timeouts.push(setTimeout(stop, 3000));
         }
@@ -1735,14 +1735,14 @@
       body: `<p>Each color represents <strong>un acteur distinct</strong> of the system:</p>
              <p>— red / green / yellow / brown = side <strong>utilisateur et applicatif</strong> (ce qui tourne sur ton appareil ou un serveur)</p>
              <p>— bleu = le <strong>XRPL network</strong> (validators, ledger)</p>
-             <p>— violet / olive / orange = les <strong>3 extensions</strong> of the ecosystem (AMM, RWA, Sidechain)</p>`,
+             <p>— violet / olive / orange = les <strong>3 specialized mechanisms</strong> of the ecosystem (AMM, RWA, off-L1 Sidechain)</p>`,
       placement: 'bottom',
     },
     {
       target: '#anchor-diagram',
       eyebrow: 'STEP 02 · ARCHITECTURE',
       title: 'Le diagramme principal',
-      body: `<p>Left-to-right reading: <strong>USER → CLIENT → CUSTODY → NETWORK → LEDGER</strong>, avec les <strong>extensions</strong> in the last column.</p>
+      body: `<p>Left-to-right reading: <strong>USER → CLIENT → CUSTODY → NETWORK → LEDGER</strong>, with the <strong>specialized mechanisms</strong> in the last column.</p>
              <p>Arrows <span style="color:#c8553d;font-weight:700;">rouges</span> = writes (signed transactions). Arrows <span style="color:#2e5d4f;font-weight:700;">vertes</span> = reads (free, no signature). Dashed arrows = ownership or delegation relationships.</p>`,
       placement: 'bottom',
     },
@@ -1773,10 +1773,10 @@
     {
       target: '#mapping-block',
       eyebrow: 'STEP 06 · MAPPING',
-      title: 'Quel use case · quelle extension ?',
-      body: `<p>Important point: <strong>the 5 use cases don't map 1-to-1 onto the 3 extensions</strong>.</p>
-             <p>— <strong>Payment</strong> and <strong>NFT</strong> run on <strong>pure L1</strong> (no extension).</p>
-             <p>— <strong>AMM Swap</strong> and <strong>RWA</strong> use a <strong>ledger-integrated</strong> extension.</p>
+      title: 'Which use case · which specialized mechanism?',
+      body: `<p>Important point: <strong>the 5 use cases don't map 1-to-1 onto the 3 specialized mechanisms</strong>.</p>
+             <p>— <strong>Payment</strong> is a base primitive, <strong>NFT</strong> is a simple native amendment (XLS-20).</p>
+             <p>— <strong>AMM Swap</strong> (XLS-30) and <strong>RWA</strong> (XLS-33+70) use specialized native amendments <strong>built into the ledger</strong>.</p>
              <p>— <strong>EVM smart contracts</strong> is the only case that <strong>leaves L1</strong>.</p>`,
       placement: 'top',
     },
@@ -1785,7 +1785,7 @@
       eyebrow: 'STEP 07 · DECISION',
       title: 'Quand utiliser <em>quoi</em> ?',
       body: `<p>The decision matrix summarizes every trade-off: what each layer gives you, what it costs you.</p>
-             <p>Lecture utile : si ton besoin est exprimable avec les primitives du L1 ou ses extensions natives (AMM, NFT, MPT, escrow…), reste sur le L1. Tu n'as <strong>pas besoin de smart contract</strong>. The sidechain is only for what truly exceeds what the protocol offers.</p>`,
+             <p>Lecture utile : si ton besoin est exprimable avec les primitives du L1 ou its native amendments (AMM, NFT, MPT, escrow…), reste sur le L1. Tu n'as <strong>pas besoin de smart contract</strong>. The sidechain is only for what truly exceeds what the protocol offers.</p>`,
       placement: 'top',
     },
     {
